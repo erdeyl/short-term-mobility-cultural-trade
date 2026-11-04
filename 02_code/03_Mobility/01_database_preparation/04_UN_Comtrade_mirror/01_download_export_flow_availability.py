@@ -75,7 +75,6 @@ def request_batch(year, reporters):
         "customsCode":"C00",
         "motCode":"0",
         "maxrecords":str(MAXROWS),
-        "subscription-key":API_KEY,
     }
 
     for attempt in range(1,6):
@@ -83,7 +82,7 @@ def request_batch(year, reporters):
             print(f"GET export availability year={year} reporters={len(reporters)} attempt={attempt}")
             r=requests.get(
                 URL, params=params, timeout=180,
-                headers={"User-Agent":"academic-replication-pipeline/1.0"}
+                headers={"User-Agent":"academic-replication-pipeline/1.0", "Ocp-Apim-Subscription-Key":API_KEY}  # key in a header, not in the URL
             )
             new_calls+=1
 

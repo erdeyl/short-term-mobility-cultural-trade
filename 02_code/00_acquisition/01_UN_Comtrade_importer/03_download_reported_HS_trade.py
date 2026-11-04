@@ -77,7 +77,6 @@ def request_data(year, version, reporters, codes, depth=0):
         "customsCode":"C00",
         "motCode":"0",
         "maxrecords":str(MAXROWS),
-        "subscription-key":key,
     }
 
     url = "https://comtradeapi.un.org/data/v1/get/C/A/HS"
@@ -86,7 +85,7 @@ def request_data(year, version, reporters, codes, depth=0):
         try:
             print(f"GET year={year} version={version} reporters={len(reporters)} codes={len(codes)} attempt={attempt}")
             r = requests.get(url, params=params, timeout=180,
-                             headers={"User-Agent":"academic-replication-pipeline/1.0"})
+                             headers={"User-Agent":"academic-replication-pipeline/1.0", "Ocp-Apim-Subscription-Key":key})  # key in a header, not in the URL
             new_calls += 1
 
             if r.status_code == 429:

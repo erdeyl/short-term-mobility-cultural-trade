@@ -9,10 +9,10 @@ def key():
     return k
 def download_missing(years):
     if not years:return
-    k=key(); headers={'User-Agent':'academic-replication-pipeline/1.0'}
+    k=key(); headers={'User-Agent':'academic-replication-pipeline/1.0','Ocp-Apim-Subscription-Key':k}  # key in a header, not in the URL
     for y in years:
         for attempt in range(1,7):
-            r=requests.get(BASE,params={'period':str(y),'maxrecords':100000,'subscription-key':k},headers=headers,timeout=180)
+            r=requests.get(BASE,params={'period':str(y),'maxrecords':100000},headers=headers,timeout=180)
             if r.status_code==429: time.sleep(20*attempt); continue
             if r.status_code!=200:
                 if attempt==6: raise RuntimeError(f'HTTP {r.status_code}: {r.text[:500]}')
