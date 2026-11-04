@@ -1,0 +1,6 @@
+Independent Variables,Visitors,Tourists,source
+Lag bilateral mobility,-0.027 (0.134),0.079 (0.094),out/corrected2x/pc/tables/table3_dynamic_future_checks.csv ['Lag bilateral visitors' col (1); 'Lag bilateral tourists' col (2)]
+Contemporaneous bilateral mobility,0.197** (0.079),0.206** (0.083),out/corrected2x/pc/tables/table3_dynamic_future_checks.csv ['Bilateral visitors' col (1); 'Bilateral tourists' col (2)]
+Future bilateral mobility,0.002 (0.061),0.038 (0.056),out/corrected2x/pc/tables/table3_dynamic_future_checks.csv ['Future bilateral visitors' col (1); 'Future bilateral tourists' col (2)]
+Future-term p-value,0.977,0.501,out/corrected2x/pc/tables/table3_dynamic_future_checks.csv [Future-mobility p-value col (1); Future-mobility p-value col (2)]
+N,"13,872","19,061",out/corrected2x/pc/tables/table3_dynamic_future_checks.csv [N col (1); N col (2)]

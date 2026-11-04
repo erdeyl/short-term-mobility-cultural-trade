@@ -1,0 +1,164 @@
+Test,N,Estimate,"SE, directed-pair clusters","SE, unordered-pair clusters","p, directed-pair clusters","p, unordered-pair clusters"
+"Table 6, Panel A, cultural distance, visitors, own sample: mobility × moderator interaction",11971,0.048,0.024,0.021,0.04107278534465102,0.02094323688212007
+"Table 6, Panel A, cultural distance, visitors, own sample: joint test that mobility and interaction coefficients are zero",11971,–,–,–,0.0080815399450331,0.00664152863263609
+"Table 6, Panel A, cultural distance, tourists, own sample: mobility × moderator interaction",10932,−0.033,0.023,0.020,0.140377618761541,0.0934433012735218
+"Table 6, Panel A, cultural distance, tourists, own sample: joint test that mobility and interaction coefficients are zero",10932,–,–,–,0.00595238090891989,0.00721656027508959
+"Table 6, Panel B, cultural distance, visitors, common sample: mobility × moderator interaction",1271,−0.095,0.047,0.046,0.04474933112577157,0.04053365305908347
+"Table 6, Panel B, cultural distance, visitors, common sample: joint test that mobility and interaction coefficients are zero",1271,–,–,–,0.0115047844133604,0.0171764581715119
+"Table 6, Panel B, cultural distance, tourists, common sample: mobility × moderator interaction",1271,−0.097,0.052,0.050,0.06159749319536125,0.05363939160350153
+"Table 6, Panel B, cultural distance, tourists, common sample: joint test that mobility and interaction coefficients are zero",1271,–,–,–,0.02307018924705779,0.0307279864651099
+"Table 6, Panel B, cultural distance, common sample: difference of interactions, visitors minus tourists",1271,0.0022,0.0065,0.0064,0.7359970404788849,0.731060929613697
+"Table 6, Panel B, cultural distance, common sample: Wald test (i), equal interactions",1271,–,–,–,0.7359970404788849,0.731060929613697
+"Table 6, Panel B, cultural distance, common sample: difference of slopes at the common mean, visitors minus tourists",1271,0.018,0.023,0.023,0.4535122937321755,0.4471671083076638
+"Table 6, Panel B, cultural distance, common sample: Wald test (ii), equal slopes at the common mean",1271,–,–,–,0.45351229373217605,0.4471671083076644
+"Table 6, Panel B, cultural distance, common sample: Wald test (i) and (ii) jointly",1271,–,–,–,0.75490076819782,0.7473120382579115
+"Table 6, Panel A, cultural distance, pairs without regional proxy scores, visitors, own sample: mobility × moderator interaction",7641,0.048,0.024,0.021,0.04680742677017038,0.02381121096417466
+"Table 6, Panel A, cultural distance, pairs without regional proxy scores, visitors, own sample: joint test that mobility and interaction coefficients are zero",7641,–,–,–,0.0009991155156689,0.00119154654495309
+"Table 6, Panel A, cultural distance, pairs without regional proxy scores, tourists, own sample: mobility × moderator interaction",6481,−0.032,0.023,0.020,0.16171275183349232,0.11144329010569072
+"Table 6, Panel A, cultural distance, pairs without regional proxy scores, tourists, own sample: joint test that mobility and interaction coefficients are zero",6481,–,–,–,0.0145589175348623,0.0173589056764776
+"Table 6, Panel B, cultural distance, pairs without regional proxy scores, visitors, common sample: mobility × moderator interaction",922,−0.093,0.048,0.048,0.0551105439424438,0.05110110078697367
+"Table 6, Panel B, cultural distance, pairs without regional proxy scores, visitors, common sample: joint test that mobility and interaction coefficients are zero",922,–,–,–,0.04210192731100519,0.0549294980954338
+"Table 6, Panel B, cultural distance, pairs without regional proxy scores, tourists, common sample: mobility × moderator interaction",922,−0.096,0.053,0.052,0.06994129272549748,0.06248493737723712
+"Table 6, Panel B, cultural distance, pairs without regional proxy scores, tourists, common sample: joint test that mobility and interaction coefficients are zero",922,–,–,–,0.06578688038559088,0.0785926838090396
+"Table 6, Panel B, cultural distance, pairs without regional proxy scores, common sample: difference of interactions, visitors minus tourists",922,0.0034,0.0063,0.0062,0.5886427346449068,0.5790950222880273
+"Table 6, Panel B, cultural distance, pairs without regional proxy scores, common sample: Wald test (i), equal interactions",922,–,–,–,0.5886427346449068,0.5790950222880272
+"Table 6, Panel B, cultural distance, pairs without regional proxy scores, common sample: difference of slopes at the common mean, visitors minus tourists",922,0.017,0.026,0.025,0.509377685280582,0.5030952751737012
+"Table 6, Panel B, cultural distance, pairs without regional proxy scores, common sample: Wald test (ii), equal slopes at the common mean",922,–,–,–,0.5093776852805818,0.5030952751737009
+"Table 6, Panel B, cultural distance, pairs without regional proxy scores, common sample: Wald test (i) and (ii) jointly",922,–,–,–,0.7826827637790956,0.7614278061406041
+"Table 6, Panel A, cultural distance from the official Hofstede file only, visitors, own sample: mobility × moderator interaction",7641,0.070,0.032,0.029,0.03083061541309736,0.01721961506784778
+"Table 6, Panel A, cultural distance from the official Hofstede file only, visitors, own sample: joint test that mobility and interaction coefficients are zero",7641,–,–,–,0.0011354104720312,0.0013606429494112
+"Table 6, Panel A, cultural distance from the official Hofstede file only, tourists, own sample: mobility × moderator interaction",6481,−0.044,0.031,0.027,0.14695399915118443,0.09974788786485209
+"Table 6, Panel A, cultural distance from the official Hofstede file only, tourists, own sample: joint test that mobility and interaction coefficients are zero",6481,–,–,–,0.01401322197616339,0.01702750876456219
+"Table 6, Panel B, cultural distance from the official Hofstede file only, visitors, common sample: mobility × moderator interaction",922,−0.116,0.061,0.061,0.05944677917138102,0.05656104530630976
+"Table 6, Panel B, cultural distance from the official Hofstede file only, visitors, common sample: joint test that mobility and interaction coefficients are zero",922,–,–,–,0.0484634958795729,0.06224505926268329
+"Table 6, Panel B, cultural distance from the official Hofstede file only, tourists, common sample: mobility × moderator interaction",922,−0.121,0.068,0.066,0.0751930460553201,0.06932109527406596
+"Table 6, Panel B, cultural distance from the official Hofstede file only, tourists, common sample: joint test that mobility and interaction coefficients are zero",922,–,–,–,0.07522414556296309,0.0891862417946711
+"Table 6, Panel B, cultural distance from the official Hofstede file only, common sample: difference of interactions, visitors minus tourists",922,0.0048,0.0085,0.0084,0.5723271581832969,0.5680182872793378
+"Table 6, Panel B, cultural distance from the official Hofstede file only, common sample: Wald test (i), equal interactions",922,–,–,–,0.5723271581832967,0.5680182872793376
+"Table 6, Panel B, cultural distance from the official Hofstede file only, common sample: difference of slopes at the common mean, visitors minus tourists",922,0.018,0.026,0.025,0.48290537023660907,0.4779239848114428
+"Table 6, Panel B, cultural distance from the official Hofstede file only, common sample: Wald test (ii), equal slopes at the common mean",922,–,–,–,0.48290537023660907,0.4779239848114434
+"Table 6, Panel B, cultural distance from the official Hofstede file only, common sample: Wald test (i) and (ii) jointly",922,–,–,–,0.7612225772857688,0.7438687063423975
+"Table 6, Panel A, common official language, visitors, own sample: mobility × moderator interaction",20598,−0.093,0.042,0.038,0.02437292228574251,0.01513454475029031
+"Table 6, Panel A, common official language, visitors, own sample: joint test that mobility and interaction coefficients are zero",20598,–,–,–,0.0048820183867578,0.00340214800984029
+"Table 6, Panel A, common official language, tourists, own sample: mobility × moderator interaction",26159,0.022,0.057,0.055,0.7046862574632318,0.6951064381039135
+"Table 6, Panel A, common official language, tourists, own sample: joint test that mobility and interaction coefficients are zero",26159,–,–,–,0.0026297531641268,0.0074467071685813
+"Table 6, Panel B, common official language, visitors, common sample: mobility × moderator interaction",2457,−0.072,0.099,0.100,0.4695510565295216,0.47376685762792325
+"Table 6, Panel B, common official language, visitors, common sample: joint test that mobility and interaction coefficients are zero",2457,–,–,–,0.7698352805524373,0.7736708089764988
+"Table 6, Panel B, common official language, tourists, common sample: mobility × moderator interaction",2457,−0.049,0.106,0.108,0.6458444681202743,0.6533370798028578
+"Table 6, Panel B, common official language, tourists, common sample: joint test that mobility and interaction coefficients are zero",2457,–,–,–,0.8895970507443919,0.8931815719763334
+"Table 6, Panel B, common official language, common sample: difference of interactions, visitors minus tourists",2457,−0.023,0.012,0.013,0.05526179947217242,0.06868157552618832
+"Table 6, Panel B, common official language, common sample: Wald test (i), equal interactions",2457,–,–,–,0.05526179947217239,0.0686815755261883
+"Table 6, Panel B, common official language, common sample: difference of slopes at the common mean, visitors minus tourists",2457,0.029,0.018,0.018,0.10945883877903852,0.10738623260810588
+"Table 6, Panel B, common official language, common sample: Wald test (ii), equal slopes at the common mean",2457,–,–,–,0.1094588387790385,0.1073862326081059
+"Table 6, Panel B, common official language, common sample: Wald test (i) and (ii) jointly",2457,–,–,–,0.1105520527216126,0.1234726954186226
+"Table 6, Panel B, common official language, common sample: difference of slopes without a common language, visitors minus tourists",2457,0.033,0.019,0.019,0.08000937269370025,0.07897332422297569
+"Table 6, Panel B, common official language, common sample: difference of slopes with a common language, visitors minus tourists",2457,0.011,0.016,0.016,0.5154372250308361,0.5185521293155991
+"Table 6, Panel A, common ethnic language (CEPII), visitors, own sample: mobility × moderator interaction",20598,−0.083,0.044,0.040,0.05876114035745373,0.0390693759617656
+"Table 6, Panel A, common ethnic language (CEPII), visitors, own sample: joint test that mobility and interaction coefficients are zero",20598,–,–,–,0.04706824767799799,0.0443414557496878
+"Table 6, Panel A, common ethnic language (CEPII), tourists, own sample: mobility × moderator interaction",26159,0.039,0.063,0.060,0.5386483490072851,0.517783562289502
+"Table 6, Panel A, common ethnic language (CEPII), tourists, own sample: joint test that mobility and interaction coefficients are zero",26159,–,–,–,0.00389198951023329,0.0109489932466308
+"Table 6, Panel B, common ethnic language (CEPII), visitors, common sample: mobility × moderator interaction",2457,0.022,0.116,0.127,0.8473026424387552,0.8594707983702333
+"Table 6, Panel B, common ethnic language (CEPII), visitors, common sample: joint test that mobility and interaction coefficients are zero",2457,–,–,–,0.9664061534291741,0.9703890396859572
+"Table 6, Panel B, common ethnic language (CEPII), tourists, common sample: mobility × moderator interaction",2457,0.067,0.127,0.140,0.5996213875378172,0.6344246257631712
+"Table 6, Panel B, common ethnic language (CEPII), tourists, common sample: joint test that mobility and interaction coefficients are zero",2457,–,–,–,0.8709224268381155,0.8930201100922572
+"Table 6, Panel B, common ethnic language (CEPII), common sample: difference of interactions, visitors minus tourists",2457,−0.044,0.015,0.017,0.00250052104633789,0.01028782318241006
+"Table 6, Panel B, common ethnic language (CEPII), common sample: Wald test (i), equal interactions",2457,–,–,–,0.0025005210463379,0.0102878231824101
+"Table 6, Panel B, common ethnic language (CEPII), common sample: difference of slopes at the common mean, visitors minus tourists",2457,0.029,0.019,0.020,0.12957633428900567,0.13506429918019588
+"Table 6, Panel B, common ethnic language (CEPII), common sample: Wald test (ii), equal slopes at the common mean",2457,–,–,–,0.1295763342890057,0.1350642991801959
+"Table 6, Panel B, common ethnic language (CEPII), common sample: Wald test (i) and (ii) jointly",2457,–,–,–,0.0090064232896363,0.0289092404468908
+"Table 6, Panel B, common ethnic language (CEPII), common sample: difference of slopes without a common language, visitors minus tourists",2457,0.042,0.021,0.022,0.04842958857341257,0.05467769316542362
+"Table 6, Panel B, common ethnic language (CEPII), common sample: difference of slopes with a common language, visitors minus tourists",2457,−0.0024,0.019,0.020,0.8984267016310792,0.9031110061393472
+"Table 6, Panel A, common spoken language (Melitz–Toubal), visitors, own sample: mobility × moderator interaction",18735,−0.073,0.050,0.049,0.1479925643633571,0.1372307509373792
+"Table 6, Panel A, common spoken language (Melitz–Toubal), visitors, own sample: joint test that mobility and interaction coefficients are zero",18735,–,–,–,0.03647422259087149,0.04232389571208349
+"Table 6, Panel A, common spoken language (Melitz–Toubal), tourists, own sample: mobility × moderator interaction",24090,−0.012,0.071,0.070,0.8701111166469898,0.8679179030632788
+"Table 6, Panel A, common spoken language (Melitz–Toubal), tourists, own sample: joint test that mobility and interaction coefficients are zero",24090,–,–,–,0.0070403451522684,0.01245646300960289
+"Table 6, Panel B, common spoken language (Melitz–Toubal), visitors, common sample: mobility × moderator interaction",2211,0.330,0.251,0.270,0.18806943457537095,0.22184397306607875
+"Table 6, Panel B, common spoken language (Melitz–Toubal), visitors, common sample: joint test that mobility and interaction coefficients are zero",2211,–,–,–,0.3131258915647047,0.3661671318254802
+"Table 6, Panel B, common spoken language (Melitz–Toubal), tourists, common sample: mobility × moderator interaction",2211,0.377,0.252,0.272,0.13543719357760922,0.16509399627635174
+"Table 6, Panel B, common spoken language (Melitz–Toubal), tourists, common sample: joint test that mobility and interaction coefficients are zero",2211,–,–,–,0.2687843819037883,0.3221168226595665
+"Table 6, Panel B, common spoken language (Melitz–Toubal), common sample: difference of interactions, visitors minus tourists",2211,−0.047,0.018,0.018,0.00808267174592288,0.01032641158238606
+"Table 6, Panel B, common spoken language (Melitz–Toubal), common sample: Wald test (i), equal interactions",2211,–,–,–,0.00808267174592289,0.0103264115823861
+"Table 6, Panel B, common spoken language (Melitz–Toubal), common sample: difference of slopes at the common mean, visitors minus tourists",2211,0.021,0.018,0.017,0.22764828628595735,0.20753222381413663
+"Table 6, Panel B, common spoken language (Melitz–Toubal), common sample: Wald test (ii), equal slopes at the common mean",2211,–,–,–,0.2276482862859574,0.2075322238141367
+"Table 6, Panel B, common spoken language (Melitz–Toubal), common sample: Wald test (i) and (ii) jointly",2211,–,–,–,0.024934322648272,0.0292947565470771
+"Table 6, Panel A, common native language (Melitz–Toubal), visitors, own sample: mobility × moderator interaction",18735,−0.062,0.043,0.043,0.15156069242027867,0.14453027065320034
+"Table 6, Panel A, common native language (Melitz–Toubal), visitors, own sample: joint test that mobility and interaction coefficients are zero",18735,–,–,–,0.0415992905601461,0.0486419921925455
+"Table 6, Panel A, common native language (Melitz–Toubal), tourists, own sample: mobility × moderator interaction",24090,0.089,0.132,0.126,0.4999500068576988,0.48067744894063064
+"Table 6, Panel A, common native language (Melitz–Toubal), tourists, own sample: joint test that mobility and interaction coefficients are zero",24090,–,–,–,0.00841157086366059,0.0150822026156177
+"Table 6, Panel B, common native language (Melitz–Toubal), visitors, common sample: mobility × moderator interaction",2211,0.408,0.267,0.271,0.12718478529023988,0.13195978421937987
+"Table 6, Panel B, common native language (Melitz–Toubal), visitors, common sample: joint test that mobility and interaction coefficients are zero",2211,–,–,–,0.2913839722693392,0.3086474244469439
+"Table 6, Panel B, common native language (Melitz–Toubal), tourists, common sample: mobility × moderator interaction",2211,0.442,0.268,0.272,0.09894611535692616,0.1038425933980138
+"Table 6, Panel B, common native language (Melitz–Toubal), tourists, common sample: joint test that mobility and interaction coefficients are zero",2211,–,–,–,0.2489236348075955,0.2637926542706897
+"Table 6, Panel B, common native language (Melitz–Toubal), common sample: difference of interactions, visitors minus tourists",2211,−0.034,0.018,0.018,0.06368897583028145,0.05850406030554636
+"Table 6, Panel B, common native language (Melitz–Toubal), common sample: Wald test (i), equal interactions",2211,–,–,–,0.0636889758302814,0.05850406030554639
+"Table 6, Panel B, common native language (Melitz–Toubal), common sample: difference of slopes at the common mean, visitors minus tourists",2211,0.027,0.019,0.018,0.1558978832964991,0.1397607709650129
+"Table 6, Panel B, common native language (Melitz–Toubal), common sample: Wald test (ii), equal slopes at the common mean",2211,–,–,–,0.1558978832964991,0.139760770965013
+"Table 6, Panel B, common native language (Melitz–Toubal), common sample: Wald test (i) and (ii) jointly",2211,–,–,–,0.1721781173431922,0.1514853946805302
+"Table 7, Panel B, visitors: reference basket minus Narrow-A, identical observations",19818,−0.155,0.073,0.067,0.03369777386599141,0.02073074187479811
+"Table 7, Panel B, visitors: reference basket minus Narrow-A, identical observations (Wald test)",19818,–,–,–,0.03369777386599139,0.02073074187479809
+"Table 7, Panel B, visitors: reference basket minus Narrow-B, identical observations",19932,−0.115,0.053,0.050,0.02938320147981413,0.02150749581721431
+"Table 7, Panel B, visitors: reference basket minus Narrow-B, identical observations (Wald test)",19932,–,–,–,0.02938320147981409,0.0215074958172143
+"Table 7, Panel B, visitors: reference basket minus the basket without heading 8523, identical observations",20461,−0.113,0.049,0.044,0.02187254380023841,0.01011099525606733
+"Table 7, Panel B, visitors: reference basket minus the basket without heading 8523, identical observations (Wald test)",20461,–,–,–,0.0218725438002384,0.0101109952560673
+"Table 7, Panel B, tourists: reference basket minus Narrow-A, identical observations",25066,0.114,0.047,0.046,0.01412824599347532,0.01288812192844621
+"Table 7, Panel B, tourists: reference basket minus Narrow-A, identical observations (Wald test)",25066,–,–,–,0.0141282459934753,0.0128881219284462
+"Table 7, Panel B, tourists: reference basket minus Narrow-B, identical observations",25249,0.033,0.026,0.025,0.19941700068842003,0.1807128203322806
+"Table 7, Panel B, tourists: reference basket minus Narrow-B, identical observations (Wald test)",25249,–,–,–,0.1994170006884201,0.1807128203322807
+"Table 7, Panel B, tourists: reference basket minus the basket without heading 8523, identical observations",26045,0.049,0.038,0.038,0.19540058481978703,0.19978083856144063
+"Table 7, Panel B, tourists: reference basket minus the basket without heading 8523, identical observations (Wald test)",26045,–,–,–,0.195400584819787,0.1997808385614407
+"Table 7, Panel A, visitors: reference basket minus total merchandise imports",16809,0.056,0.119,0.117,0.6367395893723814,0.6316864326348759
+"Table 7, Panel A, visitors: reference basket minus total merchandise imports (Wald test)",16809,–,–,–,0.6367395893723811,0.6316864326348759
+"Table 7, Panel A, visitors: reference basket minus non-cultural imports",16808,0.056,0.120,0.118,0.6398207887176568,0.6347989724231815
+"Table 7, Panel A, visitors: reference basket minus non-cultural imports (Wald test)",16808,–,–,–,0.6398207887176567,0.6347989724231813
+"Table 7, Panel A, tourists: reference basket minus total merchandise imports",21945,0.200,0.085,0.091,0.0183816593374542,0.02703956698612166
+"Table 7, Panel A, tourists: reference basket minus total merchandise imports (Wald test)",21945,–,–,–,0.0183816593374542,0.02703956698612169
+"Table 7, Panel A, tourists: reference basket minus non-cultural imports",21918,0.202,0.085,0.091,0.01762623815307118,0.02592335312262013
+"Table 7, Panel A, tourists: reference basket minus non-cultural imports (Wald test)",21918,–,–,–,0.0176262381530712,0.0259233531226201
+"Table 7, Panel A, visitors: Narrow-B minus total merchandise imports",16373,0.223,0.139,0.138,0.10749912354129376,0.10558395355729752
+"Table 7, Panel A, visitors: Narrow-B minus total merchandise imports (Wald test)",16373,–,–,–,0.1074991235412938,0.10558395355729748
+"Table 7, Panel A, visitors: Narrow-B minus non-cultural imports",16372,0.223,0.139,0.138,0.1087636136113509,0.10685587984568132
+"Table 7, Panel A, visitors: Narrow-B minus non-cultural imports (Wald test)",16372,–,–,–,0.1087636136113509,0.1068558798456813
+"Table 7, Panel A, tourists: Narrow-B minus total merchandise imports",21136,0.131,0.093,0.096,0.15734204513291378,0.1699729407245254
+"Table 7, Panel A, tourists: Narrow-B minus total merchandise imports (Wald test)",21136,–,–,–,0.1573420451329138,0.1699729407245255
+"Table 7, Panel A, tourists: Narrow-B minus non-cultural imports",21118,0.133,0.093,0.096,0.1525253635464645,0.16464181400424502
+"Table 7, Panel A, tourists: Narrow-B minus non-cultural imports (Wald test)",21118,–,–,–,0.1525253635464645,0.1646418140042451
+"Table 7, Panel A, visitors: the basket without heading 8523 minus total merchandise imports",16726,0.244,0.134,0.127,0.06841022609640308,0.05443818662434214
+"Table 7, Panel A, visitors: the basket without heading 8523 minus total merchandise imports (Wald test)",16726,–,–,–,0.06841022609640308,0.0544381866243422
+"Table 7, Panel A, visitors: the basket without heading 8523 minus non-cultural imports",16725,0.244,0.134,0.127,0.06939035986160978,0.05539060165046164
+"Table 7, Panel A, visitors: the basket without heading 8523 minus non-cultural imports (Wald test)",16725,–,–,–,0.0693903598616098,0.05539060165046159
+"Table 7, Panel A, tourists: the basket without heading 8523 minus total merchandise imports",21713,0.129,0.077,0.079,0.09223091256997498,0.10084453102850208
+"Table 7, Panel A, tourists: the basket without heading 8523 minus total merchandise imports (Wald test)",21713,–,–,–,0.092230912569975,0.100844531028502
+"Table 7, Panel A, tourists: the basket without heading 8523 minus non-cultural imports",21689,0.131,0.077,0.079,0.08838398029933008,0.09657629444866556
+"Table 7, Panel A, tourists: the basket without heading 8523 minus non-cultural imports (Wald test)",21689,–,–,–,0.0883839802993301,0.0965762944486656
+"Table 7, Panel A, visitors: Narrow-A minus total merchandise imports",16308,0.299,0.139,0.138,0.03180255614003247,0.02976800257053151
+"Table 7, Panel A, visitors: Narrow-A minus total merchandise imports (Wald test)",16308,–,–,–,0.03180255614003239,0.02976800257053149
+"Table 7, Panel A, visitors: Narrow-A minus non-cultural imports",16307,0.299,0.140,0.138,0.03226309478529745,0.03028154385941306
+"Table 7, Panel A, visitors: Narrow-A minus non-cultural imports (Wald test)",16307,–,–,–,0.0322630947852974,0.030281543859413
+"Table 7, Panel A, tourists: Narrow-A minus total merchandise imports",21004,0.033,0.085,0.088,0.7014228028895897,0.7124854566776109
+"Table 7, Panel A, tourists: Narrow-A minus total merchandise imports (Wald test)",21004,–,–,–,0.7014228028895895,0.7124854566776108
+"Table 7, Panel A, tourists: Narrow-A minus non-cultural imports",20986,0.034,0.085,0.088,0.6863791681798717,0.6977692967840402
+"Table 7, Panel A, tourists: Narrow-A minus non-cultural imports (Wald test)",20986,–,–,–,0.6863791681798714,0.6977692967840401
+"Table 8, Panel A, visitors: restricted minus complement, same basis in both directions (Wald test)",20218,–,–,–,0.0218147978561601,0.02037303165049959
+"Table 8, Panel A, visitors: restricted minus complement, same basis in both directions",20218,−0.528,0.230,0.228,0.02181479785616012,0.02037303165049968
+"Table 8, Panel A, visitors: restricted minus complement, one basis for the pair in all observed years (Wald test)",20395,–,–,–,0.02229803834589949,0.022055056379341
+"Table 8, Panel A, visitors: restricted minus complement, one basis for the pair in all observed years",20395,−0.360,0.157,0.157,0.02229803834589945,0.02205505637934095
+"Table 8, Panel A, visitors: restricted minus complement, no tourists-only values in the visitor series (Wald test)",20404,–,–,–,0.6470111186497807,0.6574546515191819
+"Table 8, Panel A, visitors: restricted minus complement, no tourists-only values in the visitor series",20404,−0.081,0.177,0.183,0.6470111186497807,0.657454651519182
+"Table 8, Panel A, visitors: restricted minus complement, no basis switch in either series (Wald test)",20213,–,–,–,0.1136424729725262,0.1216632119729162
+"Table 8, Panel A, visitors: restricted minus complement, no basis switch in either series",20213,0.206,0.130,0.133,0.11364247297252626,0.1216632119729162
+"Table 8, Panel A, tourists: restricted minus complement, same basis in both directions (Wald test)",25344,–,–,–,0.0184572643326295,0.02122997782523209
+"Table 8, Panel A, tourists: restricted minus complement, same basis in both directions",25344,0.269,0.114,0.117,0.01845726433262951,0.02122997782523208
+"Table 8, Panel A, tourists: restricted minus complement, one basis for the pair in all observed years (Wald test)",25902,–,–,–,0.2910396379999521,0.2911375626096444
+"Table 8, Panel A, tourists: restricted minus complement, one basis for the pair in all observed years",25902,0.134,0.127,0.127,0.29103963799995186,0.2911375626096442
+"Table 8, Panel A, tourists: restricted minus complement, no basis switch in either series (Wald test)",25551,–,–,–,0.4937636817034974,0.4079449131478464
+"Table 8, Panel A, tourists: restricted minus complement, no basis switch in either series",25551,−0.105,0.153,0.127,0.4937636817034976,0.4079449131478459
+"Table S3.3, Panel A, visitors: residence-based minus nationality-based slope, identical observations (Wald test)",16,–,–,–,1.416409719e-189,0.0
+"Table S3.3, Panel A, visitors: residence-based minus nationality-based slope, identical observations",16,−3.097,0.105,0.023,1.4164097190164152e-189,0.0
+"Table S3.3, Panel A, visitors: baseline rule minus nationality-first rule, identical observations (Wald test)",20598,–,–,–,0.0545342768099994,0.0874048515665786
+"Table S3.3, Panel A, visitors: baseline rule minus nationality-first rule, identical observations",20598,−0.0024,0.0013,0.0014,0.05453427681000528,0.08740485156658083
+"Table S3.3, Panel A, visitors: baseline rule minus nationality-first rule, pair-years with the same basis under both rules (Wald test)",9600,–,–,–,0.01974931268997959,0.0415528600674403
+"Table S3.3, Panel A, visitors: baseline rule minus nationality-first rule, pair-years with the same basis under both rules",9600,−0.0002,0.0001,0.0001,0.01974931268993167,0.04155286006751006
+"Table S3.3, Panel A, tourists: baseline rule minus nationality-first rule, identical observations (Wald test)",26339,–,–,–,0.0399665270610528,0.07726433315826758
+"Table S3.3, Panel A, tourists: baseline rule minus nationality-first rule, identical observations",26339,−0.0032,0.0016,0.0018,0.03996652706105697,0.07726433315826924
+"Table S3.3, Panel A, tourists: baseline rule minus nationality-first rule, pair-years with the same basis under both rules (Wald test)",12639,–,–,–,0.9568138541405504,0.9527857210340896
+"Table S3.3, Panel A, tourists: baseline rule minus nationality-first rule, pair-years with the same basis under both rules",12639,0.0000,< 0.0001,< 0.0001,0.9568138541405621,0.9527857210340712

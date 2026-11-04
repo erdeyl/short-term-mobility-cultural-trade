@@ -1,0 +1,511 @@
+
+. /****************************************************************************
+> ***
+>  02_formal_equality_visitors_tourists.do
+> 
+>  STEP 2: Formal equality test of visitor and tourist mobility slopes.
+> 
+>  Research question:
+>    On the EXACT same realized PPML observations constructed in Step 1, can we
+>    reject H0: beta_visitors = beta_tourists?
+> 
+>  Method:
+>    Stack the exact-common-support sample twice:
+>      measure = 1 -> bilateral visitors
+>      measure = 2 -> bilateral tourists
+> 
+>    Estimate a joint PPML with measure-specific exporter-year, importer-year,
+>    and directed-pair fixed effects. Cluster by the original directed pair.
+> 
+>    This reproduces the two separate exact-common-support slope estimates in a
+>    single joint model and yields their covariance, allowing a valid Wald test
+>    of the slope difference.
+> 
+>  Input:
+>    03_intermediate/03_Mobility/sensitivity/01_common_support/common_support_v
+> t_exact.dta
+> 
+>  Outputs:
+>    08_sensitivity/02_formal_equality/
+> *****************************************************************************
+> **/
+. 
+. clear all
+
+. set more off
+
+. set linesize 255
+
+. version 18.0
+
+. set varabbrev off
+
+. 
+. args PROJECT_ROOT
+
+. if `"`PROJECT_ROOT'"' == "" {
+.     di as error "Supply the replication-package root as argument 1."
+.     exit 198
+. }
+
+. local PROJECT_ROOT = subinstr(`"`PROJECT_ROOT'"', "\", "/", .)
+
+. 
+. global ROOT     `"`PROJECT_ROOT'"'
+
+. global INDATA   "${ROOT}/03_intermediate/03_Mobility/sensitivity/01_common_support/common_support_vt_exact.dta"
+
+. global OUTROOT  "${ROOT}/05_output/03_Mobility/02_empirical_analysis/02_sensitivity/02_formal_equality"
+
+. global TABLES   "${OUTROOT}/tables"
+
+. global DIAG     "${ROOT}/05_output/03_Mobility/01_diagnostics/sensitivity/02_formal_equality"
+
+. global LOGS     "${ROOT}/05_output/03_Mobility/03_logs/sensitivity/02_formal_equality"
+
+. 
+. capture mkdir "${ROOT}/05_output/03_Mobility/02_empirical_analysis"
+
+. capture mkdir "${ROOT}/05_output/03_Mobility/02_empirical_analysis/02_sensitivity"
+
+. capture mkdir "${OUTROOT}"
+
+. capture mkdir "${TABLES}"
+
+. capture mkdir "${DIAG}"
+
+. capture mkdir "${LOGS}"
+
+. 
+. capture log close _all
+
+. log using "${LOGS}/02_formal_equality_visitors_tourists.log", replace text
+(file <PACKAGE_ROOT>/05_output/03_Mobility/03_logs/sensitivity/02_formal_equality/02_formal_equality_visitors_tourists.log not found)
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  <PACKAGE_ROOT>/05_output/03_Mobility/03_logs/sensitivity/02_formal_equality/02_formal_equality_visitors_tourists.log
+  log type:  text
+ opened on:   4 Nov 2026, 08:31:53
+
+. 
+. capture confirm file "${INDATA}"
+
+. if _rc {
+.     di as error "Exact common-support data not found:"
+.     di as error "${INDATA}"
+.     di as error "Run Step 1 successfully first."
+.     exit 601
+. }
+
+. 
+. capture which ppmlhdfe
+
+. if _rc {
+.     di as error "Required command missing: ppmlhdfe"
+.     exit 199
+. }
+
+. capture which esttab
+
+. if _rc {
+.     di as error "Required command missing: esttab (estout package)"
+.     exit 199
+. }
+
+. capture which estadd
+
+. if _rc {
+.     di as error "Required command missing: estadd (estout package)"
+.     exit 199
+. }
+
+. capture which eststo
+
+. if _rc {
+.     di as error "Required command missing: eststo (estout package)"
+.     exit 199
+. }
+
+. 
+. use "${INDATA}", clear
+
+. isid year iso3_o iso3_d
+
+. 
+. foreach v in ///
+>     year iso3_o iso3_d pair_id exporter_year importer_year ///
+>     v_ttl_k mob_bilat_vis mob_bilat_tour {
+  2.     capture confirm variable `v'
+  3.     if _rc {
+  4.         di as error "Required exact-support variable missing: `v'"
+  5.         exit 111
+  6.     }
+  7. }
+
+. 
+. assert !missing(v_ttl_k, mob_bilat_vis, mob_bilat_tour, ///
+>                 pair_id, exporter_year, importer_year)
+
+. 
+. quietly count
+
+. scalar N_common = r(N)
+
+. 
+. local FE "exporter_year importer_year pair_id"
+
+. local CLUSTER "pair_id"
+
+. 
+. * ----------------------------------------------------------------------
+. * A. Re-estimate the two separate exact-common-support models.
+. * These provide the reference slopes that the stacked joint model must reproduce.
+. * ----------------------------------------------------------------------
+. eststo clear
+
+. 
+. quietly ppmlhdfe v_ttl_k mob_bilat_vis, ///
+>     absorb(`FE') vce(cluster `CLUSTER')
+
+. eststo SEP_VIS
+
+. scalar sep_vis_b  = _b[mob_bilat_vis]
+
+. scalar sep_vis_se = _se[mob_bilat_vis]
+
+. scalar sep_vis_n  = e(N)
+
+. 
+. quietly ppmlhdfe v_ttl_k mob_bilat_tour, ///
+>     absorb(`FE') vce(cluster `CLUSTER')
+
+. eststo SEP_TOUR
+
+. scalar sep_tour_b  = _b[mob_bilat_tour]
+
+. scalar sep_tour_se = _se[mob_bilat_tour]
+
+. scalar sep_tour_n  = e(N)
+
+. 
+. assert scalar(sep_vis_n) == scalar(N_common)
+
+. assert scalar(sep_tour_n) == scalar(N_common)
+
+. 
+. * ----------------------------------------------------------------------
+. * B. Stack the exact-common-support data.
+. * Each original observation appears once for visitors and once for tourists.
+. * ----------------------------------------------------------------------
+. expand 2
+(2,553 observations created)
+
+. bysort year iso3_o iso3_d: gen byte measure = _n
+
+. label define measure_lbl 1 "Visitors" 2 "Tourists"
+
+. label values measure measure_lbl
+
+. 
+. gen double stacked_trade = v_ttl_k
+
+. gen double mobility_value = cond(measure == 1, mob_bilat_vis, mob_bilat_tour)
+
+. 
+. * Explicit slope variables make the equality restriction transparent.
+. gen double x_vis  = cond(measure == 1, mobility_value, 0)
+
+. gen double x_tour = cond(measure == 2, mobility_value, 0)
+
+. 
+. label var x_vis  "Bilateral visitors"
+
+. label var x_tour "Bilateral tourists"
+
+. 
+. * Allow every fixed effect to differ freely across the two mobility measures.
+. egen long exporter_year_m = group(exporter_year measure)
+
+. egen long importer_year_m = group(importer_year measure)
+
+. egen long pair_m          = group(pair_id measure)
+
+. 
+. quietly count
+
+. scalar N_stacked_raw = r(N)
+
+. assert scalar(N_stacked_raw) == 2 * scalar(N_common)
+
+. 
+. * ----------------------------------------------------------------------
+. * C. Joint stacked PPML and formal Wald equality test.
+. * ----------------------------------------------------------------------
+. quietly ppmlhdfe stacked_trade x_vis x_tour, ///
+>     absorb(exporter_year_m importer_year_m pair_m) ///
+>     vce(cluster pair_id)
+
+. eststo STACKED
+
+. 
+. scalar joint_vis_b  = _b[x_vis]
+
+. scalar joint_vis_se = _se[x_vis]
+
+. scalar joint_tour_b  = _b[x_tour]
+
+. scalar joint_tour_se = _se[x_tour]
+
+. scalar N_stacked_est = e(N)
+
+. 
+. * The stacked model should retain both copies of every exact-support observation.
+. assert scalar(N_stacked_est) == 2 * scalar(N_common)
+
+. 
+. * Coefficient reproduction checks: stacked slopes should equal the two separate
+. * exact-support slopes up to numerical tolerance.
+. scalar repro_vis_gap  = abs(scalar(joint_vis_b)  - scalar(sep_vis_b))
+
+. scalar repro_tour_gap = abs(scalar(joint_tour_b) - scalar(sep_tour_b))
+
+. 
+. if scalar(repro_vis_gap) > 1e-6 | scalar(repro_tour_gap) > 1e-6 {
+.     di as error "Stacked PPML did not reproduce separate exact-support slopes."
+.     di as error "Visitor gap = " scalar(repro_vis_gap)
+.     di as error "Tourist gap = " scalar(repro_tour_gap)
+.     exit 459
+. }
+
+. 
+. * H0: beta_visitors = beta_tourists
+. test x_vis = x_tour
+
+ ( 1)  x_vis - x_tour = 0
+
+           chi2(  1) =    0.82
+         Prob > chi2 =    0.3665
+
+. scalar equality_chi2 = r(chi2)
+
+. scalar equality_df   = r(df)
+
+. scalar equality_p    = r(p)
+
+. 
+. lincom x_vis - x_tour
+
+ ( 1)  x_vis - x_tour = 0
+
+------------------------------------------------------------------------------
+stacked_tr~e | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+         (1) |   .0157223   .0174086     0.90   0.366    -.0183979    .0498425
+------------------------------------------------------------------------------
+
+. scalar diff_b   = r(estimate)
+
+. scalar diff_se  = r(se)
+
+. scalar diff_z   = r(estimate) / r(se)
+
+. scalar diff_p   = 2 * normal(-abs(scalar(diff_z)))
+
+. scalar diff_ll  = r(lb)
+
+. scalar diff_ul  = r(ub)
+
+. 
+. estadd scalar p_equal = scalar(equality_p)
+
+added scalar:
+            e(p_equal) =  .36645451
+
+. estadd scalar diff_b = scalar(diff_b)
+
+added scalar:
+             e(diff_b) =  .01572229
+
+. estadd scalar common_N = scalar(N_common)
+
+added scalar:
+           e(common_N) =  2553
+
+. 
+. * ----------------------------------------------------------------------
+. * D. Publication-facing table.
+. * ----------------------------------------------------------------------
+. foreach format in csv rtf {
+  2.     local extra ""
+  3.     if "`format'" == "csv" local extra "csv"
+  4. 
+.     esttab STACKED using "${TABLES}/table_formal_equality_visitors_tourists.`format'", ///
+>         replace `extra' ///
+>         mtitles("Joint stacked PPML") ///
+>         b(%9.3f) se(%9.3f) star(* 0.10 ** 0.05 *** 0.01) ///
+>         keep(x_vis x_tour) ///
+>         order(x_vis x_tour) ///
+>         coeflabels(x_vis "Bilateral visitors" x_tour "Bilateral tourists") ///
+>         stats(p_equal diff_b common_N N, ///
+>               labels("P-value: visitors = tourists" ///
+>                      "Visitor - tourist slope" ///
+>                      "Original exact-common observations" ///
+>                      "Stacked estimation rows") ///
+>               fmt(%9.4f %9.4f %12.0fc %12.0fc)) ///
+>         label compress nogaps ///
+>         addnotes( ///
+>             "The sample is the exact realized common-support sample from Step 1.", ///
+>             "Exporter-year, importer-year, and directed-pair fixed effects are allowed to differ by mobility measure.", ///
+>             "Standard errors are clustered by the original directed pair.", ///
+>             "The reported equality p-value tests H0: beta_visitors = beta_tourists." ///
+>         )
+  5. }
+(file <PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/02_sensitivity/02_formal_equality/tables/table_formal_equality_visitors_tourists.csv not found)
+(output written to <PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/02_sensitivity/02_formal_equality/tables/table_formal_equality_visitors_tourists.csv)
+(file <PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/02_sensitivity/02_formal_equality/tables/table_formal_equality_visitors_tourists.rtf not found)
+(output written to <PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/02_sensitivity/02_formal_equality/tables/table_formal_equality_visitors_tourists.rtf)
+
+. 
+. * ----------------------------------------------------------------------
+. * E. Machine-readable formal-test results.
+. * ----------------------------------------------------------------------
+. preserve
+
+.     clear
+
+.     set obs 1
+Number of observations (_N) was 0, now 1.
+
+.     gen double common_N        = scalar(N_common)
+
+.     gen double stacked_N       = scalar(N_stacked_est)
+
+.     gen double visitor_b       = scalar(joint_vis_b)
+
+.     gen double visitor_se      = scalar(joint_vis_se)
+
+.     gen double tourist_b       = scalar(joint_tour_b)
+
+.     gen double tourist_se      = scalar(joint_tour_se)
+
+.     gen double difference      = scalar(diff_b)
+
+.     gen double difference_se   = scalar(diff_se)
+
+.     gen double difference_z    = scalar(diff_z)
+
+.     gen double difference_p    = scalar(diff_p)
+
+.     gen double difference_ci_l = scalar(diff_ll)
+
+.     gen double difference_ci_u = scalar(diff_ul)
+
+.     gen double equality_chi2   = scalar(equality_chi2)
+
+.     gen double equality_df     = scalar(equality_df)
+
+.     gen double equality_p      = scalar(equality_p)
+
+.     gen double reproduce_gap_vis  = scalar(repro_vis_gap)
+
+.     gen double reproduce_gap_tour = scalar(repro_tour_gap)
+
+.     gen str40 null_hypothesis = "beta_visitors = beta_tourists"
+
+.     gen str24 inference_10pct = cond(equality_p < .10, "reject", "do_not_reject")
+
+.     export delimited using "${DIAG}/formal_equality_results.csv", replace
+(file <PACKAGE_ROOT>/05_output/03_Mobility/01_diagnostics/sensitivity/02_formal_equality/formal_equality_results.csv not found)
+file <PACKAGE_ROOT>/05_output/03_Mobility/01_diagnostics/sensitivity/02_formal_equality/formal_equality_results.csv saved
+
+. restore
+
+. 
+. * Separate compact coefficient ledger.
+. preserve
+
+.     clear
+
+.     input str16 measure double b se
+
+              measure           b         se
+  1.     "visitors" . .
+  2.     "tourists" . .
+  3.     end
+
+.     replace b  = scalar(joint_vis_b)  in 1
+(1 real change made)
+
+.     replace se = scalar(joint_vis_se) in 1
+(1 real change made)
+
+.     replace b  = scalar(joint_tour_b)  in 2
+(1 real change made)
+
+.     replace se = scalar(joint_tour_se) in 2
+(1 real change made)
+
+.     gen double common_N = scalar(N_common)
+
+.     export delimited using "${DIAG}/formal_equality_coefficients.csv", replace
+(file <PACKAGE_ROOT>/05_output/03_Mobility/01_diagnostics/sensitivity/02_formal_equality/formal_equality_coefficients.csv not found)
+file <PACKAGE_ROOT>/05_output/03_Mobility/01_diagnostics/sensitivity/02_formal_equality/formal_equality_coefficients.csv saved
+
+. restore
+
+. 
+. file open done using "${DIAG}/02_FORMAL_EQUALITY_COMPLETE.txt", write replace text
+(file <PACKAGE_ROOT>/05_output/03_Mobility/01_diagnostics/sensitivity/02_formal_equality/02_FORMAL_EQUALITY_COMPLETE.txt not found)
+
+. file write done "FORMAL_EQUALITY_STEP2=PASS" _n
+
+. local ncommon : display %18.0f scalar(N_common)
+
+. local bvis    : display %12.9f scalar(joint_vis_b)
+
+. local btour   : display %12.9f scalar(joint_tour_b)
+
+. local bdiff   : display %12.9f scalar(diff_b)
+
+. local peq     : display %12.9f scalar(equality_p)
+
+. file write done "exact_common_N=`ncommon'" _n
+
+. file write done "visitor_b=`bvis'" _n
+
+. file write done "tourist_b=`btour'" _n
+
+. file write done "visitor_minus_tourist=`bdiff'" _n
+
+. file write done "equality_p=`peq'" _n
+
+. file close done
+
+. 
+. di as result "FORMAL_EQUALITY_STEP2=PASS"
+FORMAL_EQUALITY_STEP2=PASS
+
+. di as result "EXACT_COMMON_N=" scalar(N_common)
+EXACT_COMMON_N=2553
+
+. di as result "VISITOR_B=" %12.9f scalar(joint_vis_b) ///
+>     " TOURIST_B=" %12.9f scalar(joint_tour_b)
+VISITOR_B= 0.045697690 TOURIST_B= 0.029975400
+
+. di as result "VISITOR_MINUS_TOURIST=" %12.9f scalar(diff_b) ///
+>     " SE=" %12.9f scalar(diff_se)
+VISITOR_MINUS_TOURIST= 0.015722290 SE= 0.017408581
+
+. di as result "EQUALITY_P=" %12.9f scalar(equality_p)
+EQUALITY_P= 0.366454506
+
+. 
+. log close
+      name:  <unnamed>
+       log:  <PACKAGE_ROOT>/05_output/03_Mobility/03_logs/sensitivity/02_formal_equality/02_formal_equality_visitors_tourists.log
+  log type:  text
+ closed on:   4 Nov 2026, 08:31:53
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+. 
+end of do-file

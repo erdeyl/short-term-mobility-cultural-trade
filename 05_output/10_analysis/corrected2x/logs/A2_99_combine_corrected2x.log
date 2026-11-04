@@ -1,0 +1,42 @@
+-------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  <PACKAGE_ROOT>/05_output/10_anal
+> ysis/corrected2x/logs/A2_99_combine_corrected2x.log
+  log type:  text
+ opened on:   4 Nov 2026, 08:41:59
+
+. use "${OUT}/results/A2_1.dta", clear
+
+. forvalues k = 2/7 {
+  2.     append using "${OUT}/results/A2_`k'.dta"
+  3. }
+
+. * rerun C2: item A2.7b (A2_7b.do) is appended when it has been run for this v
+> intage
+. capture confirm file "${OUT}/results/A2_7b.dta"
+
+. if _rc == 0 append using "${OUT}/results/A2_7b.dta"
+
+. format b se p ci_lo ci_hi N N_full n_singletons n_separated n_clusters %24.17
+> g
+
+. export delimited using "${OUT}/results/A2.csv", datafmt replace
+(file <USER_HOME>/S1 test run
+    r3/Replication_Package/05_output/10_analysis/corrected2x/results/A2.csv
+    not found)
+file <PACKAGE_ROOT>/05_output/10_analysis/cor
+> rected2x/results/A2.csv saved
+
+. count
+  875
+
+. display as result "A2_COMBINE_DONE vintage=${VINTAGE} rows=" _N
+A2_COMBINE_DONE vintage=corrected2x rows=875
+
+. log close
+      name:  <unnamed>
+       log:  <PACKAGE_ROOT>/05_output/10_anal
+> ysis/corrected2x/logs/A2_99_combine_corrected2x.log
+  log type:  text
+ closed on:   4 Nov 2026, 08:41:59
+-------------------------------------------------------------------------------

@@ -1,0 +1,1102 @@
+vintage,sample,sample_label,sample_rows,iso3,economy,role,pair_years,partners,years_present,n_years
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,ASM,American Samoa,exporter,31,4,2008-2018,11
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,AGO,Angola,exporter,286,26,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,AGO,Angola,importer,427,41,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,AIA,Anguilla,exporter,35,3,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,AIA,Anguilla,importer,4,2,2007-2008,2
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,ATG,Antigua and Barbuda,exporter,236,24,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,ATG,Antigua and Barbuda,importer,279,33,"2007, 2009-2021",14
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,ARG,Argentina,exporter,184,29,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,ARG,Argentina,importer,190,31,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,ARM,Armenia,exporter,202,22,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,ARM,Armenia,importer,234,29,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,ABW,Aruba,exporter,81,8,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,ABW,Aruba,importer,95,10,2009-2021,13
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,BHS,Bahamas,exporter,376,33,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,BHS,Bahamas,importer,365,33,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,BGD,Bangladesh,exporter,68,7,"2007, 2010-2021",13
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,BGD,Bangladesh,importer,49,6,"2007, 2010-2013, 2015-2018",9
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,BLR,Belarus,exporter,248,27,2007-2020,14
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,BLR,Belarus,importer,258,25,2007-2020,14
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,BLZ,Belize,exporter,73,5,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,BLZ,Belize,importer,83,6,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,BEN,Benin,exporter,179,18,2007-2020,14
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,BEN,Benin,importer,242,24,2007-2020,14
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,BMU,Bermuda,exporter,57,9,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,BMU,Bermuda,importer,58,13,2010-2021,12
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,BTN,Bhutan,exporter,131,12,2007-2020,14
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,BTN,Bhutan,importer,90,10,"2007-2012, 2016-2020",11
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,BOL,Bolivia (Plurinational State of),exporter,309,27,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,BOL,Bolivia (Plurinational State of),importer,478,45,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,BWA,Botswana,exporter,179,21,"2007-2010, 2012-2021",14
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,BWA,Botswana,importer,262,31,"2007-2010, 2012-2021",14
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,VGB,Br. Virgin Isds,exporter,63,13,2007-2013,7
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,BRA,Brazil,exporter,428,62,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,BRA,Brazil,importer,369,45,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,BRN,Brunei Darussalam,exporter,131,11,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,BRN,Brunei Darussalam,importer,137,13,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,BFA,Burkina Faso,exporter,12,6,2020-2021,2
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,BFA,Burkina Faso,importer,18,9,2020-2021,2
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,KHM,Cambodia,exporter,274,27,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,KHM,Cambodia,importer,221,18,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,CAN,Canada,exporter,1193,106,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,CAN,Canada,importer,1348,111,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,CYM,Cayman Isds,exporter,214,18,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,CYM,Cayman Isds,importer,30,15,2020-2021,2
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,CAF,Central African Rep.,exporter,86,7,2007-2020,14
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,CAF,Central African Rep.,importer,78,6,2007-2020,14
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,CHL,Chile,exporter,566,50,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,CHL,Chile,importer,556,46,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,HKG,"China, Hong Kong SAR",exporter,194,18,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,HKG,"China, Hong Kong SAR",importer,193,17,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,COL,Colombia,exporter,508,51,2008-2019,12
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,COL,Colombia,importer,489,48,2008-2019,12
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,COM,Comoros,exporter,10,2,"2007, 2011, 2017-2018, 2021",5
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,COM,Comoros,importer,16,2,"2007, 2011, 2016-2021",8
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,COK,Cook Isds,exporter,44,3,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,CRI,Costa Rica,exporter,465,44,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,CRI,Costa Rica,importer,534,52,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,CUW,Curaçao,exporter,66,7,2011-2021,11
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,CUW,Curaçao,importer,20,6,2017-2020,4
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,CYP,Cyprus,exporter,187,15,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,CYP,Cyprus,importer,187,15,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,COD,Dem. Rep. of the Congo,exporter,91,17,"2011, 2013, 2015-2021",9
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,COD,Dem. Rep. of the Congo,importer,102,21,2015-2021,7
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,DMA,Dominica,exporter,240,21,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,DMA,Dominica,importer,231,28,"2007-2010, 2012-2013, 2016-2021",12
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,DOM,Dominican Rep.,exporter,262,22,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,DOM,Dominican Rep.,importer,294,23,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,SLV,El Salvador,exporter,300,27,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,SLV,El Salvador,importer,373,38,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,ETH,Ethiopia,exporter,131,12,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,ETH,Ethiopia,importer,147,12,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,FJI,Fiji,exporter,39,3,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,FJI,Fiji,importer,46,4,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,FRA,France,exporter,78,6,2007-2020,14
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,FRA,France,importer,78,6,2007-2020,14
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,PYF,French Polynesia,exporter,61,7,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,PYF,French Polynesia,importer,94,11,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,GMB,Gambia,exporter,10,2,2007-2011,5
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,GMB,Gambia,importer,25,3,"2007-2013, 2017-2018, 2020-2021",11
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,GEO,Georgia,exporter,42,21,2020-2021,2
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,GEO,Georgia,importer,42,21,2020-2021,2
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,GRC,Greece,exporter,155,15,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,GRC,Greece,importer,155,15,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,GRD,Grenada,exporter,221,18,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,GRD,Grenada,importer,354,30,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,GUM,Guam,exporter,27,3,2007-2017,11
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,GIN,Guinea,exporter,81,14,"2007, 2011-2016",7
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,GIN,Guinea,importer,79,17,"2007, 2013-2016",5
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,GUY,Guyana,exporter,158,17,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,GUY,Guyana,importer,275,34,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,HTI,Haiti,exporter,115,19,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,HTI,Haiti,importer,22,5,2013-2017,5
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,HND,Honduras,exporter,385,36,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,HND,Honduras,importer,374,41,"2007, 2009-2012, 2014-2021",13
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,HUN,Hungary,exporter,53,7,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,HUN,Hungary,importer,53,7,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,ISL,Iceland,exporter,47,4,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,ISL,Iceland,importer,50,5,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,IND,India,exporter,661,80,"2007-2016, 2020-2021",12
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,IND,India,importer,630,66,"2007-2016, 2020-2021",12
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,IRL,Ireland,exporter,52,4,2007-2019,13
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,IRL,Ireland,importer,52,4,2007-2019,13
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,ISR,Israel,exporter,606,56,2007-2019,13
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,ISR,Israel,importer,533,44,2007-2019,13
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,ITA,Italy,exporter,973,96,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,ITA,Italy,importer,944,86,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,JAM,Jamaica,exporter,379,34,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,JAM,Jamaica,importer,421,36,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,JOR,Jordan,exporter,445,50,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,JOR,Jordan,importer,400,38,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,KAZ,Kazakhstan,exporter,40,20,2020-2021,2
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,KAZ,Kazakhstan,importer,44,22,2020-2021,2
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,KIR,Kiribati,exporter,18,2,"2007, 2009-2011, 2013, 2015-2017, 2020",9
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,KIR,Kiribati,importer,24,2,"2007-2011, 2013-2018, 2020",12
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,KWT,Kuwait,exporter,46,23,2020-2021,2
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,KWT,Kuwait,importer,58,29,2020-2021,2
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,LBN,Lebanon,exporter,617,60,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,LBN,Lebanon,importer,544,48,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,LTU,Lithuania,exporter,76,9,2008-2021,14
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,LTU,Lithuania,importer,76,9,2008-2021,14
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,MDG,Madagascar,exporter,139,20,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,MDG,Madagascar,importer,162,24,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,MWI,Malawi,exporter,4,2,2020-2021,2
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,MWI,Malawi,importer,4,2,2020-2021,2
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,MYS,Malaysia,exporter,666,68,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,MYS,Malaysia,importer,506,44,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,MDV,Maldives,exporter,169,16,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,MDV,Maldives,importer,284,26,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,MLI,Mali,exporter,184,20,2008-2021,14
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,MLI,Mali,importer,208,34,"2008, 2010-2012, 2016-2021",10
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,MLT,Malta,exporter,77,12,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,MLT,Malta,importer,75,11,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,MUS,Mauritius,exporter,350,32,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,MUS,Mauritius,importer,426,40,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,MEX,Mexico,exporter,763,70,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,MEX,Mexico,importer,805,66,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,MNG,Mongolia,exporter,205,21,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,MNG,Mongolia,importer,183,25,"2007, 2013-2021",10
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,MSR,Montserrat,exporter,24,2,"2007-2012, 2015-2017, 2019-2021",12
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,MSR,Montserrat,importer,28,2,"2007-2009, 2011-2021",14
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,MAR,Morocco,exporter,553,55,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,MAR,Morocco,importer,385,37,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,MMR,Myanmar,exporter,96,7,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,MMR,Myanmar,importer,76,7,2010-2021,12
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,NAM,Namibia,exporter,95,10,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,NAM,Namibia,importer,95,10,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,NPL,Nepal,exporter,240,31,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,NPL,Nepal,importer,235,38,2009-2021,13
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,NCL,New Caledonia,exporter,45,3,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,NCL,New Caledonia,importer,33,4,2007-2015,9
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,NIC,Nicaragua,exporter,366,32,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,NIC,Nicaragua,importer,462,42,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,NER,Niger,exporter,28,2,2007-2020,14
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,NER,Niger,importer,39,3,2007-2020,14
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,PAK,Pakistan,exporter,231,42,2007-2012,6
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,PAK,Pakistan,importer,182,32,2007-2012,6
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,PLW,Palau,importer,33,4,2008-2018,11
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,PNG,Papua New Guinea,exporter,4,2,2007-2008,2
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,PRY,Paraguay,exporter,303,26,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,PRY,Paraguay,importer,344,29,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,PER,Peru,exporter,571,50,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,PER,Peru,importer,531,45,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,PHL,Philippines,exporter,312,27,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,PHL,Philippines,importer,331,27,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,POL,Poland,exporter,22,11,2020-2021,2
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,POL,Poland,importer,22,11,2020-2021,2
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,PRT,Portugal,exporter,122,61,2020-2021,2
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,PRT,Portugal,importer,120,60,2020-2021,2
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,MDA,Rep. of Moldova,exporter,28,14,2020-2021,2
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,MDA,Rep. of Moldova,importer,36,18,2020-2021,2
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,ROU,Romania,exporter,60,30,2020-2021,2
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,ROU,Romania,importer,58,29,2020-2021,2
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,KNA,Saint Kitts and Nevis,exporter,30,2,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,KNA,Saint Kitts and Nevis,importer,22,2,2007-2017,11
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,LCA,Saint Lucia,exporter,136,10,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,LCA,Saint Lucia,importer,145,14,2007-2020,14
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,SXM,Saint Maarten,exporter,36,5,2013-2021,9
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,VCT,Saint Vincent and the Grenadines,exporter,87,6,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,VCT,Saint Vincent and the Grenadines,importer,95,7,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,STP,Sao Tome and Principe,exporter,6,2,"2007-2008, 2010",3
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,STP,Sao Tome and Principe,importer,6,2,"2007-2008, 2010",3
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,SAU,Saudi Arabia,exporter,648,64,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,SAU,Saudi Arabia,importer,458,40,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,SYC,Seychelles,exporter,238,25,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,SYC,Seychelles,importer,299,29,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,SLE,Sierra Leone,exporter,150,19,2010-2021,12
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,SLE,Sierra Leone,importer,46,11,2014-2018,5
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,SVK,Slovakia,exporter,82,41,2020-2021,2
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,SVK,Slovakia,importer,76,38,2020-2021,2
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,SVN,Slovenia,exporter,22,11,2020-2021,2
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,SVN,Slovenia,importer,24,12,2020-2021,2
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,SLB,Solomon Isds,exporter,28,2,2007-2020,14
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,SLB,Solomon Isds,importer,18,2,"2009, 2011-2018",9
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,ZAF,South Africa,exporter,734,73,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,ZAF,South Africa,importer,791,79,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,ESP,Spain,exporter,172,18,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,ESP,Spain,importer,176,18,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,LKA,Sri Lanka,exporter,389,49,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,LKA,Sri Lanka,importer,319,39,"2007-2017, 2019-2021",14
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,SUR,Suriname,exporter,160,21,2007-2017,11
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,SUR,Suriname,importer,151,19,2007-2017,11
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,THA,Thailand,exporter,357,48,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,THA,Thailand,importer,389,55,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,TLS,Timor-Leste,exporter,4,2,2020-2021,2
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,TLS,Timor-Leste,importer,16,5,2017-2021,5
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,TON,Tonga,exporter,26,2,"2007-2010, 2012-2020",13
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,TON,Tonga,importer,40,4,"2007-2014, 2017-2021",13
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,TTO,Trinidad and Tobago,exporter,433,38,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,TTO,Trinidad and Tobago,importer,486,44,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,TUN,Tunisia,exporter,142,15,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,TUN,Tunisia,importer,140,14,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,TCA,Turks and Caicos Isds,exporter,20,2,2011-2020,10
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,TCA,Turks and Caicos Isds,importer,4,2,2011-2012,2
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,TUV,Tuvalu,exporter,4,2,2018-2019,2
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,TUR,Türkiye,exporter,634,75,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,TUR,Türkiye,importer,584,66,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,USA,USA,exporter,1248,110,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,USA,USA,importer,1366,114,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,UGA,Uganda,exporter,211,27,"2007-2017, 2020-2021",13
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,UGA,Uganda,importer,256,33,"2007-2017, 2020-2021",13
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,UKR,Ukraine,exporter,596,64,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,UKR,Ukraine,importer,478,50,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,URY,Uruguay,exporter,8,4,2020-2021,2
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,URY,Uruguay,importer,8,4,2020-2021,2
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,UZB,Uzbekistan,exporter,26,13,2020-2021,2
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,UZB,Uzbekistan,importer,28,14,2020-2021,2
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,VEN,Venezuela,exporter,297,30,2007-2017,11
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,VEN,Venezuela,importer,186,29,2007-2013,7
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,YEM,Yemen,exporter,102,13,2007-2015,9
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,YEM,Yemen,importer,106,15,2007-2015,9
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,ZMB,Zambia,exporter,97,19,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,ZMB,Zambia,importer,95,18,2007-2021,15
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,ZWE,Zimbabwe,exporter,34,17,2020-2021,2
+corrected2x,s_base_tour,"Baseline sample, bilateral tourists",26339,ZWE,Zimbabwe,importer,38,19,2020-2021,2
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,ALB,Albania,exporter,246,30,2007-2021,15
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,ALB,Albania,importer,193,16,2007-2021,15
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,DZA,Algeria,exporter,92,9,2007-2021,15
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,DZA,Algeria,importer,64,7,2007-2017,11
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,AIA,Anguilla,exporter,8,4,2020-2021,2
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,ATG,Antigua and Barbuda,exporter,22,11,2020-2021,2
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,ATG,Antigua and Barbuda,importer,44,22,2020-2021,2
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,ARG,Argentina,exporter,58,29,2020-2021,2
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,ARG,Argentina,importer,52,26,2020-2021,2
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,ARM,Armenia,exporter,36,18,2020-2021,2
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,ARM,Armenia,importer,46,23,2020-2021,2
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,AUS,Australia,exporter,634,60,2007-2019,13
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,AUS,Australia,importer,678,60,2007-2019,13
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,AZE,Azerbaijan,exporter,328,32,2007-2021,15
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,AZE,Azerbaijan,importer,368,42,2007-2021,15
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,BHS,Bahamas,exporter,22,11,2020-2021,2
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,BHS,Bahamas,importer,38,19,2020-2021,2
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,BHR,Bahrain,exporter,159,28,"2007, 2011-2014, 2018-2019",7
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,BHR,Bahrain,importer,172,30,"2007, 2011-2014, 2018-2019",7
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,BRB,Barbados,exporter,22,11,2020-2021,2
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,BRB,Barbados,importer,46,23,2020-2021,2
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,BLR,Belarus,exporter,315,42,2012-2021,10
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,BLR,Belarus,importer,268,35,2012-2021,10
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,BLZ,Belize,exporter,36,5,2007-2021,15
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,BLZ,Belize,importer,53,7,2007-2021,15
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,BOL,Bolivia (Plurinational State of),exporter,32,16,2020-2021,2
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,BOL,Bolivia (Plurinational State of),importer,50,25,2020-2021,2
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,BRA,Brazil,exporter,104,52,2020-2021,2
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,BRA,Brazil,importer,82,41,2020-2021,2
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,BGR,Bulgaria,exporter,456,57,2007-2021,15
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,BGR,Bulgaria,importer,447,48,2007-2021,15
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,BFA,Burkina Faso,exporter,12,6,2020-2021,2
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,BFA,Burkina Faso,importer,16,8,2020-2021,2
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,CAN,Canada,exporter,796,90,2007-2021,15
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,CAN,Canada,importer,857,95,2007-2021,15
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,CHL,Chile,exporter,62,31,2020-2021,2
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,CHL,Chile,importer,74,37,2020-2021,2
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,CHN,China,exporter,577,57,2007-2019,13
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,CHN,China,importer,619,57,2007-2019,13
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,HKG,"China, Hong Kong SAR",exporter,451,46,2007-2021,15
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,HKG,"China, Hong Kong SAR",importer,452,45,2007-2021,15
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,MAC,"China, Macao SAR",exporter,203,23,2007-2021,15
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,MAC,"China, Macao SAR",importer,207,24,2007-2021,15
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,COL,Colombia,exporter,93,38,"2007, 2020-2021",3
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,COL,Colombia,importer,86,35,"2007, 2020-2021",3
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,COG,Congo,exporter,87,13,2011-2018,8
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,COG,Congo,importer,84,14,2011-2018,8
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,CRI,Costa Rica,exporter,56,28,2020-2021,2
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,CRI,Costa Rica,importer,62,31,2020-2021,2
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,CUB,Cuba,exporter,297,35,2007-2021,15
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,CUB,Cuba,importer,127,31,2016-2021,6
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,CYP,Cyprus,exporter,26,13,2020-2021,2
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,CYP,Cyprus,importer,26,13,2020-2021,2
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,DOM,Dominican Rep.,exporter,30,15,2020-2021,2
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,DOM,Dominican Rep.,importer,38,19,2020-2021,2
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,ECU,Ecuador,exporter,344,39,2007-2021,15
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,ECU,Ecuador,importer,386,43,2007-2021,15
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,EGY,Egypt,exporter,544,60,2007-2021,15
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,EGY,Egypt,importer,550,58,2007-2021,15
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,SLV,El Salvador,exporter,46,23,2020-2021,2
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,SLV,El Salvador,importer,62,31,2020-2021,2
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,ERI,Eritrea,exporter,27,6,2007-2011,5
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,SWZ,Eswatini,exporter,172,16,2007-2021,15
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,SWZ,Eswatini,importer,174,17,2007-2021,15
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,ETH,Ethiopia,exporter,24,12,2020-2021,2
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,ETH,Ethiopia,importer,28,14,2020-2021,2
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,FJI,Fiji,exporter,12,6,2020-2021,2
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,FJI,Fiji,importer,14,7,2020-2021,2
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,FIN,Finland,exporter,71,16,2007-2012,6
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,FIN,Finland,importer,71,16,2007-2012,6
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,GEO,Georgia,exporter,421,43,2007-2021,15
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,GEO,Georgia,importer,407,42,2007-2021,15
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,GTM,Guatemala,exporter,292,38,2007-2021,15
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,GTM,Guatemala,importer,349,42,2007-2021,15
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,HUN,Hungary,exporter,95,10,2007-2021,15
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,HUN,Hungary,importer,95,10,2007-2021,15
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,IND,India,exporter,268,74,2017-2021,5
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,IND,India,importer,220,58,2017-2021,5
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,IDN,Indonesia,exporter,282,41,2007-2019,13
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,IDN,Indonesia,importer,282,40,2007-2019,13
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,IRN,Iran,exporter,365,39,2009-2021,13
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,IRN,Iran,importer,240,26,"2010-2011, 2013-2021",11
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,IRQ,Iraq,exporter,13,4,2010-2013,4
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,ISR,Israel,exporter,504,46,2007-2019,13
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,ISR,Israel,importer,535,46,2007-2019,13
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,ITA,Italy,exporter,752,89,2007-2021,15
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,ITA,Italy,importer,775,85,2007-2021,15
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,JPN,Japan,exporter,588,80,2007-2021,15
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,JPN,Japan,importer,605,76,2007-2021,15
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,JOR,Jordan,exporter,358,44,2007-2021,15
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,JOR,Jordan,importer,355,41,2007-2021,15
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,KAZ,Kazakhstan,exporter,395,40,2007-2021,15
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,KAZ,Kazakhstan,importer,463,46,2007-2021,15
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,KEN,Kenya,exporter,24,12,2018-2019,2
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,KEN,Kenya,importer,24,12,2018-2019,2
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,KGZ,Kyrgyzstan,exporter,197,19,2008-2021,14
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,KGZ,Kyrgyzstan,importer,234,22,2008-2021,14
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,LAO,Lao People's Dem. Rep.,exporter,143,12,2007-2020,14
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,LAO,Lao People's Dem. Rep.,importer,100,11,2010-2020,11
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,LVA,Latvia,exporter,162,22,2007-2019,13
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,LVA,Latvia,importer,169,23,2007-2019,13
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,LSO,Lesotho,exporter,96,7,"2007-2019, 2021",14
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,LSO,Lesotho,importer,102,9,"2007-2019, 2021",14
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,LTU,Lithuania,exporter,16,8,2020-2021,2
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,LTU,Lithuania,importer,16,8,2020-2021,2
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,MLT,Malta,exporter,28,14,2020-2021,2
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,MLT,Malta,importer,26,13,2020-2021,2
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,MUS,Mauritius,exporter,30,15,2020-2021,2
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,MUS,Mauritius,importer,42,21,2020-2021,2
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,MEX,Mexico,exporter,100,50,2020-2021,2
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,MEX,Mexico,importer,68,34,2020-2021,2
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,MNG,Mongolia,exporter,251,23,2007-2021,15
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,MNG,Mongolia,importer,235,33,"2007, 2013-2021",10
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,MSR,Montserrat,exporter,4,2,2020-2021,2
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,MOZ,Mozambique,exporter,49,5,2007-2021,15
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,MOZ,Mozambique,importer,49,5,2007-2021,15
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,NAM,Namibia,exporter,79,10,"2007, 2010-2021",13
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,NAM,Namibia,importer,79,10,"2007, 2010-2021",13
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,NCL,New Caledonia,exporter,4,2,2020-2021,2
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,NZL,New Zealand,exporter,623,68,2007-2021,15
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,NZL,New Zealand,importer,690,71,2007-2021,15
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,NGA,Nigeria,exporter,350,37,2007-2021,15
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,NGA,Nigeria,importer,348,40,2007-2021,15
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,NOR,Norway,exporter,40,20,2020-2021,2
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,NOR,Norway,importer,40,20,2020-2021,2
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,OMN,Oman,exporter,122,25,2013-2021,9
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,OMN,Oman,importer,126,25,2013-2021,9
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,PAN,Panama,exporter,320,44,2007-2021,15
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,PAN,Panama,importer,273,36,2007-2021,15
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,PNG,Papua New Guinea,exporter,96,12,2009-2021,13
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,PNG,Papua New Guinea,importer,37,11,"2011-2012, 2019-2021",5
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,PHL,Philippines,exporter,50,25,2020-2021,2
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,PHL,Philippines,importer,46,23,2020-2021,2
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,POL,Poland,exporter,308,35,2007-2021,15
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,POL,Poland,importer,308,35,2007-2021,15
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,PRT,Portugal,exporter,112,56,2020-2021,2
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,PRT,Portugal,importer,110,55,2020-2021,2
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,QAT,Qatar,exporter,56,11,2015-2021,7
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,QAT,Qatar,importer,54,10,2015-2021,7
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,KOR,Rep. of Korea,exporter,672,77,2007-2021,15
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,KOR,Rep. of Korea,importer,729,79,2007-2021,15
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,MDA,Rep. of Moldova,exporter,186,26,"2007-2015, 2020-2021",11
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,MDA,Rep. of Moldova,importer,206,31,"2007-2015, 2020-2021",11
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,ROU,Romania,exporter,518,58,2007-2021,15
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,ROU,Romania,importer,514,52,2007-2021,15
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,RUS,Russian Federation,exporter,511,49,2007-2020,14
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,RUS,Russian Federation,importer,555,50,2007-2020,14
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,RWA,Rwanda,exporter,150,15,2007-2021,15
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,RWA,Rwanda,importer,295,32,2007-2021,15
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,VCT,Saint Vincent and the Grenadines,exporter,8,4,2020-2021,2
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,VCT,Saint Vincent and the Grenadines,importer,18,5,"2010, 2013, 2016, 2019-2021",6
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,WSM,Samoa,exporter,60,6,2007-2021,15
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,WSM,Samoa,importer,61,6,"2007-2019, 2021",14
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,SMR,San Marino,exporter,135,18,2007-2021,15
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,SAU,Saudi Arabia,exporter,70,35,2020-2021,2
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,SAU,Saudi Arabia,importer,60,30,2020-2021,2
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,SGP,Singapore,exporter,251,27,2007-2019,13
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,SGP,Singapore,importer,264,28,2007-2019,13
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,SVK,Slovakia,exporter,88,44,2020-2021,2
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,SVK,Slovakia,importer,78,39,2020-2021,2
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,SVN,Slovenia,exporter,34,17,2020-2021,2
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,SVN,Slovenia,importer,36,18,2020-2021,2
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,ZAF,South Africa,exporter,639,72,2007-2021,15
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,ZAF,South Africa,importer,671,73,2007-2021,15
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,ESP,Spain,exporter,32,16,2020-2021,2
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,ESP,Spain,importer,32,16,2020-2021,2
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,SYR,Syria,exporter,145,19,"2007-2011, 2016-2021",11
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,SYR,Syria,importer,38,10,2007-2010,4
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,TWN,Taiwan Province of China (TWN),exporter,204,20,2007-2021,15
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,TWN,Taiwan Province of China (TWN),importer,204,20,2007-2021,15
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,TJK,Tajikistan,exporter,140,15,2008-2021,14
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,TJK,Tajikistan,importer,150,25,2014-2021,8
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,TUR,Türkiye,exporter,578,73,2007-2021,15
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,TUR,Türkiye,importer,594,70,2007-2021,15
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,USA,USA,exporter,144,72,2020-2021,2
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,USA,USA,importer,160,80,2020-2021,2
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,UKR,Ukraine,exporter,100,50,2020-2021,2
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,UKR,Ukraine,importer,84,42,2020-2021,2
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,ARE,United Arab Emirates,exporter,216,40,2015-2020,6
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,ARE,United Arab Emirates,importer,233,43,2015-2020,6
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,GBR,United Kingdom,exporter,337,32,"2007-2019, 2021",14
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,GBR,United Kingdom,importer,337,32,"2007-2019, 2021",14
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,TZA,United Rep. of Tanzania,exporter,350,38,2007-2021,15
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,TZA,United Rep. of Tanzania,importer,458,53,2007-2021,15
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,URY,Uruguay,exporter,84,10,2007-2021,15
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,URY,Uruguay,importer,88,10,2007-2021,15
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,UZB,Uzbekistan,exporter,210,29,2011-2021,11
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,UZB,Uzbekistan,importer,108,27,2017-2021,5
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,VEN,Venezuela,exporter,211,21,2007-2017,11
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,VEN,Venezuela,importer,150,23,2007-2013,7
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,VNM,Viet Nam,exporter,173,15,2007-2021,15
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,VNM,Viet Nam,importer,176,15,2007-2021,15
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,ZWE,Zimbabwe,exporter,259,26,2007-2021,15
+corrected2x,s_base_vis,"Baseline sample, bilateral visitors",20598,ZWE,Zimbabwe,importer,263,27,2007-2021,15
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,ARG,Argentina,exporter,124,22,2007-2021,15
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,ARG,Argentina,importer,132,24,2007-2021,15
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,BGD,Bangladesh,exporter,58,6,"2007, 2010-2021",13
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,BGD,Bangladesh,importer,40,5,"2007, 2010-2013, 2015-2018",9
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,BEN,Benin,exporter,118,11,2007-2020,14
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,BEN,Benin,importer,187,19,2007-2020,14
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,BRA,Brazil,exporter,302,39,2007-2021,15
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,BRA,Brazil,importer,281,32,2007-2021,15
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,BFA,Burkina Faso,exporter,8,4,2020-2021,2
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,BFA,Burkina Faso,importer,14,7,2020-2021,2
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,CAN,Canada,exporter,581,53,2007-2021,15
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,CAN,Canada,importer,598,53,2007-2021,15
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,CHL,Chile,exporter,329,28,2007-2021,15
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,CHL,Chile,importer,331,27,2007-2021,15
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,HKG,"China, Hong Kong SAR",exporter,171,16,2007-2021,15
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,HKG,"China, Hong Kong SAR",importer,169,15,2007-2021,15
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,COL,Colombia,exporter,309,31,2008-2019,12
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,COL,Colombia,importer,276,27,2008-2019,12
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,COM,Comoros,exporter,10,2,"2007, 2011, 2017-2018, 2021",5
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,COM,Comoros,importer,16,2,"2007, 2011, 2016-2021",8
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,CRI,Costa Rica,exporter,286,27,2007-2021,15
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,CRI,Costa Rica,importer,290,27,2007-2021,15
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,SLV,El Salvador,exporter,205,19,2007-2021,15
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,SLV,El Salvador,importer,244,25,2007-2021,15
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,ETH,Ethiopia,exporter,109,10,2007-2021,15
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,ETH,Ethiopia,importer,122,10,2007-2021,15
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,FRA,France,exporter,78,6,2007-2020,14
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,FRA,France,importer,78,6,2007-2020,14
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,GMB,Gambia,exporter,10,2,2007-2011,5
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,GMB,Gambia,importer,25,3,"2007-2013, 2017-2018, 2020-2021",11
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,GRC,Greece,exporter,128,12,2007-2021,15
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,GRC,Greece,importer,128,12,2007-2021,15
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,GIN,Guinea,exporter,72,12,"2007, 2011-2016",7
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,GIN,Guinea,importer,66,14,"2007, 2013-2016",5
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,HUN,Hungary,exporter,38,6,2007-2021,15
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,HUN,Hungary,importer,38,6,2007-2021,15
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,IND,India,exporter,387,45,"2007-2016, 2020-2021",12
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,IND,India,importer,385,42,"2007-2016, 2020-2021",12
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,IRL,Ireland,exporter,52,4,2007-2019,13
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,IRL,Ireland,importer,52,4,2007-2019,13
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,ISR,Israel,exporter,354,33,2007-2019,13
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,ISR,Israel,importer,327,28,2007-2019,13
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,ITA,Italy,exporter,590,53,2007-2021,15
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,ITA,Italy,importer,574,50,2007-2021,15
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,JAM,Jamaica,exporter,213,18,2007-2021,15
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,JAM,Jamaica,importer,219,19,2007-2021,15
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,JOR,Jordan,exporter,308,32,2007-2021,15
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,JOR,Jordan,importer,300,28,2007-2021,15
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,KWT,Kuwait,exporter,34,17,2020-2021,2
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,KWT,Kuwait,importer,42,21,2020-2021,2
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,LBN,Lebanon,exporter,366,37,2007-2021,15
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,LBN,Lebanon,importer,347,33,2007-2021,15
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,LTU,Lithuania,exporter,47,6,2008-2021,14
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,LTU,Lithuania,importer,47,6,2008-2021,14
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,MDG,Madagascar,exporter,102,14,2007-2021,15
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,MDG,Madagascar,importer,135,21,2007-2021,15
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,MWI,Malawi,exporter,4,2,2020-2021,2
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,MWI,Malawi,importer,4,2,2020-2021,2
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,MYS,Malaysia,exporter,369,37,2007-2021,15
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,MYS,Malaysia,importer,321,30,2007-2021,15
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,MLT,Malta,exporter,60,10,2007-2021,15
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,MLT,Malta,importer,58,9,2007-2021,15
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,MUS,Mauritius,exporter,248,23,2007-2021,15
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,MUS,Mauritius,importer,308,31,2007-2021,15
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,MEX,Mexico,exporter,432,39,2007-2021,15
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,MEX,Mexico,importer,442,38,2007-2021,15
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,MAR,Morocco,exporter,360,37,2007-2021,15
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,MAR,Morocco,importer,275,26,2007-2021,15
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,NER,Niger,exporter,28,2,2007-2020,14
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,NER,Niger,importer,39,3,2007-2020,14
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,PAK,Pakistan,exporter,145,25,2007-2012,6
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,PAK,Pakistan,importer,125,22,2007-2012,6
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,PER,Peru,exporter,331,30,2007-2021,15
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,PER,Peru,importer,344,31,2007-2021,15
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,PHL,Philippines,exporter,233,21,2007-2021,15
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,PHL,Philippines,importer,235,20,2007-2021,15
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,POL,Poland,exporter,20,10,2020-2021,2
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,POL,Poland,importer,20,10,2020-2021,2
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,PRT,Portugal,exporter,68,34,2020-2021,2
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,PRT,Portugal,importer,68,34,2020-2021,2
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,ROU,Romania,exporter,42,21,2020-2021,2
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,ROU,Romania,importer,42,21,2020-2021,2
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,SAU,Saudi Arabia,exporter,410,39,2007-2021,15
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,SAU,Saudi Arabia,importer,342,31,2007-2021,15
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,SYC,Seychelles,exporter,170,18,2007-2021,15
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,SYC,Seychelles,importer,214,22,2007-2021,15
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,SLE,Sierra Leone,exporter,101,13,2010-2021,12
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,SLE,Sierra Leone,importer,41,10,2014-2018,5
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,SVK,Slovakia,exporter,52,26,2020-2021,2
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,SVK,Slovakia,importer,52,26,2020-2021,2
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,SVN,Slovenia,exporter,18,9,2020-2021,2
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,SVN,Slovenia,importer,20,10,2020-2021,2
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,ESP,Spain,exporter,172,18,2007-2021,15
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,ESP,Spain,importer,176,18,2007-2021,15
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,SUR,Suriname,exporter,89,11,2007-2017,11
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,SUR,Suriname,importer,118,14,2007-2017,11
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,THA,Thailand,exporter,216,28,2007-2021,15
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,THA,Thailand,importer,223,31,2007-2021,15
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,TTO,Trinidad and Tobago,exporter,246,21,2007-2021,15
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,TTO,Trinidad and Tobago,importer,292,27,2007-2021,15
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,TUN,Tunisia,exporter,137,14,2007-2021,15
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,TUN,Tunisia,importer,135,13,2007-2021,15
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,TUR,Türkiye,exporter,412,48,2007-2021,15
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,TUR,Türkiye,importer,404,44,2007-2021,15
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,USA,USA,exporter,631,55,2007-2021,15
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,USA,USA,importer,642,55,2007-2021,15
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,UGA,Uganda,exporter,146,18,"2007-2017, 2020-2021",13
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,UGA,Uganda,importer,192,25,"2007-2017, 2020-2021",13
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,URY,Uruguay,exporter,6,3,2020-2021,2
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,URY,Uruguay,importer,6,3,2020-2021,2
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,VEN,Venezuela,exporter,206,20,2007-2017,11
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,VEN,Venezuela,importer,130,20,2007-2013,7
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,YEM,Yemen,exporter,95,12,2007-2015,9
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,YEM,Yemen,importer,99,14,2007-2015,9
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,ZMB,Zambia,exporter,70,12,2007-2021,15
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,ZMB,Zambia,importer,72,13,2007-2021,15
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,ZWE,Zimbabwe,exporter,26,13,2020-2021,2
+corrected2x,s_cd_tour,"Cultural-distance model sample, tourists",10932,ZWE,Zimbabwe,importer,30,15,2020-2021,2
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,DZA,Algeria,exporter,92,9,2007-2021,15
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,DZA,Algeria,importer,64,7,2007-2017,11
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,ARG,Argentina,exporter,48,24,2020-2021,2
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,ARG,Argentina,importer,48,24,2020-2021,2
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,AUS,Australia,exporter,446,41,2007-2019,13
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,AUS,Australia,importer,459,41,2007-2019,13
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,BHR,Bahrain,exporter,131,24,"2007, 2011-2014, 2018-2019",7
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,BHR,Bahrain,importer,139,25,"2007, 2011-2014, 2018-2019",7
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,BRA,Brazil,exporter,72,36,2020-2021,2
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,BRA,Brazil,importer,64,32,2020-2021,2
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,BGR,Bulgaria,exporter,352,43,2007-2021,15
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,BGR,Bulgaria,importer,335,36,2007-2021,15
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,BFA,Burkina Faso,exporter,10,5,2020-2021,2
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,BFA,Burkina Faso,importer,14,7,2020-2021,2
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,CAN,Canada,exporter,525,59,2007-2021,15
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,CAN,Canada,importer,551,61,2007-2021,15
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,CHL,Chile,exporter,46,23,2020-2021,2
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,CHL,Chile,importer,54,27,2020-2021,2
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,CHN,China,exporter,394,38,2007-2019,13
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,CHN,China,importer,400,37,2007-2019,13
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,HKG,"China, Hong Kong SAR",exporter,372,38,2007-2021,15
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,HKG,"China, Hong Kong SAR",importer,359,37,2007-2021,15
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,COL,Colombia,exporter,67,27,"2007, 2020-2021",3
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,COL,Colombia,importer,66,27,"2007, 2020-2021",3
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,CRI,Costa Rica,exporter,38,19,2020-2021,2
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,CRI,Costa Rica,importer,44,22,2020-2021,2
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,ECU,Ecuador,exporter,283,31,2007-2021,15
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,ECU,Ecuador,importer,308,35,2007-2021,15
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,EGY,Egypt,exporter,428,46,2007-2021,15
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,EGY,Egypt,importer,439,45,2007-2021,15
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,SLV,El Salvador,exporter,36,18,2020-2021,2
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,SLV,El Salvador,importer,46,23,2020-2021,2
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,ERI,Eritrea,exporter,22,5,2007-2011,5
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,ETH,Ethiopia,exporter,22,11,2020-2021,2
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,ETH,Ethiopia,importer,26,13,2020-2021,2
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,FIN,Finland,exporter,71,16,2007-2012,6
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,FIN,Finland,importer,71,16,2007-2012,6
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,GTM,Guatemala,exporter,233,29,2007-2021,15
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,GTM,Guatemala,importer,253,31,2007-2021,15
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,HUN,Hungary,exporter,93,9,2007-2021,15
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,HUN,Hungary,importer,93,9,2007-2021,15
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,IND,India,exporter,178,49,2017-2021,5
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,IND,India,importer,157,43,2017-2021,5
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,IDN,Indonesia,exporter,235,31,2007-2019,13
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,IDN,Indonesia,importer,226,28,2007-2019,13
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,IRN,Iran,exporter,274,29,2009-2021,13
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,IRN,Iran,importer,196,22,"2010-2011, 2013-2021",11
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,IRQ,Iraq,exporter,13,4,2010-2013,4
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,ISR,Israel,exporter,352,30,2007-2019,13
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,ISR,Israel,importer,348,30,2007-2019,13
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,ITA,Italy,exporter,547,61,2007-2021,15
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,ITA,Italy,importer,564,61,2007-2021,15
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,JPN,Japan,exporter,442,56,2007-2021,15
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,JPN,Japan,importer,450,56,2007-2021,15
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,JOR,Jordan,exporter,299,36,2007-2021,15
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,JOR,Jordan,importer,296,33,2007-2021,15
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,KEN,Kenya,exporter,22,11,2018-2019,2
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,KEN,Kenya,importer,22,11,2018-2019,2
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,LVA,Latvia,exporter,115,15,2007-2019,13
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,LVA,Latvia,importer,118,16,2007-2019,13
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,LTU,Lithuania,exporter,12,6,2020-2021,2
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,LTU,Lithuania,importer,12,6,2020-2021,2
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,MLT,Malta,exporter,24,12,2020-2021,2
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,MLT,Malta,importer,22,11,2020-2021,2
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,MUS,Mauritius,exporter,26,13,2020-2021,2
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,MUS,Mauritius,importer,36,18,2020-2021,2
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,MEX,Mexico,exporter,66,33,2020-2021,2
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,MEX,Mexico,importer,58,29,2020-2021,2
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,MOZ,Mozambique,exporter,6,3,2020-2021,2
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,MOZ,Mozambique,importer,6,3,2020-2021,2
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,NZL,New Zealand,exporter,470,51,2007-2021,15
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,NZL,New Zealand,importer,498,53,2007-2021,15
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,NGA,Nigeria,exporter,291,30,2007-2021,15
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,NGA,Nigeria,importer,300,34,2007-2021,15
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,NOR,Norway,exporter,34,17,2020-2021,2
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,NOR,Norway,importer,34,17,2020-2021,2
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,OMN,Oman,exporter,109,22,2013-2021,9
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,OMN,Oman,importer,117,24,2013-2021,9
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,PAN,Panama,exporter,248,32,2007-2021,15
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,PAN,Panama,importer,237,31,2007-2021,15
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,PHL,Philippines,exporter,44,22,2020-2021,2
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,PHL,Philippines,importer,40,20,2020-2021,2
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,POL,Poland,exporter,258,28,2007-2021,15
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,POL,Poland,importer,258,28,2007-2021,15
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,PRT,Portugal,exporter,76,38,2020-2021,2
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,PRT,Portugal,importer,76,38,2020-2021,2
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,QAT,Qatar,exporter,56,11,2015-2021,7
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,QAT,Qatar,importer,54,10,2015-2021,7
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,KOR,Rep. of Korea,exporter,472,52,2007-2021,15
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,KOR,Rep. of Korea,importer,483,53,2007-2021,15
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,ROU,Romania,exporter,390,43,2007-2021,15
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,ROU,Romania,importer,388,41,2007-2021,15
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,RUS,Russian Federation,exporter,368,34,2007-2020,14
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,RUS,Russian Federation,importer,352,32,2007-2020,14
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,RWA,Rwanda,exporter,135,14,2007-2021,15
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,RWA,Rwanda,importer,246,27,2007-2021,15
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,SAU,Saudi Arabia,exporter,54,27,2020-2021,2
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,SAU,Saudi Arabia,importer,52,26,2020-2021,2
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,SGP,Singapore,exporter,227,23,2007-2019,13
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,SGP,Singapore,importer,229,23,2007-2019,13
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,SVK,Slovakia,exporter,58,29,2020-2021,2
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,SVK,Slovakia,importer,56,28,2020-2021,2
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,SVN,Slovenia,exporter,30,15,2020-2021,2
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,SVN,Slovenia,importer,32,16,2020-2021,2
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,ESP,Spain,exporter,32,16,2020-2021,2
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,ESP,Spain,importer,32,16,2020-2021,2
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,SYR,Syria,exporter,143,18,"2007-2011, 2016-2021",11
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,SYR,Syria,importer,38,10,2007-2010,4
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,TWN,Taiwan Province of China (TWN),exporter,189,19,2007-2021,15
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,TWN,Taiwan Province of China (TWN),importer,189,19,2007-2021,15
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,TUR,Türkiye,exporter,413,53,2007-2021,15
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,TUR,Türkiye,importer,432,53,2007-2021,15
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,USA,USA,exporter,90,45,2020-2021,2
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,USA,USA,importer,96,48,2020-2021,2
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,ARE,United Arab Emirates,exporter,156,29,2015-2020,6
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,ARE,United Arab Emirates,importer,161,30,2015-2020,6
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,GBR,United Kingdom,exporter,323,31,"2007-2019, 2021",14
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,GBR,United Kingdom,importer,323,31,"2007-2019, 2021",14
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,TZA,United Rep. of Tanzania,exporter,280,32,2007-2021,15
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,TZA,United Rep. of Tanzania,importer,325,38,2007-2021,15
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,URY,Uruguay,exporter,84,10,2007-2021,15
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,URY,Uruguay,importer,88,10,2007-2021,15
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,VEN,Venezuela,exporter,198,19,2007-2017,11
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,VEN,Venezuela,importer,136,21,2007-2013,7
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,VNM,Viet Nam,exporter,162,14,2007-2021,15
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,VNM,Viet Nam,importer,162,14,2007-2021,15
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,ZWE,Zimbabwe,exporter,189,22,2007-2021,15
+corrected2x,s_cd_vis,"Cultural-distance model sample, visitors",11971,ZWE,Zimbabwe,importer,193,23,2007-2021,15
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,AIA,Anguilla,exporter,6,3,2020-2021,2
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,ATG,Antigua and Barbuda,exporter,14,7,2020-2021,2
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,ATG,Antigua and Barbuda,importer,32,16,2020-2021,2
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,ARG,Argentina,exporter,40,20,2020-2021,2
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,ARG,Argentina,importer,36,18,2020-2021,2
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,ARM,Armenia,exporter,24,12,2020-2021,2
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,ARM,Armenia,importer,30,15,2020-2021,2
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,BHS,Bahamas,exporter,14,7,2020-2021,2
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,BHS,Bahamas,importer,22,11,2020-2021,2
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,BLR,Belarus,exporter,58,7,2012-2020,9
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,BLR,Belarus,importer,53,6,2012-2020,9
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,BLZ,Belize,exporter,4,2,2020-2021,2
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,BLZ,Belize,importer,6,3,2020-2021,2
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,BOL,Bolivia (Plurinational State of),exporter,20,10,2020-2021,2
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,BOL,Bolivia (Plurinational State of),importer,32,16,2020-2021,2
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,BRA,Brazil,exporter,66,33,2020-2021,2
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,BRA,Brazil,importer,48,24,2020-2021,2
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,BFA,Burkina Faso,exporter,10,5,2020-2021,2
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,BFA,Burkina Faso,importer,12,6,2020-2021,2
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,CAN,Canada,exporter,200,45,2007-2021,15
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,CAN,Canada,importer,210,48,2007-2021,15
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,CHL,Chile,exporter,42,21,2020-2021,2
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,CHL,Chile,importer,46,23,2020-2021,2
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,HKG,"China, Hong Kong SAR",exporter,90,13,2007-2021,15
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,HKG,"China, Hong Kong SAR",importer,90,13,2007-2021,15
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,CRI,Costa Rica,exporter,32,16,2020-2021,2
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,CRI,Costa Rica,importer,38,19,2020-2021,2
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,CYP,Cyprus,exporter,16,8,2020-2021,2
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,CYP,Cyprus,importer,16,8,2020-2021,2
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,DOM,Dominican Rep.,exporter,20,10,2020-2021,2
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,DOM,Dominican Rep.,importer,26,13,2020-2021,2
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,SLV,El Salvador,exporter,28,14,2020-2021,2
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,SLV,El Salvador,importer,38,19,2020-2021,2
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,ETH,Ethiopia,exporter,10,5,2020-2021,2
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,ETH,Ethiopia,importer,14,7,2020-2021,2
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,FJI,Fiji,exporter,6,3,2020-2021,2
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,FJI,Fiji,importer,8,4,2020-2021,2
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,GEO,Georgia,exporter,32,16,2020-2021,2
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,GEO,Georgia,importer,34,17,2020-2021,2
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,HUN,Hungary,exporter,14,7,2020-2021,2
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,HUN,Hungary,importer,14,7,2020-2021,2
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,IND,India,exporter,72,36,2020-2021,2
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,IND,India,importer,52,26,2020-2021,2
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,ISR,Israel,exporter,99,9,2007-2019,13
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,ISR,Israel,importer,95,8,2007-2019,13
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,ITA,Italy,exporter,200,46,2007-2021,15
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,ITA,Italy,importer,201,44,2007-2021,15
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,JOR,Jordan,exporter,127,22,2007-2021,15
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,JOR,Jordan,importer,126,19,2007-2021,15
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,KAZ,Kazakhstan,exporter,36,18,2020-2021,2
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,KAZ,Kazakhstan,importer,36,18,2020-2021,2
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,LTU,Lithuania,exporter,12,6,2020-2021,2
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,LTU,Lithuania,importer,12,6,2020-2021,2
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,MLT,Malta,exporter,20,10,2020-2021,2
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,MLT,Malta,importer,18,9,2020-2021,2
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,MUS,Mauritius,exporter,18,9,2020-2021,2
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,MUS,Mauritius,importer,28,14,2020-2021,2
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,MEX,Mexico,exporter,62,31,2020-2021,2
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,MEX,Mexico,importer,40,20,2020-2021,2
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,MNG,Mongolia,exporter,57,8,2008-2021,14
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,MNG,Mongolia,importer,75,17,"2007, 2013-2021",10
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,MSR,Montserrat,exporter,4,2,2020-2021,2
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,NAM,Namibia,exporter,45,7,"2007, 2010-2021",13
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,NAM,Namibia,importer,45,7,"2007, 2010-2021",13
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,NCL,New Caledonia,exporter,4,2,2020-2021,2
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,PHL,Philippines,exporter,28,14,2020-2021,2
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,PHL,Philippines,importer,28,14,2020-2021,2
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,POL,Poland,exporter,22,11,2020-2021,2
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,POL,Poland,importer,22,11,2020-2021,2
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,PRT,Portugal,exporter,72,36,2020-2021,2
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,PRT,Portugal,importer,70,35,2020-2021,2
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,MDA,Rep. of Moldova,exporter,26,13,2020-2021,2
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,MDA,Rep. of Moldova,importer,32,16,2020-2021,2
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,ROU,Romania,exporter,44,22,2020-2021,2
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,ROU,Romania,importer,42,21,2020-2021,2
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,VCT,Saint Vincent and the Grenadines,exporter,6,3,2020-2021,2
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,VCT,Saint Vincent and the Grenadines,importer,16,4,"2010, 2013, 2016, 2019-2021",6
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,SAU,Saudi Arabia,exporter,40,20,2020-2021,2
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,SAU,Saudi Arabia,importer,38,19,2020-2021,2
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,SVK,Slovakia,exporter,58,29,2020-2021,2
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,SVK,Slovakia,importer,50,25,2020-2021,2
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,SVN,Slovenia,exporter,22,11,2020-2021,2
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,SVN,Slovenia,importer,24,12,2020-2021,2
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,ZAF,South Africa,exporter,176,37,2007-2021,15
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,ZAF,South Africa,importer,182,36,2007-2021,15
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,ESP,Spain,exporter,24,12,2020-2021,2
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,ESP,Spain,importer,24,12,2020-2021,2
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,TUR,Türkiye,exporter,165,38,2007-2021,15
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,TUR,Türkiye,importer,165,36,2007-2021,15
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,USA,USA,exporter,88,44,2020-2021,2
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,USA,USA,importer,94,47,2020-2021,2
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,UKR,Ukraine,exporter,66,33,2020-2021,2
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,UKR,Ukraine,importer,52,26,2020-2021,2
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,URY,Uruguay,exporter,6,3,2020-2021,2
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,URY,Uruguay,importer,6,3,2020-2021,2
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,UZB,Uzbekistan,exporter,26,13,2020-2021,2
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,UZB,Uzbekistan,importer,22,11,2020-2021,2
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,VEN,Venezuela,exporter,66,6,2007-2017,11
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,VEN,Venezuela,importer,35,5,2007-2013,7
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,ZWE,Zimbabwe,exporter,20,10,2020-2021,2
+corrected2x,s_cs_exact,Exact visitor–tourist common support,2457,ZWE,Zimbabwe,importer,22,11,2020-2021,2
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,ASM,American Samoa,exporter,14,2,"2009-2014, 2017",7
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,AGO,Angola,exporter,203,21,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,AGO,Angola,importer,313,33,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,AIA,Anguilla,exporter,26,2,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,ATG,Antigua and Barbuda,exporter,165,17,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,ATG,Antigua and Barbuda,importer,200,23,2009-2020,12
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,ARG,Argentina,exporter,124,23,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,ARG,Argentina,importer,124,23,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,ARM,Armenia,exporter,150,15,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,ARM,Armenia,importer,152,16,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,ABW,Aruba,exporter,55,6,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,ABW,Aruba,importer,66,8,2009-2020,12
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,BHS,Bahamas,exporter,253,25,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,BHS,Bahamas,importer,273,25,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,BGD,Bangladesh,exporter,46,6,2011-2020,10
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,BGD,Bangladesh,importer,36,6,"2011-2013, 2015-2018",7
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,BLR,Belarus,exporter,173,20,2008-2019,12
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,BLR,Belarus,importer,185,20,2008-2019,12
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,BLZ,Belize,exporter,63,5,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,BLZ,Belize,importer,67,6,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,BEN,Benin,exporter,120,13,2008-2019,12
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,BEN,Benin,importer,163,20,2008-2019,12
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,BMU,Bermuda,exporter,31,3,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,BMU,Bermuda,importer,25,3,2010-2020,11
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,BTN,Bhutan,exporter,82,9,2008-2019,12
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,BTN,Bhutan,importer,51,9,"2008-2012, 2016-2019",9
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,BOL,Bolivia (Plurinational State of),exporter,233,22,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,BOL,Bolivia (Plurinational State of),importer,334,34,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,BWA,Botswana,exporter,92,13,"2008-2009, 2013-2020",10
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,BWA,Botswana,importer,147,23,"2008-2009, 2013-2020",10
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,VGB,Br. Virgin Isds,exporter,34,9,2008-2012,5
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,BRA,Brazil,exporter,302,35,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,BRA,Brazil,importer,272,29,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,BRN,Brunei Darussalam,exporter,95,10,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,BRN,Brunei Darussalam,importer,97,11,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,KHM,Cambodia,exporter,205,22,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,KHM,Cambodia,importer,171,17,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,CAN,Canada,exporter,989,90,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,CAN,Canada,importer,1112,97,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,CYM,Cayman Isds,exporter,161,14,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,CAF,Central African Rep.,exporter,68,7,2008-2019,12
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,CAF,Central African Rep.,importer,62,6,2008-2019,12
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,CHL,Chile,exporter,447,42,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,CHL,Chile,importer,444,40,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,HKG,"China, Hong Kong SAR",exporter,146,15,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,HKG,"China, Hong Kong SAR",importer,147,15,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,COL,Colombia,exporter,388,47,2009-2018,10
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,COL,Colombia,importer,360,42,2009-2018,10
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,COM,Comoros,importer,8,2,2017-2020,4
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,COK,Cook Isds,exporter,38,3,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,CRI,Costa Rica,exporter,374,38,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,CRI,Costa Rica,importer,415,42,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,CUW,Curaçao,exporter,50,6,2011-2020,10
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,CUW,Curaçao,importer,16,4,2017-2020,4
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,CYP,Cyprus,exporter,155,13,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,CYP,Cyprus,importer,155,13,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,COD,Dem. Rep. of the Congo,exporter,28,7,2016-2020,5
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,COD,Dem. Rep. of the Congo,importer,40,11,2016-2020,5
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,DMA,Dominica,exporter,184,19,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,DMA,Dominica,importer,161,23,"2008-2010, 2012-2013, 2016-2020",10
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,DOM,Dominican Rep.,exporter,220,21,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,DOM,Dominican Rep.,importer,245,22,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,SLV,El Salvador,exporter,240,23,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,SLV,El Salvador,importer,290,32,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,ETH,Ethiopia,exporter,96,10,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,ETH,Ethiopia,importer,119,12,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,FJI,Fiji,exporter,31,3,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,FJI,Fiji,importer,31,3,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,FRA,France,exporter,66,6,2008-2019,12
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,FRA,France,importer,66,6,2008-2019,12
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,PYF,French Polynesia,exporter,39,5,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,PYF,French Polynesia,importer,59,7,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,GMB,Gambia,exporter,6,2,2008-2010,3
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,GMB,Gambia,importer,10,3,2008-2012,5
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,GRC,Greece,exporter,124,13,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,GRC,Greece,importer,124,13,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,GRD,Grenada,exporter,178,15,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,GRD,Grenada,importer,276,25,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,GUM,Guam,exporter,21,3,2008-2016,9
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,GIN,Guinea,exporter,36,9,2012-2015,4
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,GIN,Guinea,importer,50,17,2013-2015,3
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,GUY,Guyana,exporter,112,14,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,GUY,Guyana,importer,193,27,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,HTI,Haiti,exporter,56,5,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,HTI,Haiti,importer,16,5,2013-2017,5
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,HND,Honduras,exporter,287,31,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,HND,Honduras,importer,271,35,"2009-2012, 2014-2020",11
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,HUN,Hungary,exporter,39,3,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,HUN,Hungary,importer,39,3,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,ISL,Iceland,exporter,39,3,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,ISL,Iceland,importer,39,3,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,IND,India,exporter,394,58,2008-2015,8
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,IND,India,importer,388,52,2008-2015,8
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,IRL,Ireland,exporter,44,4,2008-2018,11
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,IRL,Ireland,importer,44,4,2008-2018,11
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,ISR,Israel,exporter,493,55,2008-2018,11
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,ISR,Israel,importer,431,43,2008-2018,11
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,ITA,Italy,exporter,660,70,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,ITA,Italy,importer,654,65,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,JAM,Jamaica,exporter,302,30,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,JAM,Jamaica,importer,335,32,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,JOR,Jordan,exporter,333,40,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,JOR,Jordan,importer,320,34,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,KIR,Kiribati,exporter,10,2,"2009-2010, 2015-2017",5
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,KIR,Kiribati,importer,16,2,"2008-2010, 2014-2018",8
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,LBN,Lebanon,exporter,481,49,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,LBN,Lebanon,importer,413,38,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,LTU,Lithuania,exporter,57,5,2009-2020,12
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,LTU,Lithuania,importer,57,5,2009-2020,12
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,MDG,Madagascar,exporter,84,14,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,MDG,Madagascar,importer,89,15,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,MYS,Malaysia,exporter,473,57,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,MYS,Malaysia,importer,361,37,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,MDV,Maldives,exporter,128,14,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,MDV,Maldives,importer,211,24,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,MLI,Mali,exporter,141,17,2009-2020,12
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,MLI,Mali,importer,131,24,"2010-2012, 2016-2020",8
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,MLT,Malta,exporter,53,5,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,MLT,Malta,importer,53,5,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,MUS,Mauritius,exporter,271,27,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,MUS,Mauritius,importer,328,32,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,MEX,Mexico,exporter,602,59,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,MEX,Mexico,importer,653,61,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,MNG,Mongolia,exporter,147,17,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,MNG,Mongolia,importer,132,20,2013-2020,8
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,MSR,Montserrat,exporter,20,2,"2008-2012, 2015-2017, 2019-2020",10
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,MSR,Montserrat,importer,24,2,"2008-2009, 2011-2020",12
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,MAR,Morocco,exporter,417,44,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,MAR,Morocco,importer,290,30,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,MMR,Myanmar,exporter,77,7,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,MMR,Myanmar,importer,65,7,2010-2020,11
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,NAM,Namibia,exporter,71,6,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,NAM,Namibia,importer,71,6,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,NPL,Nepal,exporter,134,18,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,NPL,Nepal,importer,128,19,2009-2020,12
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,NCL,New Caledonia,exporter,39,3,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,NCL,New Caledonia,importer,24,3,2008-2015,8
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,NIC,Nicaragua,exporter,272,26,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,NIC,Nicaragua,importer,355,36,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,NER,Niger,exporter,24,2,2008-2019,12
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,NER,Niger,importer,30,3,2008-2019,12
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,PAK,Pakistan,exporter,138,37,2008-2011,4
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,PAK,Pakistan,importer,109,28,2008-2011,4
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,PLW,Palau,importer,25,4,"2009-2010, 2012-2018",9
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,PRY,Paraguay,exporter,245,21,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,PRY,Paraguay,importer,283,26,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,PER,Peru,exporter,461,45,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,PER,Peru,importer,401,37,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,PHL,Philippines,exporter,254,25,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,PHL,Philippines,importer,270,26,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,KNA,Saint Kitts and Nevis,exporter,26,2,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,KNA,Saint Kitts and Nevis,importer,20,2,2008-2017,10
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,LCA,Saint Lucia,exporter,114,10,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,LCA,Saint Lucia,importer,123,11,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,SXM,Saint Maarten,exporter,22,4,2014-2020,7
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,VCT,Saint Vincent and the Grenadines,exporter,74,6,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,VCT,Saint Vincent and the Grenadines,importer,75,6,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,SAU,Saudi Arabia,exporter,480,55,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,SAU,Saudi Arabia,importer,342,33,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,SYC,Seychelles,exporter,154,18,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,SYC,Seychelles,importer,216,24,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,SLE,Sierra Leone,exporter,86,12,2011-2020,10
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,SLE,Sierra Leone,importer,41,10,2014-2018,5
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,SLB,Solomon Isds,exporter,24,2,2008-2019,12
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,SLB,Solomon Isds,importer,18,2,"2009, 2011-2018",9
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,ZAF,South Africa,exporter,579,59,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,ZAF,South Africa,importer,612,61,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,ESP,Spain,exporter,136,16,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,ESP,Spain,importer,139,16,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,LKA,Sri Lanka,exporter,266,34,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,LKA,Sri Lanka,importer,239,30,"2008-2017, 2019-2020",12
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,SUR,Suriname,exporter,98,17,2008-2016,9
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,SUR,Suriname,importer,113,18,2008-2016,9
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,THA,Thailand,exporter,254,39,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,THA,Thailand,importer,263,40,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,TLS,Timor-Leste,importer,6,2,2018-2020,3
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,TON,Tonga,exporter,22,2,"2008-2010, 2012-2019",11
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,TON,Tonga,importer,29,4,"2008-2014, 2017-2019",10
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,TTO,Trinidad and Tobago,exporter,288,34,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,TTO,Trinidad and Tobago,importer,295,36,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,TUN,Tunisia,exporter,112,10,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,TUN,Tunisia,importer,112,10,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,TCA,Turks and Caicos Isds,exporter,16,2,2012-2019,8
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,TUR,Türkiye,exporter,474,59,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,TUR,Türkiye,importer,414,47,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,USA,USA,exporter,1030,94,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,USA,USA,importer,1126,98,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,UGA,Uganda,exporter,102,17,2008-2016,9
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,UGA,Uganda,importer,146,26,2008-2016,9
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,UKR,Ukraine,exporter,444,49,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,UKR,Ukraine,importer,347,35,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,VEN,Venezuela,exporter,234,28,2008-2016,9
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,VEN,Venezuela,importer,155,28,2008-2013,6
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,YEM,Yemen,exporter,65,10,2008-2014,7
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,YEM,Yemen,importer,63,10,2008-2014,7
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,ZMB,Zambia,exporter,52,5,2008-2020,13
+corrected2x,s_dyn_tour,"Dynamic model sample, tourists",19061,ZMB,Zambia,importer,52,5,2008-2020,13
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,ALB,Albania,exporter,159,16,2008-2020,13
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,ALB,Albania,importer,159,14,2008-2020,13
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,DZA,Algeria,exporter,71,7,2008-2020,13
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,DZA,Algeria,importer,54,7,2008-2017,10
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,AUS,Australia,exporter,510,57,2008-2018,11
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,AUS,Australia,importer,533,56,2008-2018,11
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,AZE,Azerbaijan,exporter,243,23,2008-2020,13
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,AZE,Azerbaijan,importer,266,26,2008-2020,13
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,BHR,Bahrain,exporter,26,13,2012-2013,2
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,BHR,Bahrain,importer,38,19,2012-2013,2
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,BLR,Belarus,exporter,227,35,2013-2020,8
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,BLR,Belarus,importer,189,28,2013-2020,8
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,BLZ,Belize,exporter,26,2,2008-2020,13
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,BLZ,Belize,importer,39,3,2008-2020,13
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,BGR,Bulgaria,exporter,339,38,2008-2020,13
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,BGR,Bulgaria,importer,341,35,2008-2020,13
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,CAN,Canada,exporter,612,60,2008-2020,13
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,CAN,Canada,importer,653,61,2008-2020,13
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,CHN,China,exporter,466,54,2008-2018,11
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,CHN,China,importer,498,54,2008-2018,11
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,HKG,"China, Hong Kong SAR",exporter,348,36,2008-2020,13
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,HKG,"China, Hong Kong SAR",importer,343,34,2008-2020,13
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,MAC,"China, Macao SAR",exporter,142,15,2008-2020,13
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,MAC,"China, Macao SAR",importer,145,16,2008-2020,13
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,COG,Congo,exporter,61,11,2012-2017,6
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,COG,Congo,importer,52,9,2012-2017,6
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,CUB,Cuba,exporter,223,25,2008-2020,13
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,CUB,Cuba,importer,75,18,2016-2020,5
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,ECU,Ecuador,exporter,264,25,2008-2020,13
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,ECU,Ecuador,importer,290,28,2008-2020,13
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,EGY,Egypt,exporter,418,40,2008-2020,13
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,EGY,Egypt,importer,401,38,2008-2020,13
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,ERI,Eritrea,exporter,9,3,2008-2010,3
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,SWZ,Eswatini,exporter,130,12,2008-2020,13
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,SWZ,Eswatini,importer,130,12,2008-2020,13
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,FIN,Finland,exporter,32,8,2008-2011,4
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,FIN,Finland,importer,32,8,2008-2011,4
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,GEO,Georgia,exporter,317,34,2008-2020,13
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,GEO,Georgia,importer,305,32,2008-2020,13
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,GTM,Guatemala,exporter,197,20,2008-2020,13
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,GTM,Guatemala,importer,258,26,2008-2020,13
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,HUN,Hungary,exporter,74,6,2008-2020,13
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,HUN,Hungary,importer,74,6,2008-2020,13
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,IND,India,exporter,110,38,2018-2020,3
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,IND,India,importer,91,31,2018-2020,3
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,IDN,Indonesia,exporter,175,18,2008-2018,11
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,IDN,Indonesia,importer,175,17,2008-2018,11
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,IRN,Iran,exporter,283,32,2010-2020,11
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,IRN,Iran,importer,202,24,"2010-2011, 2013-2020",10
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,IRQ,Iraq,exporter,7,3,2010-2012,3
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,ISR,Israel,exporter,413,43,2008-2018,11
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,ISR,Israel,importer,405,39,2008-2018,11
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,ITA,Italy,exporter,540,55,2008-2020,13
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,ITA,Italy,importer,565,53,2008-2020,13
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,JPN,Japan,exporter,430,49,2008-2020,13
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,JPN,Japan,importer,438,47,2008-2020,13
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,JOR,Jordan,exporter,264,32,2008-2020,13
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,JOR,Jordan,importer,244,26,2008-2020,13
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,KAZ,Kazakhstan,exporter,305,30,2008-2020,13
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,KAZ,Kazakhstan,importer,351,34,2008-2020,13
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,KGZ,Kyrgyzstan,exporter,149,16,2009-2020,12
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,KGZ,Kyrgyzstan,importer,174,18,2009-2020,12
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,LAO,Lao People's Dem. Rep.,exporter,106,10,2008-2019,12
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,LAO,Lao People's Dem. Rep.,importer,88,11,2010-2019,10
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,LVA,Latvia,exporter,107,18,2008-2018,11
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,LVA,Latvia,importer,108,18,2008-2018,11
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,LSO,Lesotho,exporter,77,7,2008-2018,11
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,LSO,Lesotho,importer,66,6,2008-2018,11
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,MNG,Mongolia,exporter,198,18,2008-2020,13
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,MNG,Mongolia,importer,160,24,2013-2020,8
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,MOZ,Mozambique,exporter,39,3,2008-2020,13
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,MOZ,Mozambique,importer,39,3,2008-2020,13
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,NAM,Namibia,exporter,55,7,2011-2020,10
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,NAM,Namibia,importer,55,7,2011-2020,10
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,NZL,New Zealand,exporter,459,45,2008-2020,13
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,NZL,New Zealand,importer,507,47,2008-2020,13
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,NGA,Nigeria,exporter,241,27,2008-2020,13
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,NGA,Nigeria,importer,236,27,2008-2020,13
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,OMN,Oman,exporter,69,12,2014-2020,7
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,OMN,Oman,importer,73,13,2014-2020,7
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,PAN,Panama,exporter,198,23,2008-2020,13
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,PAN,Panama,importer,199,21,2008-2020,13
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,PNG,Papua New Guinea,exporter,62,8,2010-2020,11
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,PNG,Papua New Guinea,importer,20,7,"2011-2012, 2019-2020",4
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,POL,Poland,exporter,227,22,2008-2020,13
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,POL,Poland,importer,227,22,2008-2020,13
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,QAT,Qatar,exporter,33,9,2016-2020,5
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,QAT,Qatar,importer,33,9,2016-2020,5
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,KOR,Rep. of Korea,exporter,510,50,2008-2020,13
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,KOR,Rep. of Korea,importer,552,51,2008-2020,13
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,MDA,Rep. of Moldova,exporter,92,16,2008-2014,7
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,MDA,Rep. of Moldova,importer,90,16,2008-2014,7
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,ROU,Romania,exporter,391,40,2008-2020,13
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,ROU,Romania,importer,396,38,2008-2020,13
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,RUS,Russian Federation,exporter,411,46,2008-2019,12
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,RUS,Russian Federation,importer,450,48,2008-2019,12
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,RWA,Rwanda,exporter,95,9,2008-2020,13
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,RWA,Rwanda,importer,223,24,2008-2020,13
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,WSM,Samoa,exporter,46,5,2008-2020,13
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,WSM,Samoa,importer,48,6,2008-2019,12
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,SMR,San Marino,exporter,76,9,2008-2020,13
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,SGP,Singapore,exporter,196,22,2008-2018,11
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,SGP,Singapore,importer,205,24,2008-2018,11
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,ZAF,South Africa,exporter,480,45,2008-2020,13
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,ZAF,South Africa,importer,504,47,2008-2020,13
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,SYR,Syria,exporter,83,15,"2008-2010, 2017-2020",7
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,SYR,Syria,importer,27,9,2008-2010,3
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,TWN,Taiwan Province of China (TWN),exporter,163,15,2008-2020,13
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,TWN,Taiwan Province of China (TWN),importer,163,15,2008-2020,13
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,TJK,Tajikistan,exporter,98,10,2009-2020,12
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,TJK,Tajikistan,importer,112,20,2014-2020,7
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,TUR,Türkiye,exporter,429,45,2008-2020,13
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,TUR,Türkiye,importer,429,43,2008-2020,13
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,ARE,United Arab Emirates,exporter,131,35,2016-2019,4
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,ARE,United Arab Emirates,importer,145,39,2016-2019,4
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,GBR,United Kingdom,exporter,251,27,2008-2018,11
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,GBR,United Kingdom,importer,251,27,2008-2018,11
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,TZA,United Rep. of Tanzania,exporter,268,26,2008-2020,13
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,TZA,United Rep. of Tanzania,importer,343,37,2008-2020,13
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,URY,Uruguay,exporter,65,7,2008-2018,11
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,URY,Uruguay,importer,68,7,2008-2018,11
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,UZB,Uzbekistan,exporter,137,21,2012-2020,9
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,UZB,Uzbekistan,importer,66,20,2017-2020,4
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,VEN,Venezuela,exporter,166,19,2008-2016,9
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,VEN,Venezuela,importer,123,22,2008-2013,6
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,VNM,Viet Nam,exporter,142,13,2008-2020,13
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,VNM,Viet Nam,importer,144,13,2008-2020,13
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,ZWE,Zimbabwe,exporter,201,19,2008-2020,13
+corrected2x,s_dyn_vis,"Dynamic model sample, visitors",13872,ZWE,Zimbabwe,importer,202,19,2008-2020,13

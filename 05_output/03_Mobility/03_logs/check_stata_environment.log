@@ -1,0 +1,106 @@
+-------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  <PACKAGE_ROOT>/05_output/03_Mobi
+> lity/03_logs/check_stata_environment.log
+  log type:  text
+ opened on:   4 Nov 2026, 08:29:48
+
+. local ENV_STATATMP : environment STATATMP
+
+. display as text "Configured STATATMP: `ENV_STATATMP'"
+Configured STATATMP: <PACKAGE_ROOT>/00_stata_
+> temp
+
+. display as text "Actual Stata tmpdir: " c(tmpdir)
+Actual Stata tmpdir: <PACKAGE_ROOT>/00_stata_
+> temp
+
+. 
+. * Test Stata itself after launch, including save/readback and preserve/restor
+> e.
+. clear
+
+. set obs 1
+Number of observations (_N) was 0, now 1.
+
+. generate long temp_check = 1
+
+. tempfile stata_write_test
+
+. capture noisily save "`stata_write_test'", replace
+(file <USER_HOME>/S1 test run
+    r3/Replication_Package/00_stata_temp/St38569.000001 not found)
+file <USER_HOME>/S1 test run
+    r3/Replication_Package/00_stata_temp/St38569.000001 saved as .dta format
+
+. if _rc {
+.     display as error "Stata cannot write its temporary file: `stata_write_tes
+> t'"
+.     display as error "Start this chapter through its BAT file, which sets STA
+> TATMP before launching Stata."
+.     log close
+.     exit 603
+. }
+
+. use "`stata_write_test'", clear
+
+. assert temp_check == 1
+
+. preserve
+
+. replace temp_check = 2
+(1 real change made)
+
+. restore
+
+. assert temp_check == 1
+
+. display as result "STATA_TEMPFILE_READ_WRITE=PASS"
+STATA_TEMPFILE_READ_WRITE=PASS
+
+. 
+. if "`MODE'" == "empirical" {
+.     foreach command in ftools reghdfe ppmlhdfe esttab eststo estadd estpost h
+> dfe gtools frmttable ppml_fe_bias {
+  2.         capture which `command'
+  3.         if _rc {
+  4.             display as error "Missing Stata command: `command'"
+  5.             display as error "Run INSTALL_STATA_PACKAGES.bat in this chapt
+> er, then rerun."
+  6.             log close
+  7.             exit 199
+  8.         }
+  9.         display as text "COMMAND_AVAILABLE=`command' PATH=`r(fn)'"
+ 10.     }
+COMMAND_AVAILABLE=ftools PATH=
+COMMAND_AVAILABLE=reghdfe PATH=
+COMMAND_AVAILABLE=ppmlhdfe PATH=
+COMMAND_AVAILABLE=esttab PATH=
+COMMAND_AVAILABLE=eststo PATH=
+COMMAND_AVAILABLE=estadd PATH=
+COMMAND_AVAILABLE=estpost PATH=
+COMMAND_AVAILABLE=hdfe PATH=
+COMMAND_AVAILABLE=gtools PATH=
+COMMAND_AVAILABLE=frmttable PATH=
+COMMAND_AVAILABLE=ppml_fe_bias PATH=
+. 
+.     capture findfile lrowmat_utils.mlib
+.     if _rc {
+.         display as error "Missing rowmat_utils. Run INSTALL_STATA_PACKAGES.ba
+> t."
+.         log close
+.         exit 601
+.     }
+. 
+. }
+
+. display as result "STATA_ENVIRONMENT=PASS"
+STATA_ENVIRONMENT=PASS
+
+. log close
+      name:  <unnamed>
+       log:  <PACKAGE_ROOT>/05_output/03_Mobi
+> lity/03_logs/check_stata_environment.log
+  log type:  text
+ closed on:   4 Nov 2026, 08:29:48
+-------------------------------------------------------------------------------

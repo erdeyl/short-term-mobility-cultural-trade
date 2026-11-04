@@ -1,0 +1,10 @@
+Variable,Observations (N),Mean,Standard Deviation (SD),Minimum,Maximum,source
+Trade (thousand USD),"615,589","2,143.313","40,256.588",0.000,"4,210,237.347",out/corrected2x/TAB_table1.csv variable v_ttl_k; log out/corrected2x/TAB_01_corrected2x.log (TAB_T1 v_ttl_k)
+Bilateral visitors,"25,282","436,665.305","4,027,598.275",0.000,"130,406,654",out/corrected2x/TAB_table1.csv variable bilat_vis_raw; log out/corrected2x/TAB_01_corrected2x.log (TAB_T1 bilat_vis_raw)
+Reverse visitors: importer→exporter,"106,267","97,807.644","1,213,979.561",0.000,"81,059,391.000",out/corrected2x/TAB_table1.csv variable rev_vis_raw; log out/corrected2x/TAB_01_corrected2x.log (TAB_T1 rev_vis_raw)
+Same-direction visitors: exporter→importer,"106,267","97,807.644","1,213,979.561",0.000,"81,059,391.000",out/corrected2x/TAB_table1.csv variable same_vis_raw; log out/corrected2x/TAB_01_corrected2x.log (TAB_T1 same_vis_raw)
+Bilateral tourists,"34,578","181,393.901","1,626,290.965",0.000,"55,004,133.000",out/corrected2x/TAB_table1.csv variable bilat_tour_raw; log out/corrected2x/TAB_01_corrected2x.log (TAB_T1 bilat_tour_raw)
+Reverse tourists: importer→exporter,"136,144","56,866.137","571,606.512",0.000,"36,679,206.000",out/corrected2x/TAB_table1.csv variable rev_tour_raw; log out/corrected2x/TAB_01_corrected2x.log (TAB_T1 rev_tour_raw)
+Same-direction tourists: exporter→importer,"136,144","56,866.137","571,606.512",0.000,"36,679,206.000",out/corrected2x/TAB_table1.csv variable same_tour_raw; log out/corrected2x/TAB_01_corrected2x.log (TAB_T1 same_tour_raw)
+Common language,"756,000",0.174,0.379,0.000,1.000,out/corrected2x/TAB_table1.csv variable comlang_off; log out/corrected2x/TAB_01_corrected2x.log (TAB_T1 comlang_off)
+Cultural distance,"209,686",2.000,1.513,0.000,13.380,out/corrected2x/TAB_table1.csv variable cul_dist; log out/corrected2x/TAB_01_corrected2x.log (TAB_T1 cul_dist)

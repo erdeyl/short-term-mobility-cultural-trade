@@ -1,0 +1,24 @@
+{
+  "years": [
+    2007,
+    2021
+  ],
+  "unit_of_observation": "directed exporter-importer-year",
+  "key": [
+    "year",
+    "iso3_o",
+    "iso3_d"
+  ],
+  "backbone": "CEPII Gravity V202211; both country_exists flags equal 1; international pairs",
+  "source_direction": "Comtrade imports: reporter is iso3_d; partner is iso3_o",
+  "canonical_HS": "H3 / HS2007, frozen 31-code definition",
+  "baseline_value": "v_ttl_lb_k; ttl_k is its exact alias",
+  "unit": "thousand current USD",
+  "zero_rule": "Fill absent sparse dyads only for importer-years present in the archived availability table",
+  "missing_rule": "Preserve missing trade for importer-years without archived reporting availability",
+  "mirror_reconciliation": "none",
+  "sample_rule": "No BRI, digitalization, mobility, China-only or complete-case restriction in common base",
+  "gravity_2021": "Read directly from V202211; no extension or carry-forward",
+  "chapter_outputs": "Separate downstream build; not produced by this common-stage runner",
+  "execution_note": "Descriptive fixed-snapshot contract; changing this file alone does not extend years or alter the build."
+}

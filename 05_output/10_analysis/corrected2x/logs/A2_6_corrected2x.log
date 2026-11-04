@@ -1,0 +1,234 @@
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/A2_6_corrected2x.log
+  log type:  text
+ opened on:   4 Nov 2026, 08:40:48
+
+. display as result "A2_6_BEGIN vintage=${VINTAGE} " c(current_date) " " c(current_time)
+A2_6_BEGIN vintage=corrected2x  4 Nov 2026 08:40:48
+
+. use "${OUT}/A2_work.dta", clear
+(PREP analysis base, vintage corrected2x, built  4 Nov 2026 08:33:39 by 01_prep.d)
+
+. nflow start using "${OUT}/A2_nflow.csv", append
+nflow: log <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/A2_nflow.csv, start N =       56,500
+
+. a2_open "${OUT}/results/A2_6.dta"
+(file <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/results/A2_6.dta not found)
+
+. a2_topen "${OUT}/tables/A2_A2.6.dta"
+(file <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/tables/A2_A2.6.dta not found)
+
+. local FE "exporter_year importer_year pair_id"
+
+. 
+. gen double v_nomedia = v_ttl_k - v_8523_k if !missing(v_ttl_k, v_8523_k)
+(3,356 missing values generated)
+
+. label variable v_nomedia "Cultural trade without recorded media: v_ttl_k - v_8523_k (1000 USD)"
+
+. gen double __chk = abs(v_nomedia - (v_3706_k + v_49_k + v_97_k))
+(3,356 missing values generated)
+
+. quietly summarize __chk
+
+. display as result "A2_6_NOMEDIA_IDENTITY max|v_ttl-v_8523-(v_3706+v_49+v_97)| = " r(max)
+A2_6_NOMEDIA_IDENTITY max|v_ttl-v_8523-(v_3706+v_49+v_97)| = 1.397e-09
+
+. assert r(max) < 1e-6
+
+. drop __chk
+
+. quietly count if v_nomedia < 0
+
+. assert r(N) == 0
+
+. 
+. preserve
+
+.     import delimited using "${OUT}/positive_controls.csv", clear asdouble varnames(1) stringcols(1)
+(encoding automatically selected: ISO-8859-1)
+(11 vars, 232 obs)
+
+.     quietly summarize reproduced if item == "SHR.v_8523_k.visitor"
+
+.     local pc_sh_vis = r(mean)
+
+.     quietly summarize reproduced if item == "SHR.v_8523_k.tourist"
+
+.     local pc_sh_tour = r(mean)
+
+. restore
+
+. 
+. foreach m in vis tour {
+  2.     local mlab = cond("`m'" == "vis", "visitors", "tourists")
+  3.     local smp "s_base_`m'"
+  4.     quietly summarize v_ttl_k if `smp', meanonly
+  5.     local tot = r(sum)
+  6.     foreach y in v_8523_k v_unesco_a v_unesco_b v_nomedia v_3706_k v_49_k v_97_k {
+  7.         quietly summarize `y' if `smp', meanonly
+  8.         a2_tpost, item(A2.6) table(value_share) sample(`smp') mobility(`mlab') stat(share_`y'_pct) value(`=100*r(sum)/`tot'') n(`r(N)') note("100 * sum(`y') / sum(v_ttl_k) over the baseline sampl
+> e")
+  9.     }
+ 10.     quietly summarize v_8523_k if `smp', meanonly
+ 11.     local sh8523 = 100 * r(sum) / `tot'
+ 12.     display as result "A2_6_SHARE_8523 `m' = " %10.6f `sh8523' " ref " %10.6f `pc_sh_`m''
+ 13.     assert abs(`sh8523' - `pc_sh_`m'') < 1e-5
+ 14. 
+.     quietly ppmlhdfe v_ttl_k mob_bilat_`m' if `smp', absorb(`FE') vce(cluster pair_id)
+ 15.     a2_chk "A2.6 baseline v_ttl_k `mlab'"
+ 16.     a2_post, item(A2.6) spec(baseline_v_ttl_k) sample(`smp') mobility(`mlab') term(mob_bilat_`m') label(all cultural goods (baseline))
+ 17.     local k = 0
+ 18.     foreach y in v_unesco_a v_unesco_b v_nomedia {
+ 19.         local ++k
+ 20.         local yl : variable label `y'
+ 21.         * (1) baseline model on the baseline sample with the new outcome
+.         quietly count if `smp' & !missing(`y')
+ 22.         local nc = r(N)
+ 23.         quietly ppmlhdfe `y' mob_bilat_`m' if `smp', absorb(`FE') vce(cluster pair_id)
+ 24.         a2_chk "A2.6 `y' on baseline sample `mlab'"
+ 25.         a2_post, item(A2.6) spec(`y'_on_baseline_sample) sample(`smp') mobility(`mlab') term(mob_bilat_`m') label(`y') note("candidate rows `nc' of the baseline sample; drops = singletons `e(num_
+> singletons)' (incl. pairs whose new outcome is always zero) + separated `e(num_separated)'")
+ 26.         * (2) identical observations and stacked test
+.         gen byte id_`k'_`m' = `smp' & !missing(`y')
+ 27.         a2_fix, touse(id_`k'_`m') models("v_ttl_k mob_bilat_`m' ; `y' mob_bilat_`m'")
+ 28.         local it = ${A2_FIX_IT}
+ 29.         preserve
+ 30.         a2_stack, touse(id_`k'_`m') ys(v_ttl_k `y') xs("mob_bilat_`m' ; mob_bilat_`m'") cluster(pair_id)
+ 31.         local nu = ${A2_NUNIQ}
+ 32.         a2_post, item(A2.6) spec(`y'_identical_rows) sample(`smp' & common) mobility(`mlab') term(s1_1) label(all cultural goods) nuniq(`nu') note("fixed-point iterations `it'")
+ 33.         a2_post, item(A2.6) spec(`y'_identical_rows) sample(`smp' & common) mobility(`mlab') term(s2_1) label(`y') nuniq(`nu')
+ 34.         a2_post, item(A2.6) spec(`y'_identical_rows) sample(`smp' & common) mobility(`mlab') term(s1_1 - s2_1) label(all - narrow) nuniq(`nu')
+ 35.         quietly test s1_1 = s2_1
+ 36.         a2_posttest, item(A2.6) spec(`y'_identical_rows) sample(`smp' & common) mobility(`mlab') label(test all = narrow) chi2(`r(chi2)') df(`r(df)') p(`r(p)') nuniq(`nu')
+ 37.         display as result "A2_6 `m' `y' N=`nu' all=" %9.6f _b[s1_1] " narrow=" %9.6f _b[s2_1]
+ 38.         restore
+ 39.         nflow step "restore: after A2.6 `y' `mlab' stacked test"
+ 40.     }
+ 41. 
+.     * ---------------- recorded media: Table 4 row vs Table A5 "exact" row
+.     quietly ppmlhdfe v_8523_k mob_bilat_`m', absorb(`FE') vce(cluster pair_id)
+ 42.     a2_chk "A2.6 Table 4 recorded media `mlab'"
+ 43.     gen byte t4_`m' = e(sample)
+ 44.     a2_post, item(A2.6) spec(recmedia_table4) sample(all rows (Table 4)) mobility(`mlab') term(mob_bilat_`m') label(v_8523_k, Table 4) note("06_table4_categories.do:15,17")
+ 45.     local n4 = e(N)
+ 46.     quietly ppmlhdfe v_8523_k mob_bilat_`m' if has_both_`m' & v_8523_exact == 1, absorb(`FE') vce(cluster pair_id)
+ 47.     a2_chk "A2.6 Table A5 exact recorded media `mlab'"
+ 48.     gen byte t5_`m' = e(sample)
+ 49.     a2_post, item(A2.6) spec(recmedia_exact_tableA5) sample(has_both & v_8523_exact==1) mobility(`mlab') term(mob_bilat_`m') label(v_8523_k on v_8523_exact==1) note("File S1 run_T6.do:45-46")
+ 50.     local n5 = e(N)
+ 51.     quietly count if t4_`m' & v_8523_exact == 0
+ 52.     local nx = r(N)
+ 53.     a2_tpost, item(A2.6) table(recmedia_exact) sample(Table 4 recorded-media sample) mobility(`mlab') stat(rows_v8523_exact_0) value(`nx') n(`n4') note("pair-years whose importer reported part of
+>  8523 in ambiguous pre-HS2007 codes (ambiguous pool > 0)")
+ 54.     quietly count if t4_`m' & v_8523_exact == 1 & !t5_`m'
+ 55.     a2_tpost, item(A2.6) table(recmedia_exact) sample(Table 4 recorded-media sample) mobility(`mlab') stat(rows_exact_but_dropped_by_refit) value(`r(N)') n(`n4') note("exact rows lost as new sing
+> letons/separated after the restriction")
+ 56.     quietly count if t5_`m' & !t4_`m'
+ 57.     a2_tpost, item(A2.6) table(recmedia_exact) sample(Table A5 exact sample) mobility(`mlab') stat(rows_in_exact_not_in_table4) value(`r(N)') n(`n5')
+ 58.     quietly summarize v_8523_amb_k if t4_`m' & v_8523_exact == 0
+ 59.     a2_tpost, item(A2.6) table(recmedia_exact) sample(Table 4 recorded-media sample) mobility(`mlab') stat(sum_ambiguous_pool_k_on_inexact_rows) value(`=r(sum)') n(`r(N)') note("sum of the exclud
+> ed ambiguous pool (1000 USD) on those rows; not part of v_8523_k (LB)")
+ 60.     display as result "A2_6_RECMEDIA `m' table4 N=`n4' exact N=`n5' inexact rows=`nx'"
+ 61. }
+A2_6_SHARE_8523 vis =  34.243302 ref  34.243302
+nflow: estimation N =       20,598 (data N       56,500) A2.6 baseline v_ttl_k visitors | 
+nflow: estimation N =       19,818 (data N       56,500) A2.6 v_unesco_a on baseline sample visitors | 
+nflow: estimation N =       20,598 (data N       56,500) a2_fix iteration 1: v_ttl_k mob_bilat_vis  | 
+nflow: estimation N =       19,818 (data N       56,500) a2_fix iteration 1: v_unesco_a mob_bilat_vis | 
+nflow: estimation N =       19,818 (data N       56,500) a2_fix iteration 2: v_ttl_k mob_bilat_vis  | 
+nflow: estimation N =       19,818 (data N       56,500) a2_fix iteration 2: v_unesco_a mob_bilat_vis | 
+nflow: estimation N =       19,818 (data N       56,500) a2_stack separate fit 1: v_ttl_k on mob_bilat_vis  | 
+nflow: estimation N =       19,818 (data N       56,500) a2_stack separate fit 2: v_unesco_a on mob_bilat_vis | 
+nflow:       56,500 ->       19,818  a2_stack: keep the 19818 common rows (inside caller's preserve)
+nflow:       19,818 ->       39,636  a2_stack: expand to 2 blocks
+nflow: estimation N =       39,636 (data N       39,636) a2_stack stacked fit: 2 blocks (v_ttl_k v_unesco_a), cluster pair_id | 
+A2_6 vis v_unesco_a N=19818 all= 0.173315 narrow= 0.327982
+nflow:       39,636 ->       56,500  restore: after A2.6 v_unesco_a visitors stacked test
+nflow: estimation N =       19,932 (data N       56,500) A2.6 v_unesco_b on baseline sample visitors | 
+nflow: estimation N =       20,598 (data N       56,500) a2_fix iteration 1: v_ttl_k mob_bilat_vis  | 
+nflow: estimation N =       19,932 (data N       56,500) a2_fix iteration 1: v_unesco_b mob_bilat_vis | 
+nflow: estimation N =       19,932 (data N       56,500) a2_fix iteration 2: v_ttl_k mob_bilat_vis  | 
+nflow: estimation N =       19,932 (data N       56,500) a2_fix iteration 2: v_unesco_b mob_bilat_vis | 
+nflow: estimation N =       19,932 (data N       56,500) a2_stack separate fit 1: v_ttl_k on mob_bilat_vis  | 
+nflow: estimation N =       19,932 (data N       56,500) a2_stack separate fit 2: v_unesco_b on mob_bilat_vis | 
+nflow:       56,500 ->       19,932  a2_stack: keep the 19932 common rows (inside caller's preserve)
+nflow:       19,932 ->       39,864  a2_stack: expand to 2 blocks
+nflow: estimation N =       39,864 (data N       39,864) a2_stack stacked fit: 2 blocks (v_ttl_k v_unesco_b), cluster pair_id | 
+A2_6 vis v_unesco_b N=19932 all= 0.173147 narrow= 0.287823
+nflow:       39,864 ->       56,500  restore: after A2.6 v_unesco_b visitors stacked test
+nflow: estimation N =       20,461 (data N       56,500) A2.6 v_nomedia on baseline sample visitors | 
+nflow: estimation N =       20,598 (data N       56,500) a2_fix iteration 1: v_ttl_k mob_bilat_vis  | 
+nflow: estimation N =       20,461 (data N       56,500) a2_fix iteration 1: v_nomedia mob_bilat_vis | 
+nflow: estimation N =       20,461 (data N       56,500) a2_fix iteration 2: v_ttl_k mob_bilat_vis  | 
+nflow: estimation N =       20,461 (data N       56,500) a2_fix iteration 2: v_nomedia mob_bilat_vis | 
+nflow: estimation N =       20,461 (data N       56,500) a2_stack separate fit 1: v_ttl_k on mob_bilat_vis  | 
+nflow: estimation N =       20,461 (data N       56,500) a2_stack separate fit 2: v_nomedia on mob_bilat_vis | 
+nflow:       56,500 ->       20,461  a2_stack: keep the 20461 common rows (inside caller's preserve)
+nflow:       20,461 ->       40,922  a2_stack: expand to 2 blocks
+nflow: estimation N =       40,922 (data N       40,922) a2_stack stacked fit: 2 blocks (v_ttl_k v_nomedia), cluster pair_id | 
+A2_6 vis v_nomedia N=20461 all= 0.173139 narrow= 0.286416
+nflow:       40,922 ->       56,500  restore: after A2.6 v_nomedia visitors stacked test
+nflow: estimation N =       16,248 (data N       56,500) A2.6 Table 4 recorded media visitors | 
+nflow: estimation N =       15,900 (data N       56,500) A2.6 Table A5 exact recorded media visitors | 
+A2_6_RECMEDIA vis table4 N=16248 exact N=15900 inexact rows=277
+A2_6_SHARE_8523 tour =  23.075831 ref  23.075831
+nflow: estimation N =       26,339 (data N       56,500) A2.6 baseline v_ttl_k tourists | 
+nflow: estimation N =       25,066 (data N       56,500) A2.6 v_unesco_a on baseline sample tourists | 
+nflow: estimation N =       26,339 (data N       56,500) a2_fix iteration 1: v_ttl_k mob_bilat_tour  | 
+nflow: estimation N =       25,066 (data N       56,500) a2_fix iteration 1: v_unesco_a mob_bilat_tour | 
+nflow: estimation N =       25,066 (data N       56,500) a2_fix iteration 2: v_ttl_k mob_bilat_tour  | 
+nflow: estimation N =       25,066 (data N       56,500) a2_fix iteration 2: v_unesco_a mob_bilat_tour | 
+nflow: estimation N =       25,066 (data N       56,500) a2_stack separate fit 1: v_ttl_k on mob_bilat_tour  | 
+nflow: estimation N =       25,066 (data N       56,500) a2_stack separate fit 2: v_unesco_a on mob_bilat_tour | 
+nflow:       56,500 ->       25,066  a2_stack: keep the 25066 common rows (inside caller's preserve)
+nflow:       25,066 ->       50,132  a2_stack: expand to 2 blocks
+nflow: estimation N =       50,132 (data N       50,132) a2_stack stacked fit: 2 blocks (v_ttl_k v_unesco_a), cluster pair_id | 
+A2_6 tour v_unesco_a N=25066 all= 0.181359 narrow= 0.067007
+nflow:       50,132 ->       56,500  restore: after A2.6 v_unesco_a tourists stacked test
+nflow: estimation N =       25,249 (data N       56,500) A2.6 v_unesco_b on baseline sample tourists | 
+nflow: estimation N =       26,339 (data N       56,500) a2_fix iteration 1: v_ttl_k mob_bilat_tour  | 
+nflow: estimation N =       25,249 (data N       56,500) a2_fix iteration 1: v_unesco_b mob_bilat_tour | 
+nflow: estimation N =       25,249 (data N       56,500) a2_fix iteration 2: v_ttl_k mob_bilat_tour  | 
+nflow: estimation N =       25,249 (data N       56,500) a2_fix iteration 2: v_unesco_b mob_bilat_tour | 
+nflow: estimation N =       25,249 (data N       56,500) a2_stack separate fit 1: v_ttl_k on mob_bilat_tour  | 
+nflow: estimation N =       25,249 (data N       56,500) a2_stack separate fit 2: v_unesco_b on mob_bilat_tour | 
+nflow:       56,500 ->       25,249  a2_stack: keep the 25249 common rows (inside caller's preserve)
+nflow:       25,249 ->       50,498  a2_stack: expand to 2 blocks
+nflow: estimation N =       50,498 (data N       50,498) a2_stack stacked fit: 2 blocks (v_ttl_k v_unesco_b), cluster pair_id | 
+A2_6 tour v_unesco_b N=25249 all= 0.181350 narrow= 0.148213
+nflow:       50,498 ->       56,500  restore: after A2.6 v_unesco_b tourists stacked test
+nflow: estimation N =       26,045 (data N       56,500) A2.6 v_nomedia on baseline sample tourists | 
+nflow: estimation N =       26,339 (data N       56,500) a2_fix iteration 1: v_ttl_k mob_bilat_tour  | 
+nflow: estimation N =       26,045 (data N       56,500) a2_fix iteration 1: v_nomedia mob_bilat_tour | 
+nflow: estimation N =       26,045 (data N       56,500) a2_fix iteration 2: v_ttl_k mob_bilat_tour  | 
+nflow: estimation N =       26,045 (data N       56,500) a2_fix iteration 2: v_nomedia mob_bilat_tour | 
+nflow: estimation N =       26,045 (data N       56,500) a2_stack separate fit 1: v_ttl_k on mob_bilat_tour  | 
+nflow: estimation N =       26,045 (data N       56,500) a2_stack separate fit 2: v_nomedia on mob_bilat_tour | 
+nflow:       56,500 ->       26,045  a2_stack: keep the 26045 common rows (inside caller's preserve)
+nflow:       26,045 ->       52,090  a2_stack: expand to 2 blocks
+nflow: estimation N =       52,090 (data N       52,090) a2_stack stacked fit: 2 blocks (v_ttl_k v_nomedia), cluster pair_id | 
+A2_6 tour v_nomedia N=26045 all= 0.180469 narrow= 0.131559
+nflow:       52,090 ->       56,500  restore: after A2.6 v_nomedia tourists stacked test
+nflow: estimation N =       19,102 (data N       56,500) A2.6 Table 4 recorded media tourists | 
+nflow: estimation N =       18,282 (data N       56,500) A2.6 Table A5 exact recorded media tourists | 
+A2_6_RECMEDIA tour table4 N=19102 exact N=18282 inexact rows=667
+
+. a2_close "${OUT}/results/A2_6.dta" "${OUT}/results/A2_6.csv"
+(file <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/results/A2_6.csv not found)
+file <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/results/A2_6.csv saved
+
+. a2_tclose "${OUT}/tables/A2_A2.6.dta" "${OUT}/tables/A2_A2.6.csv"
+(file <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/tables/A2_A2.6.csv not found)
+file <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/tables/A2_A2.6.csv saved
+
+. display as result "A2_6_DONE vintage=${VINTAGE} " c(current_time)
+A2_6_DONE vintage=corrected2x 08:41:15
+
+. log close
+      name:  <unnamed>
+       log:  <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/A2_6_corrected2x.log
+  log type:  text
+ closed on:   4 Nov 2026, 08:41:15
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

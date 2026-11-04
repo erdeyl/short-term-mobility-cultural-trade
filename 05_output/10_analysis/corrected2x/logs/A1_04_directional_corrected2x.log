@@ -1,0 +1,1811 @@
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/A1_04_directional_corrected2x.log
+  log type:  text
+ opened on:   4 Nov 2026, 08:36:45
+
+. display as result "A1_04_BEGIN vintage=${VINTAGE} " c(current_date) " " c(current_time)
+A1_04_BEGIN vintage=corrected2x  4 Nov 2026 08:36:45
+
+. * rerun C2: 00_config.do sets MIRROR for corrected2/corrected2x (corrected2x: 30-code mirror file);
+. * submitted/corrected leave it empty, so the original line applies to them unchanged
+. if "${MIRROR}" == "" global MIRROR "${VROOT}/03_intermediate/03_Mobility/sensitivity/04_mirror_trade/mirror_analysis_ready.dta"
+
+. confirm file "${MIRROR}"
+
+. 
+. * positive-control values (PREP positive_controls.csv; Table 2 cols 4 and 8)
+. preserve
+
+.     import delimited using "${OUT}/positive_controls.csv", clear varnames(1) stringcols(_all)
+(encoding automatically selected: ISO-8859-1)
+(11 vars, 232 obs)
+
+.     foreach pair in "T2c4rev|T2.c4.Reverse visitors.b" "T2c4same|T2.c4.Same-direction visitors.b" ///
+>         "T2c8rev|T2.c8.Reverse tourists.b" "T2c8same|T2.c8.Same-direction tourists.b" {
+  2.         gettoken key it : pair, parse("|")
+  3.         local it = substr("`it'", 2, .)
+  4.         quietly levelsof reproduced if item == "`it'", local(v) clean
+  5.         assert "`v'" != ""
+  6.         global PC_`key' `v'
+  7.     }
+
+. restore
+
+. * published A4 values of the same vintage (PKG for submitted, COPY run outputs for corrected)
+. if "${VINTAGE}" == "submitted" global A4KEY "${PKG}/07_results/02_sensitivity/04_mirror_trade/diagnostics/mirror_trade_key_results.csv"
+
+. if "${VINTAGE}" == "corrected" global A4KEY "${COPY}/05_output/03_Mobility/01_diagnostics/sensitivity/04_mirror_trade/mirror_trade_key_results.csv"
+
+. * rerun C2 input-safety switch: corrected reads the same file from the pre-C14 snapshot (00_config.do PUB_A4KEY)
+. if "${VINTAGE}" == "corrected" & "${PUB_A4KEY}" != "" global A4KEY "${PUB_A4KEY}"
+
+. * rerun C2: corrected2/corrected2x have no published A4 file; the A4 support is rebuilt by the
+. * same iteration below and the published-value asserts are skipped for them (their controls:
+. * C2_00_controls.do; A1.9 rows are compared with corrected in 06_results/reconciliation/DELTA_corrected2.md)
+. global A4PC = inlist("${VINTAGE}", "submitted", "corrected")
+
+. if ${A4PC} {
+. preserve
+.     import delimited using "${A4KEY}", clear varnames(1) asdouble case(lower)
+.     foreach mm in visitors tourists {
+  2.         foreach sd in importer exporter {
+  3.             quietly summarize b if mobility == "`mm'" & reporting_side == "`sd'" & support == "common"
+  4.             global A4_`mm'_`sd'_b = r(mean)
+  5.             quietly summarize n if mobility == "`mm'" & reporting_side == "`sd'" & support == "common"
+  6.             global A4_`mm'_`sd'_N = r(mean)
+  7.         }
+  8.     }
+. restore
+. }
+
+. 
+. use year iso3_o iso3_d v_ttl_k has_both_vis has_both_tour mob_bilat_vis mob_bilat_tour ///
+>     mob_rev_vis mob_same_vis mob_rev_tour mob_same_tour exporter_year importer_year pair_id unordered_pair_id ///
+>     basis_rev_vis basis_same_vis basis_rev_tour basis_same_tour ///
+>     basis_switch_rev_vis basis_switch_same_vis basis_switch_rev_tour basis_switch_same_tour s_base_vis s_base_tour ///
+>     using "${PREPARED}", clear
+(PREP analysis base, vintage corrected2x, built  4 Nov 2026 08:33:39 by 01_prep.d)
+
+. nflow start using "${OUT}/A1_nflow.csv", append expected(823446)
+nflow: log <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/A1_nflow.csv, start N =      823,446
+
+. A1_open A1_04
+(file <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/results/A1_parts/A1_04.dta not found)
+
+. preserve
+
+.     use year iso3_o iso3_d v_ttl_k v_ttl_exporter_lb_k export_trade_reporting_available using "${MIRROR}", clear
+
+.     isid year iso3_o iso3_d
+
+.     rename v_ttl_k v_ttl_k_mirrorfile
+
+.     tempfile mir
+
+.     save `mir'
+file <TMP> saved as .dta format
+
+. restore
+
+. merge 1:1 year iso3_o iso3_d using `mir', assert(match) nogen
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                             0
+    Matched                           823,446  
+    -----------------------------------------
+
+. nflow step "A1.9 merge exporter-reported mirror trade by year iso3_o iso3_d (assert all match)"
+nflow:      823,446 ->      823,446  A1.9 merge exporter-reported mirror trade by year iso3_o iso3_d (assert all match)
+
+. * positive control: the mirror input carries the same importer-reported outcome
+. quietly count if !((v_ttl_k == v_ttl_k_mirrorfile) | (missing(v_ttl_k) & missing(v_ttl_k_mirrorfile)))
+
+. display as result "A1.9_MIRRORFILE_VTTL_DIFF_ROWS=" r(N)
+A1.9_MIRRORFILE_VTTL_DIFF_ROWS=0
+
+. assert r(N) == 0
+
+. drop v_ttl_k_mirrorfile
+
+. 
+. foreach m in vis tour {
+  2.     gen byte r1_`m' = basis_rev_`m' == basis_same_`m' & inlist(basis_rev_`m', "residence", "nationality")
+  3.     gen byte r4_`m' = basis_switch_rev_`m' == 0 & basis_switch_same_`m' == 0
+  4. }
+
+. 
+. * --- helper: joint directional fit, posts rev, same, test rev = same and lincom rev - same
+. capture program drop A1_dirfit
+
+. program define A1_dirfit
+  1.     syntax , y(varname) m(string) cond(string) item(string) spec(string) cl(name) [note(string) gen(name)]
+  2.     capture noisily ppmlhdfe `y' mob_rev_`m' mob_same_`m' if `cond', absorb(${FE}) vce(cluster `cl')
+  3.     local rc = _rc
+  4.     local genopt ""
+  5.     if "`gen'" != "" local genopt "gen(`gen')"
+  6.     A1_after, rc(`rc') item(`item') spec(`spec'_`cl') sample(`cond') mobility(`m') terms(mob_rev_`m' mob_same_`m') `genopt' note("`note'")
+  7.     if `rc' == 0 & e(converged) == 1 {
+  8.         quietly test mob_rev_`m' = mob_same_`m'
+  9.         A1_posttest, item(`item') spec(`spec'_`cl'_test) sample(`cond') mobility(`m') term(rev_eq_same) ///
+>             stat(`r(chi2)') df(`r(df)') p(`r(p)') nobs(`=e(N)') nfull(`=e(N_full)') ncl(`=e(N_clust)') clv(`e(clustvar)') ///
+>             note("Wald chi2 H0 b_rev = b_same; `note'")
+ 10.         quietly lincom mob_rev_`m' - mob_same_`m'
+ 11.         A1_postlincom, item(`item') spec(`spec'_`cl'_diff) sample(`cond') mobility(`m') term(rev_minus_same) note("`note'")
+ 12.     }
+ 13. end
+
+. 
+. *==============================================================================
+. * A1.9 (i) joint directional models: full baseline and same basis + no series switch
+. *==============================================================================
+. foreach m in vis tour {
+  2.     foreach cl in pair_id unordered_pair_id {
+  3.         A1_dirfit, y(v_ttl_k) m(`m') cond(has_both_`m') item(A1.9) spec(dir_full) cl(`cl') note("Table 2 joint directional model")
+  4.         if "`cl'" == "pair_id" {
+  5.             local c = cond("`m'" == "vis", 4, 8)
+  6.             assert abs(_b[mob_rev_`m'] - ${PC_T2c`c'rev}) < 1e-6 & abs(_b[mob_same_`m'] - ${PC_T2c`c'same}) < 1e-6
+  7.             display as result "A1.9_PC_TABLE2_COL`c' PASS"
+  8.         }
+  9.         A1_dirfit, y(v_ttl_k) m(`m') cond(has_both_`m' & r1_`m' & r4_`m') item(A1.9) spec(dir_samebasis_noswitch) cl(`cl') ///
+>             note("same basis in both directions and no basis switch in either series")
+ 10.     }
+ 11. }
+(dropped 3282 observations that are either singletons or separated by a fixed effect)
+warning: dependent variable takes very low values after standardizing (1.1016e-09)
+Iteration 1:   deviance = 8.8592e+07  eps = .         iters = 10   tol = 1.0e-04  min(eta) =  -4.25  P   
+Iteration 2:   deviance = 3.5130e+07  eps = 1.52e+00  iters = 9    tol = 1.0e-04  min(eta) =  -5.94      
+Iteration 3:   deviance = 2.2321e+07  eps = 5.74e-01  iters = 9    tol = 1.0e-04  min(eta) =  -8.03      
+Iteration 4:   deviance = 1.8293e+07  eps = 2.20e-01  iters = 9    tol = 1.0e-04  min(eta) =  -9.89      
+Iteration 5:   deviance = 1.7035e+07  eps = 7.38e-02  iters = 9    tol = 1.0e-04  min(eta) = -11.93      
+Iteration 6:   deviance = 1.6654e+07  eps = 2.29e-02  iters = 9    tol = 1.0e-04  min(eta) = -13.72      
+Iteration 7:   deviance = 1.6543e+07  eps = 6.73e-03  iters = 8    tol = 1.0e-04  min(eta) = -15.16      
+Iteration 8:   deviance = 1.6512e+07  eps = 1.87e-03  iters = 7    tol = 1.0e-04  min(eta) = -16.06      
+Iteration 9:   deviance = 1.6503e+07  eps = 4.98e-04  iters = 5    tol = 1.0e-04  min(eta) = -17.70      
+Iteration 10:  deviance = 1.6501e+07  eps = 1.28e-04  iters = 4    tol = 1.0e-04  min(eta) = -19.61      
+Iteration 11:  deviance = 1.6501e+07  eps = 3.07e-05  iters = 2    tol = 1.0e-04  min(eta) = -21.37      
+Iteration 12:  deviance = 1.6501e+07  eps = 6.93e-06  iters = 7    tol = 1.0e-05  min(eta) = -22.86      
+Iteration 13:  deviance = 1.6501e+07  eps = 1.41e-06  iters = 15   tol = 1.0e-06  min(eta) = -23.98   S  
+Iteration 14:  deviance = 1.6501e+07  eps = 2.88e-07  iters = 4    tol = 1.0e-06  min(eta) = -24.82   S  
+Iteration 15:  deviance = 1.6501e+07  eps = 5.77e-08  iters = 17   tol = 1.0e-07  min(eta) = -25.40   S  
+Iteration 16:  deviance = 1.6501e+07  eps = 9.28e-09  iters = 9    tol = 1.0e-08  min(eta) = -25.65   S  
+Iteration 17:  deviance = 1.6501e+07  eps = 1.12e-09  iters = 5    tol = 1.0e-09  min(eta) = -25.69   S O
+------------------------------------------------------------------------------------------------------------
+(legend: p: exact partial-out   s: exact solver   h: step-halving   o: epsilon below tolerance)
+Converged in 17 iterations and 138 HDFE sub-iterations (tol = 1.0e-08)
+
+HDFE PPML regression                              No. of obs      =     20,598
+Absorbing 3 HDFE groups                           Residual df     =      2,993
+Statistics robust to heteroskedasticity           Wald chi2(2)    =      15.12
+Deviance             =  16500726.94               Prob > chi2     =     0.0005
+Log pseudolikelihood = -8306882.682               Pseudo R2       =     0.9865
+
+Number of clusters (pair_id)=      2,994
+                            (Std. err. adjusted for 2,994 clusters in pair_id)
+------------------------------------------------------------------------------
+             |               Robust
+     v_ttl_k | Coefficient  std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+ mob_rev_vis |   .2398262   .0632847     3.79   0.000     .1157905    .3638618
+mob_same_vis |   .0319197    .048827     0.65   0.513    -.0637793    .1276188
+       _cons |   8.189224   1.105606     7.41   0.000     6.022276    10.35617
+------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+-------------------------------------------------------+
+   Absorbed FE | Categories  - Redundant  = Num. Coefs |
+---------------+---------------------------------------|
+ exporter_year |       936           1         935     |
+ importer_year |       855          15         840     |
+       pair_id |      2994        2994           0    *|
+-------------------------------------------------------+
+* = FE nested within cluster; treated as redundant for DoF computation
+A1_FIT item=A1.9 spec=dir_full_pair_id mob=vis N=20598 N_full=23880 sing=3282 sep=0 clusters=2994 conv=1
+nflow: estimation N =       20,598 (data N      823,446) A1 A1.9 dir_full_pair_id vis | 
+A1.9_PC_TABLE2_COL4 PASS
+(dropped 1371 observations that are either singletons or separated by a fixed effect)
+warning: dependent variable takes very low values after standardizing (1.2873e-09)
+Iteration 1:   deviance = 2.7940e+07  eps = .         iters = 12   tol = 1.0e-04  min(eta) =  -4.13  P   
+Iteration 2:   deviance = 9.6895e+06  eps = 1.88e+00  iters = 11   tol = 1.0e-04  min(eta) =  -5.69      
+Iteration 3:   deviance = 5.1522e+06  eps = 8.81e-01  iters = 11   tol = 1.0e-04  min(eta) =  -7.75      
+Iteration 4:   deviance = 3.7026e+06  eps = 3.92e-01  iters = 13   tol = 1.0e-04  min(eta) =  -9.88      
+Iteration 5:   deviance = 3.2431e+06  eps = 1.42e-01  iters = 13   tol = 1.0e-04  min(eta) = -11.85      
+Iteration 6:   deviance = 3.1009e+06  eps = 4.59e-02  iters = 12   tol = 1.0e-04  min(eta) = -13.56      
+Iteration 7:   deviance = 3.0577e+06  eps = 1.41e-02  iters = 9    tol = 1.0e-04  min(eta) = -14.91      
+Iteration 8:   deviance = 3.0453e+06  eps = 4.10e-03  iters = 9    tol = 1.0e-04  min(eta) = -16.21      
+Iteration 9:   deviance = 3.0420e+06  eps = 1.09e-03  iters = 7    tol = 1.0e-04  min(eta) = -17.55      
+Iteration 10:  deviance = 3.0411e+06  eps = 2.71e-04  iters = 6    tol = 1.0e-04  min(eta) = -19.19      
+Iteration 11:  deviance = 3.0409e+06  eps = 6.47e-05  iters = 4    tol = 1.0e-04  min(eta) = -20.49      
+Iteration 12:  deviance = 3.0409e+06  eps = 1.48e-05  iters = 12   tol = 1.0e-05  min(eta) = -21.50      
+Iteration 13:  deviance = 3.0409e+06  eps = 2.96e-06  iters = 5    tol = 1.0e-05  min(eta) = -22.43   S  
+Iteration 14:  deviance = 3.0409e+06  eps = 5.88e-07  iters = 12   tol = 1.0e-06  min(eta) = -23.09   S  
+Iteration 15:  deviance = 3.0409e+06  eps = 1.17e-07  iters = 13   tol = 1.0e-07  min(eta) = -23.44   S  
+Iteration 16:  deviance = 3.0409e+06  eps = 2.23e-08  iters = 6    tol = 1.0e-07  min(eta) = -23.59   S  
+Iteration 17:  deviance = 3.0409e+06  eps = 3.19e-09  iters = 7    tol = 1.0e-08  min(eta) = -23.74   S O
+------------------------------------------------------------------------------------------------------------
+(legend: p: exact partial-out   s: exact solver   h: step-halving   o: epsilon below tolerance)
+Converged in 17 iterations and 162 HDFE sub-iterations (tol = 1.0e-08)
+
+HDFE PPML regression                              No. of obs      =      7,643
+Absorbing 3 HDFE groups                           Residual df     =      1,234
+Statistics robust to heteroskedasticity           Wald chi2(2)    =       1.60
+Deviance             =  3040881.208               Prob > chi2     =     0.4491
+Log pseudolikelihood = -1541101.234               Pseudo R2       =     0.9926
+
+Number of clusters (pair_id)=      1,235
+                            (Std. err. adjusted for 1,235 clusters in pair_id)
+------------------------------------------------------------------------------
+             |               Robust
+     v_ttl_k | Coefficient  std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+ mob_rev_vis |   .0522454   .0680836     0.77   0.443    -.0811961    .1856868
+mob_same_vis |  -.0633097   .0597488    -1.06   0.289    -.1804152    .0537958
+       _cons |    12.0336   1.201487    10.02   0.000     9.678729    14.38847
+------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+-------------------------------------------------------+
+   Absorbed FE | Categories  - Redundant  = Num. Coefs |
+---------------+---------------------------------------|
+ exporter_year |       751           1         750     |
+ importer_year |       685          30         655     |
+       pair_id |      1235        1235           0    *|
+-------------------------------------------------------+
+* = FE nested within cluster; treated as redundant for DoF computation
+A1_FIT item=A1.9 spec=dir_samebasis_noswitch_pair_id mob=vis N=7643 N_full=9014 sing=1371 sep=0 clusters=1235 conv=1
+nflow: estimation N =        7,643 (data N      823,446) A1 A1.9 dir_samebasis_noswitch_pair_id vis | 
+(dropped 3282 observations that are either singletons or separated by a fixed effect)
+warning: dependent variable takes very low values after standardizing (1.1016e-09)
+Iteration 1:   deviance = 8.8592e+07  eps = .         iters = 10   tol = 1.0e-04  min(eta) =  -4.25  P   
+Iteration 2:   deviance = 3.5130e+07  eps = 1.52e+00  iters = 9    tol = 1.0e-04  min(eta) =  -5.94      
+Iteration 3:   deviance = 2.2321e+07  eps = 5.74e-01  iters = 9    tol = 1.0e-04  min(eta) =  -8.03      
+Iteration 4:   deviance = 1.8293e+07  eps = 2.20e-01  iters = 9    tol = 1.0e-04  min(eta) =  -9.89      
+Iteration 5:   deviance = 1.7035e+07  eps = 7.38e-02  iters = 9    tol = 1.0e-04  min(eta) = -11.93      
+Iteration 6:   deviance = 1.6654e+07  eps = 2.29e-02  iters = 9    tol = 1.0e-04  min(eta) = -13.72      
+Iteration 7:   deviance = 1.6543e+07  eps = 6.73e-03  iters = 8    tol = 1.0e-04  min(eta) = -15.16      
+Iteration 8:   deviance = 1.6512e+07  eps = 1.87e-03  iters = 7    tol = 1.0e-04  min(eta) = -16.06      
+Iteration 9:   deviance = 1.6503e+07  eps = 4.98e-04  iters = 5    tol = 1.0e-04  min(eta) = -17.70      
+Iteration 10:  deviance = 1.6501e+07  eps = 1.28e-04  iters = 4    tol = 1.0e-04  min(eta) = -19.61      
+Iteration 11:  deviance = 1.6501e+07  eps = 3.07e-05  iters = 2    tol = 1.0e-04  min(eta) = -21.37      
+Iteration 12:  deviance = 1.6501e+07  eps = 6.93e-06  iters = 7    tol = 1.0e-05  min(eta) = -22.86      
+Iteration 13:  deviance = 1.6501e+07  eps = 1.41e-06  iters = 15   tol = 1.0e-06  min(eta) = -23.98   S  
+Iteration 14:  deviance = 1.6501e+07  eps = 2.88e-07  iters = 4    tol = 1.0e-06  min(eta) = -24.82   S  
+Iteration 15:  deviance = 1.6501e+07  eps = 5.77e-08  iters = 17   tol = 1.0e-07  min(eta) = -25.40   S  
+Iteration 16:  deviance = 1.6501e+07  eps = 9.28e-09  iters = 9    tol = 1.0e-08  min(eta) = -25.65   S  
+Iteration 17:  deviance = 1.6501e+07  eps = 1.12e-09  iters = 5    tol = 1.0e-09  min(eta) = -25.69   S O
+------------------------------------------------------------------------------------------------------------
+(legend: p: exact partial-out   s: exact solver   h: step-halving   o: epsilon below tolerance)
+Converged in 17 iterations and 138 HDFE sub-iterations (tol = 1.0e-08)
+
+HDFE PPML regression                              No. of obs      =     20,598
+Absorbing 3 HDFE groups                           Residual df     =      1,664
+Statistics robust to heteroskedasticity           Wald chi2(2)    =      15.13
+Deviance             =  16500726.94               Prob > chi2     =     0.0005
+Log pseudolikelihood = -8306882.682               Pseudo R2       =     0.9865
+
+Number of clusters (unordered_pair_id)=     1,665
+                  (Std. err. adjusted for 1,665 clusters in unordered_pair_id)
+------------------------------------------------------------------------------
+             |               Robust
+     v_ttl_k | Coefficient  std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+ mob_rev_vis |   .2398262   .0639139     3.75   0.000     .1145571    .3650952
+mob_same_vis |   .0319197   .0515384     0.62   0.536    -.0690938    .1329332
+       _cons |   8.189224   1.105417     7.41   0.000     6.022647     10.3558
+------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+-------------------------------------------------------+
+   Absorbed FE | Categories  - Redundant  = Num. Coefs |
+---------------+---------------------------------------|
+ exporter_year |       936           1         935     |
+ importer_year |       855          15         840     |
+       pair_id |      2994        2994           0    *|
+-------------------------------------------------------+
+* = FE nested within cluster; treated as redundant for DoF computation
+A1_FIT item=A1.9 spec=dir_full_unordered_pair_id mob=vis N=20598 N_full=23880 sing=3282 sep=0 clusters=1665 conv=1
+nflow: estimation N =       20,598 (data N      823,446) A1 A1.9 dir_full_unordered_pair_id vis | 
+(dropped 1371 observations that are either singletons or separated by a fixed effect)
+warning: dependent variable takes very low values after standardizing (1.2873e-09)
+Iteration 1:   deviance = 2.7940e+07  eps = .         iters = 12   tol = 1.0e-04  min(eta) =  -4.13  P   
+Iteration 2:   deviance = 9.6895e+06  eps = 1.88e+00  iters = 11   tol = 1.0e-04  min(eta) =  -5.69      
+Iteration 3:   deviance = 5.1522e+06  eps = 8.81e-01  iters = 11   tol = 1.0e-04  min(eta) =  -7.75      
+Iteration 4:   deviance = 3.7026e+06  eps = 3.92e-01  iters = 13   tol = 1.0e-04  min(eta) =  -9.88      
+Iteration 5:   deviance = 3.2431e+06  eps = 1.42e-01  iters = 13   tol = 1.0e-04  min(eta) = -11.85      
+Iteration 6:   deviance = 3.1009e+06  eps = 4.59e-02  iters = 12   tol = 1.0e-04  min(eta) = -13.56      
+Iteration 7:   deviance = 3.0577e+06  eps = 1.41e-02  iters = 9    tol = 1.0e-04  min(eta) = -14.91      
+Iteration 8:   deviance = 3.0453e+06  eps = 4.10e-03  iters = 9    tol = 1.0e-04  min(eta) = -16.21      
+Iteration 9:   deviance = 3.0420e+06  eps = 1.09e-03  iters = 7    tol = 1.0e-04  min(eta) = -17.55      
+Iteration 10:  deviance = 3.0411e+06  eps = 2.71e-04  iters = 6    tol = 1.0e-04  min(eta) = -19.19      
+Iteration 11:  deviance = 3.0409e+06  eps = 6.47e-05  iters = 4    tol = 1.0e-04  min(eta) = -20.49      
+Iteration 12:  deviance = 3.0409e+06  eps = 1.48e-05  iters = 12   tol = 1.0e-05  min(eta) = -21.50      
+Iteration 13:  deviance = 3.0409e+06  eps = 2.96e-06  iters = 5    tol = 1.0e-05  min(eta) = -22.43   S  
+Iteration 14:  deviance = 3.0409e+06  eps = 5.88e-07  iters = 12   tol = 1.0e-06  min(eta) = -23.09   S  
+Iteration 15:  deviance = 3.0409e+06  eps = 1.17e-07  iters = 13   tol = 1.0e-07  min(eta) = -23.44   S  
+Iteration 16:  deviance = 3.0409e+06  eps = 2.23e-08  iters = 6    tol = 1.0e-07  min(eta) = -23.59   S  
+Iteration 17:  deviance = 3.0409e+06  eps = 3.19e-09  iters = 7    tol = 1.0e-08  min(eta) = -23.74   S O
+------------------------------------------------------------------------------------------------------------
+(legend: p: exact partial-out   s: exact solver   h: step-halving   o: epsilon below tolerance)
+Converged in 17 iterations and 162 HDFE sub-iterations (tol = 1.0e-08)
+
+HDFE PPML regression                              No. of obs      =      7,643
+Absorbing 3 HDFE groups                           Residual df     =        688
+Statistics robust to heteroskedasticity           Wald chi2(2)    =       1.76
+Deviance             =  3040881.208               Prob > chi2     =     0.4146
+Log pseudolikelihood = -1541101.234               Pseudo R2       =     0.9926
+
+Number of clusters (unordered_pair_id)=       689
+                    (Std. err. adjusted for 689 clusters in unordered_pair_id)
+------------------------------------------------------------------------------
+             |               Robust
+     v_ttl_k | Coefficient  std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+ mob_rev_vis |   .0522454    .071759     0.73   0.467    -.0883997    .1928904
+mob_same_vis |  -.0633097   .0584846    -1.08   0.279    -.1779374    .0513181
+       _cons |    12.0336   1.297573     9.27   0.000     9.490404     14.5768
+------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+-------------------------------------------------------+
+   Absorbed FE | Categories  - Redundant  = Num. Coefs |
+---------------+---------------------------------------|
+ exporter_year |       751           1         750     |
+ importer_year |       685          30         655     |
+       pair_id |      1235        1235           0    *|
+-------------------------------------------------------+
+* = FE nested within cluster; treated as redundant for DoF computation
+A1_FIT item=A1.9 spec=dir_samebasis_noswitch_unordered_pair_id mob=vis N=7643 N_full=9014 sing=1371 sep=0 clusters=689 conv=1
+nflow: estimation N =        7,643 (data N      823,446) A1 A1.9 dir_samebasis_noswitch_unordered_pair_id vis | 
+(dropped 6132 observations that are either singletons or separated by a fixed effect)
+warning: dependent variable takes very low values after standardizing (9.2837e-11)
+Iteration 1:   deviance = 9.6431e+07  eps = .         iters = 8    tol = 1.0e-04  min(eta) =  -5.05  P   
+Iteration 2:   deviance = 3.1259e+07  eps = 2.08e+00  iters = 8    tol = 1.0e-04  min(eta) =  -6.60      
+Iteration 3:   deviance = 1.5772e+07  eps = 9.82e-01  iters = 8    tol = 1.0e-04  min(eta) =  -8.33      
+Iteration 4:   deviance = 1.0773e+07  eps = 4.64e-01  iters = 7    tol = 1.0e-04  min(eta) = -10.07      
+Iteration 5:   deviance = 9.1529e+06  eps = 1.77e-01  iters = 6    tol = 1.0e-04  min(eta) = -11.67      
+Iteration 6:   deviance = 8.6449e+06  eps = 5.88e-02  iters = 6    tol = 1.0e-04  min(eta) = -13.20      
+Iteration 7:   deviance = 8.4922e+06  eps = 1.80e-02  iters = 6    tol = 1.0e-04  min(eta) = -14.66      
+Iteration 8:   deviance = 8.4481e+06  eps = 5.23e-03  iters = 5    tol = 1.0e-04  min(eta) = -16.13      
+Iteration 9:   deviance = 8.4359e+06  eps = 1.45e-03  iters = 5    tol = 1.0e-04  min(eta) = -17.83      
+Iteration 10:  deviance = 8.4327e+06  eps = 3.76e-04  iters = 4    tol = 1.0e-04  min(eta) = -19.19      
+Iteration 11:  deviance = 8.4319e+06  eps = 9.10e-05  iters = 3    tol = 1.0e-04  min(eta) = -20.29      
+Iteration 12:  deviance = 8.4318e+06  eps = 2.13e-05  iters = 4    tol = 1.0e-05  min(eta) = -21.20      
+Iteration 13:  deviance = 8.4317e+06  eps = 4.88e-06  iters = 3    tol = 1.0e-05  min(eta) = -21.90   S  
+Iteration 14:  deviance = 8.4317e+06  eps = 1.06e-06  iters = 4    tol = 1.0e-06  min(eta) = -22.47   S  
+Iteration 15:  deviance = 8.4317e+06  eps = 2.08e-07  iters = 3    tol = 1.0e-06  min(eta) = -22.99   S  
+Iteration 16:  deviance = 8.4317e+06  eps = 3.49e-08  iters = 4    tol = 1.0e-07  min(eta) = -23.64   S  
+Iteration 17:  deviance = 8.4317e+06  eps = 4.93e-09  iters = 3    tol = 1.0e-08  min(eta) = -24.49   S  
+Iteration 18:  deviance = 8.4317e+06  eps = 5.36e-10  iters = 3    tol = 1.0e-09  min(eta) = -25.12   S O
+------------------------------------------------------------------------------------------------------------
+(legend: p: exact partial-out   s: exact solver   h: step-halving   o: epsilon below tolerance)
+Converged in 18 iterations and 90 HDFE sub-iterations (tol = 1.0e-08)
+
+HDFE PPML regression                              No. of obs      =     26,339
+Absorbing 3 HDFE groups                           Residual df     =      2,914
+Statistics robust to heteroskedasticity           Wald chi2(2)    =       2.39
+Deviance             =  8431700.173               Prob > chi2     =     0.3026
+Log pseudolikelihood = -4276378.146               Pseudo R2       =     0.9955
+
+Number of clusters (pair_id)=      2,915
+                             (Std. err. adjusted for 2,915 clusters in pair_id)
+-------------------------------------------------------------------------------
+              |               Robust
+      v_ttl_k | Coefficient  std. err.      z    P>|z|     [95% conf. interval]
+--------------+----------------------------------------------------------------
+ mob_rev_tour |   .0004086   .0430251     0.01   0.992    -.0839191    .0847364
+mob_same_tour |   .0504515   .0382628     1.32   0.187    -.0245422    .1254453
+        _cons |   12.29164     .60765    20.23   0.000     11.10067    13.48262
+-------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+-------------------------------------------------------+
+   Absorbed FE | Categories  - Redundant  = Num. Coefs |
+---------------+---------------------------------------|
+ exporter_year |      1441           1        1440     |
+ importer_year |      1297          15        1282     |
+       pair_id |      2915        2915           0    *|
+-------------------------------------------------------+
+* = FE nested within cluster; treated as redundant for DoF computation
+A1_FIT item=A1.9 spec=dir_full_pair_id mob=tour N=26339 N_full=32471 sing=6132 sep=0 clusters=2915 conv=1
+nflow: estimation N =       26,339 (data N      823,446) A1 A1.9 dir_full_pair_id tour | 
+A1.9_PC_TABLE2_COL8 PASS
+(dropped 2522 observations that are either singletons or separated by a fixed effect)
+warning: dependent variable takes very low values after standardizing (2.5172e-10)
+ $$ Stopping (no negative residuals); separation found in 0 observations (1 iterations and 18 subiterations)
+Iteration 1:   deviance = 5.9338e+07  eps = .         iters = 9    tol = 1.0e-04  min(eta) =  -4.95  P   
+Iteration 2:   deviance = 1.7543e+07  eps = 2.38e+00  iters = 10   tol = 1.0e-04  min(eta) =  -6.45      
+Iteration 3:   deviance = 7.4254e+06  eps = 1.36e+00  iters = 10   tol = 1.0e-04  min(eta) =  -7.88      
+Iteration 4:   deviance = 4.0950e+06  eps = 8.13e-01  iters = 9    tol = 1.0e-04  min(eta) =  -9.57      
+Iteration 5:   deviance = 2.9807e+06  eps = 3.74e-01  iters = 10   tol = 1.0e-04  min(eta) = -11.51      
+Iteration 6:   deviance = 2.6200e+06  eps = 1.38e-01  iters = 10   tol = 1.0e-04  min(eta) = -13.24      
+Iteration 7:   deviance = 2.5089e+06  eps = 4.43e-02  iters = 11   tol = 1.0e-04  min(eta) = -14.76      
+Iteration 8:   deviance = 2.4763e+06  eps = 1.32e-02  iters = 10   tol = 1.0e-04  min(eta) = -15.98      
+Iteration 9:   deviance = 2.4672e+06  eps = 3.68e-03  iters = 9    tol = 1.0e-04  min(eta) = -16.91      
+Iteration 10:  deviance = 2.4648e+06  eps = 9.58e-04  iters = 6    tol = 1.0e-04  min(eta) = -17.86      
+Iteration 11:  deviance = 2.4643e+06  eps = 2.27e-04  iters = 4    tol = 1.0e-04  min(eta) = -19.00      
+Iteration 12:  deviance = 2.4642e+06  eps = 5.12e-05  iters = 4    tol = 1.0e-04  min(eta) = -20.14      
+Iteration 13:  deviance = 2.4641e+06  eps = 1.14e-05  iters = 7    tol = 1.0e-05  min(eta) = -21.34      
+Iteration 14:  deviance = 2.4641e+06  eps = 2.36e-06  iters = 5    tol = 1.0e-05  min(eta) = -21.99   S  
+Iteration 15:  deviance = 2.4641e+06  eps = 4.71e-07  iters = 9    tol = 1.0e-06  min(eta) = -22.24   S  
+Iteration 16:  deviance = 2.4641e+06  eps = 9.34e-08  iters = 8    tol = 1.0e-07  min(eta) = -22.27   S  
+Iteration 17:  deviance = 2.4641e+06  eps = 1.81e-08  iters = 7    tol = 1.0e-08  min(eta) = -22.41   S  
+Iteration 18:  deviance = 2.4641e+06  eps = 2.64e-09  iters = 3    tol = 1.0e-09  min(eta) = -22.83   S O
+------------------------------------------------------------------------------------------------------------
+(legend: p: exact partial-out   s: exact solver   h: step-halving   o: epsilon below tolerance)
+Converged in 18 iterations and 141 HDFE sub-iterations (tol = 1.0e-08)
+
+HDFE PPML regression                              No. of obs      =     10,450
+Absorbing 3 HDFE groups                           Residual df     =      1,225
+Statistics robust to heteroskedasticity           Wald chi2(2)    =       9.60
+Deviance             =   2464124.19               Prob > chi2     =     0.0082
+Log pseudolikelihood = -1256662.647               Pseudo R2       =     0.9979
+
+Number of clusters (pair_id)=      1,226
+                             (Std. err. adjusted for 1,226 clusters in pair_id)
+-------------------------------------------------------------------------------
+              |               Robust
+      v_ttl_k | Coefficient  std. err.      z    P>|z|     [95% conf. interval]
+--------------+----------------------------------------------------------------
+ mob_rev_tour |    .265536   .0886362     3.00   0.003     .0918123    .4392597
+mob_same_tour |  -.0272354   .0451539    -0.60   0.546    -.1157354    .0612647
+        _cons |     9.8949    1.56731     6.31   0.000      6.82303    12.96677
+-------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+-------------------------------------------------------+
+   Absorbed FE | Categories  - Redundant  = Num. Coefs |
+---------------+---------------------------------------|
+ exporter_year |      1096           1        1095     |
+ importer_year |       992          30         962     |
+       pair_id |      1226        1226           0    *|
+-------------------------------------------------------+
+* = FE nested within cluster; treated as redundant for DoF computation
+A1_FIT item=A1.9 spec=dir_samebasis_noswitch_pair_id mob=tour N=10450 N_full=12972 sing=2522 sep=0 clusters=1226 conv=1
+nflow: estimation N =       10,450 (data N      823,446) A1 A1.9 dir_samebasis_noswitch_pair_id tour | 
+(dropped 6132 observations that are either singletons or separated by a fixed effect)
+warning: dependent variable takes very low values after standardizing (9.2837e-11)
+Iteration 1:   deviance = 9.6431e+07  eps = .         iters = 8    tol = 1.0e-04  min(eta) =  -5.05  P   
+Iteration 2:   deviance = 3.1259e+07  eps = 2.08e+00  iters = 8    tol = 1.0e-04  min(eta) =  -6.60      
+Iteration 3:   deviance = 1.5772e+07  eps = 9.82e-01  iters = 8    tol = 1.0e-04  min(eta) =  -8.33      
+Iteration 4:   deviance = 1.0773e+07  eps = 4.64e-01  iters = 7    tol = 1.0e-04  min(eta) = -10.07      
+Iteration 5:   deviance = 9.1529e+06  eps = 1.77e-01  iters = 6    tol = 1.0e-04  min(eta) = -11.67      
+Iteration 6:   deviance = 8.6449e+06  eps = 5.88e-02  iters = 6    tol = 1.0e-04  min(eta) = -13.20      
+Iteration 7:   deviance = 8.4922e+06  eps = 1.80e-02  iters = 6    tol = 1.0e-04  min(eta) = -14.66      
+Iteration 8:   deviance = 8.4481e+06  eps = 5.23e-03  iters = 5    tol = 1.0e-04  min(eta) = -16.13      
+Iteration 9:   deviance = 8.4359e+06  eps = 1.45e-03  iters = 5    tol = 1.0e-04  min(eta) = -17.83      
+Iteration 10:  deviance = 8.4327e+06  eps = 3.76e-04  iters = 4    tol = 1.0e-04  min(eta) = -19.19      
+Iteration 11:  deviance = 8.4319e+06  eps = 9.10e-05  iters = 3    tol = 1.0e-04  min(eta) = -20.29      
+Iteration 12:  deviance = 8.4318e+06  eps = 2.13e-05  iters = 4    tol = 1.0e-05  min(eta) = -21.20      
+Iteration 13:  deviance = 8.4317e+06  eps = 4.88e-06  iters = 3    tol = 1.0e-05  min(eta) = -21.90   S  
+Iteration 14:  deviance = 8.4317e+06  eps = 1.06e-06  iters = 4    tol = 1.0e-06  min(eta) = -22.47   S  
+Iteration 15:  deviance = 8.4317e+06  eps = 2.08e-07  iters = 3    tol = 1.0e-06  min(eta) = -22.99   S  
+Iteration 16:  deviance = 8.4317e+06  eps = 3.49e-08  iters = 4    tol = 1.0e-07  min(eta) = -23.64   S  
+Iteration 17:  deviance = 8.4317e+06  eps = 4.93e-09  iters = 3    tol = 1.0e-08  min(eta) = -24.49   S  
+Iteration 18:  deviance = 8.4317e+06  eps = 5.36e-10  iters = 3    tol = 1.0e-09  min(eta) = -25.12   S O
+------------------------------------------------------------------------------------------------------------
+(legend: p: exact partial-out   s: exact solver   h: step-halving   o: epsilon below tolerance)
+Converged in 18 iterations and 90 HDFE sub-iterations (tol = 1.0e-08)
+
+HDFE PPML regression                              No. of obs      =     26,339
+Absorbing 3 HDFE groups                           Residual df     =      1,687
+Statistics robust to heteroskedasticity           Wald chi2(2)    =       2.39
+Deviance             =  8431700.173               Prob > chi2     =     0.3034
+Log pseudolikelihood = -4276378.146               Pseudo R2       =     0.9955
+
+Number of clusters (unordered_pair_id)=     1,688
+                   (Std. err. adjusted for 1,688 clusters in unordered_pair_id)
+-------------------------------------------------------------------------------
+              |               Robust
+      v_ttl_k | Coefficient  std. err.      z    P>|z|     [95% conf. interval]
+--------------+----------------------------------------------------------------
+ mob_rev_tour |   .0004086    .041806     0.01   0.992    -.0815296    .0823468
+mob_same_tour |   .0504515   .0347784     1.45   0.147    -.0177128    .1186159
+        _cons |   12.29164   .6728259    18.27   0.000     10.97293    13.61036
+-------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+-------------------------------------------------------+
+   Absorbed FE | Categories  - Redundant  = Num. Coefs |
+---------------+---------------------------------------|
+ exporter_year |      1441           1        1440     |
+ importer_year |      1297          15        1282     |
+       pair_id |      2915        2915           0    *|
+-------------------------------------------------------+
+* = FE nested within cluster; treated as redundant for DoF computation
+A1_FIT item=A1.9 spec=dir_full_unordered_pair_id mob=tour N=26339 N_full=32471 sing=6132 sep=0 clusters=1688 conv=1
+nflow: estimation N =       26,339 (data N      823,446) A1 A1.9 dir_full_unordered_pair_id tour | 
+(dropped 2522 observations that are either singletons or separated by a fixed effect)
+warning: dependent variable takes very low values after standardizing (2.5172e-10)
+ $$ Stopping (no negative residuals); separation found in 0 observations (1 iterations and 18 subiterations)
+Iteration 1:   deviance = 5.9338e+07  eps = .         iters = 9    tol = 1.0e-04  min(eta) =  -4.95  P   
+Iteration 2:   deviance = 1.7543e+07  eps = 2.38e+00  iters = 10   tol = 1.0e-04  min(eta) =  -6.45      
+Iteration 3:   deviance = 7.4254e+06  eps = 1.36e+00  iters = 10   tol = 1.0e-04  min(eta) =  -7.88      
+Iteration 4:   deviance = 4.0950e+06  eps = 8.13e-01  iters = 9    tol = 1.0e-04  min(eta) =  -9.57      
+Iteration 5:   deviance = 2.9807e+06  eps = 3.74e-01  iters = 10   tol = 1.0e-04  min(eta) = -11.51      
+Iteration 6:   deviance = 2.6200e+06  eps = 1.38e-01  iters = 10   tol = 1.0e-04  min(eta) = -13.24      
+Iteration 7:   deviance = 2.5089e+06  eps = 4.43e-02  iters = 11   tol = 1.0e-04  min(eta) = -14.76      
+Iteration 8:   deviance = 2.4763e+06  eps = 1.32e-02  iters = 10   tol = 1.0e-04  min(eta) = -15.98      
+Iteration 9:   deviance = 2.4672e+06  eps = 3.68e-03  iters = 9    tol = 1.0e-04  min(eta) = -16.91      
+Iteration 10:  deviance = 2.4648e+06  eps = 9.58e-04  iters = 6    tol = 1.0e-04  min(eta) = -17.86      
+Iteration 11:  deviance = 2.4643e+06  eps = 2.27e-04  iters = 4    tol = 1.0e-04  min(eta) = -19.00      
+Iteration 12:  deviance = 2.4642e+06  eps = 5.12e-05  iters = 4    tol = 1.0e-04  min(eta) = -20.14      
+Iteration 13:  deviance = 2.4641e+06  eps = 1.14e-05  iters = 7    tol = 1.0e-05  min(eta) = -21.34      
+Iteration 14:  deviance = 2.4641e+06  eps = 2.36e-06  iters = 5    tol = 1.0e-05  min(eta) = -21.99   S  
+Iteration 15:  deviance = 2.4641e+06  eps = 4.71e-07  iters = 9    tol = 1.0e-06  min(eta) = -22.24   S  
+Iteration 16:  deviance = 2.4641e+06  eps = 9.34e-08  iters = 8    tol = 1.0e-07  min(eta) = -22.27   S  
+Iteration 17:  deviance = 2.4641e+06  eps = 1.81e-08  iters = 7    tol = 1.0e-08  min(eta) = -22.41   S  
+Iteration 18:  deviance = 2.4641e+06  eps = 2.64e-09  iters = 3    tol = 1.0e-09  min(eta) = -22.83   S O
+------------------------------------------------------------------------------------------------------------
+(legend: p: exact partial-out   s: exact solver   h: step-halving   o: epsilon below tolerance)
+Converged in 18 iterations and 141 HDFE sub-iterations (tol = 1.0e-08)
+
+HDFE PPML regression                              No. of obs      =     10,450
+Absorbing 3 HDFE groups                           Residual df     =        703
+Statistics robust to heteroskedasticity           Wald chi2(2)    =       9.58
+Deviance             =   2464124.19               Prob > chi2     =     0.0083
+Log pseudolikelihood = -1256662.647               Pseudo R2       =     0.9979
+
+Number of clusters (unordered_pair_id)=       704
+                     (Std. err. adjusted for 704 clusters in unordered_pair_id)
+-------------------------------------------------------------------------------
+              |               Robust
+      v_ttl_k | Coefficient  std. err.      z    P>|z|     [95% conf. interval]
+--------------+----------------------------------------------------------------
+ mob_rev_tour |    .265536   .0857872     3.10   0.002     .0973962    .4336758
+mob_same_tour |  -.0272354   .0486296    -0.56   0.575    -.1225477     .068077
+        _cons |     9.8949   1.384069     7.15   0.000     7.182174    12.60763
+-------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+-------------------------------------------------------+
+   Absorbed FE | Categories  - Redundant  = Num. Coefs |
+---------------+---------------------------------------|
+ exporter_year |      1096           1        1095     |
+ importer_year |       992          30         962     |
+       pair_id |      1226        1226           0    *|
+-------------------------------------------------------+
+* = FE nested within cluster; treated as redundant for DoF computation
+A1_FIT item=A1.9 spec=dir_samebasis_noswitch_unordered_pair_id mob=tour N=10450 N_full=12972 sing=2522 sep=0 clusters=704 conv=1
+nflow: estimation N =       10,450 (data N      823,446) A1 A1.9 dir_samebasis_noswitch_unordered_pair_id tour | 
+
+. 
+. *==============================================================================
+. * A1.9 (ii) exporter-reported (mirror) vs importer-reported trade, A4 reporting-side support
+. *==============================================================================
+. tempname SUP
+
+. postfile `SUP' str5 mobility str40 step double(rows) using "${OUT}/tables/A1_A1.9_support.dta", replace
+(file <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/tables/A1_A1.9_support.dta not found)
+
+. foreach m in vis tour {
+  2.     local mm = cond("`m'" == "vis", "visitors", "tourists")
+  3.     * A4 support exactly as 04_run_mirror_sensitivity.do:118-166
+.     gen byte __ct = has_both_`m' == 1 & !missing(v_ttl_k, v_ttl_exporter_lb_k, mob_bilat_`m')
+  4.     quietly count if __ct
+  5.     post `SUP' ("`m'") ("A4 raw candidate (both trade sides observed)") (r(N))
+  6.     local conv 0
+  7.     forvalues it = 1/10 {
+  8.         capture drop __i __e
+  9.         quietly ppmlhdfe v_ttl_k mob_bilat_`m' if __ct, absorb(${FE}) vce(cluster pair_id)
+ 10.         gen byte __i = e(sample)
+ 11.         nflow est "A1.9 A4 support iteration `it' importer `m' (immediate record, audit R1-10)"
+ 12.         quietly ppmlhdfe v_ttl_exporter_lb_k mob_bilat_`m' if __ct, absorb(${FE}) vce(cluster pair_id)
+ 13.         gen byte __e = e(sample)
+ 14.         nflow est "A1.9 A4 support iteration `it' exporter `m' (immediate record, audit R1-10)"
+ 15.         quietly count if __ct & (!__i | !__e)
+ 16.         if r(N) == 0 {
+ 17.             local conv 1
+ 18.             continue, break
+ 19.         }
+ 20.         replace __ct = __ct & __i & __e
+ 21.     }
+ 22.     assert `conv' == 1
+ 23.     drop __i __e
+ 24.     quietly count if __ct
+ 25.     post `SUP' ("`m'") ("A4 bilateral common support (iterated)") (r(N))
+ 26.     capture noisily ppmlhdfe v_ttl_k mob_bilat_`m' if __ct, absorb(${FE}) vce(cluster pair_id)
+ 27.     A1_after, rc(`=_rc') item(A1.9) spec(A4_bilat_importer) sample(A4 common support) mobility(`m') terms(mob_bilat_`m')
+ 28.     if ${A4PC} assert abs(_b[mob_bilat_`m'] - ${A4_`mm'_importer_b}) < 1e-6 & e(N) == ${A4_`mm'_importer_N}
+ 29.     capture noisily ppmlhdfe v_ttl_exporter_lb_k mob_bilat_`m' if __ct, absorb(${FE}) vce(cluster pair_id)
+ 30.     A1_after, rc(`=_rc') item(A1.9) spec(A4_bilat_exporter) sample(A4 common support) mobility(`m') terms(mob_bilat_`m')
+ 31.     if ${A4PC} assert abs(_b[mob_bilat_`m'] - ${A4_`mm'_exporter_b}) < 1e-6 & e(N) == ${A4_`mm'_exporter_N}
+ 32.     if ${A4PC} display as result "A1.9_PC_TABLE_A4_`m' PASS"
+ 33.     else display as result "A1.9_PC_TABLE_A4_`m' NOT APPLICABLE (no published A4 for ${VINTAGE})"
+ 34.     * joint directional models on the A4 support; iterate to identical observations for both sides
+.     gen byte __cd = __ct
+ 35.     local conv 0
+ 36.     forvalues it = 1/10 {
+ 37.         capture drop __i __e
+ 38.         quietly ppmlhdfe v_ttl_k mob_rev_`m' mob_same_`m' if __cd, absorb(${FE}) vce(cluster pair_id)
+ 39.         gen byte __i = e(sample)
+ 40.         nflow est "A1.9 directional support iteration `it' importer `m' (immediate record, audit R1-10)"
+ 41.         quietly ppmlhdfe v_ttl_exporter_lb_k mob_rev_`m' mob_same_`m' if __cd, absorb(${FE}) vce(cluster pair_id)
+ 42.         gen byte __e = e(sample)
+ 43.         nflow est "A1.9 directional support iteration `it' exporter `m' (immediate record, audit R1-10)"
+ 44.         quietly count if __cd & (!__i | !__e)
+ 45.         if r(N) == 0 {
+ 46.             local conv 1
+ 47.             continue, break
+ 48.         }
+ 49.         replace __cd = __cd & __i & __e
+ 50.     }
+ 51.     assert `conv' == 1
+ 52.     drop __i __e
+ 53.     quietly count if __cd
+ 54.     post `SUP' ("`m'") ("directional common support (identical rows both sides)") (r(N))
+ 55.     foreach cl in pair_id unordered_pair_id {
+ 56.         A1_dirfit, y(v_ttl_k) m(`m') cond(__cd) item(A1.9) spec(dirA4_importer) cl(`cl') note("importer-reported trade (reported by j); A4 support")
+ 57.         A1_dirfit, y(v_ttl_exporter_lb_k) m(`m') cond(__cd) item(A1.9) spec(dirA4_exporter) cl(`cl') note("exporter-reported trade (reported by i); A4 support")
+ 58.     }
+ 59.     * supplementary stacked test: is the reverse-minus-same gap equal across reporting sides?
+.     foreach cl in pair_id unordered_pair_id {
+ 60.         preserve
+ 61.             keep if __cd
+ 62.             nflow step "A1.9 stacked side test `m' `cl': keep directional common support"
+ 63.             keep year iso3_o iso3_d exporter_year importer_year pair_id unordered_pair_id v_ttl_k v_ttl_exporter_lb_k mob_rev_`m' mob_same_`m'
+ 64.             expand 2
+ 65.             nflow step "A1.9 stacked side test `m' `cl': expand 2 (side 1 importer, side 2 exporter)"
+ 66.             bysort year iso3_o iso3_d: gen byte __side = _n
+ 67.             gen double __y = cond(__side == 1, v_ttl_k, v_ttl_exporter_lb_k)
+ 68.             gen double rev_imp = cond(__side == 1, mob_rev_`m', 0)
+ 69.             gen double same_imp = cond(__side == 1, mob_same_`m', 0)
+ 70.             gen double rev_exp = cond(__side == 2, mob_rev_`m', 0)
+ 71.             gen double same_exp = cond(__side == 2, mob_same_`m', 0)
+ 72.             egen long __ey = group(exporter_year __side)
+ 73.             egen long __iy = group(importer_year __side)
+ 74.             egen long __pp = group(pair_id __side)
+ 75.             capture noisily ppmlhdfe __y rev_imp same_imp rev_exp same_exp, absorb(__ey __iy __pp) vce(cluster `cl')
+ 76.             local rc = _rc
+ 77.             if `rc' == 0 & e(converged) == 1 {
+ 78.                 assert e(N_full) == e(N) + e(num_singletons) + e(num_separated)
+ 79.                 nflow est "A1.9 stacked side test `m' `cl'"
+ 80.                 foreach t in rev_imp same_imp rev_exp same_exp {
+ 81.                     A1_post1, item(A1.9) spec(dirA4_stacked_`cl') sample(directional common support x2) mobility(`m') term(`t') note("stacked, side-specific FE")
+ 82.                 }
+ 83.                 quietly test (rev_imp - same_imp) = (rev_exp - same_exp)
+ 84.                 A1_posttest, item(A1.9) spec(dirA4_stacked_`cl'_test) sample(directional common support x2) mobility(`m') term(gap_imp_eq_gap_exp) ///
+>                     stat(`r(chi2)') df(`r(df)') p(`r(p)') nobs(`=e(N)') nfull(`=e(N_full)') ncl(`=e(N_clust)') clv(`e(clustvar)') ///
+>                     note("H0 (rev-same) importer side = (rev-same) exporter side; supplementary")
+ 85.                 quietly lincom (rev_imp - same_imp) - (rev_exp - same_exp)
+ 86.                 A1_postlincom, item(A1.9) spec(dirA4_stacked_`cl'_diff) sample(directional common support x2) mobility(`m') term(gap_imp_minus_gap_exp) note("supplementary")
+ 87.             }
+ 88.             else {
+ 89.                 A1_posttest, item(A1.9) spec(dirA4_stacked_`cl'_test) sample(directional common support x2) mobility(`m') term(gap_imp_eq_gap_exp) ///
+>                     stat(.) df(.) p(.) note("FAILED stacked fit rc=`rc'")
+ 90.             }
+ 91.         restore
+ 92.         nflow step "A1.9 stacked side test `m' `cl': restore"
+ 93.     }
+ 94.     drop __ct __cd
+ 95. }
+nflow: estimation N =       19,623 (data N      823,446) A1.9 A4 support iteration 1 importer vis (immediate record, audit R1-10) | 
+nflow: estimation N =       18,414 (data N      823,446) A1.9 A4 support iteration 1 exporter vis (immediate record, audit R1-10) | 
+(4,735 real changes made)
+nflow: estimation N =       17,764 (data N      823,446) A1.9 A4 support iteration 2 importer vis (immediate record, audit R1-10) | 
+nflow: estimation N =       17,760 (data N      823,446) A1.9 A4 support iteration 2 exporter vis (immediate record, audit R1-10) | 
+(21 real changes made)
+nflow: estimation N =       17,755 (data N      823,446) A1.9 A4 support iteration 3 importer vis (immediate record, audit R1-10) | 
+nflow: estimation N =       17,755 (data N      823,446) A1.9 A4 support iteration 3 exporter vis (immediate record, audit R1-10) | 
+warning: dependent variable takes very low values after standardizing (1.0247e-09)
+Iteration 1:   deviance = 8.4156e+07  eps = .         iters = 11   tol = 1.0e-04  min(eta) =  -4.22  P   
+Iteration 2:   deviance = 3.3559e+07  eps = 1.51e+00  iters = 9    tol = 1.0e-04  min(eta) =  -5.80      
+Iteration 3:   deviance = 2.1751e+07  eps = 5.43e-01  iters = 9    tol = 1.0e-04  min(eta) =  -7.51      
+Iteration 4:   deviance = 1.8146e+07  eps = 1.99e-01  iters = 9    tol = 1.0e-04  min(eta) =  -9.67      
+Iteration 5:   deviance = 1.7064e+07  eps = 6.34e-02  iters = 9    tol = 1.0e-04  min(eta) = -11.75      
+Iteration 6:   deviance = 1.6751e+07  eps = 1.87e-02  iters = 8    tol = 1.0e-04  min(eta) = -13.58      
+Iteration 7:   deviance = 1.6664e+07  eps = 5.23e-03  iters = 8    tol = 1.0e-04  min(eta) = -15.08      
+Iteration 8:   deviance = 1.6641e+07  eps = 1.36e-03  iters = 7    tol = 1.0e-04  min(eta) = -16.06      
+Iteration 9:   deviance = 1.6636e+07  eps = 3.33e-04  iters = 4    tol = 1.0e-04  min(eta) = -17.16      
+Iteration 10:  deviance = 1.6634e+07  eps = 7.85e-05  iters = 4    tol = 1.0e-04  min(eta) = -18.70      
+Iteration 11:  deviance = 1.6634e+07  eps = 1.77e-05  iters = 5    tol = 1.0e-05  min(eta) = -20.06      
+Iteration 12:  deviance = 1.6634e+07  eps = 3.76e-06  iters = 4    tol = 1.0e-05  min(eta) = -21.13   S  
+Iteration 13:  deviance = 1.6634e+07  eps = 7.73e-07  iters = 6    tol = 1.0e-06  min(eta) = -22.05   S  
+Iteration 14:  deviance = 1.6634e+07  eps = 1.55e-07  iters = 8    tol = 1.0e-07  min(eta) = -22.84   S  
+Iteration 15:  deviance = 1.6634e+07  eps = 3.09e-08  iters = 5    tol = 1.0e-07  min(eta) = -23.38   S  
+Iteration 16:  deviance = 1.6634e+07  eps = 5.28e-09  iters = 7    tol = 1.0e-08  min(eta) = -23.59   S  
+Iteration 17:  deviance = 1.6634e+07  eps = 6.46e-10  iters = 3    tol = 1.0e-09  min(eta) = -23.62   S O
+------------------------------------------------------------------------------------------------------------
+(legend: p: exact partial-out   s: exact solver   h: step-halving   o: epsilon below tolerance)
+Converged in 17 iterations and 116 HDFE sub-iterations (tol = 1.0e-08)
+
+HDFE PPML regression                              No. of obs      =     17,755
+Absorbing 3 HDFE groups                           Residual df     =      2,542
+Statistics robust to heteroskedasticity           Wald chi2(1)    =       4.32
+Deviance             =  16633906.46               Prob > chi2     =     0.0378
+Log pseudolikelihood = -8371328.659               Pseudo R2       =     0.9857
+
+Number of clusters (pair_id)=      2,543
+                             (Std. err. adjusted for 2,543 clusters in pair_id)
+-------------------------------------------------------------------------------
+              |               Robust
+      v_ttl_k | Coefficient  std. err.      z    P>|z|     [95% conf. interval]
+--------------+----------------------------------------------------------------
+mob_bilat_vis |   .1743964   .0839461     2.08   0.038      .009865    .3389277
+        _cons |   9.451462   1.260831     7.50   0.000     6.980279    11.92265
+-------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+-------------------------------------------------------+
+   Absorbed FE | Categories  - Redundant  = Num. Coefs |
+---------------+---------------------------------------|
+ exporter_year |       816           1         815     |
+ importer_year |       855          15         840     |
+       pair_id |      2543        2543           0    *|
+-------------------------------------------------------+
+* = FE nested within cluster; treated as redundant for DoF computation
+A1_FIT item=A1.9 spec=A4_bilat_importer mob=vis N=17755 N_full=17755 sing=0 sep=0 clusters=2543 conv=1
+nflow: estimation N =       17,755 (data N      823,446) A1 A1.9 A4_bilat_importer vis | 
+warning: dependent variable takes very low values after standardizing (1.4173e-10)
+Iteration 1:   deviance = 8.1489e+07  eps = .         iters = 10   tol = 1.0e-04  min(eta) =  -4.21  P   
+Iteration 2:   deviance = 3.1989e+07  eps = 1.55e+00  iters = 10   tol = 1.0e-04  min(eta) =  -5.69      
+Iteration 3:   deviance = 2.0421e+07  eps = 5.67e-01  iters = 10   tol = 1.0e-04  min(eta) =  -7.58      
+Iteration 4:   deviance = 1.6791e+07  eps = 2.16e-01  iters = 9    tol = 1.0e-04  min(eta) =  -9.92      
+Iteration 5:   deviance = 1.5640e+07  eps = 7.36e-02  iters = 9    tol = 1.0e-04  min(eta) = -12.13      
+Iteration 6:   deviance = 1.5283e+07  eps = 2.34e-02  iters = 10   tol = 1.0e-04  min(eta) = -14.47      
+Iteration 7:   deviance = 1.5177e+07  eps = 6.99e-03  iters = 9    tol = 1.0e-04  min(eta) = -16.31      
+Iteration 8:   deviance = 1.5148e+07  eps = 1.95e-03  iters = 8    tol = 1.0e-04  min(eta) = -17.68      
+Iteration 9:   deviance = 1.5140e+07  eps = 5.08e-04  iters = 6    tol = 1.0e-04  min(eta) = -18.91      
+Iteration 10:  deviance = 1.5138e+07  eps = 1.26e-04  iters = 3    tol = 1.0e-04  min(eta) = -19.74      
+Iteration 11:  deviance = 1.5137e+07  eps = 2.92e-05  iters = 3    tol = 1.0e-04  min(eta) = -20.53      
+Iteration 12:  deviance = 1.5137e+07  eps = 6.13e-06  iters = 8    tol = 1.0e-05  min(eta) = -21.16      
+Iteration 13:  deviance = 1.5137e+07  eps = 1.20e-06  iters = 6    tol = 1.0e-06  min(eta) = -21.47   S  
+Iteration 14:  deviance = 1.5137e+07  eps = 2.23e-07  iters = 3    tol = 1.0e-06  min(eta) = -21.53   S  
+Iteration 15:  deviance = 1.5137e+07  eps = 4.02e-08  iters = 8    tol = 1.0e-07  min(eta) = -22.96   S  
+Iteration 16:  deviance = 1.5137e+07  eps = 6.32e-09  iters = 6    tol = 1.0e-08  min(eta) = -24.22   S  
+Iteration 17:  deviance = 1.5137e+07  eps = 1.00e-09  iters = 3    tol = 1.0e-09  min(eta) = -24.84   S O
+------------------------------------------------------------------------------------------------------------
+(legend: p: exact partial-out   s: exact solver   h: step-halving   o: epsilon below tolerance)
+Converged in 17 iterations and 121 HDFE sub-iterations (tol = 1.0e-08)
+
+HDFE PPML regression                              No. of obs      =     17,755
+Absorbing 3 HDFE groups                           Residual df     =      2,542
+Statistics robust to heteroskedasticity           Wald chi2(1)    =       0.00
+Deviance             =  15137366.35               Prob > chi2     =     0.9955
+Log pseudolikelihood = -7619922.859               Pseudo R2       =     0.9868
+
+Number of clusters (pair_id)=      2,543
+                             (Std. err. adjusted for 2,543 clusters in pair_id)
+-------------------------------------------------------------------------------
+              |               Robust
+v_ttl_expor~k | Coefficient  std. err.      z    P>|z|     [95% conf. interval]
+--------------+----------------------------------------------------------------
+mob_bilat_vis |   -.000436   .0775267    -0.01   0.996    -.1523854    .1515135
+        _cons |   12.11092   1.168961    10.36   0.000     9.819801    14.40204
+-------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+-------------------------------------------------------+
+   Absorbed FE | Categories  - Redundant  = Num. Coefs |
+---------------+---------------------------------------|
+ exporter_year |       816           1         815     |
+ importer_year |       855          15         840     |
+       pair_id |      2543        2543           0    *|
+-------------------------------------------------------+
+* = FE nested within cluster; treated as redundant for DoF computation
+A1_FIT item=A1.9 spec=A4_bilat_exporter mob=vis N=17755 N_full=17755 sing=0 sep=0 clusters=2543 conv=1
+nflow: estimation N =       17,755 (data N      823,446) A1 A1.9 A4_bilat_exporter vis | 
+A1.9_PC_TABLE_A4_vis NOT APPLICABLE (no published A4 for corrected2x)
+nflow: estimation N =       17,755 (data N      823,446) A1.9 directional support iteration 1 importer vis (immediate record, audit R1-10) | 
+nflow: estimation N =       17,755 (data N      823,446) A1.9 directional support iteration 1 exporter vis (immediate record, audit R1-10) | 
+warning: dependent variable takes very low values after standardizing (1.0247e-09)
+Iteration 1:   deviance = 8.4067e+07  eps = .         iters = 11   tol = 1.0e-04  min(eta) =  -4.20  P   
+Iteration 2:   deviance = 3.3400e+07  eps = 1.52e+00  iters = 9    tol = 1.0e-04  min(eta) =  -6.06      
+Iteration 3:   deviance = 2.1541e+07  eps = 5.51e-01  iters = 9    tol = 1.0e-04  min(eta) =  -8.18      
+Iteration 4:   deviance = 1.7926e+07  eps = 2.02e-01  iters = 9    tol = 1.0e-04  min(eta) =  -9.68      
+Iteration 5:   deviance = 1.6842e+07  eps = 6.43e-02  iters = 9    tol = 1.0e-04  min(eta) = -11.75      
+Iteration 6:   deviance = 1.6528e+07  eps = 1.90e-02  iters = 8    tol = 1.0e-04  min(eta) = -13.57      
+Iteration 7:   deviance = 1.6441e+07  eps = 5.31e-03  iters = 7    tol = 1.0e-04  min(eta) = -15.07      
+Iteration 8:   deviance = 1.6418e+07  eps = 1.38e-03  iters = 6    tol = 1.0e-04  min(eta) = -16.05      
+Iteration 9:   deviance = 1.6413e+07  eps = 3.38e-04  iters = 4    tol = 1.0e-04  min(eta) = -17.22      
+Iteration 10:  deviance = 1.6411e+07  eps = 7.97e-05  iters = 4    tol = 1.0e-04  min(eta) = -18.66      
+Iteration 11:  deviance = 1.6411e+07  eps = 1.80e-05  iters = 6    tol = 1.0e-05  min(eta) = -20.03      
+Iteration 12:  deviance = 1.6411e+07  eps = 3.82e-06  iters = 4    tol = 1.0e-05  min(eta) = -21.09   S  
+Iteration 13:  deviance = 1.6411e+07  eps = 7.85e-07  iters = 7    tol = 1.0e-06  min(eta) = -22.01   S  
+Iteration 14:  deviance = 1.6411e+07  eps = 1.57e-07  iters = 8    tol = 1.0e-07  min(eta) = -22.80   S  
+Iteration 15:  deviance = 1.6411e+07  eps = 3.13e-08  iters = 6    tol = 1.0e-07  min(eta) = -23.35   S  
+Iteration 16:  deviance = 1.6411e+07  eps = 5.36e-09  iters = 7    tol = 1.0e-08  min(eta) = -23.56   S  
+Iteration 17:  deviance = 1.6411e+07  eps = 6.55e-10  iters = 4    tol = 1.0e-09  min(eta) = -23.59   S O
+------------------------------------------------------------------------------------------------------------
+(legend: p: exact partial-out   s: exact solver   h: step-halving   o: epsilon below tolerance)
+Converged in 17 iterations and 118 HDFE sub-iterations (tol = 1.0e-08)
+
+HDFE PPML regression                              No. of obs      =     17,755
+Absorbing 3 HDFE groups                           Residual df     =      2,542
+Statistics robust to heteroskedasticity           Wald chi2(2)    =      15.32
+Deviance             =  16410992.55               Prob > chi2     =     0.0005
+Log pseudolikelihood = -8259871.702               Pseudo R2       =     0.9858
+
+Number of clusters (pair_id)=      2,543
+                            (Std. err. adjusted for 2,543 clusters in pair_id)
+------------------------------------------------------------------------------
+             |               Robust
+     v_ttl_k | Coefficient  std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+ mob_rev_vis |   .2424486   .0635357     3.82   0.000     .1179208    .3669763
+mob_same_vis |   .0319584   .0489049     0.65   0.513    -.0638935    .1278104
+       _cons |    8.15335   1.109046     7.35   0.000      5.97966    10.32704
+------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+-------------------------------------------------------+
+   Absorbed FE | Categories  - Redundant  = Num. Coefs |
+---------------+---------------------------------------|
+ exporter_year |       816           1         815     |
+ importer_year |       855          15         840     |
+       pair_id |      2543        2543           0    *|
+-------------------------------------------------------+
+* = FE nested within cluster; treated as redundant for DoF computation
+A1_FIT item=A1.9 spec=dirA4_importer_pair_id mob=vis N=17755 N_full=17755 sing=0 sep=0 clusters=2543 conv=1
+nflow: estimation N =       17,755 (data N      823,446) A1 A1.9 dirA4_importer_pair_id vis | 
+warning: dependent variable takes very low values after standardizing (1.4173e-10)
+Iteration 1:   deviance = 8.1462e+07  eps = .         iters = 10   tol = 1.0e-04  min(eta) =  -4.22  P   
+Iteration 2:   deviance = 3.1957e+07  eps = 1.55e+00  iters = 10   tol = 1.0e-04  min(eta) =  -5.72      
+Iteration 3:   deviance = 2.0381e+07  eps = 5.68e-01  iters = 10   tol = 1.0e-04  min(eta) =  -7.62      
+Iteration 4:   deviance = 1.6750e+07  eps = 2.17e-01  iters = 9    tol = 1.0e-04  min(eta) =  -9.86      
+Iteration 5:   deviance = 1.5599e+07  eps = 7.38e-02  iters = 9    tol = 1.0e-04  min(eta) = -12.02      
+Iteration 6:   deviance = 1.5241e+07  eps = 2.34e-02  iters = 9    tol = 1.0e-04  min(eta) = -14.22      
+Iteration 7:   deviance = 1.5135e+07  eps = 7.01e-03  iters = 9    tol = 1.0e-04  min(eta) = -16.05      
+Iteration 8:   deviance = 1.5106e+07  eps = 1.96e-03  iters = 8    tol = 1.0e-04  min(eta) = -17.54      
+Iteration 9:   deviance = 1.5098e+07  eps = 5.09e-04  iters = 5    tol = 1.0e-04  min(eta) = -18.95      
+Iteration 10:  deviance = 1.5096e+07  eps = 1.26e-04  iters = 4    tol = 1.0e-04  min(eta) = -19.79      
+Iteration 11:  deviance = 1.5096e+07  eps = 2.93e-05  iters = 3    tol = 1.0e-04  min(eta) = -20.26      
+Iteration 12:  deviance = 1.5096e+07  eps = 6.14e-06  iters = 8    tol = 1.0e-05  min(eta) = -20.89      
+Iteration 13:  deviance = 1.5096e+07  eps = 1.20e-06  iters = 6    tol = 1.0e-06  min(eta) = -21.20   S  
+Iteration 14:  deviance = 1.5096e+07  eps = 2.24e-07  iters = 3    tol = 1.0e-06  min(eta) = -21.34   S  
+Iteration 15:  deviance = 1.5096e+07  eps = 4.03e-08  iters = 8    tol = 1.0e-07  min(eta) = -22.98   S  
+Iteration 16:  deviance = 1.5096e+07  eps = 6.34e-09  iters = 7    tol = 1.0e-08  min(eta) = -24.23   S O
+------------------------------------------------------------------------------------------------------------
+(legend: p: exact partial-out   s: exact solver   h: step-halving   o: epsilon below tolerance)
+Converged in 16 iterations and 118 HDFE sub-iterations (tol = 1.0e-08)
+
+HDFE PPML regression                              No. of obs      =     17,755
+Absorbing 3 HDFE groups                           Residual df     =      2,542
+Statistics robust to heteroskedasticity           Wald chi2(2)    =       1.90
+Deviance             =  15095520.51               Prob > chi2     =     0.3875
+Log pseudolikelihood = -7598999.941               Pseudo R2       =     0.9868
+
+Number of clusters (pair_id)=      2,543
+                            (Std. err. adjusted for 2,543 clusters in pair_id)
+------------------------------------------------------------------------------
+             |               Robust
+v_ttl_expo~k | Coefficient  std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+ mob_rev_vis |   .0939736    .070644     1.33   0.183    -.0444861    .2324333
+mob_same_vis |  -.0178452   .0453765    -0.39   0.694    -.1067815    .0710911
+       _cons |   11.01379   1.183511     9.31   0.000     8.694154    13.33343
+------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+-------------------------------------------------------+
+   Absorbed FE | Categories  - Redundant  = Num. Coefs |
+---------------+---------------------------------------|
+ exporter_year |       816           1         815     |
+ importer_year |       855          15         840     |
+       pair_id |      2543        2543           0    *|
+-------------------------------------------------------+
+* = FE nested within cluster; treated as redundant for DoF computation
+A1_FIT item=A1.9 spec=dirA4_exporter_pair_id mob=vis N=17755 N_full=17755 sing=0 sep=0 clusters=2543 conv=1
+nflow: estimation N =       17,755 (data N      823,446) A1 A1.9 dirA4_exporter_pair_id vis | 
+warning: dependent variable takes very low values after standardizing (1.0247e-09)
+Iteration 1:   deviance = 8.4067e+07  eps = .         iters = 11   tol = 1.0e-04  min(eta) =  -4.20  P   
+Iteration 2:   deviance = 3.3400e+07  eps = 1.52e+00  iters = 9    tol = 1.0e-04  min(eta) =  -6.06      
+Iteration 3:   deviance = 2.1541e+07  eps = 5.51e-01  iters = 9    tol = 1.0e-04  min(eta) =  -8.18      
+Iteration 4:   deviance = 1.7926e+07  eps = 2.02e-01  iters = 9    tol = 1.0e-04  min(eta) =  -9.68      
+Iteration 5:   deviance = 1.6842e+07  eps = 6.43e-02  iters = 9    tol = 1.0e-04  min(eta) = -11.75      
+Iteration 6:   deviance = 1.6528e+07  eps = 1.90e-02  iters = 8    tol = 1.0e-04  min(eta) = -13.57      
+Iteration 7:   deviance = 1.6441e+07  eps = 5.31e-03  iters = 7    tol = 1.0e-04  min(eta) = -15.07      
+Iteration 8:   deviance = 1.6418e+07  eps = 1.38e-03  iters = 6    tol = 1.0e-04  min(eta) = -16.05      
+Iteration 9:   deviance = 1.6413e+07  eps = 3.38e-04  iters = 4    tol = 1.0e-04  min(eta) = -17.22      
+Iteration 10:  deviance = 1.6411e+07  eps = 7.97e-05  iters = 4    tol = 1.0e-04  min(eta) = -18.66      
+Iteration 11:  deviance = 1.6411e+07  eps = 1.80e-05  iters = 6    tol = 1.0e-05  min(eta) = -20.03      
+Iteration 12:  deviance = 1.6411e+07  eps = 3.82e-06  iters = 4    tol = 1.0e-05  min(eta) = -21.09   S  
+Iteration 13:  deviance = 1.6411e+07  eps = 7.85e-07  iters = 7    tol = 1.0e-06  min(eta) = -22.01   S  
+Iteration 14:  deviance = 1.6411e+07  eps = 1.57e-07  iters = 8    tol = 1.0e-07  min(eta) = -22.80   S  
+Iteration 15:  deviance = 1.6411e+07  eps = 3.13e-08  iters = 6    tol = 1.0e-07  min(eta) = -23.35   S  
+Iteration 16:  deviance = 1.6411e+07  eps = 5.36e-09  iters = 7    tol = 1.0e-08  min(eta) = -23.56   S  
+Iteration 17:  deviance = 1.6411e+07  eps = 6.55e-10  iters = 4    tol = 1.0e-09  min(eta) = -23.59   S O
+------------------------------------------------------------------------------------------------------------
+(legend: p: exact partial-out   s: exact solver   h: step-halving   o: epsilon below tolerance)
+Converged in 17 iterations and 118 HDFE sub-iterations (tol = 1.0e-08)
+
+HDFE PPML regression                              No. of obs      =     17,755
+Absorbing 3 HDFE groups                           Residual df     =      1,444
+Statistics robust to heteroskedasticity           Wald chi2(2)    =      15.35
+Deviance             =  16410992.55               Prob > chi2     =     0.0005
+Log pseudolikelihood = -8259871.702               Pseudo R2       =     0.9858
+
+Number of clusters (unordered_pair_id)=     1,445
+                  (Std. err. adjusted for 1,445 clusters in unordered_pair_id)
+------------------------------------------------------------------------------
+             |               Robust
+     v_ttl_k | Coefficient  std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+ mob_rev_vis |   .2424486    .064155     3.78   0.000      .116707    .3681901
+mob_same_vis |   .0319584    .051626     0.62   0.536    -.0692267    .1331436
+       _cons |    8.15335   1.108381     7.36   0.000     5.980962    10.32574
+------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+-------------------------------------------------------+
+   Absorbed FE | Categories  - Redundant  = Num. Coefs |
+---------------+---------------------------------------|
+ exporter_year |       816           1         815     |
+ importer_year |       855          15         840     |
+       pair_id |      2543        2543           0    *|
+-------------------------------------------------------+
+* = FE nested within cluster; treated as redundant for DoF computation
+A1_FIT item=A1.9 spec=dirA4_importer_unordered_pair_id mob=vis N=17755 N_full=17755 sing=0 sep=0 clusters=1445 conv=1
+nflow: estimation N =       17,755 (data N      823,446) A1 A1.9 dirA4_importer_unordered_pair_id vis | 
+warning: dependent variable takes very low values after standardizing (1.4173e-10)
+Iteration 1:   deviance = 8.1462e+07  eps = .         iters = 10   tol = 1.0e-04  min(eta) =  -4.22  P   
+Iteration 2:   deviance = 3.1957e+07  eps = 1.55e+00  iters = 10   tol = 1.0e-04  min(eta) =  -5.72      
+Iteration 3:   deviance = 2.0381e+07  eps = 5.68e-01  iters = 10   tol = 1.0e-04  min(eta) =  -7.62      
+Iteration 4:   deviance = 1.6750e+07  eps = 2.17e-01  iters = 9    tol = 1.0e-04  min(eta) =  -9.86      
+Iteration 5:   deviance = 1.5599e+07  eps = 7.38e-02  iters = 9    tol = 1.0e-04  min(eta) = -12.02      
+Iteration 6:   deviance = 1.5241e+07  eps = 2.34e-02  iters = 9    tol = 1.0e-04  min(eta) = -14.22      
+Iteration 7:   deviance = 1.5135e+07  eps = 7.01e-03  iters = 9    tol = 1.0e-04  min(eta) = -16.05      
+Iteration 8:   deviance = 1.5106e+07  eps = 1.96e-03  iters = 8    tol = 1.0e-04  min(eta) = -17.54      
+Iteration 9:   deviance = 1.5098e+07  eps = 5.09e-04  iters = 5    tol = 1.0e-04  min(eta) = -18.95      
+Iteration 10:  deviance = 1.5096e+07  eps = 1.26e-04  iters = 4    tol = 1.0e-04  min(eta) = -19.79      
+Iteration 11:  deviance = 1.5096e+07  eps = 2.93e-05  iters = 3    tol = 1.0e-04  min(eta) = -20.26      
+Iteration 12:  deviance = 1.5096e+07  eps = 6.14e-06  iters = 8    tol = 1.0e-05  min(eta) = -20.89      
+Iteration 13:  deviance = 1.5096e+07  eps = 1.20e-06  iters = 6    tol = 1.0e-06  min(eta) = -21.20   S  
+Iteration 14:  deviance = 1.5096e+07  eps = 2.24e-07  iters = 3    tol = 1.0e-06  min(eta) = -21.34   S  
+Iteration 15:  deviance = 1.5096e+07  eps = 4.03e-08  iters = 8    tol = 1.0e-07  min(eta) = -22.98   S  
+Iteration 16:  deviance = 1.5096e+07  eps = 6.34e-09  iters = 7    tol = 1.0e-08  min(eta) = -24.23   S O
+------------------------------------------------------------------------------------------------------------
+(legend: p: exact partial-out   s: exact solver   h: step-halving   o: epsilon below tolerance)
+Converged in 16 iterations and 118 HDFE sub-iterations (tol = 1.0e-08)
+
+HDFE PPML regression                              No. of obs      =     17,755
+Absorbing 3 HDFE groups                           Residual df     =      1,444
+Statistics robust to heteroskedasticity           Wald chi2(2)    =       1.80
+Deviance             =  15095520.51               Prob > chi2     =     0.4056
+Log pseudolikelihood = -7598999.941               Pseudo R2       =     0.9868
+
+Number of clusters (unordered_pair_id)=     1,445
+                  (Std. err. adjusted for 1,445 clusters in unordered_pair_id)
+------------------------------------------------------------------------------
+             |               Robust
+v_ttl_expo~k | Coefficient  std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+ mob_rev_vis |   .0939736   .0743523     1.26   0.206    -.0517543    .2397015
+mob_same_vis |  -.0178452   .0478725    -0.37   0.709    -.1116735    .0759831
+       _cons |   11.01379   1.299062     8.48   0.000     8.467678    13.55991
+------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+-------------------------------------------------------+
+   Absorbed FE | Categories  - Redundant  = Num. Coefs |
+---------------+---------------------------------------|
+ exporter_year |       816           1         815     |
+ importer_year |       855          15         840     |
+       pair_id |      2543        2543           0    *|
+-------------------------------------------------------+
+* = FE nested within cluster; treated as redundant for DoF computation
+A1_FIT item=A1.9 spec=dirA4_exporter_unordered_pair_id mob=vis N=17755 N_full=17755 sing=0 sep=0 clusters=1445 conv=1
+nflow: estimation N =       17,755 (data N      823,446) A1 A1.9 dirA4_exporter_unordered_pair_id vis | 
+(805,691 observations deleted)
+nflow:      823,446 ->       17,755  A1.9 stacked side test vis pair_id: keep directional common support
+(17,755 observations created)
+nflow:       17,755 ->       35,510  A1.9 stacked side test vis pair_id: expand 2 (side 1 importer, side 2 exporter)
+warning: dependent variable takes very low values after standardizing (1.3911e-10)
+Iteration 1:   deviance = 1.6555e+08  eps = .         iters = 11   tol = 1.0e-04  min(eta) =  -4.22  P   
+Iteration 2:   deviance = 6.5364e+07  eps = 1.53e+00  iters = 10   tol = 1.0e-04  min(eta) =  -6.08      
+Iteration 3:   deviance = 4.1926e+07  eps = 5.59e-01  iters = 10   tol = 1.0e-04  min(eta) =  -8.19      
+Iteration 4:   deviance = 3.4678e+07  eps = 2.09e-01  iters = 9    tol = 1.0e-04  min(eta) =  -9.84      
+Iteration 5:   deviance = 3.2442e+07  eps = 6.89e-02  iters = 9    tol = 1.0e-04  min(eta) = -12.01      
+Iteration 6:   deviance = 3.1770e+07  eps = 2.12e-02  iters = 9    tol = 1.0e-04  min(eta) = -14.20      
+Iteration 7:   deviance = 3.1576e+07  eps = 6.14e-03  iters = 9    tol = 1.0e-04  min(eta) = -16.04      
+Iteration 8:   deviance = 3.1524e+07  eps = 1.66e-03  iters = 8    tol = 1.0e-04  min(eta) = -17.52      
+Iteration 9:   deviance = 3.1511e+07  eps = 4.22e-04  iters = 5    tol = 1.0e-04  min(eta) = -18.95      
+Iteration 10:  deviance = 3.1507e+07  eps = 1.03e-04  iters = 4    tol = 1.0e-04  min(eta) = -19.80      
+Iteration 11:  deviance = 3.1507e+07  eps = 2.35e-05  iters = 3    tol = 1.0e-04  min(eta) = -20.27      
+Iteration 12:  deviance = 3.1507e+07  eps = 4.98e-06  iters = 8    tol = 1.0e-05  min(eta) = -21.09   S  
+Iteration 13:  deviance = 3.1507e+07  eps = 9.91e-07  iters = 6    tol = 1.0e-06  min(eta) = -22.01   S  
+Iteration 14:  deviance = 3.1507e+07  eps = 1.90e-07  iters = 9    tol = 1.0e-07  min(eta) = -22.80   S  
+Iteration 15:  deviance = 3.1507e+07  eps = 3.58e-08  iters = 6    tol = 1.0e-07  min(eta) = -23.33   S  
+Iteration 16:  deviance = 3.1507e+07  eps = 5.85e-09  iters = 6    tol = 1.0e-08  min(eta) = -24.23   S  
+Iteration 17:  deviance = 3.1507e+07  eps = 8.22e-10  iters = 4    tol = 1.0e-09  min(eta) = -24.86   S O
+------------------------------------------------------------------------------------------------------------
+(legend: p: exact partial-out   s: exact solver   h: step-halving   o: epsilon below tolerance)
+Converged in 17 iterations and 126 HDFE sub-iterations (tol = 1.0e-08)
+
+HDFE PPML regression                              No. of obs      =     35,510
+Absorbing 3 HDFE groups                           Residual df     =      2,542
+Statistics robust to heteroskedasticity           Wald chi2(4)    =      15.97
+Deviance             =  31506513.04               Prob > chi2     =     0.0031
+Log pseudolikelihood = -15858871.64               Pseudo R2       =     0.9863
+
+Number of clusters (pair_id)=      2,543
+                            (Std. err. adjusted for 2,543 clusters in pair_id)
+------------------------------------------------------------------------------
+             |               Robust
+         __y | Coefficient  std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+     rev_imp |   .2424486   .0635357     3.82   0.000     .1179208    .3669763
+    same_imp |   .0319584   .0489049     0.65   0.513    -.0638935    .1278104
+     rev_exp |   .0939736    .070644     1.33   0.183    -.0444861    .2324333
+    same_exp |  -.0178452   .0453765    -0.39   0.694    -.1067815    .0710911
+       _cons |   9.557429   .9473248    10.09   0.000     7.700707    11.41415
+------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+-----------------------------------------------------+
+ Absorbed FE | Categories  - Redundant  = Num. Coefs |
+-------------+---------------------------------------|
+        __ey |      1632           1        1631     |
+        __iy |      1710          30        1680     |
+        __pp |      5086        5086           0    *|
+-----------------------------------------------------+
+* = FE nested within cluster; treated as redundant for DoF computation
+nflow: estimation N =       35,510 (data N       35,510) A1.9 stacked side test vis pair_id | 
+nflow:       35,510 ->      823,446  A1.9 stacked side test vis pair_id: restore
+(805,691 observations deleted)
+nflow:      823,446 ->       17,755  A1.9 stacked side test vis unordered_pair_id: keep directional common support
+(17,755 observations created)
+nflow:       17,755 ->       35,510  A1.9 stacked side test vis unordered_pair_id: expand 2 (side 1 importer, side 2 exporter)
+warning: dependent variable takes very low values after standardizing (1.3911e-10)
+Iteration 1:   deviance = 1.6555e+08  eps = .         iters = 11   tol = 1.0e-04  min(eta) =  -4.22  P   
+Iteration 2:   deviance = 6.5364e+07  eps = 1.53e+00  iters = 10   tol = 1.0e-04  min(eta) =  -6.08      
+Iteration 3:   deviance = 4.1926e+07  eps = 5.59e-01  iters = 10   tol = 1.0e-04  min(eta) =  -8.19      
+Iteration 4:   deviance = 3.4678e+07  eps = 2.09e-01  iters = 9    tol = 1.0e-04  min(eta) =  -9.84      
+Iteration 5:   deviance = 3.2442e+07  eps = 6.89e-02  iters = 9    tol = 1.0e-04  min(eta) = -12.01      
+Iteration 6:   deviance = 3.1770e+07  eps = 2.12e-02  iters = 9    tol = 1.0e-04  min(eta) = -14.20      
+Iteration 7:   deviance = 3.1576e+07  eps = 6.14e-03  iters = 9    tol = 1.0e-04  min(eta) = -16.04      
+Iteration 8:   deviance = 3.1524e+07  eps = 1.66e-03  iters = 8    tol = 1.0e-04  min(eta) = -17.52      
+Iteration 9:   deviance = 3.1511e+07  eps = 4.22e-04  iters = 5    tol = 1.0e-04  min(eta) = -18.95      
+Iteration 10:  deviance = 3.1507e+07  eps = 1.03e-04  iters = 4    tol = 1.0e-04  min(eta) = -19.80      
+Iteration 11:  deviance = 3.1507e+07  eps = 2.35e-05  iters = 3    tol = 1.0e-04  min(eta) = -20.27      
+Iteration 12:  deviance = 3.1507e+07  eps = 4.98e-06  iters = 8    tol = 1.0e-05  min(eta) = -21.09   S  
+Iteration 13:  deviance = 3.1507e+07  eps = 9.91e-07  iters = 6    tol = 1.0e-06  min(eta) = -22.01   S  
+Iteration 14:  deviance = 3.1507e+07  eps = 1.90e-07  iters = 9    tol = 1.0e-07  min(eta) = -22.80   S  
+Iteration 15:  deviance = 3.1507e+07  eps = 3.58e-08  iters = 6    tol = 1.0e-07  min(eta) = -23.33   S  
+Iteration 16:  deviance = 3.1507e+07  eps = 5.85e-09  iters = 6    tol = 1.0e-08  min(eta) = -24.23   S  
+Iteration 17:  deviance = 3.1507e+07  eps = 8.22e-10  iters = 4    tol = 1.0e-09  min(eta) = -24.86   S O
+------------------------------------------------------------------------------------------------------------
+(legend: p: exact partial-out   s: exact solver   h: step-halving   o: epsilon below tolerance)
+Converged in 17 iterations and 126 HDFE sub-iterations (tol = 1.0e-08)
+
+HDFE PPML regression                              No. of obs      =     35,510
+Absorbing 3 HDFE groups                           Residual df     =      1,444
+Statistics robust to heteroskedasticity           Wald chi2(4)    =      17.94
+Deviance             =  31506513.04               Prob > chi2     =     0.0013
+Log pseudolikelihood = -15858871.64               Pseudo R2       =     0.9863
+
+Number of clusters (unordered_pair_id)=     1,445
+                  (Std. err. adjusted for 1,445 clusters in unordered_pair_id)
+------------------------------------------------------------------------------
+             |               Robust
+         __y | Coefficient  std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+     rev_imp |   .2424486    .064155     3.78   0.000      .116707    .3681901
+    same_imp |   .0319584    .051626     0.62   0.536    -.0692267    .1331436
+     rev_exp |   .0939736   .0743523     1.26   0.206    -.0517543    .2397015
+    same_exp |  -.0178452   .0478725    -0.37   0.709    -.1116735    .0759831
+       _cons |   9.557429   1.026388     9.31   0.000     7.545745    11.56911
+------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+-----------------------------------------------------+
+ Absorbed FE | Categories  - Redundant  = Num. Coefs |
+-------------+---------------------------------------|
+        __ey |      1632           1        1631     |
+        __iy |      1710          30        1680     |
+        __pp |      5086        5086           0    *|
+-----------------------------------------------------+
+* = FE nested within cluster; treated as redundant for DoF computation
+nflow: estimation N =       35,510 (data N       35,510) A1.9 stacked side test vis unordered_pair_id | 
+nflow:       35,510 ->      823,446  A1.9 stacked side test vis unordered_pair_id: restore
+nflow: estimation N =       24,969 (data N      823,446) A1.9 A4 support iteration 1 importer tour (immediate record, audit R1-10) | 
+nflow: estimation N =       22,852 (data N      823,446) A1.9 A4 support iteration 1 exporter tour (immediate record, audit R1-10) | 
+(8,603 real changes made)
+nflow: estimation N =       21,739 (data N      823,446) A1.9 A4 support iteration 2 importer tour (immediate record, audit R1-10) | 
+nflow: estimation N =       21,744 (data N      823,446) A1.9 A4 support iteration 2 exporter tour (immediate record, audit R1-10) | 
+(18 real changes made)
+nflow: estimation N =       21,733 (data N      823,446) A1.9 A4 support iteration 3 importer tour (immediate record, audit R1-10) | 
+nflow: estimation N =       21,733 (data N      823,446) A1.9 A4 support iteration 3 exporter tour (immediate record, audit R1-10) | 
+warning: dependent variable takes very low values after standardizing (8.4393e-11)
+Iteration 1:   deviance = 9.2610e+07  eps = .         iters = 8    tol = 1.0e-04  min(eta) =  -4.96  P   
+Iteration 2:   deviance = 2.9576e+07  eps = 2.13e+00  iters = 8    tol = 1.0e-04  min(eta) =  -6.38      
+Iteration 3:   deviance = 1.4923e+07  eps = 9.82e-01  iters = 8    tol = 1.0e-04  min(eta) =  -8.10      
+Iteration 4:   deviance = 1.0332e+07  eps = 4.44e-01  iters = 7    tol = 1.0e-04  min(eta) =  -9.85      
+Iteration 5:   deviance = 8.9070e+06  eps = 1.60e-01  iters = 6    tol = 1.0e-04  min(eta) = -11.50      
+Iteration 6:   deviance = 8.4859e+06  eps = 4.96e-02  iters = 6    tol = 1.0e-04  min(eta) = -12.96      
+Iteration 7:   deviance = 8.3678e+06  eps = 1.41e-02  iters = 6    tol = 1.0e-04  min(eta) = -14.93      
+Iteration 8:   deviance = 8.3363e+06  eps = 3.78e-03  iters = 5    tol = 1.0e-04  min(eta) = -16.70      
+Iteration 9:   deviance = 8.3283e+06  eps = 9.61e-04  iters = 4    tol = 1.0e-04  min(eta) = -18.26      
+Iteration 10:  deviance = 8.3264e+06  eps = 2.24e-04  iters = 4    tol = 1.0e-04  min(eta) = -19.50      
+Iteration 11:  deviance = 8.3260e+06  eps = 4.83e-05  iters = 3    tol = 1.0e-04  min(eta) = -20.22      
+Iteration 12:  deviance = 8.3259e+06  eps = 1.06e-05  iters = 4    tol = 1.0e-05  min(eta) = -20.50      
+Iteration 13:  deviance = 8.3259e+06  eps = 2.40e-06  iters = 2    tol = 1.0e-05  min(eta) = -20.86   S  
+Iteration 14:  deviance = 8.3259e+06  eps = 5.09e-07  iters = 2    tol = 1.0e-06  min(eta) = -21.64   S  
+Iteration 15:  deviance = 8.3259e+06  eps = 9.74e-08  iters = 4    tol = 1.0e-07  min(eta) = -22.62   S  
+Iteration 16:  deviance = 8.3259e+06  eps = 1.71e-08  iters = 3    tol = 1.0e-08  min(eta) = -23.56   S  
+Iteration 17:  deviance = 8.3259e+06  eps = 2.90e-09  iters = 3    tol = 1.0e-09  min(eta) = -24.43   S O
+------------------------------------------------------------------------------------------------------------
+(legend: p: exact partial-out   s: exact solver   h: step-halving   o: epsilon below tolerance)
+Converged in 17 iterations and 83 HDFE sub-iterations (tol = 1.0e-08)
+
+HDFE PPML regression                              No. of obs      =     21,733
+Absorbing 3 HDFE groups                           Residual df     =      2,334
+Statistics robust to heteroskedasticity           Wald chi2(1)    =       9.66
+Deviance             =  8325922.661               Prob > chi2     =     0.0019
+Log pseudolikelihood = -4220783.804               Pseudo R2       =     0.9954
+
+Number of clusters (pair_id)=      2,335
+                              (Std. err. adjusted for 2,335 clusters in pair_id)
+--------------------------------------------------------------------------------
+               |               Robust
+       v_ttl_k | Coefficient  std. err.      z    P>|z|     [95% conf. interval]
+---------------+----------------------------------------------------------------
+mob_bilat_tour |   .1802968   .0580233     3.11   0.002     .0665733    .2940204
+         _cons |   10.18857   .9240267    11.03   0.000     8.377507    11.99962
+--------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+-------------------------------------------------------+
+   Absorbed FE | Categories  - Redundant  = Num. Coefs |
+---------------+---------------------------------------|
+ exporter_year |      1181           1        1180     |
+ importer_year |      1281          15        1266     |
+       pair_id |      2335        2335           0    *|
+-------------------------------------------------------+
+* = FE nested within cluster; treated as redundant for DoF computation
+A1_FIT item=A1.9 spec=A4_bilat_importer mob=tour N=21733 N_full=21733 sing=0 sep=0 clusters=2335 conv=1
+nflow: estimation N =       21,733 (data N      823,446) A1 A1.9 A4_bilat_importer tour | 
+warning: dependent variable takes very low values after standardizing (8.5086e-11)
+Iteration 1:   deviance = 9.3626e+07  eps = .         iters = 8    tol = 1.0e-04  min(eta) =  -4.82  P   
+Iteration 2:   deviance = 3.0903e+07  eps = 2.03e+00  iters = 9    tol = 1.0e-04  min(eta) =  -6.15      
+Iteration 3:   deviance = 1.6047e+07  eps = 9.26e-01  iters = 9    tol = 1.0e-04  min(eta) =  -7.89      
+Iteration 4:   deviance = 1.1275e+07  eps = 4.23e-01  iters = 8    tol = 1.0e-04  min(eta) =  -9.74      
+Iteration 5:   deviance = 9.7500e+06  eps = 1.56e-01  iters = 8    tol = 1.0e-04  min(eta) = -11.54      
+Iteration 6:   deviance = 9.2861e+06  eps = 5.00e-02  iters = 7    tol = 1.0e-04  min(eta) = -13.17      
+Iteration 7:   deviance = 9.1505e+06  eps = 1.48e-02  iters = 6    tol = 1.0e-04  min(eta) = -15.13      
+Iteration 8:   deviance = 9.1120e+06  eps = 4.23e-03  iters = 5    tol = 1.0e-04  min(eta) = -17.58      
+Iteration 9:   deviance = 9.1014e+06  eps = 1.16e-03  iters = 5    tol = 1.0e-04  min(eta) = -19.95      
+Iteration 10:  deviance = 9.0987e+06  eps = 2.99e-04  iters = 4    tol = 1.0e-04  min(eta) = -21.66      
+Iteration 11:  deviance = 9.0981e+06  eps = 7.12e-05  iters = 3    tol = 1.0e-04  min(eta) = -22.98      
+Iteration 12:  deviance = 9.0979e+06  eps = 1.60e-05  iters = 6    tol = 1.0e-05  min(eta) = -23.88      
+Iteration 13:  deviance = 9.0979e+06  eps = 3.45e-06  iters = 3    tol = 1.0e-05  min(eta) = -24.47   S  
+Iteration 14:  deviance = 9.0979e+06  eps = 7.37e-07  iters = 6    tol = 1.0e-06  min(eta) = -24.72   S  
+Iteration 15:  deviance = 9.0979e+06  eps = 1.57e-07  iters = 4    tol = 1.0e-07  min(eta) = -24.76   S  
+Iteration 16:  deviance = 9.0979e+06  eps = 3.43e-08  iters = 3    tol = 1.0e-07  min(eta) = -25.77   S  
+Iteration 17:  deviance = 9.0979e+06  eps = 6.84e-09  iters = 6    tol = 1.0e-08  min(eta) = -27.28   S  
+Iteration 18:  deviance = 9.0979e+06  eps = 1.09e-09  iters = 3    tol = 1.0e-09  min(eta) = -28.25   S O
+------------------------------------------------------------------------------------------------------------
+(legend: p: exact partial-out   s: exact solver   h: step-halving   o: epsilon below tolerance)
+Converged in 18 iterations and 103 HDFE sub-iterations (tol = 1.0e-08)
+
+HDFE PPML regression                              No. of obs      =     21,733
+Absorbing 3 HDFE groups                           Residual df     =      2,334
+Statistics robust to heteroskedasticity           Wald chi2(1)    =      20.34
+Deviance             =  9097872.787               Prob > chi2     =     0.0000
+Log pseudolikelihood =  -4601522.87               Pseudo R2       =     0.9948
+
+Number of clusters (pair_id)=      2,335
+                              (Std. err. adjusted for 2,335 clusters in pair_id)
+--------------------------------------------------------------------------------
+               |               Robust
+v_ttl_export~k | Coefficient  std. err.      z    P>|z|     [95% conf. interval]
+---------------+----------------------------------------------------------------
+mob_bilat_tour |   .3177052   .0704491     4.51   0.000     .1796275    .4557829
+         _cons |   8.016038   1.128416     7.10   0.000     5.804383    10.22769
+--------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+-------------------------------------------------------+
+   Absorbed FE | Categories  - Redundant  = Num. Coefs |
+---------------+---------------------------------------|
+ exporter_year |      1181           1        1180     |
+ importer_year |      1281          15        1266     |
+       pair_id |      2335        2335           0    *|
+-------------------------------------------------------+
+* = FE nested within cluster; treated as redundant for DoF computation
+A1_FIT item=A1.9 spec=A4_bilat_exporter mob=tour N=21733 N_full=21733 sing=0 sep=0 clusters=2335 conv=1
+nflow: estimation N =       21,733 (data N      823,446) A1 A1.9 A4_bilat_exporter tour | 
+A1.9_PC_TABLE_A4_tour NOT APPLICABLE (no published A4 for corrected2x)
+nflow: estimation N =       21,733 (data N      823,446) A1.9 directional support iteration 1 importer tour (immediate record, audit R1-10) | 
+nflow: estimation N =       21,733 (data N      823,446) A1.9 directional support iteration 1 exporter tour (immediate record, audit R1-10) | 
+warning: dependent variable takes very low values after standardizing (8.4393e-11)
+Iteration 1:   deviance = 9.2646e+07  eps = .         iters = 8    tol = 1.0e-04  min(eta) =  -4.97  P   
+Iteration 2:   deviance = 2.9614e+07  eps = 2.13e+00  iters = 8    tol = 1.0e-04  min(eta) =  -6.40      
+Iteration 3:   deviance = 1.4970e+07  eps = 9.78e-01  iters = 8    tol = 1.0e-04  min(eta) =  -8.13      
+Iteration 4:   deviance = 1.0383e+07  eps = 4.42e-01  iters = 7    tol = 1.0e-04  min(eta) =  -9.88      
+Iteration 5:   deviance = 8.9590e+06  eps = 1.59e-01  iters = 6    tol = 1.0e-04  min(eta) = -11.52      
+Iteration 6:   deviance = 8.5379e+06  eps = 4.93e-02  iters = 6    tol = 1.0e-04  min(eta) = -12.95      
+Iteration 7:   deviance = 8.4199e+06  eps = 1.40e-02  iters = 6    tol = 1.0e-04  min(eta) = -14.72      
+Iteration 8:   deviance = 8.3883e+06  eps = 3.76e-03  iters = 5    tol = 1.0e-04  min(eta) = -16.51      
+Iteration 9:   deviance = 8.3803e+06  eps = 9.55e-04  iters = 4    tol = 1.0e-04  min(eta) = -18.13      
+Iteration 10:  deviance = 8.3785e+06  eps = 2.23e-04  iters = 4    tol = 1.0e-04  min(eta) = -19.37      
+Iteration 11:  deviance = 8.3781e+06  eps = 4.80e-05  iters = 3    tol = 1.0e-04  min(eta) = -20.08      
+Iteration 12:  deviance = 8.3780e+06  eps = 1.06e-05  iters = 4    tol = 1.0e-05  min(eta) = -20.36      
+Iteration 13:  deviance = 8.3779e+06  eps = 2.39e-06  iters = 3    tol = 1.0e-05  min(eta) = -20.73   S  
+Iteration 14:  deviance = 8.3779e+06  eps = 5.06e-07  iters = 3    tol = 1.0e-06  min(eta) = -21.63   S  
+Iteration 15:  deviance = 8.3779e+06  eps = 9.70e-08  iters = 4    tol = 1.0e-07  min(eta) = -22.62   S  
+Iteration 16:  deviance = 8.3779e+06  eps = 1.71e-08  iters = 3    tol = 1.0e-08  min(eta) = -23.56   S  
+Iteration 17:  deviance = 8.3779e+06  eps = 2.90e-09  iters = 3    tol = 1.0e-09  min(eta) = -24.43   S O
+------------------------------------------------------------------------------------------------------------
+(legend: p: exact partial-out   s: exact solver   h: step-halving   o: epsilon below tolerance)
+Converged in 17 iterations and 85 HDFE sub-iterations (tol = 1.0e-08)
+
+HDFE PPML regression                              No. of obs      =     21,733
+Absorbing 3 HDFE groups                           Residual df     =      2,334
+Statistics robust to heteroskedasticity           Wald chi2(2)    =       2.41
+Deviance             =   8377944.19               Prob > chi2     =     0.3001
+Log pseudolikelihood = -4246794.568               Pseudo R2       =     0.9953
+
+Number of clusters (pair_id)=      2,335
+                             (Std. err. adjusted for 2,335 clusters in pair_id)
+-------------------------------------------------------------------------------
+              |               Robust
+      v_ttl_k | Coefficient  std. err.      z    P>|z|     [95% conf. interval]
+--------------+----------------------------------------------------------------
+ mob_rev_tour |   .0017942   .0432466     0.04   0.967    -.0829676    .0865559
+mob_same_tour |   .0500887   .0383187     1.31   0.191    -.0250146     .125192
+        _cons |   12.27972   .6107226    20.11   0.000     11.08273    13.47671
+-------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+-------------------------------------------------------+
+   Absorbed FE | Categories  - Redundant  = Num. Coefs |
+---------------+---------------------------------------|
+ exporter_year |      1181           1        1180     |
+ importer_year |      1281          15        1266     |
+       pair_id |      2335        2335           0    *|
+-------------------------------------------------------+
+* = FE nested within cluster; treated as redundant for DoF computation
+A1_FIT item=A1.9 spec=dirA4_importer_pair_id mob=tour N=21733 N_full=21733 sing=0 sep=0 clusters=2335 conv=1
+nflow: estimation N =       21,733 (data N      823,446) A1 A1.9 dirA4_importer_pair_id tour | 
+warning: dependent variable takes very low values after standardizing (8.5086e-11)
+Iteration 1:   deviance = 9.3673e+07  eps = .         iters = 8    tol = 1.0e-04  min(eta) =  -4.84  P   
+Iteration 2:   deviance = 3.0960e+07  eps = 2.03e+00  iters = 9    tol = 1.0e-04  min(eta) =  -6.16      
+Iteration 3:   deviance = 1.6122e+07  eps = 9.20e-01  iters = 9    tol = 1.0e-04  min(eta) =  -7.91      
+Iteration 4:   deviance = 1.1361e+07  eps = 4.19e-01  iters = 8    tol = 1.0e-04  min(eta) =  -9.86      
+Iteration 5:   deviance = 9.8397e+06  eps = 1.55e-01  iters = 7    tol = 1.0e-04  min(eta) = -11.67      
+Iteration 6:   deviance = 9.3766e+06  eps = 4.94e-02  iters = 7    tol = 1.0e-04  min(eta) = -13.03      
+Iteration 7:   deviance = 9.2413e+06  eps = 1.46e-02  iters = 6    tol = 1.0e-04  min(eta) = -14.87      
+Iteration 8:   deviance = 9.2028e+06  eps = 4.18e-03  iters = 5    tol = 1.0e-04  min(eta) = -17.41      
+Iteration 9:   deviance = 9.1923e+06  eps = 1.15e-03  iters = 5    tol = 1.0e-04  min(eta) = -19.78      
+Iteration 10:  deviance = 9.1895e+06  eps = 2.95e-04  iters = 4    tol = 1.0e-04  min(eta) = -21.62      
+Iteration 11:  deviance = 9.1889e+06  eps = 7.04e-05  iters = 3    tol = 1.0e-04  min(eta) = -22.93      
+Iteration 12:  deviance = 9.1887e+06  eps = 1.58e-05  iters = 6    tol = 1.0e-05  min(eta) = -23.84      
+Iteration 13:  deviance = 9.1887e+06  eps = 3.41e-06  iters = 3    tol = 1.0e-05  min(eta) = -24.42   S  
+Iteration 14:  deviance = 9.1887e+06  eps = 7.29e-07  iters = 6    tol = 1.0e-06  min(eta) = -24.67   S  
+Iteration 15:  deviance = 9.1887e+06  eps = 1.56e-07  iters = 4    tol = 1.0e-07  min(eta) = -24.71   S  
+Iteration 16:  deviance = 9.1887e+06  eps = 3.40e-08  iters = 3    tol = 1.0e-07  min(eta) = -25.64   S  
+Iteration 17:  deviance = 9.1887e+06  eps = 6.81e-09  iters = 6    tol = 1.0e-08  min(eta) = -27.15   S O
+------------------------------------------------------------------------------------------------------------
+(legend: p: exact partial-out   s: exact solver   h: step-halving   o: epsilon below tolerance)
+Converged in 17 iterations and 99 HDFE sub-iterations (tol = 1.0e-08)
+
+HDFE PPML regression                              No. of obs      =     21,733
+Absorbing 3 HDFE groups                           Residual df     =      2,334
+Statistics robust to heteroskedasticity           Wald chi2(2)    =      10.27
+Deviance             =  9188709.531               Prob > chi2     =     0.0059
+Log pseudolikelihood = -4646941.242               Pseudo R2       =     0.9948
+
+Number of clusters (pair_id)=      2,335
+                             (Std. err. adjusted for 2,335 clusters in pair_id)
+-------------------------------------------------------------------------------
+              |               Robust
+v_ttl_expor~k | Coefficient  std. err.      z    P>|z|     [95% conf. interval]
+--------------+----------------------------------------------------------------
+ mob_rev_tour |   .1129884   .0719288     1.57   0.116    -.0279895    .2539664
+mob_same_tour |   .0666581   .0406134     1.64   0.101    -.0129426    .1462589
+        _cons |   10.37553   .9510964    10.91   0.000      8.51141    12.23964
+-------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+-------------------------------------------------------+
+   Absorbed FE | Categories  - Redundant  = Num. Coefs |
+---------------+---------------------------------------|
+ exporter_year |      1181           1        1180     |
+ importer_year |      1281          15        1266     |
+       pair_id |      2335        2335           0    *|
+-------------------------------------------------------+
+* = FE nested within cluster; treated as redundant for DoF computation
+A1_FIT item=A1.9 spec=dirA4_exporter_pair_id mob=tour N=21733 N_full=21733 sing=0 sep=0 clusters=2335 conv=1
+nflow: estimation N =       21,733 (data N      823,446) A1 A1.9 dirA4_exporter_pair_id tour | 
+warning: dependent variable takes very low values after standardizing (8.4393e-11)
+Iteration 1:   deviance = 9.2646e+07  eps = .         iters = 8    tol = 1.0e-04  min(eta) =  -4.97  P   
+Iteration 2:   deviance = 2.9614e+07  eps = 2.13e+00  iters = 8    tol = 1.0e-04  min(eta) =  -6.40      
+Iteration 3:   deviance = 1.4970e+07  eps = 9.78e-01  iters = 8    tol = 1.0e-04  min(eta) =  -8.13      
+Iteration 4:   deviance = 1.0383e+07  eps = 4.42e-01  iters = 7    tol = 1.0e-04  min(eta) =  -9.88      
+Iteration 5:   deviance = 8.9590e+06  eps = 1.59e-01  iters = 6    tol = 1.0e-04  min(eta) = -11.52      
+Iteration 6:   deviance = 8.5379e+06  eps = 4.93e-02  iters = 6    tol = 1.0e-04  min(eta) = -12.95      
+Iteration 7:   deviance = 8.4199e+06  eps = 1.40e-02  iters = 6    tol = 1.0e-04  min(eta) = -14.72      
+Iteration 8:   deviance = 8.3883e+06  eps = 3.76e-03  iters = 5    tol = 1.0e-04  min(eta) = -16.51      
+Iteration 9:   deviance = 8.3803e+06  eps = 9.55e-04  iters = 4    tol = 1.0e-04  min(eta) = -18.13      
+Iteration 10:  deviance = 8.3785e+06  eps = 2.23e-04  iters = 4    tol = 1.0e-04  min(eta) = -19.37      
+Iteration 11:  deviance = 8.3781e+06  eps = 4.80e-05  iters = 3    tol = 1.0e-04  min(eta) = -20.08      
+Iteration 12:  deviance = 8.3780e+06  eps = 1.06e-05  iters = 4    tol = 1.0e-05  min(eta) = -20.36      
+Iteration 13:  deviance = 8.3779e+06  eps = 2.39e-06  iters = 3    tol = 1.0e-05  min(eta) = -20.73   S  
+Iteration 14:  deviance = 8.3779e+06  eps = 5.06e-07  iters = 3    tol = 1.0e-06  min(eta) = -21.63   S  
+Iteration 15:  deviance = 8.3779e+06  eps = 9.70e-08  iters = 4    tol = 1.0e-07  min(eta) = -22.62   S  
+Iteration 16:  deviance = 8.3779e+06  eps = 1.71e-08  iters = 3    tol = 1.0e-08  min(eta) = -23.56   S  
+Iteration 17:  deviance = 8.3779e+06  eps = 2.90e-09  iters = 3    tol = 1.0e-09  min(eta) = -24.43   S O
+------------------------------------------------------------------------------------------------------------
+(legend: p: exact partial-out   s: exact solver   h: step-halving   o: epsilon below tolerance)
+Converged in 17 iterations and 85 HDFE sub-iterations (tol = 1.0e-08)
+
+HDFE PPML regression                              No. of obs      =     21,733
+Absorbing 3 HDFE groups                           Residual df     =      1,374
+Statistics robust to heteroskedasticity           Wald chi2(2)    =       2.38
+Deviance             =   8377944.19               Prob > chi2     =     0.3047
+Log pseudolikelihood = -4246794.568               Pseudo R2       =     0.9953
+
+Number of clusters (unordered_pair_id)=     1,375
+                   (Std. err. adjusted for 1,375 clusters in unordered_pair_id)
+-------------------------------------------------------------------------------
+              |               Robust
+      v_ttl_k | Coefficient  std. err.      z    P>|z|     [95% conf. interval]
+--------------+----------------------------------------------------------------
+ mob_rev_tour |   .0017942   .0420109     0.04   0.966    -.0805457     .084134
+mob_same_tour |   .0500887   .0348355     1.44   0.150    -.0181876     .118365
+        _cons |   12.27972   .6766451    18.15   0.000     10.95352    13.60592
+-------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+-------------------------------------------------------+
+   Absorbed FE | Categories  - Redundant  = Num. Coefs |
+---------------+---------------------------------------|
+ exporter_year |      1181           1        1180     |
+ importer_year |      1281          15        1266     |
+       pair_id |      2335        2335           0    *|
+-------------------------------------------------------+
+* = FE nested within cluster; treated as redundant for DoF computation
+A1_FIT item=A1.9 spec=dirA4_importer_unordered_pair_id mob=tour N=21733 N_full=21733 sing=0 sep=0 clusters=1375 conv=1
+nflow: estimation N =       21,733 (data N      823,446) A1 A1.9 dirA4_importer_unordered_pair_id tour | 
+warning: dependent variable takes very low values after standardizing (8.5086e-11)
+Iteration 1:   deviance = 9.3673e+07  eps = .         iters = 8    tol = 1.0e-04  min(eta) =  -4.84  P   
+Iteration 2:   deviance = 3.0960e+07  eps = 2.03e+00  iters = 9    tol = 1.0e-04  min(eta) =  -6.16      
+Iteration 3:   deviance = 1.6122e+07  eps = 9.20e-01  iters = 9    tol = 1.0e-04  min(eta) =  -7.91      
+Iteration 4:   deviance = 1.1361e+07  eps = 4.19e-01  iters = 8    tol = 1.0e-04  min(eta) =  -9.86      
+Iteration 5:   deviance = 9.8397e+06  eps = 1.55e-01  iters = 7    tol = 1.0e-04  min(eta) = -11.67      
+Iteration 6:   deviance = 9.3766e+06  eps = 4.94e-02  iters = 7    tol = 1.0e-04  min(eta) = -13.03      
+Iteration 7:   deviance = 9.2413e+06  eps = 1.46e-02  iters = 6    tol = 1.0e-04  min(eta) = -14.87      
+Iteration 8:   deviance = 9.2028e+06  eps = 4.18e-03  iters = 5    tol = 1.0e-04  min(eta) = -17.41      
+Iteration 9:   deviance = 9.1923e+06  eps = 1.15e-03  iters = 5    tol = 1.0e-04  min(eta) = -19.78      
+Iteration 10:  deviance = 9.1895e+06  eps = 2.95e-04  iters = 4    tol = 1.0e-04  min(eta) = -21.62      
+Iteration 11:  deviance = 9.1889e+06  eps = 7.04e-05  iters = 3    tol = 1.0e-04  min(eta) = -22.93      
+Iteration 12:  deviance = 9.1887e+06  eps = 1.58e-05  iters = 6    tol = 1.0e-05  min(eta) = -23.84      
+Iteration 13:  deviance = 9.1887e+06  eps = 3.41e-06  iters = 3    tol = 1.0e-05  min(eta) = -24.42   S  
+Iteration 14:  deviance = 9.1887e+06  eps = 7.29e-07  iters = 6    tol = 1.0e-06  min(eta) = -24.67   S  
+Iteration 15:  deviance = 9.1887e+06  eps = 1.56e-07  iters = 4    tol = 1.0e-07  min(eta) = -24.71   S  
+Iteration 16:  deviance = 9.1887e+06  eps = 3.40e-08  iters = 3    tol = 1.0e-07  min(eta) = -25.64   S  
+Iteration 17:  deviance = 9.1887e+06  eps = 6.81e-09  iters = 6    tol = 1.0e-08  min(eta) = -27.15   S O
+------------------------------------------------------------------------------------------------------------
+(legend: p: exact partial-out   s: exact solver   h: step-halving   o: epsilon below tolerance)
+Converged in 17 iterations and 99 HDFE sub-iterations (tol = 1.0e-08)
+
+HDFE PPML regression                              No. of obs      =     21,733
+Absorbing 3 HDFE groups                           Residual df     =      1,374
+Statistics robust to heteroskedasticity           Wald chi2(2)    =      14.12
+Deviance             =  9188709.531               Prob > chi2     =     0.0009
+Log pseudolikelihood = -4646941.242               Pseudo R2       =     0.9948
+
+Number of clusters (unordered_pair_id)=     1,375
+                   (Std. err. adjusted for 1,375 clusters in unordered_pair_id)
+-------------------------------------------------------------------------------
+              |               Robust
+v_ttl_expor~k | Coefficient  std. err.      z    P>|z|     [95% conf. interval]
+--------------+----------------------------------------------------------------
+ mob_rev_tour |   .1129884   .0708829     1.59   0.111    -.0259395    .2519164
+mob_same_tour |   .0666581   .0389388     1.71   0.087    -.0096606    .1429769
+        _cons |   10.37553   .8540896    12.15   0.000      8.70154    12.04951
+-------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+-------------------------------------------------------+
+   Absorbed FE | Categories  - Redundant  = Num. Coefs |
+---------------+---------------------------------------|
+ exporter_year |      1181           1        1180     |
+ importer_year |      1281          15        1266     |
+       pair_id |      2335        2335           0    *|
+-------------------------------------------------------+
+* = FE nested within cluster; treated as redundant for DoF computation
+A1_FIT item=A1.9 spec=dirA4_exporter_unordered_pair_id mob=tour N=21733 N_full=21733 sing=0 sep=0 clusters=1375 conv=1
+nflow: estimation N =       21,733 (data N      823,446) A1 A1.9 dirA4_exporter_unordered_pair_id tour | 
+(801,713 observations deleted)
+nflow:      823,446 ->       21,733  A1.9 stacked side test tour pair_id: keep directional common support
+(21,733 observations created)
+nflow:       21,733 ->       43,466  A1.9 stacked side test tour pair_id: expand 2 (side 1 importer, side 2 exporter)
+warning: dependent variable takes very low values after standardizing (8.4738e-11)
+Iteration 1:   deviance = 1.8636e+08  eps = .         iters = 8    tol = 1.0e-04  min(eta) =  -4.99  P   
+Iteration 2:   deviance = 6.0598e+07  eps = 2.08e+00  iters = 9    tol = 1.0e-04  min(eta) =  -6.43      
+Iteration 3:   deviance = 3.1105e+07  eps = 9.48e-01  iters = 9    tol = 1.0e-04  min(eta) =  -8.16      
+Iteration 4:   deviance = 2.1750e+07  eps = 4.30e-01  iters = 8    tol = 1.0e-04  min(eta) =  -9.92      
+Iteration 5:   deviance = 1.8801e+07  eps = 1.57e-01  iters = 7    tol = 1.0e-04  min(eta) = -11.64      
+Iteration 6:   deviance = 1.7915e+07  eps = 4.94e-02  iters = 7    tol = 1.0e-04  min(eta) = -13.00      
+Iteration 7:   deviance = 1.7661e+07  eps = 1.44e-02  iters = 6    tol = 1.0e-04  min(eta) = -14.81      
+Iteration 8:   deviance = 1.7591e+07  eps = 3.99e-03  iters = 5    tol = 1.0e-04  min(eta) = -17.34      
+Iteration 9:   deviance = 1.7573e+07  eps = 1.06e-03  iters = 5    tol = 1.0e-04  min(eta) = -19.74      
+Iteration 10:  deviance = 1.7568e+07  eps = 2.62e-04  iters = 4    tol = 1.0e-04  min(eta) = -21.57      
+Iteration 11:  deviance = 1.7567e+07  eps = 6.02e-05  iters = 3    tol = 1.0e-04  min(eta) = -22.90      
+Iteration 12:  deviance = 1.7567e+07  eps = 1.34e-05  iters = 6    tol = 1.0e-05  min(eta) = -23.81      
+Iteration 13:  deviance = 1.7567e+07  eps = 2.95e-06  iters = 3    tol = 1.0e-05  min(eta) = -24.41   S  
+Iteration 14:  deviance = 1.7567e+07  eps = 6.29e-07  iters = 6    tol = 1.0e-06  min(eta) = -24.67   S  
+Iteration 15:  deviance = 1.7567e+07  eps = 1.29e-07  iters = 4    tol = 1.0e-07  min(eta) = -24.72   S  
+Iteration 16:  deviance = 1.7567e+07  eps = 2.63e-08  iters = 3    tol = 1.0e-07  min(eta) = -25.60   S  
+Iteration 17:  deviance = 1.7567e+07  eps = 5.03e-09  iters = 7    tol = 1.0e-08  min(eta) = -27.12   S  
+Iteration 18:  deviance = 1.7567e+07  eps = 8.01e-10  iters = 3    tol = 1.0e-09  min(eta) = -28.11   S O
+------------------------------------------------------------------------------------------------------------
+(legend: p: exact partial-out   s: exact solver   h: step-halving   o: epsilon below tolerance)
+Converged in 18 iterations and 103 HDFE sub-iterations (tol = 1.0e-08)
+
+HDFE PPML regression                              No. of obs      =     43,466
+Absorbing 3 HDFE groups                           Residual df     =      2,334
+Statistics robust to heteroskedasticity           Wald chi2(4)    =      11.45
+Deviance             =  17566653.71               Prob > chi2     =     0.0220
+Log pseudolikelihood = -8893735.803               Pseudo R2       =     0.9950
+
+Number of clusters (pair_id)=      2,335
+                            (Std. err. adjusted for 2,335 clusters in pair_id)
+------------------------------------------------------------------------------
+             |               Robust
+         __y | Coefficient  std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+     rev_imp |   .0017942   .0432466     0.04   0.967    -.0829676    .0865559
+    same_imp |   .0500887   .0383187     1.31   0.191    -.0250146     .125192
+     rev_exp |   .1129884   .0719288     1.57   0.116    -.0279895    .2539664
+    same_exp |   .0666581   .0406134     1.64   0.101    -.0129426    .1462589
+       _cons |   11.34992   .5763593    19.69   0.000     10.22027    12.47956
+------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+-----------------------------------------------------+
+ Absorbed FE | Categories  - Redundant  = Num. Coefs |
+-------------+---------------------------------------|
+        __ey |      2362           1        2361     |
+        __iy |      2562          30        2532     |
+        __pp |      4670        4670           0    *|
+-----------------------------------------------------+
+* = FE nested within cluster; treated as redundant for DoF computation
+nflow: estimation N =       43,466 (data N       43,466) A1.9 stacked side test tour pair_id | 
+nflow:       43,466 ->      823,446  A1.9 stacked side test tour pair_id: restore
+(801,713 observations deleted)
+nflow:      823,446 ->       21,733  A1.9 stacked side test tour unordered_pair_id: keep directional common support
+(21,733 observations created)
+nflow:       21,733 ->       43,466  A1.9 stacked side test tour unordered_pair_id: expand 2 (side 1 importer, side 2 exporter)
+warning: dependent variable takes very low values after standardizing (8.4738e-11)
+Iteration 1:   deviance = 1.8636e+08  eps = .         iters = 8    tol = 1.0e-04  min(eta) =  -4.99  P   
+Iteration 2:   deviance = 6.0598e+07  eps = 2.08e+00  iters = 9    tol = 1.0e-04  min(eta) =  -6.43      
+Iteration 3:   deviance = 3.1105e+07  eps = 9.48e-01  iters = 9    tol = 1.0e-04  min(eta) =  -8.16      
+Iteration 4:   deviance = 2.1750e+07  eps = 4.30e-01  iters = 8    tol = 1.0e-04  min(eta) =  -9.92      
+Iteration 5:   deviance = 1.8801e+07  eps = 1.57e-01  iters = 7    tol = 1.0e-04  min(eta) = -11.64      
+Iteration 6:   deviance = 1.7915e+07  eps = 4.94e-02  iters = 7    tol = 1.0e-04  min(eta) = -13.00      
+Iteration 7:   deviance = 1.7661e+07  eps = 1.44e-02  iters = 6    tol = 1.0e-04  min(eta) = -14.81      
+Iteration 8:   deviance = 1.7591e+07  eps = 3.99e-03  iters = 5    tol = 1.0e-04  min(eta) = -17.34      
+Iteration 9:   deviance = 1.7573e+07  eps = 1.06e-03  iters = 5    tol = 1.0e-04  min(eta) = -19.74      
+Iteration 10:  deviance = 1.7568e+07  eps = 2.62e-04  iters = 4    tol = 1.0e-04  min(eta) = -21.57      
+Iteration 11:  deviance = 1.7567e+07  eps = 6.02e-05  iters = 3    tol = 1.0e-04  min(eta) = -22.90      
+Iteration 12:  deviance = 1.7567e+07  eps = 1.34e-05  iters = 6    tol = 1.0e-05  min(eta) = -23.81      
+Iteration 13:  deviance = 1.7567e+07  eps = 2.95e-06  iters = 3    tol = 1.0e-05  min(eta) = -24.41   S  
+Iteration 14:  deviance = 1.7567e+07  eps = 6.29e-07  iters = 6    tol = 1.0e-06  min(eta) = -24.67   S  
+Iteration 15:  deviance = 1.7567e+07  eps = 1.29e-07  iters = 4    tol = 1.0e-07  min(eta) = -24.72   S  
+Iteration 16:  deviance = 1.7567e+07  eps = 2.63e-08  iters = 3    tol = 1.0e-07  min(eta) = -25.60   S  
+Iteration 17:  deviance = 1.7567e+07  eps = 5.03e-09  iters = 7    tol = 1.0e-08  min(eta) = -27.12   S  
+Iteration 18:  deviance = 1.7567e+07  eps = 8.01e-10  iters = 3    tol = 1.0e-09  min(eta) = -28.11   S O
+------------------------------------------------------------------------------------------------------------
+(legend: p: exact partial-out   s: exact solver   h: step-halving   o: epsilon below tolerance)
+Converged in 18 iterations and 103 HDFE sub-iterations (tol = 1.0e-08)
+
+HDFE PPML regression                              No. of obs      =     43,466
+Absorbing 3 HDFE groups                           Residual df     =      1,374
+Statistics robust to heteroskedasticity           Wald chi2(4)    =      14.36
+Deviance             =  17566653.71               Prob > chi2     =     0.0062
+Log pseudolikelihood = -8893735.803               Pseudo R2       =     0.9950
+
+Number of clusters (unordered_pair_id)=     1,375
+                  (Std. err. adjusted for 1,375 clusters in unordered_pair_id)
+------------------------------------------------------------------------------
+             |               Robust
+         __y | Coefficient  std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+     rev_imp |   .0017942   .0420109     0.04   0.966    -.0805457     .084134
+    same_imp |   .0500887   .0348355     1.44   0.150    -.0181876     .118365
+     rev_exp |   .1129884   .0708829     1.59   0.111    -.0259395    .2519164
+    same_exp |   .0666581   .0389388     1.71   0.087    -.0096606    .1429769
+       _cons |   11.34992   .5939042    19.11   0.000     10.18589    12.51395
+------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+-----------------------------------------------------+
+ Absorbed FE | Categories  - Redundant  = Num. Coefs |
+-------------+---------------------------------------|
+        __ey |      2362           1        2361     |
+        __iy |      2562          30        2532     |
+        __pp |      4670        4670           0    *|
+-----------------------------------------------------+
+* = FE nested within cluster; treated as redundant for DoF computation
+nflow: estimation N =       43,466 (data N       43,466) A1.9 stacked side test tour unordered_pair_id | 
+nflow:       43,466 ->      823,446  A1.9 stacked side test tour unordered_pair_id: restore
+
+. postclose `SUP'
+
+. preserve
+
+.     use "${OUT}/tables/A1_A1.9_support.dta", clear
+
+.     gen str10 vintage = "${VINTAGE}"
+
+.     order vintage
+
+.     export delimited using "${OUT}/tables/A1_A1.9_support.csv", replace
+(file <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/tables/A1_A1.9_support.csv not found)
+file <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/tables/A1_A1.9_support.csv saved
+
+. restore
+
+. erase "${OUT}/tables/A1_A1.9_support.dta"
+
+. 
+. A1_close
+(file <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/results/A1_parts/A1_04.csv not found)
+file <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/results/A1_parts/A1_04.csv saved
+
+. nflow report
+
+  +---------------------------------------------------------------------------------------------------------------------------------------------------+
+  |       date       time    kind   n_before   n_after    change   reason                                                                             |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:35:19   start          .    823446         0   start: <PACKAGE_ROOT>/05_output/10_analysis/co.. |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:35:20     est     823446     20598   -802848   A1 A1.1 baseline vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output        |
+  | 4 Nov 2026   08:35:20     est     823446     26339   -797107   A1 A1.1 baseline tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output       |
+  | 4 Nov 2026   08:35:21     est     823446      2457   -820989   A1 A1.1 cs_iter1 vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output        |
+  | 4 Nov 2026   08:35:21     est     823446      2457   -820989   A1 A1.1 cs_iter1 tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output       |
+  | 4 Nov 2026   08:35:21     est     823446      2457   -820989   A1 A1.1 cs_iter2 vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output        |
+  | 4 Nov 2026   08:35:21     est     823446      2457   -820989   A1 A1.1 cs_iter2 tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output       |
+  | 4 Nov 2026   08:35:22     est     823446     13872   -809574   A1 A1.1 dynamic_T3 vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output      |
+  | 4 Nov 2026   08:35:23     est     823446     19061   -804385   A1 A1.1 dynamic_T3 tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output     |
+  | 4 Nov 2026   08:35:23     est     823446     11971   -811475   A1 A1.1 cd_T5 vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output           |
+  | 4 Nov 2026   08:35:24     est     823446     10932   -812514   A1 A1.1 cd_T5 tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output          |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:35:24    step     823446    615589   -207857   A1.2: keep trade-reporting panel rows (v_ttl_k observed) as the reference universe |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:35:34   start          .    823446         0   start: <PACKAGE_ROOT>/05_output/10_analysis/co.. |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:35:55    step     823446    823446         0   A1.4 merge reverse-direction reporter flags (m:1 keep master match; no row change) |
+  | 4 Nov 2026   08:35:55    step     823446    823446         0   A1.4 merge same-direction reporter flags (m:1 keep master match; no row change)    |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:35:56     est     823446     20598   -802848   A1 A1.4 excl_ratio50_own vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe out.. |
+  | 4 Nov 2026   08:35:57     est     823446     20598   -802848   A1 A1.4 excl_ratio50_union vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe o.. |
+  | 4 Nov 2026   08:35:57     est     823446     26339   -797107   A1 A1.4 excl_ratio50_own tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe ou.. |
+  | 4 Nov 2026   08:35:58     est     823446     26339   -797107   A1 A1.4 excl_ratio50_union tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe .. |
+  | 4 Nov 2026   08:35:58     est     823446     20502   -802944   A1 A1.4 excl_ratio10_own vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe out.. |
+  | 4 Nov 2026   08:35:59     est     823446     20502   -802944   A1 A1.4 excl_ratio10_union vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe o.. |
+  | 4 Nov 2026   08:36:00     est     823446     26339   -797107   A1 A1.4 excl_ratio10_own tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe ou.. |
+  | 4 Nov 2026   08:36:00     est     823446     26291   -797155   A1 A1.4 excl_ratio10_union tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe .. |
+  | 4 Nov 2026   08:36:06     est     823446     20598   -802848   A1 A1.5 full vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output            |
+  | 4 Nov 2026   08:36:07     est     823446     10634   -812812   A1 A1.5 r1 separate restricted pass 1 (immediate record, audit R1-10) | ppmlhdfe.. |
+  | 4 Nov 2026   08:36:08     est     823446      9584   -813862   A1 A1.5 r1 separate complement pass 1 (immediate record, audit R1-10) | ppmlhdfe.. |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:08    step     823446     20218   -803228   A1_stack A1.5 r1 pass 1: keep rows in either separate e(sample)                    |
+  | 4 Nov 2026   08:36:08    step      20218     40436     20218   A1_stack A1.5 r1 pass 1: expand 2 (one copy per block)                             |
+  | 4 Nov 2026   08:36:08    step      40436     20218    -20218   A1_stack A1.5 r1 pass 1: keep block copies inside their own e(sample)              |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:10     est      20218     20218         0   A1 A1.5 r1 stacked pass 1 | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output   |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:10    step      20218    823446    803228   A1_stack A1.5 r1 pass 1: restore                                                   |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:11     est     823446     10634   -812812   A1 A1.5 r1_sep_restricted vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe ou.. |
+  | 4 Nov 2026   08:36:11     est     823446      9584   -813862   A1 A1.5 r1_sep_complement vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe ou.. |
+  | 4 Nov 2026   08:36:11     est     823446      8321   -815125   A1 A1.5 r2 separate restricted pass 1 (immediate record, audit R1-10) | ppmlhdfe.. |
+  | 4 Nov 2026   08:36:12     est     823446     12085   -811361   A1 A1.5 r2 separate complement pass 1 (immediate record, audit R1-10) | ppmlhdfe.. |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:12    step     823446     20406   -803040   A1_stack A1.5 r2 pass 1: keep rows in either separate e(sample)                    |
+  | 4 Nov 2026   08:36:12    step      20406     40812     20406   A1_stack A1.5 r2 pass 1: expand 2 (one copy per block)                             |
+  | 4 Nov 2026   08:36:12    step      40812     20406    -20406   A1_stack A1.5 r2 pass 1: keep block copies inside their own e(sample)              |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:12     est      20406     20406         0   A1 A1.5 r2 stacked pass 1 | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output   |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:12    step      20406    823446    803040   A1_stack A1.5 r2 pass 1: restore                                                   |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:13     est     823446      8321   -815125   A1 A1.5 r2_sep_restricted vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe ou.. |
+  | 4 Nov 2026   08:36:13     est     823446     12085   -811361   A1 A1.5 r2_sep_complement vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe ou.. |
+  | 4 Nov 2026   08:36:13     est     823446      7643   -815803   A1 A1.5 r2all separate restricted pass 1 (immediate record, audit R1-10) | ppmlh.. |
+  | 4 Nov 2026   08:36:14     est     823446     12752   -810694   A1 A1.5 r2all separate complement pass 1 (immediate record, audit R1-10) | ppmlh.. |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:14    step     823446     20395   -803051   A1_stack A1.5 r2all pass 1: keep rows in either separate e(sample)                 |
+  | 4 Nov 2026   08:36:14    step      20395     40790     20395   A1_stack A1.5 r2all pass 1: expand 2 (one copy per block)                          |
+  | 4 Nov 2026   08:36:14    step      40790     20395    -20395   A1_stack A1.5 r2all pass 1: keep block copies inside their own e(sample)           |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:14     est      20395     20395         0   A1 A1.5 r2all stacked pass 1 | ppmlhdfe e(N); drop breakdown in the ppmlhdfe out.. |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:14    step      20395    823446    803051   A1_stack A1.5 r2all pass 1: restore                                                |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:14     est     823446      7643   -815803   A1 A1.5 r2all_sep_restricted vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe.. |
+  | 4 Nov 2026   08:36:15     est     823446     12752   -810694   A1 A1.5 r2all_sep_complement vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe.. |
+  | 4 Nov 2026   08:36:15     est     823446     17938   -805508   A1 A1.5 r3 separate restricted pass 1 (immediate record, audit R1-10) | ppmlhdfe.. |
+  | 4 Nov 2026   08:36:15     est     823446      2466   -820980   A1 A1.5 r3 separate complement pass 1 (immediate record, audit R1-10) | ppmlhdfe.. |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:15    step     823446     20404   -803042   A1_stack A1.5 r3 pass 1: keep rows in either separate e(sample)                    |
+  | 4 Nov 2026   08:36:15    step      20404     40808     20404   A1_stack A1.5 r3 pass 1: expand 2 (one copy per block)                             |
+  | 4 Nov 2026   08:36:15    step      40808     20404    -20404   A1_stack A1.5 r3 pass 1: keep block copies inside their own e(sample)              |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:16     est      20404     20404         0   A1 A1.5 r3 stacked pass 1 | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output   |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:16    step      20404    823446    803042   A1_stack A1.5 r3 pass 1: restore                                                   |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:16     est     823446     17938   -805508   A1 A1.5 r3_sep_restricted vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe ou.. |
+  | 4 Nov 2026   08:36:16     est     823446      2466   -820980   A1 A1.5 r3_sep_complement vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe ou.. |
+  | 4 Nov 2026   08:36:17     est     823446     14509   -808937   A1 A1.5 r4 separate restricted pass 1 (immediate record, audit R1-10) | ppmlhdfe.. |
+  | 4 Nov 2026   08:36:17     est     823446      5704   -817742   A1 A1.5 r4 separate complement pass 1 (immediate record, audit R1-10) | ppmlhdfe.. |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:17    step     823446     20213   -803233   A1_stack A1.5 r4 pass 1: keep rows in either separate e(sample)                    |
+  | 4 Nov 2026   08:36:17    step      20213     40426     20213   A1_stack A1.5 r4 pass 1: expand 2 (one copy per block)                             |
+  | 4 Nov 2026   08:36:17    step      40426     20213    -20213   A1_stack A1.5 r4 pass 1: keep block copies inside their own e(sample)              |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:18     est      20213     20213         0   A1 A1.5 r4 stacked pass 1 | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output   |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:18    step      20213    823446    803233   A1_stack A1.5 r4 pass 1: restore                                                   |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:18     est     823446     14509   -808937   A1 A1.5 r4_sep_restricted vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe ou.. |
+  | 4 Nov 2026   08:36:18     est     823446      5704   -817742   A1 A1.5 r4_sep_complement vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe ou.. |
+  | 4 Nov 2026   08:36:18     est     823446     26339   -797107   A1 A1.5 full tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output           |
+  | 4 Nov 2026   08:36:19     est     823446     13761   -809685   A1 A1.5 r1 separate restricted pass 1 (immediate record, audit R1-10) | ppmlhdfe.. |
+  | 4 Nov 2026   08:36:20     est     823446     11583   -811863   A1 A1.5 r1 separate complement pass 1 (immediate record, audit R1-10) | ppmlhdfe.. |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:20    step     823446     25344   -798102   A1_stack A1.5 r1 pass 1: keep rows in either separate e(sample)                    |
+  | 4 Nov 2026   08:36:20    step      25344     50688     25344   A1_stack A1.5 r1 pass 1: expand 2 (one copy per block)                             |
+  | 4 Nov 2026   08:36:20    step      50688     25344    -25344   A1_stack A1.5 r1 pass 1: keep block copies inside their own e(sample)              |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:22     est      25344     25344         0   A1 A1.5 r1 stacked pass 1 | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output   |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:22    step      25344    823446    798102   A1_stack A1.5 r1 pass 1: restore                                                   |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:23     est     823446     13761   -809685   A1 A1.5 r1_sep_restricted tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe o.. |
+  | 4 Nov 2026   08:36:23     est     823446     11583   -811863   A1 A1.5 r1_sep_complement tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe o.. |
+  | 4 Nov 2026   08:36:23     est     823446     10775   -812671   A1 A1.5 r2 separate restricted pass 1 (immediate record, audit R1-10) | ppmlhdfe.. |
+  | 4 Nov 2026   08:36:24     est     823446     15030   -808416   A1 A1.5 r2 separate complement pass 1 (immediate record, audit R1-10) | ppmlhdfe.. |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:24    step     823446     25805   -797641   A1_stack A1.5 r2 pass 1: keep rows in either separate e(sample)                    |
+  | 4 Nov 2026   08:36:24    step      25805     51610     25805   A1_stack A1.5 r2 pass 1: expand 2 (one copy per block)                             |
+  | 4 Nov 2026   08:36:24    step      51610     25805    -25805   A1_stack A1.5 r2 pass 1: keep block copies inside their own e(sample)              |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:24     est      25805     25805         0   A1 A1.5 r2 stacked pass 1 | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output   |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:24    step      25805    823446    797641   A1_stack A1.5 r2 pass 1: restore                                                   |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:25     est     823446     10775   -812671   A1 A1.5 r2_sep_restricted tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe o.. |
+  | 4 Nov 2026   08:36:25     est     823446     15030   -808416   A1 A1.5 r2_sep_complement tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe o.. |
+  | 4 Nov 2026   08:36:25     est     823446     10450   -812996   A1 A1.5 r2all separate restricted pass 1 (immediate record, audit R1-10) | ppmlh.. |
+  | 4 Nov 2026   08:36:26     est     823446     15452   -807994   A1 A1.5 r2all separate complement pass 1 (immediate record, audit R1-10) | ppmlh.. |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:26    step     823446     25902   -797544   A1_stack A1.5 r2all pass 1: keep rows in either separate e(sample)                 |
+  | 4 Nov 2026   08:36:26    step      25902     51804     25902   A1_stack A1.5 r2all pass 1: expand 2 (one copy per block)                          |
+  | 4 Nov 2026   08:36:26    step      51804     25902    -25902   A1_stack A1.5 r2all pass 1: keep block copies inside their own e(sample)           |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:26     est      25902     25902         0   A1 A1.5 r2all stacked pass 1 | ppmlhdfe e(N); drop breakdown in the ppmlhdfe out.. |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:26    step      25902    823446    797544   A1_stack A1.5 r2all pass 1: restore                                                |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:27     est     823446     10450   -812996   A1 A1.5 r2all_sep_restricted tour | ppmlhdfe e(N); drop breakdown in the ppmlhdf.. |
+  | 4 Nov 2026   08:36:27     est     823446     15452   -807994   A1 A1.5 r2all_sep_complement tour | ppmlhdfe e(N); drop breakdown in the ppmlhdf.. |
+  | 4 Nov 2026   08:36:27     est     823446     18577   -804869   A1 A1.5 r4 separate restricted pass 1 (immediate record, audit R1-10) | ppmlhdfe.. |
+  | 4 Nov 2026   08:36:27     est     823446      6974   -816472   A1 A1.5 r4 separate complement pass 1 (immediate record, audit R1-10) | ppmlhdfe.. |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:28    step     823446     25551   -797895   A1_stack A1.5 r4 pass 1: keep rows in either separate e(sample)                    |
+  | 4 Nov 2026   08:36:28    step      25551     51102     25551   A1_stack A1.5 r4 pass 1: expand 2 (one copy per block)                             |
+  | 4 Nov 2026   08:36:28    step      51102     25551    -25551   A1_stack A1.5 r4 pass 1: keep block copies inside their own e(sample)              |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:28     est      25551     25551         0   A1 A1.5 r4 stacked pass 1 | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output   |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:28    step      25551    823446    797895   A1_stack A1.5 r4 pass 1: restore                                                   |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:28     est     823446     18577   -804869   A1 A1.5 r4_sep_restricted tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe o.. |
+  | 4 Nov 2026   08:36:29     est     823446      6974   -816472   A1 A1.5 r4_sep_complement tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe o.. |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:30    step     823446    823446         0   A1.5 merge C09 importer-year list (m:1 keep master match; no row change)           |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:31     est     823446     20366   -803080   A1 A1.5 x_svksvn vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output        |
+  | 4 Nov 2026   08:36:31     est     823446     20598   -802848   A1 A1.5 x_pry_rep vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output       |
+  | 4 Nov 2026   08:36:32     est     823446     20598   -802848   A1 A1.5 x_c09 vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output           |
+  | 4 Nov 2026   08:36:32     est     823446     20598   -802848   A1 A1.5 x_cz vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output            |
+  | 4 Nov 2026   08:36:33     est     823446     20419   -803027   A1 A1.5 x_rev15 vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output         |
+  | 4 Nov 2026   08:36:33     est     823446     20581   -802865   A1 A1.5 x_rev6 vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output          |
+  | 4 Nov 2026   08:36:34     est     823446     20191   -803255   A1 A1.5 x_clean vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output         |
+  | 4 Nov 2026   08:36:34     est     823446      6302   -817144   A1 A1.5 x_clean_basis vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output   |
+  | 4 Nov 2026   08:36:35     est     823446     26139   -797307   A1 A1.5 x_svksvn tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output       |
+  | 4 Nov 2026   08:36:35     est     823446     25692   -797754   A1 A1.5 x_pry_rep tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output      |
+  | 4 Nov 2026   08:36:36     est     823446     26339   -797107   A1 A1.5 x_c09 tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output          |
+  | 4 Nov 2026   08:36:36     est     823446     26339   -797107   A1 A1.5 x_cz tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output           |
+  | 4 Nov 2026   08:36:37     est     823446     26167   -797279   A1 A1.5 x_rev15 tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output        |
+  | 4 Nov 2026   08:36:38     est     823446     26283   -797163   A1 A1.5 x_rev6 tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output         |
+  | 4 Nov 2026   08:36:38     est     823446     25333   -798113   A1 A1.5 x_clean tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output        |
+  | 4 Nov 2026   08:36:38     est     823446     10023   -813423   A1 A1.5 x_clean_basis tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output  |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:40   start          .    823446         0   start: <PACKAGE_ROOT>/05_output/10_analysis/co.. |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:41    step     823446    823446         0   C2_A1_07 merge C09 importer-year list (m:1 keep master match; no row change)       |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:42     est     823446     20191   -803255   C2_A1_07 positive control x_clean vis | ppmlhdfe e(N); drop breakdown in the ppm.. |
+  | 4 Nov 2026   08:36:42     est     823446     19603   -803843   A1 A1.5 x_sw2defn vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output       |
+  | 4 Nov 2026   08:36:43     est     823446     20592   -802854   A1 A1.5 x_sw2lots vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output       |
+  | 4 Nov 2026   08:36:43     est     823446     19237   -804209   A1 A1.5 x_clean_sw2 vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output     |
+  | 4 Nov 2026   08:36:44     est     823446     25333   -798113   C2_A1_07 positive control x_clean tour | ppmlhdfe e(N); drop breakdown in the pp.. |
+  | 4 Nov 2026   08:36:44     est     823446     25749   -797697   A1 A1.5 x_sw2defn tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output      |
+  | 4 Nov 2026   08:36:44     est     823446     26339   -797107   A1 A1.5 x_sw2lots tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output      |
+  | 4 Nov 2026   08:36:45     est     823446     24754   -798692   A1 A1.5 x_clean_sw2 tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output    |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:46   start          .    823446         0   start: <PACKAGE_ROOT>/05_output/10_analysis/co.. |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:47    step     823446    823446         0   A1.9 merge exporter-reported mirror trade by year iso3_o iso3_d (assert all match) |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:47     est     823446     20598   -802848   A1 A1.9 dir_full_pair_id vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe out.. |
+  | 4 Nov 2026   08:36:48     est     823446      7643   -815803   A1 A1.9 dir_samebasis_noswitch_pair_id vis | ppmlhdfe e(N); drop breakdown in th.. |
+  | 4 Nov 2026   08:36:48     est     823446     20598   -802848   A1 A1.9 dir_full_unordered_pair_id vis | ppmlhdfe e(N); drop breakdown in the pp.. |
+  | 4 Nov 2026   08:36:48     est     823446      7643   -815803   A1 A1.9 dir_samebasis_noswitch_unordered_pair_id vis | ppmlhdfe e(N); drop break.. |
+  | 4 Nov 2026   08:36:49     est     823446     26339   -797107   A1 A1.9 dir_full_pair_id tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe ou.. |
+  | 4 Nov 2026   08:36:49     est     823446     10450   -812996   A1 A1.9 dir_samebasis_noswitch_pair_id tour | ppmlhdfe e(N); drop breakdown in t.. |
+  | 4 Nov 2026   08:36:50     est     823446     26339   -797107   A1 A1.9 dir_full_unordered_pair_id tour | ppmlhdfe e(N); drop breakdown in the p.. |
+  | 4 Nov 2026   08:36:50     est     823446     10450   -812996   A1 A1.9 dir_samebasis_noswitch_unordered_pair_id tour | ppmlhdfe e(N); drop brea.. |
+  | 4 Nov 2026   08:36:51     est     823446     19623   -803823   A1.9 A4 support iteration 1 importer vis (immediate record, audit R1-10) | ppmlh.. |
+  | 4 Nov 2026   08:36:51     est     823446     18414   -805032   A1.9 A4 support iteration 1 exporter vis (immediate record, audit R1-10) | ppmlh.. |
+  | 4 Nov 2026   08:36:51     est     823446     17764   -805682   A1.9 A4 support iteration 2 importer vis (immediate record, audit R1-10) | ppmlh.. |
+  | 4 Nov 2026   08:36:52     est     823446     17760   -805686   A1.9 A4 support iteration 2 exporter vis (immediate record, audit R1-10) | ppmlh.. |
+  | 4 Nov 2026   08:36:52     est     823446     17755   -805691   A1.9 A4 support iteration 3 importer vis (immediate record, audit R1-10) | ppmlh.. |
+  | 4 Nov 2026   08:36:53     est     823446     17755   -805691   A1.9 A4 support iteration 3 exporter vis (immediate record, audit R1-10) | ppmlh.. |
+  | 4 Nov 2026   08:36:53     est     823446     17755   -805691   A1 A1.9 A4_bilat_importer vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe ou.. |
+  | 4 Nov 2026   08:36:53     est     823446     17755   -805691   A1 A1.9 A4_bilat_exporter vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe ou.. |
+  | 4 Nov 2026   08:36:54     est     823446     17755   -805691   A1.9 directional support iteration 1 importer vis (immediate record, audit R1-10.. |
+  | 4 Nov 2026   08:36:54     est     823446     17755   -805691   A1.9 directional support iteration 1 exporter vis (immediate record, audit R1-10.. |
+  | 4 Nov 2026   08:36:55     est     823446     17755   -805691   A1 A1.9 dirA4_importer_pair_id vis | ppmlhdfe e(N); drop breakdown in the ppmlhd.. |
+  | 4 Nov 2026   08:36:55     est     823446     17755   -805691   A1 A1.9 dirA4_exporter_pair_id vis | ppmlhdfe e(N); drop breakdown in the ppmlhd.. |
+  | 4 Nov 2026   08:36:56     est     823446     17755   -805691   A1 A1.9 dirA4_importer_unordered_pair_id vis | ppmlhdfe e(N); drop breakdown in .. |
+  | 4 Nov 2026   08:36:56     est     823446     17755   -805691   A1 A1.9 dirA4_exporter_unordered_pair_id vis | ppmlhdfe e(N); drop breakdown in .. |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:56    step     823446     17755   -805691   A1.9 stacked side test vis pair_id: keep directional common support                |
+  | 4 Nov 2026   08:36:56    step      17755     35510     17755   A1.9 stacked side test vis pair_id: expand 2 (side 1 importer, side 2 exporter)    |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:57     est      35510     35510         0   A1.9 stacked side test vis pair_id | ppmlhdfe e(N); drop breakdown in the ppmlhd.. |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:57    step      35510    823446    787936   A1.9 stacked side test vis pair_id: restore                                        |
+  | 4 Nov 2026   08:36:57    step     823446     17755   -805691   A1.9 stacked side test vis unordered_pair_id: keep directional common support      |
+  | 4 Nov 2026   08:36:57    step      17755     35510     17755   A1.9 stacked side test vis unordered_pair_id: expand 2 (side 1 importer, side 2 .. |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:58     est      35510     35510         0   A1.9 stacked side test vis unordered_pair_id | ppmlhdfe e(N); drop breakdown in .. |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:58    step      35510    823446    787936   A1.9 stacked side test vis unordered_pair_id: restore                              |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:59     est     823446     24969   -798477   A1.9 A4 support iteration 1 importer tour (immediate record, audit R1-10) | ppml.. |
+  | 4 Nov 2026   08:36:59     est     823446     22852   -800594   A1.9 A4 support iteration 1 exporter tour (immediate record, audit R1-10) | ppml.. |
+  | 4 Nov 2026   08:37:00     est     823446     21739   -801707   A1.9 A4 support iteration 2 importer tour (immediate record, audit R1-10) | ppml.. |
+  | 4 Nov 2026   08:37:00     est     823446     21744   -801702   A1.9 A4 support iteration 2 exporter tour (immediate record, audit R1-10) | ppml.. |
+  | 4 Nov 2026   08:37:00     est     823446     21733   -801713   A1.9 A4 support iteration 3 importer tour (immediate record, audit R1-10) | ppml.. |
+  | 4 Nov 2026   08:37:01     est     823446     21733   -801713   A1.9 A4 support iteration 3 exporter tour (immediate record, audit R1-10) | ppml.. |
+  | 4 Nov 2026   08:37:01     est     823446     21733   -801713   A1 A1.9 A4_bilat_importer tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe o.. |
+  | 4 Nov 2026   08:37:02     est     823446     21733   -801713   A1 A1.9 A4_bilat_exporter tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe o.. |
+  | 4 Nov 2026   08:37:02     est     823446     21733   -801713   A1.9 directional support iteration 1 importer tour (immediate record, audit R1-1.. |
+  | 4 Nov 2026   08:37:03     est     823446     21733   -801713   A1.9 directional support iteration 1 exporter tour (immediate record, audit R1-1.. |
+  | 4 Nov 2026   08:37:03     est     823446     21733   -801713   A1 A1.9 dirA4_importer_pair_id tour | ppmlhdfe e(N); drop breakdown in the ppmlh.. |
+  | 4 Nov 2026   08:37:04     est     823446     21733   -801713   A1 A1.9 dirA4_exporter_pair_id tour | ppmlhdfe e(N); drop breakdown in the ppmlh.. |
+  | 4 Nov 2026   08:37:04     est     823446     21733   -801713   A1 A1.9 dirA4_importer_unordered_pair_id tour | ppmlhdfe e(N); drop breakdown in.. |
+  | 4 Nov 2026   08:37:05     est     823446     21733   -801713   A1 A1.9 dirA4_exporter_unordered_pair_id tour | ppmlhdfe e(N); drop breakdown in.. |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:37:05    step     823446     21733   -801713   A1.9 stacked side test tour pair_id: keep directional common support               |
+  | 4 Nov 2026   08:37:05    step      21733     43466     21733   A1.9 stacked side test tour pair_id: expand 2 (side 1 importer, side 2 exporter)   |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:37:06     est      43466     43466         0   A1.9 stacked side test tour pair_id | ppmlhdfe e(N); drop breakdown in the ppmlh.. |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:37:06    step      43466    823446    779980   A1.9 stacked side test tour pair_id: restore                                       |
+  | 4 Nov 2026   08:37:06    step     823446     21733   -801713   A1.9 stacked side test tour unordered_pair_id: keep directional common support     |
+  | 4 Nov 2026   08:37:06    step      21733     43466     21733   A1.9 stacked side test tour unordered_pair_id: expand 2 (side 1 importer, side 2.. |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:37:07     est      43466     43466         0   A1.9 stacked side test tour unordered_pair_id | ppmlhdfe e(N); drop breakdown in.. |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:37:07    step      43466    823446    779980   A1.9 stacked side test tour unordered_pair_id: restore                             |
+  +---------------------------------------------------------------------------------------------------------------------------------------------------+
+
+. display as result "A1_04_COMPLETE vintage=${VINTAGE} " c(current_date) " " c(current_time)
+A1_04_COMPLETE vintage=corrected2x  4 Nov 2026 08:37:07
+
+. log close
+      name:  <unnamed>
+       log:  <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/A1_04_directional_corrected2x.log
+  log type:  text
+ closed on:   4 Nov 2026, 08:37:07
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

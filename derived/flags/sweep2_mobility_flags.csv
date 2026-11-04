@@ -1,0 +1,467 @@
+screen,flag_type,family,basis,reporter_area_code,reporter,iso3,year,year_prev,in_window,base_rows,rows_rev,rows_same,verdict,treatment
+M1,LOW,TOUR,NAT,108,Burundi,BDI,2005,,False,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,NAT,108,Burundi,BDI,2006,,False,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,NAT,108,Burundi,BDI,2007,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,NAT,108,Burundi,BDI,2008,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,NAT,108,Burundi,BDI,2009,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,NAT,108,Burundi,BDI,2010,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,NAT,108,Burundi,BDI,2011,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,NAT,108,Burundi,BDI,2012,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,NAT,108,Burundi,BDI,2013,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,NAT,108,Burundi,BDI,2014,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,NAT,108,Burundi,BDI,2015,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,NAT,108,Burundi,BDI,2016,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,NAT,108,Burundi,BDI,2017,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,NAT,112,Belarus,BLR,2008,,True,33,15,18,coverage or definitional break,flag only + sensitivity exclusion
+M1,LOW,TOUR,NAT,112,Belarus,BLR,2009,,True,37,18,19,coverage or definitional break,flag only + sensitivity exclusion
+M1,LOW,TOUR,NAT,112,Belarus,BLR,2010,,True,35,18,17,coverage or definitional break,flag only + sensitivity exclusion
+M1,LOW,TOUR,NAT,112,Belarus,BLR,2011,,True,35,16,19,coverage or definitional break,flag only + sensitivity exclusion
+M1,LOW,TOUR,NAT,112,Belarus,BLR,2012,,True,38,18,20,coverage or definitional break,flag only + sensitivity exclusion
+M1,LOW,TOUR,NAT,112,Belarus,BLR,2013,,True,37,19,18,coverage or definitional break,flag only + sensitivity exclusion
+M1,LOW,TOUR,NAT,112,Belarus,BLR,2014,,True,37,19,18,coverage or definitional break,flag only + sensitivity exclusion
+M1,LOW,TOUR,NAT,112,Belarus,BLR,2016,,True,41,20,21,coverage or definitional break,flag only + sensitivity exclusion
+M1,LOW,TOUR,NAT,112,Belarus,BLR,2017,,True,38,19,19,coverage or definitional break,flag only + sensitivity exclusion
+M1,LOW,TOUR,NAT,112,Belarus,BLR,2018,,True,40,20,20,coverage or definitional break,flag only + sensitivity exclusion
+M1,LOW,TOUR,NAT,112,Belarus,BLR,2019,,True,38,19,19,coverage or definitional break,flag only + sensitivity exclusion
+M1,LOW,TOUR,NAT,112,Belarus,BLR,2020,,True,31,15,16,coverage or definitional break,flag only + sensitivity exclusion
+M1,LOW,TOUR,NAT,112,Belarus,BLR,2021,,True,0,0,0,coverage or definitional break,flag only + sensitivity exclusion
+M1,LOW,TOUR,NAT,112,Belarus,BLR,2022,,False,0,0,0,coverage or definitional break,flag only + sensitivity exclusion
+M1,LOW,TOUR,NAT,148,Chad,TCD,2006,,False,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,NAT,148,Chad,TCD,2007,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,NAT,148,Chad,TCD,2008,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,NAT,148,Chad,TCD,2009,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,NAT,148,Chad,TCD,2010,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,NAT,148,Chad,TCD,2011,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,NAT,148,Chad,TCD,2012,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,NAT,148,Chad,TCD,2013,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,NAT,148,Chad,TCD,2014,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,NAT,148,Chad,TCD,2015,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,NAT,148,Chad,TCD,2016,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,NAT,148,Chad,TCD,2017,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,NAT,148,Chad,TCD,2018,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,NAT,148,Chad,TCD,2019,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,NAT,148,Chad,TCD,2020,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,NAT,148,Chad,TCD,2021,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,NAT,180,Democratic Republic of the Congo,COD,2005,,False,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,NAT,180,Democratic Republic of the Congo,COD,2006,,False,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,NAT,180,Democratic Republic of the Congo,COD,2007,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,NAT,180,Democratic Republic of the Congo,COD,2008,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,NAT,180,Democratic Republic of the Congo,COD,2009,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,NAT,270,Gambia,GMB,2015,,True,0,0,0,coverage or definitional break,flag only + sensitivity exclusion
+M1,LOW,TOUR,NAT,270,Gambia,GMB,2021,,True,2,0,2,coverage or definitional break,flag only + sensitivity exclusion
+M1,LOW,TOUR,NAT,270,Gambia,GMB,2022,,False,0,0,0,coverage or definitional break,flag only + sensitivity exclusion
+M1,LOW,TOUR,NAT,288,Ghana,GHA,2016,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,NAT,288,Ghana,GHA,2017,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,NAT,288,Ghana,GHA,2018,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,NAT,288,Ghana,GHA,2019,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,NAT,288,Ghana,GHA,2020,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,NAT,288,Ghana,GHA,2021,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,NAT,414,Kuwait,KWT,2021,,True,54,24,30,coverage or definitional break,flag only + sensitivity exclusion
+M1,HIGH,TOUR,NAT,414,Kuwait,KWT,2022,,False,0,0,0,definitional break,flag only + sensitivity exclusion
+M1,HIGH,TOUR,NAT,624,Guinea-Bissau,GNB,2007,,True,0,0,0,definitional break,flag only + sensitivity exclusion
+M1,LOW,TOUR,NAT,678,Sao Tome and Principe,STP,2007,,True,4,2,2,coverage,none (detail coverage); flag
+M1,LOW,TOUR,NAT,678,Sao Tome and Principe,STP,2011,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,NAT,678,Sao Tome and Principe,STP,2016,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,NAT,678,Sao Tome and Principe,STP,2017,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,NAT,678,Sao Tome and Principe,STP,2018,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,NAT,678,Sao Tome and Principe,STP,2021,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,NAT,729,Sudan,SDN,2005,,False,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,NAT,729,Sudan,SDN,2006,,False,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,NAT,729,Sudan,SDN,2007,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,NAT,729,Sudan,SDN,2008,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,NAT,729,Sudan,SDN,2009,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,NAT,729,Sudan,SDN,2010,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,NAT,729,Sudan,SDN,2011,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,NAT,729,Sudan,SDN,2012,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,NAT,729,Sudan,SDN,2013,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,NAT,729,Sudan,SDN,2014,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,NAT,729,Sudan,SDN,2015,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,NAT,729,Sudan,SDN,2016,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,NAT,729,Sudan,SDN,2017,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,NAT,729,Sudan,SDN,2018,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,RES,12,Algeria,DZA,2020,,True,0,0,0,coverage or definitional break,flag only + sensitivity exclusion
+M1,LOW,TOUR,RES,12,Algeria,DZA,2021,,True,0,0,0,coverage or definitional break,flag only + sensitivity exclusion
+M1,LOW,TOUR,RES,12,Algeria,DZA,2022,,False,0,0,0,coverage or definitional break,flag only + sensitivity exclusion
+M1,LOW,TOUR,RES,36,Australia,AUS,2020,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,RES,36,Australia,AUS,2021,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,RES,36,Australia,AUS,2022,,False,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,RES,48,Bahrain,BHR,2020,,True,0,0,0,coverage or definitional break,flag only + sensitivity exclusion
+M1,LOW,TOUR,RES,48,Bahrain,BHR,2021,,True,0,0,0,coverage or definitional break,flag only + sensitivity exclusion
+M1,LOW,TOUR,RES,48,Bahrain,BHR,2022,,False,0,0,0,coverage or definitional break,flag only + sensitivity exclusion
+M1,LOW,TOUR,RES,56,Belgium,BEL,2020,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,RES,56,Belgium,BEL,2021,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,RES,56,Belgium,BEL,2022,,False,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,RES,70,Bosnia and Herzegovina,BIH,2020,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,RES,70,Bosnia and Herzegovina,BIH,2021,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,RES,70,Bosnia and Herzegovina,BIH,2022,,False,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,RES,170,Colombia,COL,2020,,True,0,0,0,coverage or definitional break,flag only + sensitivity exclusion
+M1,LOW,TOUR,RES,170,Colombia,COL,2021,,True,0,0,0,coverage or definitional break,flag only + sensitivity exclusion
+M1,LOW,TOUR,RES,170,Colombia,COL,2022,,False,0,0,0,coverage or definitional break,flag only + sensitivity exclusion
+M1,LOW,TOUR,RES,174,Comoros,COM,2020,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,RES,174,Comoros,COM,2021,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,RES,203,Czechia,CZE,2020,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,RES,203,Czechia,CZE,2021,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,RES,203,Czechia,CZE,2022,,False,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,RES,208,Denmark,DNK,2020,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,RES,208,Denmark,DNK,2021,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,RES,208,Denmark,DNK,2022,,False,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,RES,250,France,FRA,2021,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,RES,275,State of Palestine,PSE,2020,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,RES,275,State of Palestine,PSE,2021,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,RES,275,State of Palestine,PSE,2022,,False,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,RES,276,Germany,DEU,2020,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,RES,276,Germany,DEU,2021,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,RES,276,Germany,DEU,2022,,False,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,RES,364,Iran (Islamic Republic of),IRN,2020,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,RES,364,Iran (Islamic Republic of),IRN,2021,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,RES,364,Iran (Islamic Republic of),IRN,2022,,False,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,RES,376,Israel,ISR,2020,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,RES,376,Israel,ISR,2021,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,RES,376,Israel,ISR,2022,,False,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,RES,392,Japan,JPN,2020,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,RES,392,Japan,JPN,2021,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,RES,392,Japan,JPN,2022,,False,0,0,0,coverage,none (detail coverage); flag
+M1,HIGH,TOUR,RES,398,Kazakhstan,KAZ,2020,,True,45,22,23,definitional break,flag only + sensitivity exclusion
+M1,HIGH,TOUR,RES,398,Kazakhstan,KAZ,2021,,True,45,22,23,definitional break,flag only + sensitivity exclusion
+M1,HIGH,TOUR,RES,398,Kazakhstan,KAZ,2022,,False,0,0,0,definitional break,flag only + sensitivity exclusion
+M1,LOW,TOUR,RES,400,Jordan,JOR,2020,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,RES,400,Jordan,JOR,2021,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,RES,400,Jordan,JOR,2022,,False,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,RES,404,Kenya,KEN,2020,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,RES,404,Kenya,KEN,2021,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,RES,404,Kenya,KEN,2022,,False,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,RES,410,Republic of Korea,KOR,2020,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,RES,410,Republic of Korea,KOR,2021,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,RES,410,Republic of Korea,KOR,2022,,False,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,RES,428,Latvia,LVA,2020,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,RES,428,Latvia,LVA,2021,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,RES,499,Montenegro,MNE,2020,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,RES,499,Montenegro,MNE,2021,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,RES,499,Montenegro,MNE,2022,,False,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,RES,516,Namibia,NAM,2020,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,RES,516,Namibia,NAM,2021,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,RES,516,Namibia,NAM,2022,,False,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,RES,566,Nigeria,NGA,2020,,True,0,0,0,coverage or definitional break,flag only + sensitivity exclusion
+M1,LOW,TOUR,RES,566,Nigeria,NGA,2021,,True,0,0,0,coverage or definitional break,flag only + sensitivity exclusion
+M1,LOW,TOUR,RES,566,Nigeria,NGA,2022,,False,0,0,0,coverage or definitional break,flag only + sensitivity exclusion
+M1,UNIT1000,TOUR,RES,600,Paraguay,PRY,2020,,True,0,0,0,"unit error (KNOWN, C12)","quarantine (C12 rule: set missing, no rescaling)"
+M1,UNIT1000,TOUR,RES,600,Paraguay,PRY,2021,,True,0,0,0,"unit error (KNOWN, C12)","quarantine (C12 rule: set missing, no rescaling)"
+M1,UNIT1000,TOUR,RES,600,Paraguay,PRY,2022,,False,0,0,0,"unit error (KNOWN, C12)","quarantine (C12 rule: set missing, no rescaling)"
+M1,LOW,TOUR,RES,616,Poland,POL,2020,,True,22,11,11,coverage or definitional break,flag only + sensitivity exclusion
+M1,LOW,TOUR,RES,616,Poland,POL,2021,,True,22,11,11,coverage or definitional break,flag only + sensitivity exclusion
+M1,HIGH,TOUR,RES,620,Portugal,PRT,2006,,False,0,0,0,definitional break,flag only + sensitivity exclusion
+M1,HIGH,TOUR,RES,630,Puerto Rico,PRI,2022,,False,0,0,0,definitional break,flag only + sensitivity exclusion
+M1,LOW,TOUR,RES,634,Qatar,QAT,2020,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,RES,634,Qatar,QAT,2021,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,RES,634,Qatar,QAT,2022,,False,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,RES,688,Serbia,SRB,2020,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,RES,688,Serbia,SRB,2021,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,RES,688,Serbia,SRB,2022,,False,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,RES,694,Sierra Leone,SLE,2005,,False,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,RES,694,Sierra Leone,SLE,2006,,False,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,RES,694,Sierra Leone,SLE,2007,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,RES,694,Sierra Leone,SLE,2008,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,RES,694,Sierra Leone,SLE,2009,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,RES,702,Singapore,SGP,2020,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,RES,702,Singapore,SGP,2021,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,RES,702,Singapore,SGP,2022,,False,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,RES,740,Suriname,SUR,2005,,False,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,RES,752,Sweden,SWE,2020,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,RES,752,Sweden,SWE,2021,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,RES,752,Sweden,SWE,2022,,False,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,RES,756,Switzerland,CHE,2020,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,RES,756,Switzerland,CHE,2021,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,RES,756,Switzerland,CHE,2022,,False,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,RES,780,Trinidad and Tobago,TTO,2020,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,RES,780,Trinidad and Tobago,TTO,2021,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,RES,780,Trinidad and Tobago,TTO,2022,,False,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,RES,800,Uganda,UGA,2018,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,RES,800,Uganda,UGA,2019,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,RES,807,North Macedonia,MKD,2020,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,RES,807,North Macedonia,MKD,2021,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,TOUR,RES,807,North Macedonia,MKD,2022,,False,0,0,0,coverage,none (detail coverage); flag
+M1,HIGH,VSTR,NAT,84,Belize,BLZ,2006,,False,0,0,0,definitional break,flag only + sensitivity exclusion
+M1,HIGH,VSTR,NAT,84,Belize,BLZ,2007,,True,5,2,3,definitional break,flag only + sensitivity exclusion
+M1,HIGH,VSTR,NAT,84,Belize,BLZ,2008,,True,5,2,3,definitional break,flag only + sensitivity exclusion
+M1,HIGH,VSTR,NAT,84,Belize,BLZ,2009,,True,5,2,3,definitional break,flag only + sensitivity exclusion
+M1,LOW,VSTR,NAT,112,Belarus,BLR,2021,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,NAT,112,Belarus,BLR,2022,,False,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,NAT,232,Eritrea,ERI,2006,,False,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,NAT,232,Eritrea,ERI,2007,,True,5,5,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,NAT,232,Eritrea,ERI,2008,,True,6,6,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,NAT,232,Eritrea,ERI,2009,,True,6,6,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,NAT,232,Eritrea,ERI,2010,,True,5,5,0,coverage,none (detail coverage); flag
+M1,UNIT1000,VSTR,NAT,348,Hungary,HUN,2005,,False,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,NAT,360,Indonesia,IDN,2020,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,NAT,360,Indonesia,IDN,2021,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,NAT,360,Indonesia,IDN,2022,,False,0,0,0,coverage,none (detail coverage); flag
+M1,HIGH,VSTR,NAT,496,Mongolia,MNG,2020,,True,0,0,0,definitional break,flag only + sensitivity exclusion
+M1,HIGH,VSTR,NAT,496,Mongolia,MNG,2021,,True,0,0,0,definitional break,flag only + sensitivity exclusion
+M1,HIGH,VSTR,NAT,496,Mongolia,MNG,2022,,False,0,0,0,definitional break,flag only + sensitivity exclusion
+M1,LOW,VSTR,NAT,512,Oman,OMN,2005,,False,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,NAT,512,Oman,OMN,2006,,False,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,NAT,512,Oman,OMN,2007,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,NAT,512,Oman,OMN,2008,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,NAT,512,Oman,OMN,2009,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,NAT,512,Oman,OMN,2010,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,NAT,512,Oman,OMN,2011,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,NAT,512,Oman,OMN,2012,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,NAT,646,Rwanda,RWA,2006,,False,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,RES,12,Algeria,DZA,2020,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,RES,12,Algeria,DZA,2021,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,RES,12,Algeria,DZA,2022,,False,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,RES,36,Australia,AUS,2020,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,RES,36,Australia,AUS,2021,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,RES,36,Australia,AUS,2022,,False,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,RES,48,Bahrain,BHR,2020,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,RES,48,Bahrain,BHR,2021,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,RES,48,Bahrain,BHR,2022,,False,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,RES,56,Belgium,BEL,2020,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,RES,56,Belgium,BEL,2021,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,RES,56,Belgium,BEL,2022,,False,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,RES,70,Bosnia and Herzegovina,BIH,2020,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,RES,70,Bosnia and Herzegovina,BIH,2021,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,RES,70,Bosnia and Herzegovina,BIH,2022,,False,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,RES,174,Comoros,COM,2020,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,RES,174,Comoros,COM,2021,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,RES,203,Czechia,CZE,2020,,True,0,0,0,coverage or definitional break,flag only + sensitivity exclusion
+M1,LOW,VSTR,RES,203,Czechia,CZE,2021,,True,0,0,0,coverage or definitional break,flag only + sensitivity exclusion
+M1,LOW,VSTR,RES,208,Denmark,DNK,2020,,True,0,0,0,coverage or definitional break,flag only + sensitivity exclusion
+M1,LOW,VSTR,RES,208,Denmark,DNK,2021,,True,0,0,0,coverage or definitional break,flag only + sensitivity exclusion
+M1,LOW,VSTR,RES,208,Denmark,DNK,2022,,False,0,0,0,coverage or definitional break,flag only + sensitivity exclusion
+M1,LOW,VSTR,RES,218,Ecuador,ECU,2020,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,RES,218,Ecuador,ECU,2021,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,RES,218,Ecuador,ECU,2022,,False,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,RES,250,France,FRA,2021,,True,0,0,0,coverage or definitional break,flag only + sensitivity exclusion
+M1,LOW,VSTR,RES,275,State of Palestine,PSE,2020,,True,0,0,0,coverage or definitional break,flag only + sensitivity exclusion
+M1,LOW,VSTR,RES,276,Germany,DEU,2020,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,RES,276,Germany,DEU,2021,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,RES,276,Germany,DEU,2022,,False,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,RES,348,Hungary,HUN,2020,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,RES,348,Hungary,HUN,2021,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,RES,348,Hungary,HUN,2022,,False,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,RES,364,Iran (Islamic Republic of),IRN,2021,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,RES,376,Israel,ISR,2020,,True,0,0,0,coverage or definitional break,flag only + sensitivity exclusion
+M1,LOW,VSTR,RES,376,Israel,ISR,2021,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,RES,376,Israel,ISR,2022,,False,0,0,0,coverage or definitional break,flag only + sensitivity exclusion
+M1,LOW,VSTR,RES,384,Côte d’Ivoire,CIV,2010,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,RES,384,Côte d’Ivoire,CIV,2011,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,RES,384,Côte d’Ivoire,CIV,2012,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,RES,384,Côte d’Ivoire,CIV,2013,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,RES,384,Côte d’Ivoire,CIV,2014,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,RES,384,Côte d’Ivoire,CIV,2015,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,RES,384,Côte d’Ivoire,CIV,2016,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,RES,384,Côte d’Ivoire,CIV,2017,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,RES,384,Côte d’Ivoire,CIV,2018,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,RES,384,Côte d’Ivoire,CIV,2019,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,RES,384,Côte d’Ivoire,CIV,2020,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,RES,384,Côte d’Ivoire,CIV,2021,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,RES,392,Japan,JPN,2020,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,RES,392,Japan,JPN,2021,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,RES,392,Japan,JPN,2022,,False,0,0,0,coverage,none (detail coverage); flag
+M1,HIGH,VSTR,RES,398,Kazakhstan,KAZ,2020,,True,75,36,39,definitional break,flag only + sensitivity exclusion
+M1,HIGH,VSTR,RES,398,Kazakhstan,KAZ,2021,,True,71,34,37,definitional break,flag only + sensitivity exclusion
+M1,HIGH,VSTR,RES,398,Kazakhstan,KAZ,2022,,False,0,0,0,definitional break,flag only + sensitivity exclusion
+M1,LOW,VSTR,RES,400,Jordan,JOR,2020,,True,0,0,0,coverage or definitional break,flag only + sensitivity exclusion
+M1,LOW,VSTR,RES,400,Jordan,JOR,2021,,True,0,0,0,coverage or definitional break,flag only + sensitivity exclusion
+M1,LOW,VSTR,RES,400,Jordan,JOR,2022,,False,0,0,0,coverage or definitional break,flag only + sensitivity exclusion
+M1,LOW,VSTR,RES,404,Kenya,KEN,2005,,False,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,RES,404,Kenya,KEN,2006,,False,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,RES,404,Kenya,KEN,2007,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,RES,404,Kenya,KEN,2008,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,RES,404,Kenya,KEN,2009,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,RES,404,Kenya,KEN,2010,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,RES,404,Kenya,KEN,2011,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,RES,404,Kenya,KEN,2012,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,RES,404,Kenya,KEN,2013,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,RES,404,Kenya,KEN,2014,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,RES,404,Kenya,KEN,2015,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,RES,404,Kenya,KEN,2016,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,RES,404,Kenya,KEN,2017,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,RES,404,Kenya,KEN,2020,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,RES,404,Kenya,KEN,2021,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,RES,404,Kenya,KEN,2022,,False,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,RES,410,Republic of Korea,KOR,2020,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,RES,410,Republic of Korea,KOR,2021,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,RES,410,Republic of Korea,KOR,2022,,False,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,RES,428,Latvia,LVA,2020,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,RES,428,Latvia,LVA,2021,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,RES,516,Namibia,NAM,2020,,True,0,0,0,coverage or definitional break,flag only + sensitivity exclusion
+M1,LOW,VSTR,RES,516,Namibia,NAM,2021,,True,0,0,0,coverage or definitional break,flag only + sensitivity exclusion
+M1,LOW,VSTR,RES,516,Namibia,NAM,2022,,False,0,0,0,coverage or definitional break,flag only + sensitivity exclusion
+M1,LOW,VSTR,RES,566,Nigeria,NGA,2020,,True,0,0,0,coverage or definitional break,flag only + sensitivity exclusion
+M1,LOW,VSTR,RES,566,Nigeria,NGA,2021,,True,0,0,0,coverage or definitional break,flag only + sensitivity exclusion
+M1,LOW,VSTR,RES,566,Nigeria,NGA,2022,,False,0,0,0,coverage or definitional break,flag only + sensitivity exclusion
+M1,HIGH,VSTR,RES,600,Paraguay,PRY,2020,,True,0,0,0,"unit error (KNOWN, C12)","quarantine (C12 rule: set missing, no rescaling)"
+M1,HIGH,VSTR,RES,600,Paraguay,PRY,2021,,True,0,0,0,"unit error (KNOWN, C12)","quarantine (C12 rule: set missing, no rescaling)"
+M1,HIGH,VSTR,RES,600,Paraguay,PRY,2022,,False,0,0,0,"unit error (KNOWN, C12)","quarantine (C12 rule: set missing, no rescaling)"
+M1,LOW,VSTR,RES,634,Qatar,QAT,2020,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,RES,634,Qatar,QAT,2021,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,RES,634,Qatar,QAT,2022,,False,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,RES,670,Saint Vincent and the Grenadines,VCT,2019,,True,2,0,2,coverage or definitional break,flag only + sensitivity exclusion
+M1,LOW,VSTR,RES,670,Saint Vincent and the Grenadines,VCT,2020,,True,9,4,5,coverage or definitional break,flag only + sensitivity exclusion
+M1,LOW,VSTR,RES,688,Serbia,SRB,2020,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,RES,688,Serbia,SRB,2021,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,RES,688,Serbia,SRB,2022,,False,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,RES,702,Singapore,SGP,2020,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,RES,702,Singapore,SGP,2021,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,RES,702,Singapore,SGP,2022,,False,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,RES,756,Switzerland,CHE,2020,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,RES,756,Switzerland,CHE,2021,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,RES,756,Switzerland,CHE,2022,,False,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,RES,780,Trinidad and Tobago,TTO,2020,,True,0,0,0,coverage or definitional break,flag only + sensitivity exclusion
+M1,LOW,VSTR,RES,780,Trinidad and Tobago,TTO,2021,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,RES,780,Trinidad and Tobago,TTO,2022,,False,0,0,0,coverage or definitional break,flag only + sensitivity exclusion
+M1,LOW,VSTR,RES,807,North Macedonia,MKD,2020,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,RES,807,North Macedonia,MKD,2021,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,RES,807,North Macedonia,MKD,2022,,False,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,RES,860,Uzbekistan,UZB,2006,,False,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,RES,860,Uzbekistan,UZB,2007,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,RES,860,Uzbekistan,UZB,2008,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,RES,860,Uzbekistan,UZB,2009,,True,0,0,0,coverage,none (detail coverage); flag
+M1,LOW,VSTR,RES,860,Uzbekistan,UZB,2010,,True,0,0,0,coverage,none (detail coverage); flag
+M2,CELLS,TOUR,RES/NAT,324,Guinea,GIN,2006,,False,0,0,0,definitional break,flag only + sensitivity exclusion
+M2,CELLS,TOUR,RES/NAT,466,Mali,MLI,2010,,True,32,13,19,definitional break,flag only + sensitivity exclusion
+M2,CELLS,TOUR,RES/NAT,466,Mali,MLI,2011,,True,35,14,21,definitional break,flag only + sensitivity exclusion
+M2,CELLS,TOUR,RES/NAT,466,Mali,MLI,2013,,True,15,15,0,definitional break,flag only + sensitivity exclusion
+M2,CELLS,TOUR,RES/NAT,466,Mali,MLI,2014,,True,16,16,0,definitional break,flag only + sensitivity exclusion
+M2,CELLS,TOUR,RES/NAT,466,Mali,MLI,2015,,True,17,17,0,definitional break,flag only + sensitivity exclusion
+M2,CELLS,TOUR,RES/NAT,466,Mali,MLI,2016,,True,41,17,24,definitional break,flag only + sensitivity exclusion
+M2,CELLS,TOUR,RES/NAT,524,Nepal,NPL,2008,,True,17,17,0,definitional break,flag only + sensitivity exclusion
+M2,CELLS,TOUR,RES/NAT,524,Nepal,NPL,2009,,True,38,18,20,definitional break,flag only + sensitivity exclusion
+M2,CELLS,TOUR,RES/NAT,524,Nepal,NPL,2010,,True,42,21,21,definitional break,flag only + sensitivity exclusion
+M2,TOTAL,TOUR,RES/NAT,600,Paraguay,PRY,2020,,True,46,22,24,"unit error (KNOWN, C12)","quarantine (C12 rule: set missing, no rescaling)"
+M2,TOTAL,TOUR,RES/NAT,600,Paraguay,PRY,2021,,True,42,19,23,"unit error (KNOWN, C12)","quarantine (C12 rule: set missing, no rescaling)"
+M2,TOTAL,TOUR,RES/NAT,600,Paraguay,PRY,2022,,False,0,0,0,"unit error (KNOWN, C12)","quarantine (C12 rule: set missing, no rescaling)"
+M2,CELLS,VSTR,RES/NAT,112,Belarus,BLR,2020,,True,65,35,30,code or mapping error,quarantine the mis-coded cells (proven error) + flag
+M2,CELLS,VSTR,RES/NAT,218,Ecuador,ECU,2015,,True,48,22,26,definitional break,flag only + sensitivity exclusion
+M2,CELLS,VSTR,RES/NAT,356,India,IND,2021,,True,113,64,49,definitional break,flag only + sensitivity exclusion
+M2,CELLS,VSTR,RES/NAT,446,"China, Macao Special Administrative Region",MAC,2012,,True,24,12,12,definitional break,flag only + sensitivity exclusion
+M2,TOTAL,VSTR,RES/NAT,512,Oman,OMN,2018,,True,44,22,22,definitional break,flag only + sensitivity exclusion
+M2,TOTAL,VSTR,RES/NAT,512,Oman,OMN,2019,,True,44,22,22,definitional break,flag only + sensitivity exclusion
+M3_raw,SWITCH,TOUR,MIX->RES,144,Sri Lanka,LKA,2020,2019.0,True,84,46,38,real change (COVID-19),none
+M3_raw,SWITCH,TOUR,NAT->RES,180,Democratic Republic of the Congo,COD,2015,2013.0,True,25,10,15,coverage or definitional break,flag only + sensitivity exclusion
+M3_raw,SWITCH,TOUR,NAT->MIX,188,Costa Rica,CRI,2020,2019.0,True,84,38,46,real change (COVID-19),none
+M3_raw,SWITCH,TOUR,NAT->RES,222,El Salvador,SLV,2020,2019.0,True,59,24,35,real change (COVID-19),none
+M3_raw,SWITCH,TOUR,NAT->RES,356,India,IND,2020,2016.0,True,133,72,61,real change (COVID-19),none
+M3_raw,SWITCH,TOUR,NAT->RES,496,Mongolia,MNG,2020,2019.0,True,44,19,25,real change (COVID-19),none
+M3_raw,SWITCH,TOUR,NAT->RES,586,Pakistan,PAK,2020,2012.0,True,99,58,41,"unit error (KNOWN, DC_tourism.md section 6)","quarantine (C12 rule: set missing, no rescaling)"
+M3_raw,SWITCH,TOUR,NAT->MIX,600,Paraguay,PRY,2020,2019.0,True,46,22,24,"unit error (KNOWN, C12)","quarantine (C12 rule: set missing, no rescaling)"
+M3_raw,SWITCH,TOUR,RES->MIX,600,Paraguay,PRY,2022,2021.0,False,0,0,0,"unit error (KNOWN, C12)","quarantine (C12 rule: set missing, no rescaling)"
+M3_raw,SWITCH,VSTR,NAT->MIX,112,Belarus,BLR,2020,2019.0,True,65,35,30,real change (COVID-19),none
+M3_raw,SWITCH,VSTR,RES->NAT,218,Ecuador,ECU,2020,2019.0,True,64,31,33,real change (COVID-19),none
+M3_raw,SWITCH,VSTR,NAT->RES,356,India,IND,2020,2019.0,True,115,65,50,real change (COVID-19),none
+M3_raw,SWITCH,VSTR,MIX->RES,356,India,IND,2022,2021.0,False,0,0,0,real change (COVID-19),none
+M3_raw,SWITCH,VSTR,MIX->RES,446,"China, Macao Special Administrative Region",MAC,2020,2019.0,True,37,18,19,real change (COVID-19),none
+M3_raw,SWITCH,VSTR,NAT->RES,496,Mongolia,MNG,2020,2019.0,True,46,17,29,real change (COVID-19),none
+M3_raw,SWITCH,VSTR,MIX->MIX,512,Oman,OMN,2020,2019.0,True,29,14,15,real change (COVID-19),none
+M3_c12,SWITCH,TOUR,MIX->RES,144,Sri Lanka,LKA,2020,2019.0,True,84,46,38,real change (COVID-19),none
+M3_c12,SWITCH,TOUR,NAT->RES,180,Democratic Republic of the Congo,COD,2015,2013.0,True,25,10,15,coverage or definitional break,flag only + sensitivity exclusion
+M3_c12,SWITCH,TOUR,NAT->MIX,188,Costa Rica,CRI,2020,2019.0,True,84,38,46,real change (COVID-19),none
+M3_c12,SWITCH,TOUR,NAT->RES,222,El Salvador,SLV,2020,2019.0,True,59,24,35,real change (COVID-19),none
+M3_c12,SWITCH,TOUR,NAT->RES,356,India,IND,2020,2016.0,True,133,72,61,real change (COVID-19),none
+M3_c12,SWITCH,TOUR,NAT->RES,496,Mongolia,MNG,2020,2019.0,True,44,19,25,real change (COVID-19),none
+M3_c12,SWITCH,TOUR,NAT->RES,586,Pakistan,PAK,2020,2012.0,True,99,58,41,"unit error (KNOWN, DC_tourism.md section 6)","quarantine (C12 rule: set missing, no rescaling)"
+M3_c12,SWITCH,TOUR,NAT->RES,600,Paraguay,PRY,2023,2022.0,False,0,0,0,"unit error (KNOWN, C12)","quarantine (C12 rule: set missing, no rescaling)"
+M3_c12,SWITCH,VSTR,NAT->MIX,112,Belarus,BLR,2020,2019.0,True,65,35,30,real change (COVID-19),none
+M3_c12,SWITCH,VSTR,RES->NAT,218,Ecuador,ECU,2020,2019.0,True,64,31,33,real change (COVID-19),none
+M3_c12,SWITCH,VSTR,NAT->RES,356,India,IND,2020,2019.0,True,115,65,50,real change (COVID-19),none
+M3_c12,SWITCH,VSTR,MIX->RES,356,India,IND,2022,2021.0,False,0,0,0,real change (COVID-19),none
+M3_c12,SWITCH,VSTR,MIX->RES,446,"China, Macao Special Administrative Region",MAC,2020,2019.0,True,37,18,19,real change (COVID-19),none
+M3_c12,SWITCH,VSTR,NAT->RES,496,Mongolia,MNG,2020,2019.0,True,46,17,29,real change (COVID-19),none
+M3_c12,SWITCH,VSTR,MIX->MIX,512,Oman,OMN,2020,2019.0,True,29,14,15,real change (COVID-19),none
+M4,YOY,TOUR,NAT,64,Bhutan,BTN,2021,2020.0,True,0,0,0,real change (COVID-19),none
+M4,YOY,TOUR,NAT,64,Bhutan,BTN,2022,2021.0,False,0,0,0,real change (COVID-19),none
+M4,YOY,TOUR,NAT,96,Brunei Darussalam,BRN,2021,2020.0,True,23,11,12,real change (COVID-19),none
+M4,YOY,TOUR,NAT,104,Myanmar,MMR,2021,2020.0,True,15,7,8,real change (COVID-19),none
+M4,YOY,TOUR,NAT,152,Chile,CHL,2021,2020.0,True,86,45,41,real change (COVID-19),none
+M4,YOY,TOUR,NAT,152,Chile,CHL,2022,2021.0,False,0,0,0,real change (COVID-19),none
+M4,YOY,TOUR,NAT,296,Kiribati,KIR,2021,2020.0,True,0,0,0,real change (COVID-19),none
+M4,YOY,TOUR,NAT,296,Kiribati,KIR,2022,2021.0,False,0,0,0,real change (COVID-19),none
+M4,YOY,TOUR,NAT,414,Kuwait,KWT,2022,2021.0,False,0,0,0,real change (COVID-19),none
+M4,YOY,TOUR,NAT,450,Madagascar,MDG,2021,2020.0,True,34,15,19,real change (COVID-19),none
+M4,YOY,TOUR,NAT,458,Malaysia,MYS,2021,2020.0,True,87,51,36,real change (COVID-19),none
+M4,YOY,TOUR,NAT,496,Mongolia,MNG,2022,2021.0,False,0,0,0,real change (COVID-19),none
+M4,YOY,TOUR,NAT,600,Paraguay,PRY,2022,2021.0,False,0,0,0,"unit error (KNOWN, C12)","quarantine (C12 rule: set missing, no rescaling)"
+M4,YOY,TOUR,NAT,764,Thailand,THA,2021,2020.0,True,0,0,0,real change (COVID-19),none
+M4,YOY,TOUR,NAT,780,Trinidad and Tobago,TTO,2022,2021.0,False,0,0,0,real change (COVID-19),none
+M4,YOY,TOUR,NAT,798,Tuvalu,TUV,2021,2020.0,True,0,0,0,real change (COVID-19),none
+M4,YOY,TOUR,NAT,798,Tuvalu,TUV,2022,2021.0,False,0,0,0,real change (COVID-19),none
+M4,YOY,TOUR,NAT,858,Uruguay,URY,2022,2021.0,False,0,0,0,real change (COVID-19),none
+M4,YOY,TOUR,RES,32,Argentina,ARG,2021,2020.0,True,53,26,27,real change (COVID-19),none
+M4,YOY,TOUR,RES,32,Argentina,ARG,2022,2021.0,False,0,0,0,real change (COVID-19),none
+M4,YOY,TOUR,RES,90,Solomon Islands,SLB,2021,2020.0,True,0,0,0,real change (COVID-19),none
+M4,YOY,TOUR,RES,116,Cambodia,KHM,2021,2020.0,True,41,24,17,real change (COVID-19),none
+M4,YOY,TOUR,RES,116,Cambodia,KHM,2022,2021.0,False,0,0,0,real change (COVID-19),none
+M4,YOY,TOUR,RES,136,Cayman Islands,CYM,2021,2020.0,True,29,14,15,real change (COVID-19),none
+M4,YOY,TOUR,RES,136,Cayman Islands,CYM,2022,2021.0,False,0,0,0,real change (COVID-19),none
+M4,YOY,TOUR,RES,242,Fiji,FJI,2022,2021.0,False,0,0,0,real change (COVID-19),none
+M4,YOY,TOUR,RES,344,"China, Hong Kong Special Administrative Region",HKG,2021,2020.0,True,31,16,15,real change (COVID-19),none
+M4,YOY,TOUR,RES,344,"China, Hong Kong Special Administrative Region",HKG,2022,2021.0,False,0,0,0,real change (COVID-19),none
+M4,YOY,TOUR,RES,454,Malawi,MWI,2021,2020.0,True,4,2,2,real change (COVID-19),none
+M4,YOY,TOUR,RES,480,Mauritius,MUS,2022,2021.0,False,0,0,0,real change (COVID-19),none
+M4,YOY,TOUR,RES,496,Mongolia,MNG,2022,2021.0,False,0,0,0,real change (COVID-19),none
+M4,YOY,TOUR,RES,540,New Caledonia,NCL,2022,2021.0,False,0,0,0,real change (COVID-19),none
+M4,YOY,TOUR,RES,600,Paraguay,PRY,2022,2021.0,False,0,0,0,"unit error (KNOWN, C12)","quarantine (C12 rule: set missing, no rescaling)"
+M4,YOY,TOUR,RES,608,Philippines,PHL,2021,2020.0,True,47,24,23,real change (COVID-19),none
+M4,YOY,TOUR,RES,608,Philippines,PHL,2022,2021.0,False,0,0,0,real change (COVID-19),none
+M4,YOY,TOUR,RES,764,Thailand,THA,2021,2020.0,True,37,18,19,real change (COVID-19),none
+M4,YOY,TOUR,RES,776,Tonga,TON,2021,2020.0,True,2,0,2,real change (COVID-19),none
+M4,YOY,TOUR,RES,776,Tonga,TON,2022,2021.0,False,0,0,0,real change (COVID-19),none
+M4,YOY,VSTR,NAT,12,Algeria,DZA,2021,2020.0,True,7,7,0,real change (COVID-19),none
+M4,YOY,VSTR,NAT,12,Algeria,DZA,2022,2021.0,False,0,0,0,real change (COVID-19),none
+M4,YOY,VSTR,NAT,152,Chile,CHL,2021,2020.0,True,70,32,38,real change (COVID-19),none
+M4,YOY,VSTR,NAT,152,Chile,CHL,2022,2021.0,False,0,0,0,real change (COVID-19),none
+M4,YOY,VSTR,NAT,348,Hungary,HUN,2006,2005.0,False,0,0,0,coverage,none (detail coverage); flag
+M4,YOY,VSTR,NAT,392,Japan,JPN,2021,2020.0,True,132,67,65,real change (COVID-19),none
+M4,YOY,VSTR,NAT,392,Japan,JPN,2022,2021.0,False,0,0,0,real change (COVID-19),none
+M4,YOY,VSTR,NAT,496,Mongolia,MNG,2022,2021.0,False,0,0,0,real change (COVID-19),none
+M4,YOY,VSTR,NAT,580,Northern Mariana Islands,MNP,2021,2020.0,True,0,0,0,real change (COVID-19),none
+M4,YOY,VSTR,NAT,580,Northern Mariana Islands,MNP,2022,2021.0,False,0,0,0,real change (COVID-19),none
+M4,YOY,VSTR,NAT,858,Uruguay,URY,2022,2021.0,False,0,0,0,real change (COVID-19),none
+M4,YOY,VSTR,RES,32,Argentina,ARG,2021,2020.0,True,55,29,26,real change (COVID-19),none
+M4,YOY,VSTR,RES,32,Argentina,ARG,2022,2021.0,False,0,0,0,real change (COVID-19),none
+M4,YOY,VSTR,RES,158,Taiwan Province of China,TWN,2021,2020.0,True,30,15,15,real change (COVID-19),none
+M4,YOY,VSTR,RES,158,Taiwan Province of China,TWN,2022,2021.0,False,0,0,0,real change (COVID-19),none
+M4,YOY,VSTR,RES,242,Fiji,FJI,2022,2021.0,False,0,0,0,real change (COVID-19),none
+M4,YOY,VSTR,RES,344,"China, Hong Kong Special Administrative Region",HKG,2021,2020.0,True,38,19,19,real change (COVID-19),none
+M4,YOY,VSTR,RES,344,"China, Hong Kong Special Administrative Region",HKG,2022,2021.0,False,0,0,0,real change (COVID-19),none
+M4,YOY,VSTR,RES,480,Mauritius,MUS,2022,2021.0,False,0,0,0,real change (COVID-19),none
+M4,YOY,VSTR,RES,496,Mongolia,MNG,2022,2021.0,False,0,0,0,real change (COVID-19),none
+M4,YOY,VSTR,RES,540,New Caledonia,NCL,2022,2021.0,False,0,0,0,real change (COVID-19),none
+M4,YOY,VSTR,RES,554,New Zealand,NZL,2022,2021.0,False,0,0,0,real change (COVID-19),none
+M4,YOY,VSTR,RES,600,Paraguay,PRY,2022,2021.0,False,0,0,0,"unit error (KNOWN, C12)","quarantine (C12 rule: set missing, no rescaling)"
+M4,YOY,VSTR,RES,608,Philippines,PHL,2021,2020.0,True,50,26,24,real change (COVID-19),none
+M4,YOY,VSTR,RES,608,Philippines,PHL,2022,2021.0,False,0,0,0,real change (COVID-19),none
+M4,YOY,VSTR,RES,704,Viet Nam,VNM,2021,2020.0,True,16,8,8,real change (COVID-19),none
+M4,YOY,VSTR,RES,704,Viet Nam,VNM,2022,2021.0,False,0,0,0,real change (COVID-19),none
+M4,YOY,VSTR,RES,882,Samoa,WSM,2021,2020.0,True,7,4,3,real change (COVID-19),none
+M4,YOY,VSTR,RES,882,Samoa,WSM,2022,2021.0,False,0,0,0,real change (COVID-19),none
+M5,UNDOCUMENTED_SUBSTITUTE,VSTR,NAT,68,Bolivia (Plurinational State of),BOL,2020,,True,42,17,25,definitional break,flag only + sensitivity exclusion
+M5,V<T_TOTAL,VSTR,NAT,68,Bolivia (Plurinational State of),BOL,2021,,True,42,17,25,definitional break,flag only + sensitivity exclusion
+M5,V<T_TOTAL,VSTR,NAT,68,Bolivia (Plurinational State of),BOL,2022,,False,0,0,0,definitional break,flag only + sensitivity exclusion
+M5,PARTLY_UNDOCUMENTED_EQUALITY,VSTR,RES,376,Israel,ISR,2005,,False,0,0,0,definitional break,flag only + sensitivity exclusion
+M5,PARTLY_UNDOCUMENTED_EQUALITY,VSTR,RES,376,Israel,ISR,2006,,False,0,0,0,definitional break,flag only + sensitivity exclusion
+M5,PARTLY_UNDOCUMENTED_EQUALITY,VSTR,RES,670,Saint Vincent and the Grenadines,VCT,2022,,False,0,0,0,definitional break,flag only + sensitivity exclusion
+M5,PARTLY_UNDOCUMENTED_EQUALITY,VSTR,RES,682,Saudi Arabia,SAU,2020,,True,68,36,32,definitional break,flag only + sensitivity exclusion
+M5,PARTLY_UNDOCUMENTED_EQUALITY,VSTR,RES,682,Saudi Arabia,SAU,2021,,True,68,36,32,definitional break,flag only + sensitivity exclusion
+M5,PARTLY_UNDOCUMENTED_EQUALITY,VSTR,RES,682,Saudi Arabia,SAU,2022,,False,0,0,0,definitional break,flag only + sensitivity exclusion
+M5,PARTLY_UNDOCUMENTED_EQUALITY,VSTR,RES,710,South Africa,ZAF,2020,,True,121,61,60,definitional break,flag only + sensitivity exclusion
+M5,PARTLY_UNDOCUMENTED_EQUALITY,VSTR,RES,710,South Africa,ZAF,2021,,True,121,61,60,definitional break,flag only + sensitivity exclusion
+M5,PARTLY_UNDOCUMENTED_EQUALITY,VSTR,RES,710,South Africa,ZAF,2022,,False,0,0,0,definitional break,flag only + sensitivity exclusion
+M5,PARTLY_UNDOCUMENTED_EQUALITY,VSTR,RES,826,United Kingdom of Great Britain and Northern Ireland,GBR,2021,,True,40,20,20,definitional break,flag only + sensitivity exclusion
+M8,CELLS>ORIGIN_DEPARTURES,TOUR,selected,586,Pakistan,PAK,2021,,True,94,54,40,"unit error (KNOWN, DC_tourism.md section 6)","quarantine (C12 rule: set missing, no rescaling)"
+M8,CELLS>ORIGIN_DEPARTURES,TOUR,selected,600,Paraguay,PRY,2020,,True,46,22,24,"unit error (KNOWN, C12)","quarantine (C12 rule: set missing, no rescaling)"
+M8,CELLS>ORIGIN_DEPARTURES,TOUR,selected,600,Paraguay,PRY,2021,,True,42,19,23,"unit error (KNOWN, C12)","quarantine (C12 rule: set missing, no rescaling)"
+M8,CELLS>ORIGIN_DEPARTURES,TOUR,selected,600,Paraguay,PRY,2022,,False,0,0,0,"unit error (KNOWN, C12)","quarantine (C12 rule: set missing, no rescaling)"
+M8,CELLS>ORIGIN_DEPARTURES,TOUR,selected,682,Saudi Arabia,SAU,2012,,True,80,44,36,definitional break,flag only + sensitivity exclusion
+M8,CELLS>ORIGIN_DEPARTURES,VSTR,selected,380,Italy,ITA,2020,,True,147,74,73,definitional break,flag only + sensitivity exclusion
+M8,CELLS>ORIGIN_DEPARTURES,VSTR,selected,380,Italy,ITA,2021,,True,146,74,72,definitional break,flag only + sensitivity exclusion
+M8,CELLS>ORIGIN_DEPARTURES,VSTR,selected,398,Kazakhstan,KAZ,2007,,True,45,21,24,definitional break,flag only + sensitivity exclusion
+M8,CELLS>ORIGIN_DEPARTURES,VSTR,selected,586,Pakistan,PAK,2021,,True,76,43,33,"unit error (KNOWN, DC_tourism.md section 6)","quarantine (C12 rule: set missing, no rescaling)"
+M8,CELLS>ORIGIN_DEPARTURES,VSTR,selected,600,Paraguay,PRY,2020,,True,0,0,0,"unit error (KNOWN, C12)","quarantine (C12 rule: set missing, no rescaling)"
+M8,CELLS>ORIGIN_DEPARTURES,VSTR,selected,600,Paraguay,PRY,2021,,True,0,0,0,"unit error (KNOWN, C12)","quarantine (C12 rule: set missing, no rescaling)"
+M8,CELLS>ORIGIN_DEPARTURES,VSTR,selected,600,Paraguay,PRY,2022,,False,0,0,0,"unit error (KNOWN, C12)","quarantine (C12 rule: set missing, no rescaling)"
+M8,CELLS>ORIGIN_DEPARTURES,VSTR,selected,616,Poland,POL,2005,,False,0,0,0,definitional break,flag only + sensitivity exclusion
+M8,CELLS>ORIGIN_DEPARTURES,VSTR,selected,616,Poland,POL,2020,,True,52,26,26,definitional break,flag only + sensitivity exclusion
+M8,CELLS>ORIGIN_DEPARTURES,VSTR,selected,616,Poland,POL,2021,,True,52,26,26,definitional break,flag only + sensitivity exclusion

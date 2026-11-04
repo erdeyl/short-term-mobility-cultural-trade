@@ -1,0 +1,25 @@
+finding,iso3,family,years,basis,partner,baseline_rows,value_share,note
+PAK residence unit error (known),PAK,tour,2020-2021,any,,193,0.000446,
+PAK residence unit error (known),PAK,vis,2020-2021,any,,152,0.000432,
+PRY residence 2020-2022 after C12 (known; residence rows left),PRY,tour,2020-2021,RES,,0,0.0,
+PRY residence 2020-2022 after C12 (known; residence rows left),PRY,vis,2020-2021,RES,,0,0.0,
+BLR visitors residence: Lithuania coded as Liechtenstein,BLR,vis,2020-2021,RES,LIE,0,0.0,
+BLR tourists = organized tourism only (nationality series),BLR,tour,2007-2020,NAT,,507,0.001163,
+KAZ residence 2020-2021 tourists/visitors definitional,KAZ,tour,2020-2021,RES,,90,8.5e-05,
+KAZ residence 2020-2021 tourists/visitors definitional,KAZ,vis,2020-2021,RES,,146,0.000282,
+"BOL nationality visitors 2020-2021 (undocumented equality, V<T)",BOL,vis,2020-2021,NAT,,84,0.00014,
+"SAU residence visitors 2020-2021 (98% equal, no note)",SAU,vis,2020-2021,RES,,136,0.000787,
+ZAF residence visitors 2020-2021 (partly undocumented equality),ZAF,vis,2020-2021,RES,,242,0.005517,
+OMN visitors 2018-2019 residence vs nationality,OMN,vis,2018-2019,any,,88,0.000486,
+SVK tourists accommodation basis (known),SVK,tour,2007-2021,any,,160,0.000976,
+SVN tourists accommodation basis (known),SVN,tour,2007-2021,any,,46,0.000249,
+HS 490700 inside the LB basket (all lines),*,vis,2007-2021,,,4998,0.035617,rows with any 490700 value; share of baseline v_ttl_k
+HS 490700 inside the LB basket (all lines),*,tour,2007-2021,,,4771,0.054098,rows with any 490700 value; share of baseline v_ttl_k
+unknown large lot PAN->RUS 2013,PAN->RUS,vis,2013,,,1,0.004265,"852329 [UN Comtrade value and net weight; file HS_2013_H4_Rb659f465_C08c07520.csv, line 8220] (unit value from the same line); Panama reports no export (Comtrade preview 2026-11-03); value unchanged since snapshot"
+unknown large lot NZL->SGP 2017,NZL->SGP,vis,2017,,,1,0.000659,"SGP imports 9701/9703 [UN Comtrade values; file HS_2017_H4_R29e499d4_C08c07520.csv, lines 4066, 4139, 4251]; NZ reports exports [UN Comtrade values; file X_HS_2017_H5_Re21e78c3_Ce2c5be11.csv, lines 4441, 4804]"
+unknown large lot RUS->HKG 2019,RUS->HKG,vis,2019,,,1,0.000652,"HKG imports 970110 [UN Comtrade value; file HS_2019_H5_R1ab54736_C08c07520.csv, line 13077], no weight; Russia reports no export"
+unknown large lot KOR->VEN 2012,KOR->VEN,vis,2012,,,1,0.000284,"VEN imports 970110 [UN Comtrade value and net weight; file HS_2012_H2_R73877e9a_Ce90ec010.csv, line 833]; Korea reports no export"
+unknown large lot CAN->GTM 2021,CAN->GTM,vis,2021,,,1,0.000285,"GTM imports 970600 [UN Comtrade value and net weight; file HS_2021_H5_R4e9ed300_C805c7ea4.csv, line 583]; Canada reports no export"
+unknown large lot RUS->EGY 2018,RUS->EGY,vis,2018,,,1,0.000605,"EGY 4911 [UN Comtrade values; file HS_2018_H4_R9172896a_C08c07520.csv, lines 5500, 5699] unmatched (RUS reports [UN Comtrade values; file X_HS_2018_H5_Ra6218a3e_Ce2c5be11.csv, lines 739, 795, 892]); 8523 [UN Comtrade values; file HS_2018_H4_R9172896a_C08c07520.csv, lines 5776, 5889, 5947] matched by RUS exports [UN Comtrade value; file X_HS_2018_H5_Ra6218a3e_Ce2c5be11.csv, line 1032]"
+MDA visitors nationality 2007-2015 below the published tourist totals (organized-tourism-type coverage; unbenchmarked),MDA,vis,2007-2015,NAT,,318,0.000484,no published visitor total; M5 not applicable (no tourist bilateral series)
+"NOR visitors residence 2020-2021 equal to the published tourist totals: tourists-only visitor values, no note",NOR,vis,2020-2021,RES,,80,0.001313,unbenchmarked visitor series

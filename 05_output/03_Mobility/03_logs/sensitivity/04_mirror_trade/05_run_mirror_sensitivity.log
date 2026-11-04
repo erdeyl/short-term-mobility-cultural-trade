@@ -1,0 +1,691 @@
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  <PACKAGE_ROOT>/05_output/03_Mobility/03_logs/sensitivity/04_mirror_trade/05_run_mirror_sensitivity.log
+  log type:  text
+ opened on:   4 Nov 2026, 08:32:18
+
+. 
+. capture confirm file "${INDATA}"
+
+. if _rc {
+.     di as error "Missing mirror analysis input: ${INDATA}"
+.     exit 601
+. }
+
+. 
+. capture which ppmlhdfe
+
+. if _rc exit 199
+
+. capture which esttab
+
+. if _rc exit 199
+
+. capture which eststo
+
+. if _rc exit 199
+
+. capture which estadd
+
+. if _rc exit 199
+
+. 
+. use "${INDATA}", clear
+
+. isid year iso3_o iso3_d
+
+. 
+. foreach v in ///
+>     v_ttl_k v_ttl_exporter_lb_k ///
+>     mob_bilat_vis mob_bilat_tour ///
+>     has_both_vis has_both_tour ///
+>     exporter_year importer_year pair_id ///
+>     export_trade_reporting_available {
+  2.     capture confirm variable `v'
+  3.     if _rc {
+  4.         di as error "Required mirror-analysis variable missing: `v'"
+  5.         exit 111
+  6.     }
+  7. }
+
+. 
+. local FE "exporter_year importer_year pair_id"
+
+. local CLUSTER "pair_id"
+
+. 
+. eststo clear
+
+. 
+. * ----------------------------------------------------------------------
+. * A. Own-support importer and exporter estimates.
+. * ----------------------------------------------------------------------
+. quietly ppmlhdfe v_ttl_k mob_bilat_vis if has_both_vis, ///
+>     absorb(`FE') vce(cluster `CLUSTER')
+
+. eststo IMP_VIS_OWN
+
+. scalar imp_vis_own_b=_b[mob_bilat_vis]
+
+. scalar imp_vis_own_se=_se[mob_bilat_vis]
+
+. scalar imp_vis_own_n=e(N)
+
+. 
+. quietly ppmlhdfe v_ttl_exporter_lb_k mob_bilat_vis ///
+>     if has_both_vis & export_trade_reporting_available==1, ///
+>     absorb(`FE') vce(cluster `CLUSTER')
+
+. eststo EXP_VIS_OWN
+
+. scalar exp_vis_own_b=_b[mob_bilat_vis]
+
+. scalar exp_vis_own_se=_se[mob_bilat_vis]
+
+. scalar exp_vis_own_n=e(N)
+
+. 
+. quietly ppmlhdfe v_ttl_k mob_bilat_tour if has_both_tour, ///
+>     absorb(`FE') vce(cluster `CLUSTER')
+
+. eststo IMP_TOUR_OWN
+
+. scalar imp_tour_own_b=_b[mob_bilat_tour]
+
+. scalar imp_tour_own_se=_se[mob_bilat_tour]
+
+. scalar imp_tour_own_n=e(N)
+
+. 
+. quietly ppmlhdfe v_ttl_exporter_lb_k mob_bilat_tour ///
+>     if has_both_tour & export_trade_reporting_available==1, ///
+>     absorb(`FE') vce(cluster `CLUSTER')
+
+. eststo EXP_TOUR_OWN
+
+. scalar exp_tour_own_b=_b[mob_bilat_tour]
+
+. scalar exp_tour_own_se=_se[mob_bilat_tour]
+
+. scalar exp_tour_own_n=e(N)
+
+. 
+. * ----------------------------------------------------------------------
+. * B1. Exact importer-vs-exporter common realized support: visitors.
+. * ----------------------------------------------------------------------
+. gen byte common_trade_vis = ///
+>     has_both_vis==1 & ///
+>     !missing(v_ttl_k,v_ttl_exporter_lb_k,mob_bilat_vis)
+
+. 
+. local conv_vis=0
+
+. local iter_vis=0
+
+. forvalues iter=1/10 {
+  2.     local iter_vis=`iter'
+  3.     capture drop __imp_v __exp_v
+  4. 
+.     quietly ppmlhdfe v_ttl_k mob_bilat_vis if common_trade_vis, ///
+>         absorb(`FE') vce(cluster `CLUSTER')
+  5.     gen byte __imp_v=e(sample)
+  6. 
+.     quietly ppmlhdfe v_ttl_exporter_lb_k mob_bilat_vis if common_trade_vis, ///
+>         absorb(`FE') vce(cluster `CLUSTER')
+  7.     gen byte __exp_v=e(sample)
+  8. 
+.     quietly count if common_trade_vis & (!__imp_v | !__exp_v)
+  9.     local rm=r(N)
+ 10.     if `rm'==0 {
+ 11.         local conv_vis=1
+ 12.         continue, break
+ 13.     }
+ 14.     replace common_trade_vis=common_trade_vis & __imp_v & __exp_v
+ 15. }
+(4,754 real changes made)
+(19 real changes made)
+
+. if `conv_vis'==0 exit 430
+
+. drop __imp_v __exp_v
+
+. 
+. quietly ppmlhdfe v_ttl_k mob_bilat_vis if common_trade_vis, ///
+>     absorb(`FE') vce(cluster `CLUSTER')
+
+. eststo IMP_VIS_COMMON
+
+. gen byte __final_imp_v=e(sample)
+
+. scalar imp_vis_common_b=_b[mob_bilat_vis]
+
+. scalar imp_vis_common_se=_se[mob_bilat_vis]
+
+. scalar imp_vis_common_n=e(N)
+
+. 
+. quietly ppmlhdfe v_ttl_exporter_lb_k mob_bilat_vis if common_trade_vis, ///
+>     absorb(`FE') vce(cluster `CLUSTER')
+
+. eststo EXP_VIS_COMMON
+
+. gen byte __final_exp_v=e(sample)
+
+. scalar exp_vis_common_b=_b[mob_bilat_vis]
+
+. scalar exp_vis_common_se=_se[mob_bilat_vis]
+
+. scalar exp_vis_common_n=e(N)
+
+. 
+. quietly count if __final_imp_v!=__final_exp_v
+
+. if r(N)!=0 exit 459
+
+. assert scalar(imp_vis_common_n)==scalar(exp_vis_common_n)
+
+. drop __final_imp_v __final_exp_v
+
+. 
+. * ----------------------------------------------------------------------
+. * B2. Exact importer-vs-exporter common realized support: tourists.
+. * ----------------------------------------------------------------------
+. gen byte common_trade_tour = ///
+>     has_both_tour==1 & ///
+>     !missing(v_ttl_k,v_ttl_exporter_lb_k,mob_bilat_tour)
+
+. 
+. local conv_tour=0
+
+. local iter_tour=0
+
+. forvalues iter=1/10 {
+  2.     local iter_tour=`iter'
+  3.     capture drop __imp_t __exp_t
+  4. 
+.     quietly ppmlhdfe v_ttl_k mob_bilat_tour if common_trade_tour, ///
+>         absorb(`FE') vce(cluster `CLUSTER')
+  5.     gen byte __imp_t=e(sample)
+  6. 
+.     quietly ppmlhdfe v_ttl_exporter_lb_k mob_bilat_tour if common_trade_tour, ///
+>         absorb(`FE') vce(cluster `CLUSTER')
+  7.     gen byte __exp_t=e(sample)
+  8. 
+.     quietly count if common_trade_tour & (!__imp_t | !__exp_t)
+  9.     local rm=r(N)
+ 10.     if `rm'==0 {
+ 11.         local conv_tour=1
+ 12.         continue, break
+ 13.     }
+ 14.     replace common_trade_tour=common_trade_tour & __imp_t & __exp_t
+ 15. }
+(8,584 real changes made)
+(18 real changes made)
+
+. if `conv_tour'==0 exit 430
+
+. drop __imp_t __exp_t
+
+. 
+. quietly ppmlhdfe v_ttl_k mob_bilat_tour if common_trade_tour, ///
+>     absorb(`FE') vce(cluster `CLUSTER')
+
+. eststo IMP_TOUR_COMMON
+
+. gen byte __final_imp_t=e(sample)
+
+. scalar imp_tour_common_b=_b[mob_bilat_tour]
+
+. scalar imp_tour_common_se=_se[mob_bilat_tour]
+
+. scalar imp_tour_common_n=e(N)
+
+. 
+. quietly ppmlhdfe v_ttl_exporter_lb_k mob_bilat_tour if common_trade_tour, ///
+>     absorb(`FE') vce(cluster `CLUSTER')
+
+. eststo EXP_TOUR_COMMON
+
+. gen byte __final_exp_t=e(sample)
+
+. scalar exp_tour_common_b=_b[mob_bilat_tour]
+
+. scalar exp_tour_common_se=_se[mob_bilat_tour]
+
+. scalar exp_tour_common_n=e(N)
+
+. 
+. quietly count if __final_imp_t!=__final_exp_t
+
+. if r(N)!=0 exit 459
+
+. assert scalar(imp_tour_common_n)==scalar(exp_tour_common_n)
+
+. drop __final_imp_t __final_exp_t
+
+. 
+. * ----------------------------------------------------------------------
+. * C1. Formal importer-vs-exporter slope equality on visitor common support.
+. * ----------------------------------------------------------------------
+. preserve
+
+.     keep if common_trade_vis
+(805,496 observations deleted)
+
+.     keep year iso3_o iso3_d pair_id exporter_year importer_year ///
+>          v_ttl_k v_ttl_exporter_lb_k mob_bilat_vis
+
+.     expand 2
+(17,950 observations created)
+
+.     bysort year iso3_o iso3_d: gen byte side=_n
+
+.     gen double stacked_trade=cond(side==1,v_ttl_k,v_ttl_exporter_lb_k)
+
+.     gen double x_imp=cond(side==1,mob_bilat_vis,0)
+
+.     gen double x_exp=cond(side==2,mob_bilat_vis,0)
+
+.     egen long exporter_year_s=group(exporter_year side)
+
+.     egen long importer_year_s=group(importer_year side)
+
+.     egen long pair_s=group(pair_id side)
+
+. 
+.     quietly ppmlhdfe stacked_trade x_imp x_exp, ///
+>         absorb(exporter_year_s importer_year_s pair_s) ///
+>         vce(cluster pair_id)
+
+. 
+.     scalar stack_imp_vis_b=_b[x_imp]
+
+.     scalar stack_exp_vis_b=_b[x_exp]
+
+.     scalar gap_imp_vis=abs(scalar(stack_imp_vis_b)-scalar(imp_vis_common_b))
+
+.     scalar gap_exp_vis=abs(scalar(stack_exp_vis_b)-scalar(exp_vis_common_b))
+
+.     if scalar(gap_imp_vis)>1e-6 | scalar(gap_exp_vis)>1e-6 exit 459
+
+. 
+.     test x_imp=x_exp
+
+ ( 1)  x_imp - x_exp = 0
+
+           chi2(  1) =    5.87
+         Prob > chi2 =    0.0154
+
+.     scalar p_side_vis=r(p)
+
+.     lincom x_imp-x_exp
+
+ ( 1)  x_imp - x_exp = 0
+
+------------------------------------------------------------------------------
+stacked_tr~e | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+         (1) |   .1847863   .0762504     2.42   0.015     .0353382    .3342344
+------------------------------------------------------------------------------
+
+.     scalar diff_side_vis=r(estimate)
+
+.     scalar diff_side_vis_se=r(se)
+
+. restore
+
+. 
+. * ----------------------------------------------------------------------
+. * C2. Formal importer-vs-exporter slope equality on tourist common support.
+. * ----------------------------------------------------------------------
+. preserve
+
+.     keep if common_trade_tour
+(801,454 observations deleted)
+
+.     keep year iso3_o iso3_d pair_id exporter_year importer_year ///
+>          v_ttl_k v_ttl_exporter_lb_k mob_bilat_tour
+
+.     expand 2
+(21,992 observations created)
+
+.     bysort year iso3_o iso3_d: gen byte side=_n
+
+.     gen double stacked_trade=cond(side==1,v_ttl_k,v_ttl_exporter_lb_k)
+
+.     gen double x_imp=cond(side==1,mob_bilat_tour,0)
+
+.     gen double x_exp=cond(side==2,mob_bilat_tour,0)
+
+.     egen long exporter_year_s=group(exporter_year side)
+
+.     egen long importer_year_s=group(importer_year side)
+
+.     egen long pair_s=group(pair_id side)
+
+. 
+.     quietly ppmlhdfe stacked_trade x_imp x_exp, ///
+>         absorb(exporter_year_s importer_year_s pair_s) ///
+>         vce(cluster pair_id)
+
+. 
+.     scalar stack_imp_tour_b=_b[x_imp]
+
+.     scalar stack_exp_tour_b=_b[x_exp]
+
+.     scalar gap_imp_tour=abs(scalar(stack_imp_tour_b)-scalar(imp_tour_common_b))
+
+.     scalar gap_exp_tour=abs(scalar(stack_exp_tour_b)-scalar(exp_tour_common_b))
+
+.     if scalar(gap_imp_tour)>1e-6 | scalar(gap_exp_tour)>1e-6 exit 459
+
+. 
+.     test x_imp=x_exp
+
+ ( 1)  x_imp - x_exp = 0
+
+           chi2(  1) =    0.41
+         Prob > chi2 =    0.5226
+
+.     scalar p_side_tour=r(p)
+
+.     lincom x_imp-x_exp
+
+ ( 1)  x_imp - x_exp = 0
+
+------------------------------------------------------------------------------
+stacked_tr~e | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+         (1) |   .0472379   .0738795     0.64   0.523    -.0975634    .1920391
+------------------------------------------------------------------------------
+
+.     scalar diff_side_tour=r(estimate)
+
+.     scalar diff_side_tour_se=r(se)
+
+. restore
+
+. 
+. * ----------------------------------------------------------------------
+. * D. Publication-facing tables.
+. * ----------------------------------------------------------------------
+. foreach format in csv rtf {
+  2.     local extra ""
+  3.     if "`format'"=="csv" local extra "csv"
+  4. 
+.     esttab IMP_VIS_OWN EXP_VIS_OWN IMP_VIS_COMMON EXP_VIS_COMMON ///
+>            IMP_TOUR_OWN EXP_TOUR_OWN IMP_TOUR_COMMON EXP_TOUR_COMMON ///
+>         using "${TABLES}/table_mirror_trade_sensitivity.`format'", ///
+>         replace `extra' ///
+>         mtitles( ///
+>             "Vis: importer own" "Vis: exporter own" ///
+>             "Vis: importer common" "Vis: exporter common" ///
+>             "Tour: importer own" "Tour: exporter own" ///
+>             "Tour: importer common" "Tour: exporter common" ///
+>         ) ///
+>         b(%9.3f) se(%9.3f) star(* 0.10 ** 0.05 *** 0.01) ///
+>         keep(mob_bilat_vis mob_bilat_tour) ///
+>         order(mob_bilat_vis mob_bilat_tour) ///
+>         coeflabels(mob_bilat_vis "Bilateral visitors" ///
+>                    mob_bilat_tour "Bilateral tourists") ///
+>         stats(N,labels("N") fmt(%12.0fc)) ///
+>         label compress nogaps ///
+>         addnotes( ///
+>             "Importer side is the manuscript LB baseline; exporter side is reporter=iso3_o, partner/destination=iso3_d.", ///
+>             "Common columns use exactly identical realized PPML observations across the two reporting sides.", ///
+>             "All models absorb exporter-year, importer-year, and directed-pair fixed effects; SEs clustered by pair.", ///
+>             "No importer/exporter averaging or reconciliation is used." ///
+>         )
+  5. }
+(file <PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/02_sensitivity/04_mirror_trade/tables/table_mirror_trade_sensitivity.csv not found)
+(output written to <PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/02_sensitivity/04_mirror_trade/tables/table_mirror_trade_sensitivity.csv)
+(file <PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/02_sensitivity/04_mirror_trade/tables/table_mirror_trade_sensitivity.rtf not found)
+(output written to <PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/02_sensitivity/04_mirror_trade/tables/table_mirror_trade_sensitivity.rtf)
+
+. 
+. * ----------------------------------------------------------------------
+. * E. Machine-readable result ledgers.
+. * ----------------------------------------------------------------------
+. preserve
+
+.     clear
+
+.     input str10 mobility str10 reporting_side str8 support double b se N
+
+       mobility  reportin~e    support           b         se          N
+  1.     "visitors" "importer" "own" . . .
+  2.     "visitors" "exporter" "own" . . .
+  3.     "visitors" "importer" "common" . . .
+  4.     "visitors" "exporter" "common" . . .
+  5.     "tourists" "importer" "own" . . .
+  6.     "tourists" "exporter" "own" . . .
+  7.     "tourists" "importer" "common" . . .
+  8.     "tourists" "exporter" "common" . . .
+  9.     end
+
+. 
+.     replace b=scalar(imp_vis_own_b) in 1
+(1 real change made)
+
+.     replace se=scalar(imp_vis_own_se) in 1
+(1 real change made)
+
+.     replace N=scalar(imp_vis_own_n) in 1
+(1 real change made)
+
+. 
+.     replace b=scalar(exp_vis_own_b) in 2
+(1 real change made)
+
+.     replace se=scalar(exp_vis_own_se) in 2
+(1 real change made)
+
+.     replace N=scalar(exp_vis_own_n) in 2
+(1 real change made)
+
+. 
+.     replace b=scalar(imp_vis_common_b) in 3
+(1 real change made)
+
+.     replace se=scalar(imp_vis_common_se) in 3
+(1 real change made)
+
+.     replace N=scalar(imp_vis_common_n) in 3
+(1 real change made)
+
+. 
+.     replace b=scalar(exp_vis_common_b) in 4
+(1 real change made)
+
+.     replace se=scalar(exp_vis_common_se) in 4
+(1 real change made)
+
+.     replace N=scalar(exp_vis_common_n) in 4
+(1 real change made)
+
+. 
+.     replace b=scalar(imp_tour_own_b) in 5
+(1 real change made)
+
+.     replace se=scalar(imp_tour_own_se) in 5
+(1 real change made)
+
+.     replace N=scalar(imp_tour_own_n) in 5
+(1 real change made)
+
+. 
+.     replace b=scalar(exp_tour_own_b) in 6
+(1 real change made)
+
+.     replace se=scalar(exp_tour_own_se) in 6
+(1 real change made)
+
+.     replace N=scalar(exp_tour_own_n) in 6
+(1 real change made)
+
+. 
+.     replace b=scalar(imp_tour_common_b) in 7
+(1 real change made)
+
+.     replace se=scalar(imp_tour_common_se) in 7
+(1 real change made)
+
+.     replace N=scalar(imp_tour_common_n) in 7
+(1 real change made)
+
+. 
+.     replace b=scalar(exp_tour_common_b) in 8
+(1 real change made)
+
+.     replace se=scalar(exp_tour_common_se) in 8
+(1 real change made)
+
+.     replace N=scalar(exp_tour_common_n) in 8
+(1 real change made)
+
+. 
+.     export delimited using "${DIAG}/mirror_trade_key_results.csv", replace
+(file <PACKAGE_ROOT>/05_output/03_Mobility/01_diagnostics/sensitivity/04_mirror_trade/mirror_trade_key_results.csv not found)
+file <PACKAGE_ROOT>/05_output/03_Mobility/01_diagnostics/sensitivity/04_mirror_trade/mirror_trade_key_results.csv saved
+
+. restore
+
+. 
+. preserve
+
+.     clear
+
+.     set obs 2
+Number of observations (_N) was 0, now 2.
+
+.     gen str10 mobility=""
+(2 missing values generated)
+
+.     replace mobility="visitors" in 1
+(1 real change made)
+
+.     replace mobility="tourists" in 2
+(1 real change made)
+
+.     gen double common_N=.
+(2 missing values generated)
+
+.     gen double importer_b=.
+(2 missing values generated)
+
+.     gen double exporter_b=.
+(2 missing values generated)
+
+.     gen double importer_minus_exporter=.
+(2 missing values generated)
+
+.     gen double difference_se=.
+(2 missing values generated)
+
+.     gen double equality_p=.
+(2 missing values generated)
+
+. 
+.     replace common_N=scalar(imp_vis_common_n) in 1
+(1 real change made)
+
+.     replace importer_b=scalar(imp_vis_common_b) in 1
+(1 real change made)
+
+.     replace exporter_b=scalar(exp_vis_common_b) in 1
+(1 real change made)
+
+.     replace importer_minus_exporter=scalar(diff_side_vis) in 1
+(1 real change made)
+
+.     replace difference_se=scalar(diff_side_vis_se) in 1
+(1 real change made)
+
+.     replace equality_p=scalar(p_side_vis) in 1
+(1 real change made)
+
+. 
+.     replace common_N=scalar(imp_tour_common_n) in 2
+(1 real change made)
+
+.     replace importer_b=scalar(imp_tour_common_b) in 2
+(1 real change made)
+
+.     replace exporter_b=scalar(exp_tour_common_b) in 2
+(1 real change made)
+
+.     replace importer_minus_exporter=scalar(diff_side_tour) in 2
+(1 real change made)
+
+.     replace difference_se=scalar(diff_side_tour_se) in 2
+(1 real change made)
+
+.     replace equality_p=scalar(p_side_tour) in 2
+(1 real change made)
+
+. 
+.     export delimited using "${DIAG}/mirror_trade_reporting_side_equality.csv", replace
+(file <PACKAGE_ROOT>/05_output/03_Mobility/01_diagnostics/sensitivity/04_mirror_trade/mirror_trade_reporting_side_equality.csv not found)
+file <PACKAGE_ROOT>/05_output/03_Mobility/01_diagnostics/sensitivity/04_mirror_trade/mirror_trade_reporting_side_equality.csv saved
+
+. restore
+
+. 
+. file open done using "${DIAG}/05_MIRROR_SENSITIVITY_COMPLETE.txt", write replace text
+(file <PACKAGE_ROOT>/05_output/03_Mobility/01_diagnostics/sensitivity/04_mirror_trade/05_MIRROR_SENSITIVITY_COMPLETE.txt not found)
+
+. file write done "MIRROR_TRADE_STEP4=PASS" _n
+
+. 
+. local iv : display %12.9f scalar(imp_vis_own_b)
+
+. local ev : display %12.9f scalar(exp_vis_own_b)
+
+. local it : display %12.9f scalar(imp_tour_own_b)
+
+. local et : display %12.9f scalar(exp_tour_own_b)
+
+. local pvc : display %12.9f scalar(p_side_vis)
+
+. local ptc : display %12.9f scalar(p_side_tour)
+
+. 
+. file write done "visitor_importer_own_b=`iv'" _n
+
+. file write done "visitor_exporter_own_b=`ev'" _n
+
+. file write done "tourist_importer_own_b=`it'" _n
+
+. file write done "tourist_exporter_own_b=`et'" _n
+
+. file write done "visitor_reporting_side_equality_p=`pvc'" _n
+
+. file write done "tourist_reporting_side_equality_p=`ptc'" _n
+
+. file close done
+
+. 
+. di as result "MIRROR_TRADE_STEP4=PASS"
+MIRROR_TRADE_STEP4=PASS
+
+. di as result "VISITOR importer own=" %12.9f scalar(imp_vis_own_b) ///
+>     " exporter own=" %12.9f scalar(exp_vis_own_b)
+VISITOR importer own= 0.191328250 exporter own= 0.022193131
+
+. di as result "TOURIST importer own=" %12.9f scalar(imp_tour_own_b) ///
+>     " exporter own=" %12.9f scalar(exp_tour_own_b)
+TOURIST importer own= 0.240886677 exporter own= 0.184343940
+
+. di as result "VISITOR reporting-side equality p=" %12.9f scalar(p_side_vis)
+VISITOR reporting-side equality p= 0.015375410
+
+. di as result "TOURIST reporting-side equality p=" %12.9f scalar(p_side_tour)
+TOURIST reporting-side equality p= 0.522569049
+
+. 
+. log close
+      name:  <unnamed>
+       log:  <PACKAGE_ROOT>/05_output/03_Mobility/03_logs/sensitivity/04_mirror_trade/05_run_mirror_sensitivity.log
+  log type:  text
+ closed on:   4 Nov 2026, 08:32:33
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

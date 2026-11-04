@@ -1,0 +1,1178 @@
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/A1_05_did_corrected2x.log
+  log type:  text
+ opened on:   4 Nov 2026, 08:37:08
+
+. display as result "A1_05_BEGIN vintage=${VINTAGE} " c(current_date) " " c(current_time)
+A1_05_BEGIN vintage=corrected2x  4 Nov 2026 08:37:08
+
+. which whichdidshouldiuse
+<USER_HOME>/Library/Application Support/Stata/ado/plus/w/whichdidshouldiuse.ado
+*! whichdidshouldiuse 1.0.0  19oct2026
+*! Classify a (Y, G, T, D) panel as CLA, SAD, HAD, or SFSD, with a less strict
+*! default for missing treatment and a strict option.
+
+. which did_multiplegt_dyn
+<USER_HOME>/Library/Application Support/Stata/ado/plus/d/did_multiplegt_dyn.ado
+
+. * Audit R1-02: whichdidshouldiuse.ado:312-313 and :355-356 create the baseline with a plain
+. * `gen` (default storage type) from the double treatment and compare it with exact inequality
+. * (:375), so under the default float type every group "switches" at entry. All new variables
+. * created without an explicit type are therefore stored as double ([D] generate; help set_type).
+. set type double
+
+. display as result "A1.10_STORAGE c(type)=`c(type)'"
+A1.10_STORAGE c(type)=double
+
+. * did_multiplegt_dyn saves and reloads a tempfile without quotes (installed ado lines 3641, 4022);
+. * the batch launcher sets STATATMP to a directory without spaces. Recorded here:
+. display as result "A1.10_TMPDIR c(tmpdir)=`c(tmpdir)'"
+A1.10_TMPDIR c(tmpdir)=<TMP>
+
+. assert strpos("`c(tmpdir)'", " ") == 0
+
+. 
+. use year iso3_o iso3_d v_ttl_k pair_id mob_bilat_vis mob_bilat_tour s_base_vis s_base_tour exporter_year importer_year unordered_pair_id ///
+>     using "${PREPARED}", clear
+(PREP analysis base, vintage corrected2x, built  4 Nov 2026 08:33:39 by 01_prep.d)
+
+. nflow start using "${OUT}/A1_nflow.csv", append expected(823446)
+nflow: log <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/A1_nflow.csv, start N =      823,446
+
+. A1_open A1_05
+(file <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/results/A1_parts/A1_05.dta not found)
+
+. 
+. tempname CL ST NY
+
+. postfile `CL' str5 mobility str16 mode str32 rname str80 rvalue using "${OUT}/tables/A1_A1.10_classifier.dta", replace
+(file <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/tables/A1_A1.10_classifier.dta not found)
+
+. postfile `ST' str5 mobility int year double(transitions exact_stay abs_lt_001 abs_lt_005 sh_exact sh_lt_001 sh_lt_005) ///
+>     using "${OUT}/tables/A1_A1.10_stayers_by_year.dta", replace
+(file <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/tables/A1_A1.10_stayers_by_year.dta not found)
+
+. postfile `NY' str5 mobility int year double(groups_observed not_yet_switchers never_switchers_observed) ///
+>     using "${OUT}/tables/A1_A1.10_not_yet_switchers.dta", replace
+(file <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/tables/A1_A1.10_not_yet_switchers.dta not found)
+
+. foreach m in vis tour {
+  2.     preserve
+  3.         keep if s_base_`m' == 1
+  4.         nflow step "A1.10 keep baseline e(sample) rows (`m')"
+  5.         isid pair_id year
+  6.         * --- classifier, default and strict
+.         foreach mode in default strict {
+  7.             local opt = cond("`mode'" == "strict", "strict", "")
+  8.             display as result "A1.10_WHICHDID `m' `mode' -----------------------------------------"
+  9.             whichdidshouldiuse v_ttl_k pair_id year mob_bilat_`m', detail `opt'
+ 10.             if "`mode'" == "strict" {
+ 11.                 local strict_ng = r(n_groups)
+ 12.                 local strict_case "`r(sfsd_case)'"
+ 13.                 local strict_design "`r(design)'"
+ 14.             }
+ 15.             local scal : r(scalars)
+ 16.             local macs : r(macros)
+ 17.             foreach r of local macs {
+ 18.                 local v = substr(`"`r(`r')'"', 1, 80)
+ 19.                 post `CL' ("`m'") ("`mode'") ("`r'") (`"`v'"')
+ 20.             }
+ 21.             foreach r of local scal {
+ 22.                 local v : display %18.0g r(`r')
+ 23.                 post `CL' ("`m'") ("`mode'") ("`r'") (strtrim("`v'"))
+ 24.             }
+ 25.         }
+ 26.         * --- stayers and quasi-stayers: transitions t-1 -> t inside the sample
+.         xtset pair_id year, yearly
+ 27.         gen double dd = mob_bilat_`m' - L.mob_bilat_`m'
+ 28.         forvalues y = 2008/2021 {
+ 29.             quietly count if year == `y' & !missing(dd)
+ 30.             local n = r(N)
+ 31.             quietly count if year == `y' & dd == 0
+ 32.             local a = r(N)
+ 33.             quietly count if year == `y' & abs(dd) < 0.01 & !missing(dd)
+ 34.             local b = r(N)
+ 35.             quietly count if year == `y' & abs(dd) < 0.05 & !missing(dd)
+ 36.             local c = r(N)
+ 37.             post `ST' ("`m'") (`y') (`n') (`a') (`b') (`c') (`a' / `n') (`b' / `n') (`c' / `n')
+ 38.         }
+ 39.         quietly count if !missing(dd)
+ 40.         local n = r(N)
+ 41.         quietly count if dd == 0
+ 42.         local a = r(N)
+ 43.         quietly count if abs(dd) < 0.01 & !missing(dd)
+ 44.         local b = r(N)
+ 45.         quietly count if abs(dd) < 0.05 & !missing(dd)
+ 46.         local c = r(N)
+ 47.         post `ST' ("`m'") (0) (`n') (`a') (`b') (`c') (`a' / `n') (`b' / `n') (`c' / `n')
+ 48.         * --- first switch dates (D different from the pair's first observed D) and not-yet-switchers
+.         bysort pair_id (year): gen double d0 = mob_bilat_`m'[1]
+ 49.         by pair_id: egen int Fg = min(cond(mob_bilat_`m' != d0, year, .))
+ 50.         by pair_id: gen int y0 = year[1]
+ 51.         forvalues y = 2008/2021 {
+ 52.             quietly count if year == `y'
+ 53.             local g = r(N)
+ 54.             quietly count if year == `y' & y0 < `y' & (missing(Fg) | Fg > `y')
+ 55.             local nys = r(N)
+ 56.             quietly count if year == `y' & missing(Fg)
+ 57.             local nev = r(N)
+ 58.             post `NY' ("`m'") (`y') (`g') (`nys') (`nev')
+ 59.         }
+ 60.         egen byte __tg = tag(pair_id)
+ 61.         quietly count if __tg & missing(Fg)
+ 62.         display as result "A1.10_NEVER_SWITCHERS `m' pairs=" r(N)
+ 63.         quietly count if __tg
+ 64.         display as result "A1.10_PAIRS `m' =" r(N)
+ 65.         * --- the estimator that the design classification assigns (rerun after audit check under double storage). The
+.         *     classifier sub-cases are read from the log/CSV of this run; both SFSD variants are run:
+.         *     plain = shared-baseline; continuous(1) = continuous-baseline, with the help's recommended
+.         *     bootstrap comparison (bootstrap(100,20261103); "we recommend using the bootstrap for
+.         *     inference ... At least, one should perform a robustness check"). Earlier wording below:
+.         *     Classifier sub-case (default mode, float storage) = "shared-baseline"
+.         *     -> did_multiplegt_dyn comparing first-time switchers with not-yet-switchers that share the
+.         *     same period-one treatment (help did_multiplegt_dyn).
+.         *     Secondary: continuous(1) (polynomial in the period-one treatment; for the
+.         *     continuous-baseline sub-case). One effect and one placebo, cluster by pair, levels.
+.         *     If the command stops after estimation (as observed: "didmgt_Var_all_XX not found" when
+.         *     the placebo cannot be estimated), it is rerun without placebo() so that e() is stored.
+.         * rerun C2 (author decision 2026-11-03, authors' working notes): for corrected2/corrected2x
+.         * every bootstrap call runs in its own fresh Stata process without placebo() (C2_A1_10_boot.do);
+.         * submitted/corrected keep the original list
+.         local dm_variants "plain cont1 cont1boot"
+ 66.         if inlist("${VINTAGE}", "corrected2", "corrected2x") local dm_variants "plain cont1"
+ 67.         foreach variant of local dm_variants {
+ 68.             local vopt ""
+ 69.             if "`variant'" == "cont1" local vopt "continuous(1)"
+ 70.             if "`variant'" == "cont1boot" local vopt "continuous(1) bootstrap(100,20261103)"
+ 71.             display as result "A1.10_DMDYN `m' `variant' -----------------------------------------"
+ 72.             * rerun C2 (author decision 2026-11-04): variable abbreviation on only around the call
+.             set varabbrev on
+ 73.             display as result "A1.10_VARABBREV on for did_multiplegt_dyn: package requires variable abbreviation, ado lines 2010-2014 (getmata scalars_XX* creates scalars_XX1, read as scalars_XX)
+> "
+ 74.             capture noisily did_multiplegt_dyn v_ttl_k pair_id year mob_bilat_`m', effects(1) placebo(1) `vopt' ///
+>                 cluster(pair_id) graph_off _no_updates
+ 75.             local rc = _rc
+ 76.             set varabbrev off
+ 77.             local plnote "effects(1) placebo(1)"
+ 78.             display as result "A1.10_DMDYN_RC `m' `variant' placebo rc=`rc'"
+ 79.             if `rc' != 0 {
+ 80.                 * rerun C2 (author decision 2026-11-04): variable abbreviation on only around the call
+.                 set varabbrev on
+ 81.                 display as result "A1.10_VARABBREV on for did_multiplegt_dyn: package requires variable abbreviation, ado lines 2010-2014 (getmata scalars_XX* creates scalars_XX1, read as scalars
+> _XX)"
+ 82.                 capture noisily did_multiplegt_dyn v_ttl_k pair_id year mob_bilat_`m', effects(1) `vopt' ///
+>                     cluster(pair_id) graph_off _no_updates
+ 83.                 local rc = _rc
+ 84.                 set varabbrev off
+ 85.                 local plnote "effects(1) only: the run with placebo(1) stopped with an error"
+ 86.                 display as result "A1.10_DMDYN_RC `m' `variant' noplacebo rc=`rc'"
+ 87.             }
+ 88.             if `rc' == 0 {
+ 89.                 foreach s in Effect_1 se_effect_1 N_effect_1 N_switchers_effect_1 Placebo_1 se_placebo_1 N_placebo_1 N_switchers_placebo_1 {
+ 90.                     capture local v = e(`s')
+ 91.                     if _rc local v = .
+ 92.                     post `CL' ("`m'") ("dm2_`variant'") ("e(`s')") ("`v'")
+ 93.                 }
+ 94.                 foreach k in effect placebo {
+ 95.                     local K = cond("`k'" == "effect", "Effect_1", "Placebo_1")
+ 96.                     local bb = e(`K')
+ 97.                     local ss = e(se_`k'_1)
+ 98.                     local nn = e(N_`k'_1)
+ 99.                     local ns = e(N_switchers_`k'_1)
+100.                     if missing(`bb') & "`k'" == "placebo" {
+101.                         post A1post ("A1.10.dmdyn2_`variant'.`m'.`K'") ("${VINTAGE}") ("A1") ("A1.10") ("dmdyn2_`variant'") ("s_base_`m'") ("`m'") ("`K'") ///
+>                             (.) (.) (.) (.) (.) (`nn') (.) (.) (.) (.) ("pair_id") ("NOT ESTIMABLE: no switcher or no control for this placebo (command output); did_multiplegt_dyn `vopt' `plnote'; d
+> ouble storage")
+102.                         continue
+103.                     }
+104.                     post A1post ("A1.10.dmdyn2_`variant'.`m'.`K'") ("${VINTAGE}") ("A1") ("A1.10") ("dmdyn2_`variant'") ("s_base_`m'") ("`m'") ("`K'") ///
+>                         (`bb') (`ss') (2 * normal(-abs(`bb' / `ss'))) (`bb' - invnormal(.975) * `ss') (`bb' + invnormal(.975) * `ss') ///
+>                         (`nn') (.) (.) (.) (.) ("pair_id") ("did_multiplegt_dyn `vopt' `plnote'; level outcome (1000 USD); switchers=`ns'; N-switchers=`=`nn'-`ns''; double storage")
+105.                 }
+106.             }
+107.             else {
+108.                 post `CL' ("`m'") ("dm2_`variant'") ("rc") ("`rc'")
+109.                 post A1post ("A1.10.dmdyn2_`variant'.`m'.Effect_1") ("${VINTAGE}") ("A1") ("A1.10") ("dmdyn2_`variant'") ("s_base_`m'") ("`m'") ("Effect_1") ///
+>                     (.) (.) (.) (.) (.) (.) (.) (.) (.) (.) ("pair_id") ("FAILED rc=`rc': did_multiplegt_dyn `vopt' produced no stored estimate; double storage")
+110.             }
+111.         }
+112.         * --- strict-mode classification: continuous-baseline SFSD -> did_multiplegt_dyn continuous(1)
+.         *     on the strict classifier's sample (groups with D observed at the first period, 2007, and
+.         *     no missing D before their first switch; whichdidshouldiuse help, "strict drops groups ...
+.         *     whose treatment is missing at baseline, or at any period before its first switch").
+.         *     Positive control: reconstructed group count = strict r(n_groups).
+.         display as result "A1.10_STRICT `m' design=`strict_design' case=`strict_case' n_groups=`strict_ng'"
+113.         bysort pair_id: egen byte __o07 = max(year == 2007)
+114.         gen double __d07x = mob_bilat_`m' if year == 2007
+115.         bysort pair_id: egen double __d07 = max(__d07x)
+116.         bysort pair_id: egen int __Fg = min(cond(!missing(__d07) & mob_bilat_`m' != __d07, year, .))
+117.         bysort pair_id: egen int __nbefore = total(year < __Fg)
+118.         gen byte __strict = __o07 == 1 & !missing(__Fg) & __nbefore == __Fg - 2007
+119.         egen byte __tgs = tag(pair_id) if __strict
+120.         quietly count if __tgs == 1
+121.         local ngs = r(N)
+122.         display as result "A1.10_STRICT_SAMPLE `m' reconstructed groups=`ngs' classifier n_groups=`strict_ng'"
+123.         if "`strict_case'" == "continuous-baseline" & `ngs' != `strict_ng' {
+124.             post A1post ("A1.10.dmdyn2_cont1strict.`m'.Effect_1") ("${VINTAGE}") ("A1") ("A1.10") ("dmdyn2_cont1strict") ("strict sample") ("`m'") ("Effect_1") ///
+>                 (.) (.) (.) (.) (.) (.) (.) (.) (.) (.) ("pair_id") ("NOT RUN: reconstructed strict sample has `ngs' groups, classifier `strict_ng'")
+125.         }
+126.         if "`strict_case'" == "continuous-baseline" & `ngs' == `strict_ng' {
+127.                 local dms_variants "cont1strict cont1strictboot"
+128.                 if inlist("${VINTAGE}", "corrected2", "corrected2x") local dms_variants "cont1strict"
+129.                 foreach variant of local dms_variants {
+130.                     local vopt "continuous(1)"
+131.                     if "`variant'" == "cont1strictboot" local vopt "continuous(1) bootstrap(100,20261103)"
+132.                     display as result "A1.10_DMDYN `m' `variant' -----------------------------------------"
+133.                     * rerun C2 (author decision 2026-11-04): variable abbreviation on only around the call
+.                     set varabbrev on
+134.                     display as result "A1.10_VARABBREV on for did_multiplegt_dyn: package requires variable abbreviation, ado lines 2010-2014 (getmata scalars_XX* creates scalars_XX1, read as sca
+> lars_XX)"
+135.                     capture noisily did_multiplegt_dyn v_ttl_k pair_id year mob_bilat_`m' if __strict, effects(1) placebo(1) `vopt' ///
+>                         cluster(pair_id) graph_off _no_updates
+136.                     local rc = _rc
+137.                     set varabbrev off
+138.                     local plnote "effects(1) placebo(1); strict-classifier sample (`ngs' groups)"
+139.                     display as result "A1.10_DMDYN_RC `m' `variant' placebo rc=`rc'"
+140.                     if `rc' != 0 {
+141.                         * rerun C2 (author decision 2026-11-04): variable abbreviation on only around the call
+.                         set varabbrev on
+142.                         display as result "A1.10_VARABBREV on for did_multiplegt_dyn: package requires variable abbreviation, ado lines 2010-2014 (getmata scalars_XX* creates scalars_XX1, read as
+>  scalars_XX)"
+143.                         capture noisily did_multiplegt_dyn v_ttl_k pair_id year mob_bilat_`m' if __strict, effects(1) `vopt' ///
+>                             cluster(pair_id) graph_off _no_updates
+144.                         local rc = _rc
+145.                         set varabbrev off
+146.                         local plnote "effects(1) only (placebo run stopped with an error); strict-classifier sample (`ngs' groups)"
+147.                         display as result "A1.10_DMDYN_RC `m' `variant' noplacebo rc=`rc'"
+148.                     }
+149.                     if `rc' == 0 {
+150.                         foreach s in Effect_1 se_effect_1 N_effect_1 N_switchers_effect_1 Placebo_1 se_placebo_1 N_placebo_1 N_switchers_placebo_1 {
+151.                             capture local v = e(`s')
+152.                             if _rc local v = .
+153.                             post `CL' ("`m'") ("dm2_`variant'") ("e(`s')") ("`v'")
+154.                         }
+155.                         foreach k in effect placebo {
+156.                             local K = cond("`k'" == "effect", "Effect_1", "Placebo_1")
+157.                             local bb = e(`K')
+158.                             local ss = e(se_`k'_1)
+159.                             local nn = e(N_`k'_1)
+160.                             local ns = e(N_switchers_`k'_1)
+161.                             if missing(`bb') {
+162.                                 post A1post ("A1.10.dmdyn2_`variant'.`m'.`K'") ("${VINTAGE}") ("A1") ("A1.10") ("dmdyn2_`variant'") ("strict sample") ("`m'") ("`K'") ///
+>                                     (.) (.) (.) (.) (.) (`nn') (.) (.) (.) (.) ("pair_id") ("NOT ESTIMABLE: no switcher or no control for this placebo (command output); did_multiplegt_dyn `vopt' `pl
+> note'; double storage")
+163.                                 continue
+164.                             }
+165.                             post A1post ("A1.10.dmdyn2_`variant'.`m'.`K'") ("${VINTAGE}") ("A1") ("A1.10") ("dmdyn2_`variant'") ("strict sample") ("`m'") ("`K'") ///
+>                                 (`bb') (`ss') (2 * normal(-abs(`bb' / `ss'))) (`bb' - invnormal(.975) * `ss') (`bb' + invnormal(.975) * `ss') ///
+>                                 (`nn') (.) (.) (.) (.) ("pair_id") ("did_multiplegt_dyn `vopt' `plnote'; level outcome; switchers=`ns'; N-switchers=`=`nn'-`ns''; double storage")
+166.                         }
+167.                     }
+168.                     else {
+169.                         post `CL' ("`m'") ("dm2_`variant'") ("rc") ("`rc'")
+170.                         post A1post ("A1.10.dmdyn2_`variant'.`m'.Effect_1") ("${VINTAGE}") ("A1") ("A1.10") ("dmdyn2_`variant'") ("strict sample") ("`m'") ("Effect_1") ///
+>                             (.) (.) (.) (.) (.) (.) (.) (.) (.) (.) ("pair_id") ("FAILED rc=`rc': did_multiplegt_dyn `vopt' produced no stored estimate; `plnote'")
+171.                     }
+172.                 }
+173.         }
+174.         drop __o07 __d07x __d07 __Fg __nbefore __strict __tgs
+175.     restore
+176.     nflow step "A1.10 restore full data (`m')"
+177. }
+(802,848 observations deleted)
+nflow:      823,446 ->       20,598  A1.10 keep baseline e(sample) rows (vis)
+A1.10_WHICHDID vis default -----------------------------------------
+
+----------------------------------------------------------------------
+  DESIGN: Staggered First Switch Design (SFSD)
+----------------------------------------------------------------------
+  The design is not a classical DID design, a staggered adoption
+  design, or an heterogeneous adoption design. On the other hand, it
+  is a staggered first switch design: some groups share the same
+  baseline treatment but experience their first treatment switch at
+  different dates.
+
+  First switches occur between t=2008 and t=2021.
+
+  Estimator: did_multiplegt_dyn
+
+  See Chapter 8 of the DID textbook.
+----------------------------------------------------------------------
+
+----------------------------------------------------------------------
+  whichdidshouldiuse:  Y=v_ttl_k  G=pair_id  T=year  D=mob_bilat_vis
+  missing treatment: default (less strict)
+----------------------------------------------------------------------
+
+Panel: 15 periods, calendar 2007 .. 2021
+       (t normalized to 1..15; never-switcher sentinel = 16)
+
+Groups dropped:
+  treatment never observed:              0
+  groups retained:                       2994 of 2994
+
+Missing treatment (default rules; use , strict to drop instead):
+  late entrants, baseline taken at entry:        1916
+  d missing at start, baseline taken later:      0
+  pre-switch gaps read as baseline:              0
+  gap right before switch, demoted to control:   154
+  controls leaving the panel early:              0
+  switchers with d missing after the switch:     980
+
+----------------------------------------------------------------------
+  DIAGNOSTICS
+----------------------------------------------------------------------
+  n_groups             = 2994
+  n_switchers          = 2838
+  n_never_treated      = 33   (usable at the earliest switch)
+  n_truncated_controls = 154
+  never_treated_groups = 1
+  any_switchers        = 1
+  same_Fg              = 0   (sd(Fg|switchers) = 5.8167994)
+  switch periods (t)   = 2 .. 15
+  switch dates (t_cal) = 2008 .. 2021
+  is_binary            = 0   (d in {0, 19.379315})
+  is_binary01          = 0
+  is_absorbing         = 0
+  zero_baseline        = 0   (groups with d_baseline!=0: 2994)
+  common_baseline      = 0
+  heterog_dose         = 1   (sd(first_change) = .7654345)
+  nonneg_dose          = 1   (min dose at the switch = 0)
+  n_stayers            = 33
+  had_d_min            = 1.4436355   (lowest positive dose at the switch)
+  had_tie              = 0
+  n_at_d_min           = 1   (groups at the lowest dose)
+  n_above_d_min        = 2836   (groups above it)
+  sfsd_pair            = 1   (groups in cells with a usable pair: 123)
+  n_baseline_cells     = 1672
+  n_sfsd_cells         = 42   (cells carrying timing variation)
+  n_post_gap_switchers = 980
+----------------------------------------------------------------------
+A1.10_WHICHDID vis strict -----------------------------------------
+Groups dropped for missing baseline (d at t=1, cal 2007): 1916  (2994 -> 1078)
+Groups dropped for pre-treatment violations: 123  (1078 -> 955)
+
+----------------------------------------------------------------------
+  DESIGN: Other Design
+----------------------------------------------------------------------
+  Your design does not fit into any of the designs studied in the DID
+  textbook.
+
+  Why each design was ruled out:
+
+   CLA requires: switchers, binary {0,1}, absorbing, no timing
+                 variation, never-treated groups, zero baseline.
+     - failed: treatment not binary {0,1}
+     - failed: treatment not absorbing
+     - failed: no never-treated groups usable at the switch date
+     - failed: baseline treatment not 0 for all groups
+
+   SAD requires: switchers, binary {0,1}, absorbing, timing variation.
+     - failed: treatment not binary {0,1}
+     - failed: treatment not absorbing
+     - failed: no variation in treatment timing
+
+   HAD requires: switchers, common switch date, zero baseline,
+                 heterogeneous, non-negative dose at the switch.
+     - failed: baseline treatment not 0 for all groups
+
+   SFSD requires: switchers, and two groups sharing a baseline
+                  treatment value that first switch at
+                  different dates.
+     - failed: no two groups share a baseline treatment value while
+               first switching at different dates
+
+  See Section 8.5.2 of the DID textbook for possible estimation
+  strategies in such cases.
+----------------------------------------------------------------------
+
+----------------------------------------------------------------------
+  whichdidshouldiuse:  Y=v_ttl_k  G=pair_id  T=year  D=mob_bilat_vis
+  missing treatment: strict
+----------------------------------------------------------------------
+
+Panel: 15 periods, calendar 2007 .. 2021
+       (t normalized to 1..15; never-switcher sentinel = 16)
+
+Groups dropped:
+  missing baseline (d at t=1, cal 2007):          1916
+  pre-treatment violations:              123
+  groups retained:                       955 of 2994
+
+----------------------------------------------------------------------
+  DIAGNOSTICS
+----------------------------------------------------------------------
+  n_groups             = 955
+  n_switchers          = 955
+  n_never_treated      = 0   (usable at the earliest switch)
+  n_truncated_controls = 0
+  never_treated_groups = 0
+  any_switchers        = 1
+  same_Fg              = 1   (sd(Fg|switchers) = 0)
+  switch periods (t)   = 2 .. 2
+  switch dates (t_cal) = 2008 .. 2008
+  is_binary            = 0   (d in {1.8184465, 19.379315})
+  is_binary01          = 0
+  is_absorbing         = 0
+  zero_baseline        = 0   (groups with d_baseline!=0: 955)
+  common_baseline      = 0
+  heterog_dose         = 1   (sd(first_change) = .38999109)
+  nonneg_dose          = 1   (min dose at the switch = 2.7764723)
+  n_stayers            = 0
+  had_d_min            = 2.7764723   (lowest positive dose at the switch)
+  had_tie              = 1
+  n_at_d_min           = 4   (groups at the lowest dose)
+  n_above_d_min        = 951   (groups above it)
+  sfsd_pair            = 0   (groups in cells with a usable pair: 0)
+  n_baseline_cells     = 512
+  n_sfsd_cells         = 0   (cells carrying timing variation)
+  n_post_gap_switchers = 574
+----------------------------------------------------------------------
+
+Panel variable: pair_id (unbalanced)
+ Time variable: year, 2007 to 2021, but with gaps
+         Delta: 1 year
+(3,445 missing values generated)
+(4 missing values generated)
+A1.10_NEVER_SWITCHERS vis pairs=2
+A1.10_PAIRS vis =2994
+A1.10_DMDYN vis plain -----------------------------------------
+A1.10_VARABBREV on for did_multiplegt_dyn: package requires variable abbreviation, ado lines 2010-2014 (getmata scalars_XX* creates scalars_XX1, read as scalars_XX)
+
+Effect_1 cannot be estimated.
+There is no switcher or no control
+for this effect.
+
+Placebo_1 cannot be estimated.
+There is no switcher or no control
+for this placebo.
+
+Some placebos/effects could not be estimated. Therefore, the command will not be compatible with the honestdid command.
+
+
+--------------------------------------------------------------------------------
+             Estimation of treatment effects: Event-study effects
+--------------------------------------------------------------------------------
+
+             |  Estimate         SE      LB CI      UB CI          N  Switchers 
+-------------+-----------------------------------------------------------------
+    Effect_1 |         .          .          .          .          0          0 
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+               Average cumulative (total) effect per treatment unit
+--------------------------------------------------------------------------------
+
+             |  Estimate         SE      LB CI      UB CI          N     Switch  x Periods 
+-------------+----------------------------------------------------------------------------
+  Av_tot_eff |         0          .          .          .          0          0            
+--------------------------------------------------------------------------------
+Average number of time periods over which a treatment's effect is accumulated = .
+
+
+--------------------------------------------------------------------------------
+          Testing the parallel trends and no anticipation assumptions
+--------------------------------------------------------------------------------
+
+             |  Estimate         SE      LB CI      UB CI          N  Switchers 
+-------------+-----------------------------------------------------------------
+   Placebo_1 |         .          .          .          .          0          0 
+--------------------------------------------------------------------------------
+didmgt_Var_all_XX not found
+A1.10_DMDYN_RC vis plain placebo rc=111
+A1.10_VARABBREV on for did_multiplegt_dyn: package requires variable abbreviation, ado lines 2010-2014 (getmata scalars_XX* creates scalars_XX1, read as scalars_XX)
+
+Effect_1 cannot be estimated.
+There is no switcher or no control
+for this effect.
+
+Some placebos/effects could not be estimated. Therefore, the command will not be compatible with the honestdid command.
+
+
+--------------------------------------------------------------------------------
+             Estimation of treatment effects: Event-study effects
+--------------------------------------------------------------------------------
+
+             |  Estimate         SE      LB CI      UB CI          N  Switchers 
+-------------+-----------------------------------------------------------------
+    Effect_1 |         .          .          .          .          0          0 
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+               Average cumulative (total) effect per treatment unit
+--------------------------------------------------------------------------------
+
+             |  Estimate         SE      LB CI      UB CI          N     Switch  x Periods 
+-------------+----------------------------------------------------------------------------
+  Av_tot_eff |         0          .          .          .          0          0            
+--------------------------------------------------------------------------------
+Average number of time periods over which a treatment's effect is accumulated = .
+didmgt_Var_all_XX not found
+A1.10_DMDYN_RC vis plain noplacebo rc=111
+A1.10_DMDYN vis cont1 -----------------------------------------
+A1.10_VARABBREV on for did_multiplegt_dyn: package requires variable abbreviation, ado lines 2010-2014 (getmata scalars_XX* creates scalars_XX1, read as scalars_XX)
+You specified the continuous option without the bootstrap option. Please be aware that we recommend to compute bootstraped standard errors when you are using the continuous option as the analytical st
+> andard errors can be liberal in that case.
+Some control variables are not taken into account for groups with baseline treatment equal to: [0]
+This may occur in the following situations:
+1. For groups with those values of the baseline treatment, the regression of the outcome first difference on the controls' first differences and time fixed effects has fewer observations than variable
+> s. Note that for each value of the baseline treatment, those regressions are estimated among (g,t)s such that g has not changed treatment yet at t.
+2. For groups with those values of the baseline treatment, two or more of your control variables are perfectly collinear in the sample where the regression is run, for instance because those control v
+> ariables do not vary over time.
+
+Placebo_1 cannot be estimated.
+There is no switcher or no control
+for this placebo.
+
+Some placebos/effects could not be estimated. Therefore, the command will not be compatible with the honestdid command.
+
+
+--------------------------------------------------------------------------------
+             Estimation of treatment effects: Event-study effects
+--------------------------------------------------------------------------------
+
+             |  Estimate         SE      LB CI      UB CI          N  Switchers 
+-------------+-----------------------------------------------------------------
+    Effect_1 | -430.8992   940.0283  -2273.321   1411.522       1231       1228 
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+               Average cumulative (total) effect per treatment unit
+--------------------------------------------------------------------------------
+
+             |  Estimate         SE      LB CI      UB CI          N     Switch  x Periods 
+-------------+----------------------------------------------------------------------------
+  Av_tot_eff | -568.4353    1240.07  -2998.928   1862.058       1231       1228            
+--------------------------------------------------------------------------------
+Average number of time periods over which a treatment's effect is accumulated = 1
+
+
+--------------------------------------------------------------------------------
+          Testing the parallel trends and no anticipation assumptions
+--------------------------------------------------------------------------------
+
+             |  Estimate         SE      LB CI      UB CI          N  Switchers 
+-------------+-----------------------------------------------------------------
+   Placebo_1 |         .          .          .          .          0          0 
+--------------------------------------------------------------------------------
+didmgt_Var_all_XX not found
+A1.10_DMDYN_RC vis cont1 placebo rc=111
+A1.10_VARABBREV on for did_multiplegt_dyn: package requires variable abbreviation, ado lines 2010-2014 (getmata scalars_XX* creates scalars_XX1, read as scalars_XX)
+You specified the continuous option without the bootstrap option. Please be aware that we recommend to compute bootstraped standard errors when you are using the continuous option as the analytical st
+> andard errors can be liberal in that case.
+Some control variables are not taken into account for groups with baseline treatment equal to: [0]
+This may occur in the following situations:
+1. For groups with those values of the baseline treatment, the regression of the outcome first difference on the controls' first differences and time fixed effects has fewer observations than variable
+> s. Note that for each value of the baseline treatment, those regressions are estimated among (g,t)s such that g has not changed treatment yet at t.
+2. For groups with those values of the baseline treatment, two or more of your control variables are perfectly collinear in the sample where the regression is run, for instance because those control v
+> ariables do not vary over time.
+
+
+--------------------------------------------------------------------------------
+             Estimation of treatment effects: Event-study effects
+--------------------------------------------------------------------------------
+
+             |  Estimate         SE      LB CI      UB CI          N  Switchers 
+-------------+-----------------------------------------------------------------
+    Effect_1 | -430.8992   940.0283  -2273.321   1411.522       1231       1228 
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+               Average cumulative (total) effect per treatment unit
+--------------------------------------------------------------------------------
+
+             |  Estimate         SE      LB CI      UB CI          N     Switch  x Periods 
+-------------+----------------------------------------------------------------------------
+  Av_tot_eff | -568.4353    1240.07  -2998.928   1862.058       1231       1228            
+--------------------------------------------------------------------------------
+Average number of time periods over which a treatment's effect is accumulated = 1
+
+
+The development of this package was funded by the European Union (ERC, REALLYCREDIBLE,GA N°101043899).
+A1.10_DMDYN_RC vis cont1 noplacebo rc=0
+A1.10_STRICT vis design=OTHER case= n_groups=955
+(19,520 missing values generated)
+(7,514 missing values generated)
+(7,514 missing values generated)
+A1.10_STRICT_SAMPLE vis reconstructed groups=955 classifier n_groups=955
+nflow:       20,598 ->      823,446  A1.10 restore full data (vis)
+(797,107 observations deleted)
+nflow:      823,446 ->       26,339  A1.10 keep baseline e(sample) rows (tour)
+A1.10_WHICHDID tour default -----------------------------------------
+
+----------------------------------------------------------------------
+  DESIGN: Staggered First Switch Design (SFSD)
+----------------------------------------------------------------------
+  The design is not a classical DID design, a staggered adoption
+  design, or an heterogeneous adoption design. On the other hand, it
+  is a staggered first switch design: some groups share the same
+  baseline treatment but experience their first treatment switch at
+  different dates.
+
+  First switches occur between t=2008 and t=2021.
+
+  Estimator: did_multiplegt_dyn
+
+  See Chapter 8 of the DID textbook.
+----------------------------------------------------------------------
+
+----------------------------------------------------------------------
+  whichdidshouldiuse:  Y=v_ttl_k  G=pair_id  T=year  D=mob_bilat_tour
+  missing treatment: default (less strict)
+----------------------------------------------------------------------
+
+Panel: 15 periods, calendar 2007 .. 2021
+       (t normalized to 1..15; never-switcher sentinel = 16)
+
+Groups dropped:
+  treatment never observed:              0
+  groups retained:                       2915 of 2915
+
+Missing treatment (default rules; use , strict to drop instead):
+  late entrants, baseline taken at entry:        1547
+  d missing at start, baseline taken later:      0
+  pre-switch gaps read as baseline:              1
+  gap right before switch, demoted to control:   215
+  controls leaving the panel early:              0
+  switchers with d missing after the switch:     1052
+
+----------------------------------------------------------------------
+  DIAGNOSTICS
+----------------------------------------------------------------------
+  n_groups             = 2915
+  n_switchers          = 2696
+  n_never_treated      = 104   (usable at the earliest switch)
+  n_truncated_controls = 215
+  never_treated_groups = 1
+  any_switchers        = 1
+  same_Fg              = 0   (sd(Fg|switchers) = 5.3394346)
+  switch periods (t)   = 2 .. 15
+  switch dates (t_cal) = 2008 .. 2021
+  is_binary            = 0   (d in {0, 18.516066})
+  is_binary01          = 0
+  is_absorbing         = 0
+  zero_baseline        = 0   (groups with d_baseline!=0: 2915)
+  common_baseline      = 0
+  heterog_dose         = 1   (sd(first_change) = .63151455)
+  nonneg_dose          = 1   (min dose at the switch = 0)
+  n_stayers            = 104
+  had_d_min            = 1.4436355   (lowest positive dose at the switch)
+  had_tie              = 0
+  n_at_d_min           = 1   (groups at the lowest dose)
+  n_above_d_min        = 2693   (groups above it)
+  sfsd_pair            = 1   (groups in cells with a usable pair: 516)
+  n_baseline_cells     = 1516
+  n_sfsd_cells         = 143   (cells carrying timing variation)
+  n_post_gap_switchers = 1052
+----------------------------------------------------------------------
+A1.10_WHICHDID tour strict -----------------------------------------
+Groups dropped for missing baseline (d at t=1, cal 2007): 1547  (2915 -> 1368)
+Groups dropped for pre-treatment violations: 115  (1368 -> 1253)
+
+----------------------------------------------------------------------
+  DESIGN: Staggered First Switch Design (SFSD)
+----------------------------------------------------------------------
+  The design is not a classical DID design, a staggered adoption
+  design, or an heterogeneous adoption design. On the other hand, it
+  is a staggered first switch design: some groups experience their
+  first treatment switch at different dates.
+
+  First switches occur between t=2008 and t=2009.
+
+  Estimator: did_multiplegt_dyn, with the continuous() option
+
+  As the period-one treatment is continuously distributed (all groups
+  have different period-one treatment), the did_multiplegt_dyn package
+  needs to be used with the continuous option.
+
+  See Chapter 8 of the DID textbook. In particular, see section
+  8.3.5.1 for details on the continuous option.
+----------------------------------------------------------------------
+
+----------------------------------------------------------------------
+  whichdidshouldiuse:  Y=v_ttl_k  G=pair_id  T=year  D=mob_bilat_tour
+  missing treatment: strict
+----------------------------------------------------------------------
+
+Panel: 15 periods, calendar 2007 .. 2021
+       (t normalized to 1..15; never-switcher sentinel = 16)
+
+Groups dropped:
+  missing baseline (d at t=1, cal 2007):          1547
+  pre-treatment violations:              115
+  groups retained:                       1253 of 2915
+
+----------------------------------------------------------------------
+  DIAGNOSTICS
+----------------------------------------------------------------------
+  n_groups             = 1253
+  n_switchers          = 1253
+  n_never_treated      = 0   (usable at the earliest switch)
+  n_truncated_controls = 0
+  never_treated_groups = 0
+  any_switchers        = 1
+  same_Fg              = 0   (sd(Fg|switchers) = .04889201)
+  switch periods (t)   = 2 .. 3
+  switch dates (t_cal) = 2008 .. 2009
+  is_binary            = 0   (d in {1.8184465, 18.516066})
+  is_binary01          = 0
+  is_absorbing         = 0
+  zero_baseline        = 0   (groups with d_baseline!=0: 1253)
+  common_baseline      = 0
+  heterog_dose         = 1   (sd(first_change) = .33122979)
+  nonneg_dose          = 1   (min dose at the switch = 3.738236)
+  n_stayers            = 0
+  had_d_min            = 3.738236   (lowest positive dose at the switch)
+  had_tie              = 1
+  n_at_d_min           = 2   (groups at the lowest dose)
+  n_above_d_min        = 1251   (groups above it)
+  sfsd_pair            = 0   (groups in cells with a usable pair: 0)
+  n_baseline_cells     = 689
+  n_sfsd_cells         = 0   (cells carrying timing variation)
+  n_post_gap_switchers = 594
+----------------------------------------------------------------------
+
+Panel variable: pair_id (unbalanced)
+ Time variable: year, 2007 to 2021, but with gaps
+         Delta: 1 year
+(3,847 missing values generated)
+(8 missing values generated)
+A1.10_NEVER_SWITCHERS tour pairs=4
+A1.10_PAIRS tour =2915
+A1.10_DMDYN tour plain -----------------------------------------
+A1.10_VARABBREV on for did_multiplegt_dyn: package requires variable abbreviation, ado lines 2010-2014 (getmata scalars_XX* creates scalars_XX1, read as scalars_XX)
+
+Placebo_1 cannot be estimated.
+There is no switcher or no control
+for this placebo.
+
+Some placebos/effects could not be estimated. Therefore, the command will not be compatible with the honestdid command.
+
+
+--------------------------------------------------------------------------------
+             Estimation of treatment effects: Event-study effects
+--------------------------------------------------------------------------------
+
+             |  Estimate         SE      LB CI      UB CI          N  Switchers 
+-------------+-----------------------------------------------------------------
+    Effect_1 | -.5111522   1.018039  -2.506472   1.484167          9          5 
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+               Average cumulative (total) effect per treatment unit
+--------------------------------------------------------------------------------
+
+             |  Estimate         SE      LB CI      UB CI          N     Switch  x Periods 
+-------------+----------------------------------------------------------------------------
+  Av_tot_eff |  -.787704   1.568835  -3.862563   2.287155          9          5            
+--------------------------------------------------------------------------------
+Average number of time periods over which a treatment's effect is accumulated = 1
+
+
+--------------------------------------------------------------------------------
+          Testing the parallel trends and no anticipation assumptions
+--------------------------------------------------------------------------------
+
+             |  Estimate         SE      LB CI      UB CI          N  Switchers 
+-------------+-----------------------------------------------------------------
+   Placebo_1 |         .          .          .          .          0          0 
+--------------------------------------------------------------------------------
+
+Warning: some of the effects/placebos could not be computed so e(b)/e(V) will not be defined!
+
+
+The development of this package was funded by the European Union (ERC, REALLYCREDIBLE,GA N°101043899).
+A1.10_DMDYN_RC tour plain placebo rc=0
+A1.10_DMDYN tour cont1 -----------------------------------------
+A1.10_VARABBREV on for did_multiplegt_dyn: package requires variable abbreviation, ado lines 2010-2014 (getmata scalars_XX* creates scalars_XX1, read as scalars_XX)
+You specified the continuous option without the bootstrap option. Please be aware that we recommend to compute bootstraped standard errors when you are using the continuous option as the analytical st
+> andard errors can be liberal in that case.
+Some control variables are not taken into account for groups with baseline treatment equal to: [0]
+This may occur in the following situations:
+1. For groups with those values of the baseline treatment, the regression of the outcome first difference on the controls' first differences and time fixed effects has fewer observations than variable
+> s. Note that for each value of the baseline treatment, those regressions are estimated among (g,t)s such that g has not changed treatment yet at t.
+2. For groups with those values of the baseline treatment, two or more of your control variables are perfectly collinear in the sample where the regression is run, for instance because those control v
+> ariables do not vary over time.
+
+Placebo_1 cannot be estimated.
+There is no switcher or no control
+for this placebo.
+
+Some placebos/effects could not be estimated. Therefore, the command will not be compatible with the honestdid command.
+
+
+--------------------------------------------------------------------------------
+             Estimation of treatment effects: Event-study effects
+--------------------------------------------------------------------------------
+
+             |  Estimate         SE      LB CI      UB CI          N  Switchers 
+-------------+-----------------------------------------------------------------
+    Effect_1 |  181.2651   423.9683  -649.6974   1012.228       2283       2270 
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+               Average cumulative (total) effect per treatment unit
+--------------------------------------------------------------------------------
+
+             |  Estimate         SE      LB CI      UB CI          N     Switch  x Periods 
+-------------+----------------------------------------------------------------------------
+  Av_tot_eff |  505.3091   1181.888  -1811.148   2821.766       2283       2270            
+--------------------------------------------------------------------------------
+Average number of time periods over which a treatment's effect is accumulated = 1
+
+
+--------------------------------------------------------------------------------
+          Testing the parallel trends and no anticipation assumptions
+--------------------------------------------------------------------------------
+
+             |  Estimate         SE      LB CI      UB CI          N  Switchers 
+-------------+-----------------------------------------------------------------
+   Placebo_1 |         .          .          .          .          0          0 
+--------------------------------------------------------------------------------
+
+Warning: some of the effects/placebos could not be computed so e(b)/e(V) will not be defined!
+
+
+The development of this package was funded by the European Union (ERC, REALLYCREDIBLE,GA N°101043899).
+A1.10_DMDYN_RC tour cont1 placebo rc=0
+A1.10_STRICT tour design=SFSD case=continuous-baseline n_groups=1253
+(24,971 missing values generated)
+(8,982 missing values generated)
+(8,982 missing values generated)
+A1.10_STRICT_SAMPLE tour reconstructed groups=1253 classifier n_groups=1253
+A1.10_DMDYN tour cont1strict -----------------------------------------
+A1.10_VARABBREV on for did_multiplegt_dyn: package requires variable abbreviation, ado lines 2010-2014 (getmata scalars_XX* creates scalars_XX1, read as scalars_XX)
+You specified the continuous option without the bootstrap option. Please be aware that we recommend to compute bootstraped standard errors when you are using the continuous option as the analytical st
+> andard errors can be liberal in that case.
+
+The number of placebos which can be estimated is at most 0. The command will therefore try to estimate 0 placebo(s).
+
+
+--------------------------------------------------------------------------------
+             Estimation of treatment effects: Event-study effects
+--------------------------------------------------------------------------------
+
+             |  Estimate         SE      LB CI      UB CI          N  Switchers 
+-------------+-----------------------------------------------------------------
+    Effect_1 |  318.1565   768.2563  -1187.598   1823.911       1253       1250 
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+               Average cumulative (total) effect per treatment unit
+--------------------------------------------------------------------------------
+
+             |  Estimate         SE      LB CI      UB CI          N     Switch  x Periods 
+-------------+----------------------------------------------------------------------------
+  Av_tot_eff |  1597.041   3856.393  -5961.351   9155.433       1253       1250            
+--------------------------------------------------------------------------------
+Average number of time periods over which a treatment's effect is accumulated = 1
+
+
+The development of this package was funded by the European Union (ERC, REALLYCREDIBLE,GA N°101043899).
+A1.10_DMDYN_RC tour cont1strict placebo rc=0
+nflow:       26,339 ->      823,446  A1.10 restore full data (tour)
+
+. postclose `CL'
+
+. postclose `ST'
+
+. postclose `NY'
+
+. foreach f in classifier stayers_by_year not_yet_switchers {
+  2.     preserve
+  3.         use "${OUT}/tables/A1_A1.10_`f'.dta", clear
+  4.         gen str10 vintage = "${VINTAGE}"
+  5.         order vintage
+  6.         export delimited using "${OUT}/tables/A1_A1.10_`f'.csv", replace
+  7.     restore
+  8.     erase "${OUT}/tables/A1_A1.10_`f'.dta"
+  9. }
+(file <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/tables/A1_A1.10_classifier.csv not found)
+file <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/tables/A1_A1.10_classifier.csv saved
+(file <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/tables/A1_A1.10_stayers_by_year.csv not found)
+file <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/tables/A1_A1.10_stayers_by_year.csv saved
+(file <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/tables/A1_A1.10_not_yet_switchers.csv not found)
+file <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/tables/A1_A1.10_not_yet_switchers.csv saved
+
+. A1_close
+(file <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/results/A1_parts/A1_05.csv not found)
+file <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/results/A1_parts/A1_05.csv saved
+
+. nflow report
+
+  +---------------------------------------------------------------------------------------------------------------------------------------------------+
+  |       date       time    kind   n_before   n_after    change   reason                                                                             |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:35:19   start          .    823446         0   start: <PACKAGE_ROOT>/05_output/10_analysis/co.. |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:35:20     est     823446     20598   -802848   A1 A1.1 baseline vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output        |
+  | 4 Nov 2026   08:35:20     est     823446     26339   -797107   A1 A1.1 baseline tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output       |
+  | 4 Nov 2026   08:35:21     est     823446      2457   -820989   A1 A1.1 cs_iter1 vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output        |
+  | 4 Nov 2026   08:35:21     est     823446      2457   -820989   A1 A1.1 cs_iter1 tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output       |
+  | 4 Nov 2026   08:35:21     est     823446      2457   -820989   A1 A1.1 cs_iter2 vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output        |
+  | 4 Nov 2026   08:35:21     est     823446      2457   -820989   A1 A1.1 cs_iter2 tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output       |
+  | 4 Nov 2026   08:35:22     est     823446     13872   -809574   A1 A1.1 dynamic_T3 vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output      |
+  | 4 Nov 2026   08:35:23     est     823446     19061   -804385   A1 A1.1 dynamic_T3 tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output     |
+  | 4 Nov 2026   08:35:23     est     823446     11971   -811475   A1 A1.1 cd_T5 vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output           |
+  | 4 Nov 2026   08:35:24     est     823446     10932   -812514   A1 A1.1 cd_T5 tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output          |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:35:24    step     823446    615589   -207857   A1.2: keep trade-reporting panel rows (v_ttl_k observed) as the reference universe |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:35:34   start          .    823446         0   start: <PACKAGE_ROOT>/05_output/10_analysis/co.. |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:35:55    step     823446    823446         0   A1.4 merge reverse-direction reporter flags (m:1 keep master match; no row change) |
+  | 4 Nov 2026   08:35:55    step     823446    823446         0   A1.4 merge same-direction reporter flags (m:1 keep master match; no row change)    |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:35:56     est     823446     20598   -802848   A1 A1.4 excl_ratio50_own vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe out.. |
+  | 4 Nov 2026   08:35:57     est     823446     20598   -802848   A1 A1.4 excl_ratio50_union vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe o.. |
+  | 4 Nov 2026   08:35:57     est     823446     26339   -797107   A1 A1.4 excl_ratio50_own tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe ou.. |
+  | 4 Nov 2026   08:35:58     est     823446     26339   -797107   A1 A1.4 excl_ratio50_union tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe .. |
+  | 4 Nov 2026   08:35:58     est     823446     20502   -802944   A1 A1.4 excl_ratio10_own vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe out.. |
+  | 4 Nov 2026   08:35:59     est     823446     20502   -802944   A1 A1.4 excl_ratio10_union vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe o.. |
+  | 4 Nov 2026   08:36:00     est     823446     26339   -797107   A1 A1.4 excl_ratio10_own tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe ou.. |
+  | 4 Nov 2026   08:36:00     est     823446     26291   -797155   A1 A1.4 excl_ratio10_union tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe .. |
+  | 4 Nov 2026   08:36:06     est     823446     20598   -802848   A1 A1.5 full vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output            |
+  | 4 Nov 2026   08:36:07     est     823446     10634   -812812   A1 A1.5 r1 separate restricted pass 1 (immediate record, audit R1-10) | ppmlhdfe.. |
+  | 4 Nov 2026   08:36:08     est     823446      9584   -813862   A1 A1.5 r1 separate complement pass 1 (immediate record, audit R1-10) | ppmlhdfe.. |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:08    step     823446     20218   -803228   A1_stack A1.5 r1 pass 1: keep rows in either separate e(sample)                    |
+  | 4 Nov 2026   08:36:08    step      20218     40436     20218   A1_stack A1.5 r1 pass 1: expand 2 (one copy per block)                             |
+  | 4 Nov 2026   08:36:08    step      40436     20218    -20218   A1_stack A1.5 r1 pass 1: keep block copies inside their own e(sample)              |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:10     est      20218     20218         0   A1 A1.5 r1 stacked pass 1 | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output   |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:10    step      20218    823446    803228   A1_stack A1.5 r1 pass 1: restore                                                   |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:11     est     823446     10634   -812812   A1 A1.5 r1_sep_restricted vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe ou.. |
+  | 4 Nov 2026   08:36:11     est     823446      9584   -813862   A1 A1.5 r1_sep_complement vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe ou.. |
+  | 4 Nov 2026   08:36:11     est     823446      8321   -815125   A1 A1.5 r2 separate restricted pass 1 (immediate record, audit R1-10) | ppmlhdfe.. |
+  | 4 Nov 2026   08:36:12     est     823446     12085   -811361   A1 A1.5 r2 separate complement pass 1 (immediate record, audit R1-10) | ppmlhdfe.. |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:12    step     823446     20406   -803040   A1_stack A1.5 r2 pass 1: keep rows in either separate e(sample)                    |
+  | 4 Nov 2026   08:36:12    step      20406     40812     20406   A1_stack A1.5 r2 pass 1: expand 2 (one copy per block)                             |
+  | 4 Nov 2026   08:36:12    step      40812     20406    -20406   A1_stack A1.5 r2 pass 1: keep block copies inside their own e(sample)              |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:12     est      20406     20406         0   A1 A1.5 r2 stacked pass 1 | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output   |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:12    step      20406    823446    803040   A1_stack A1.5 r2 pass 1: restore                                                   |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:13     est     823446      8321   -815125   A1 A1.5 r2_sep_restricted vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe ou.. |
+  | 4 Nov 2026   08:36:13     est     823446     12085   -811361   A1 A1.5 r2_sep_complement vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe ou.. |
+  | 4 Nov 2026   08:36:13     est     823446      7643   -815803   A1 A1.5 r2all separate restricted pass 1 (immediate record, audit R1-10) | ppmlh.. |
+  | 4 Nov 2026   08:36:14     est     823446     12752   -810694   A1 A1.5 r2all separate complement pass 1 (immediate record, audit R1-10) | ppmlh.. |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:14    step     823446     20395   -803051   A1_stack A1.5 r2all pass 1: keep rows in either separate e(sample)                 |
+  | 4 Nov 2026   08:36:14    step      20395     40790     20395   A1_stack A1.5 r2all pass 1: expand 2 (one copy per block)                          |
+  | 4 Nov 2026   08:36:14    step      40790     20395    -20395   A1_stack A1.5 r2all pass 1: keep block copies inside their own e(sample)           |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:14     est      20395     20395         0   A1 A1.5 r2all stacked pass 1 | ppmlhdfe e(N); drop breakdown in the ppmlhdfe out.. |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:14    step      20395    823446    803051   A1_stack A1.5 r2all pass 1: restore                                                |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:14     est     823446      7643   -815803   A1 A1.5 r2all_sep_restricted vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe.. |
+  | 4 Nov 2026   08:36:15     est     823446     12752   -810694   A1 A1.5 r2all_sep_complement vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe.. |
+  | 4 Nov 2026   08:36:15     est     823446     17938   -805508   A1 A1.5 r3 separate restricted pass 1 (immediate record, audit R1-10) | ppmlhdfe.. |
+  | 4 Nov 2026   08:36:15     est     823446      2466   -820980   A1 A1.5 r3 separate complement pass 1 (immediate record, audit R1-10) | ppmlhdfe.. |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:15    step     823446     20404   -803042   A1_stack A1.5 r3 pass 1: keep rows in either separate e(sample)                    |
+  | 4 Nov 2026   08:36:15    step      20404     40808     20404   A1_stack A1.5 r3 pass 1: expand 2 (one copy per block)                             |
+  | 4 Nov 2026   08:36:15    step      40808     20404    -20404   A1_stack A1.5 r3 pass 1: keep block copies inside their own e(sample)              |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:16     est      20404     20404         0   A1 A1.5 r3 stacked pass 1 | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output   |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:16    step      20404    823446    803042   A1_stack A1.5 r3 pass 1: restore                                                   |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:16     est     823446     17938   -805508   A1 A1.5 r3_sep_restricted vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe ou.. |
+  | 4 Nov 2026   08:36:16     est     823446      2466   -820980   A1 A1.5 r3_sep_complement vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe ou.. |
+  | 4 Nov 2026   08:36:17     est     823446     14509   -808937   A1 A1.5 r4 separate restricted pass 1 (immediate record, audit R1-10) | ppmlhdfe.. |
+  | 4 Nov 2026   08:36:17     est     823446      5704   -817742   A1 A1.5 r4 separate complement pass 1 (immediate record, audit R1-10) | ppmlhdfe.. |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:17    step     823446     20213   -803233   A1_stack A1.5 r4 pass 1: keep rows in either separate e(sample)                    |
+  | 4 Nov 2026   08:36:17    step      20213     40426     20213   A1_stack A1.5 r4 pass 1: expand 2 (one copy per block)                             |
+  | 4 Nov 2026   08:36:17    step      40426     20213    -20213   A1_stack A1.5 r4 pass 1: keep block copies inside their own e(sample)              |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:18     est      20213     20213         0   A1 A1.5 r4 stacked pass 1 | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output   |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:18    step      20213    823446    803233   A1_stack A1.5 r4 pass 1: restore                                                   |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:18     est     823446     14509   -808937   A1 A1.5 r4_sep_restricted vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe ou.. |
+  | 4 Nov 2026   08:36:18     est     823446      5704   -817742   A1 A1.5 r4_sep_complement vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe ou.. |
+  | 4 Nov 2026   08:36:18     est     823446     26339   -797107   A1 A1.5 full tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output           |
+  | 4 Nov 2026   08:36:19     est     823446     13761   -809685   A1 A1.5 r1 separate restricted pass 1 (immediate record, audit R1-10) | ppmlhdfe.. |
+  | 4 Nov 2026   08:36:20     est     823446     11583   -811863   A1 A1.5 r1 separate complement pass 1 (immediate record, audit R1-10) | ppmlhdfe.. |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:20    step     823446     25344   -798102   A1_stack A1.5 r1 pass 1: keep rows in either separate e(sample)                    |
+  | 4 Nov 2026   08:36:20    step      25344     50688     25344   A1_stack A1.5 r1 pass 1: expand 2 (one copy per block)                             |
+  | 4 Nov 2026   08:36:20    step      50688     25344    -25344   A1_stack A1.5 r1 pass 1: keep block copies inside their own e(sample)              |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:22     est      25344     25344         0   A1 A1.5 r1 stacked pass 1 | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output   |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:22    step      25344    823446    798102   A1_stack A1.5 r1 pass 1: restore                                                   |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:23     est     823446     13761   -809685   A1 A1.5 r1_sep_restricted tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe o.. |
+  | 4 Nov 2026   08:36:23     est     823446     11583   -811863   A1 A1.5 r1_sep_complement tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe o.. |
+  | 4 Nov 2026   08:36:23     est     823446     10775   -812671   A1 A1.5 r2 separate restricted pass 1 (immediate record, audit R1-10) | ppmlhdfe.. |
+  | 4 Nov 2026   08:36:24     est     823446     15030   -808416   A1 A1.5 r2 separate complement pass 1 (immediate record, audit R1-10) | ppmlhdfe.. |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:24    step     823446     25805   -797641   A1_stack A1.5 r2 pass 1: keep rows in either separate e(sample)                    |
+  | 4 Nov 2026   08:36:24    step      25805     51610     25805   A1_stack A1.5 r2 pass 1: expand 2 (one copy per block)                             |
+  | 4 Nov 2026   08:36:24    step      51610     25805    -25805   A1_stack A1.5 r2 pass 1: keep block copies inside their own e(sample)              |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:24     est      25805     25805         0   A1 A1.5 r2 stacked pass 1 | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output   |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:24    step      25805    823446    797641   A1_stack A1.5 r2 pass 1: restore                                                   |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:25     est     823446     10775   -812671   A1 A1.5 r2_sep_restricted tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe o.. |
+  | 4 Nov 2026   08:36:25     est     823446     15030   -808416   A1 A1.5 r2_sep_complement tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe o.. |
+  | 4 Nov 2026   08:36:25     est     823446     10450   -812996   A1 A1.5 r2all separate restricted pass 1 (immediate record, audit R1-10) | ppmlh.. |
+  | 4 Nov 2026   08:36:26     est     823446     15452   -807994   A1 A1.5 r2all separate complement pass 1 (immediate record, audit R1-10) | ppmlh.. |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:26    step     823446     25902   -797544   A1_stack A1.5 r2all pass 1: keep rows in either separate e(sample)                 |
+  | 4 Nov 2026   08:36:26    step      25902     51804     25902   A1_stack A1.5 r2all pass 1: expand 2 (one copy per block)                          |
+  | 4 Nov 2026   08:36:26    step      51804     25902    -25902   A1_stack A1.5 r2all pass 1: keep block copies inside their own e(sample)           |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:26     est      25902     25902         0   A1 A1.5 r2all stacked pass 1 | ppmlhdfe e(N); drop breakdown in the ppmlhdfe out.. |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:26    step      25902    823446    797544   A1_stack A1.5 r2all pass 1: restore                                                |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:27     est     823446     10450   -812996   A1 A1.5 r2all_sep_restricted tour | ppmlhdfe e(N); drop breakdown in the ppmlhdf.. |
+  | 4 Nov 2026   08:36:27     est     823446     15452   -807994   A1 A1.5 r2all_sep_complement tour | ppmlhdfe e(N); drop breakdown in the ppmlhdf.. |
+  | 4 Nov 2026   08:36:27     est     823446     18577   -804869   A1 A1.5 r4 separate restricted pass 1 (immediate record, audit R1-10) | ppmlhdfe.. |
+  | 4 Nov 2026   08:36:27     est     823446      6974   -816472   A1 A1.5 r4 separate complement pass 1 (immediate record, audit R1-10) | ppmlhdfe.. |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:28    step     823446     25551   -797895   A1_stack A1.5 r4 pass 1: keep rows in either separate e(sample)                    |
+  | 4 Nov 2026   08:36:28    step      25551     51102     25551   A1_stack A1.5 r4 pass 1: expand 2 (one copy per block)                             |
+  | 4 Nov 2026   08:36:28    step      51102     25551    -25551   A1_stack A1.5 r4 pass 1: keep block copies inside their own e(sample)              |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:28     est      25551     25551         0   A1 A1.5 r4 stacked pass 1 | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output   |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:28    step      25551    823446    797895   A1_stack A1.5 r4 pass 1: restore                                                   |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:28     est     823446     18577   -804869   A1 A1.5 r4_sep_restricted tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe o.. |
+  | 4 Nov 2026   08:36:29     est     823446      6974   -816472   A1 A1.5 r4_sep_complement tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe o.. |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:30    step     823446    823446         0   A1.5 merge C09 importer-year list (m:1 keep master match; no row change)           |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:31     est     823446     20366   -803080   A1 A1.5 x_svksvn vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output        |
+  | 4 Nov 2026   08:36:31     est     823446     20598   -802848   A1 A1.5 x_pry_rep vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output       |
+  | 4 Nov 2026   08:36:32     est     823446     20598   -802848   A1 A1.5 x_c09 vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output           |
+  | 4 Nov 2026   08:36:32     est     823446     20598   -802848   A1 A1.5 x_cz vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output            |
+  | 4 Nov 2026   08:36:33     est     823446     20419   -803027   A1 A1.5 x_rev15 vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output         |
+  | 4 Nov 2026   08:36:33     est     823446     20581   -802865   A1 A1.5 x_rev6 vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output          |
+  | 4 Nov 2026   08:36:34     est     823446     20191   -803255   A1 A1.5 x_clean vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output         |
+  | 4 Nov 2026   08:36:34     est     823446      6302   -817144   A1 A1.5 x_clean_basis vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output   |
+  | 4 Nov 2026   08:36:35     est     823446     26139   -797307   A1 A1.5 x_svksvn tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output       |
+  | 4 Nov 2026   08:36:35     est     823446     25692   -797754   A1 A1.5 x_pry_rep tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output      |
+  | 4 Nov 2026   08:36:36     est     823446     26339   -797107   A1 A1.5 x_c09 tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output          |
+  | 4 Nov 2026   08:36:36     est     823446     26339   -797107   A1 A1.5 x_cz tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output           |
+  | 4 Nov 2026   08:36:37     est     823446     26167   -797279   A1 A1.5 x_rev15 tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output        |
+  | 4 Nov 2026   08:36:38     est     823446     26283   -797163   A1 A1.5 x_rev6 tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output         |
+  | 4 Nov 2026   08:36:38     est     823446     25333   -798113   A1 A1.5 x_clean tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output        |
+  | 4 Nov 2026   08:36:38     est     823446     10023   -813423   A1 A1.5 x_clean_basis tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output  |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:40   start          .    823446         0   start: <PACKAGE_ROOT>/05_output/10_analysis/co.. |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:41    step     823446    823446         0   C2_A1_07 merge C09 importer-year list (m:1 keep master match; no row change)       |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:42     est     823446     20191   -803255   C2_A1_07 positive control x_clean vis | ppmlhdfe e(N); drop breakdown in the ppm.. |
+  | 4 Nov 2026   08:36:42     est     823446     19603   -803843   A1 A1.5 x_sw2defn vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output       |
+  | 4 Nov 2026   08:36:43     est     823446     20592   -802854   A1 A1.5 x_sw2lots vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output       |
+  | 4 Nov 2026   08:36:43     est     823446     19237   -804209   A1 A1.5 x_clean_sw2 vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output     |
+  | 4 Nov 2026   08:36:44     est     823446     25333   -798113   C2_A1_07 positive control x_clean tour | ppmlhdfe e(N); drop breakdown in the pp.. |
+  | 4 Nov 2026   08:36:44     est     823446     25749   -797697   A1 A1.5 x_sw2defn tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output      |
+  | 4 Nov 2026   08:36:44     est     823446     26339   -797107   A1 A1.5 x_sw2lots tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output      |
+  | 4 Nov 2026   08:36:45     est     823446     24754   -798692   A1 A1.5 x_clean_sw2 tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output    |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:46   start          .    823446         0   start: <PACKAGE_ROOT>/05_output/10_analysis/co.. |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:47    step     823446    823446         0   A1.9 merge exporter-reported mirror trade by year iso3_o iso3_d (assert all match) |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:47     est     823446     20598   -802848   A1 A1.9 dir_full_pair_id vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe out.. |
+  | 4 Nov 2026   08:36:48     est     823446      7643   -815803   A1 A1.9 dir_samebasis_noswitch_pair_id vis | ppmlhdfe e(N); drop breakdown in th.. |
+  | 4 Nov 2026   08:36:48     est     823446     20598   -802848   A1 A1.9 dir_full_unordered_pair_id vis | ppmlhdfe e(N); drop breakdown in the pp.. |
+  | 4 Nov 2026   08:36:48     est     823446      7643   -815803   A1 A1.9 dir_samebasis_noswitch_unordered_pair_id vis | ppmlhdfe e(N); drop break.. |
+  | 4 Nov 2026   08:36:49     est     823446     26339   -797107   A1 A1.9 dir_full_pair_id tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe ou.. |
+  | 4 Nov 2026   08:36:49     est     823446     10450   -812996   A1 A1.9 dir_samebasis_noswitch_pair_id tour | ppmlhdfe e(N); drop breakdown in t.. |
+  | 4 Nov 2026   08:36:50     est     823446     26339   -797107   A1 A1.9 dir_full_unordered_pair_id tour | ppmlhdfe e(N); drop breakdown in the p.. |
+  | 4 Nov 2026   08:36:50     est     823446     10450   -812996   A1 A1.9 dir_samebasis_noswitch_unordered_pair_id tour | ppmlhdfe e(N); drop brea.. |
+  | 4 Nov 2026   08:36:51     est     823446     19623   -803823   A1.9 A4 support iteration 1 importer vis (immediate record, audit R1-10) | ppmlh.. |
+  | 4 Nov 2026   08:36:51     est     823446     18414   -805032   A1.9 A4 support iteration 1 exporter vis (immediate record, audit R1-10) | ppmlh.. |
+  | 4 Nov 2026   08:36:51     est     823446     17764   -805682   A1.9 A4 support iteration 2 importer vis (immediate record, audit R1-10) | ppmlh.. |
+  | 4 Nov 2026   08:36:52     est     823446     17760   -805686   A1.9 A4 support iteration 2 exporter vis (immediate record, audit R1-10) | ppmlh.. |
+  | 4 Nov 2026   08:36:52     est     823446     17755   -805691   A1.9 A4 support iteration 3 importer vis (immediate record, audit R1-10) | ppmlh.. |
+  | 4 Nov 2026   08:36:53     est     823446     17755   -805691   A1.9 A4 support iteration 3 exporter vis (immediate record, audit R1-10) | ppmlh.. |
+  | 4 Nov 2026   08:36:53     est     823446     17755   -805691   A1 A1.9 A4_bilat_importer vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe ou.. |
+  | 4 Nov 2026   08:36:53     est     823446     17755   -805691   A1 A1.9 A4_bilat_exporter vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe ou.. |
+  | 4 Nov 2026   08:36:54     est     823446     17755   -805691   A1.9 directional support iteration 1 importer vis (immediate record, audit R1-10.. |
+  | 4 Nov 2026   08:36:54     est     823446     17755   -805691   A1.9 directional support iteration 1 exporter vis (immediate record, audit R1-10.. |
+  | 4 Nov 2026   08:36:55     est     823446     17755   -805691   A1 A1.9 dirA4_importer_pair_id vis | ppmlhdfe e(N); drop breakdown in the ppmlhd.. |
+  | 4 Nov 2026   08:36:55     est     823446     17755   -805691   A1 A1.9 dirA4_exporter_pair_id vis | ppmlhdfe e(N); drop breakdown in the ppmlhd.. |
+  | 4 Nov 2026   08:36:56     est     823446     17755   -805691   A1 A1.9 dirA4_importer_unordered_pair_id vis | ppmlhdfe e(N); drop breakdown in .. |
+  | 4 Nov 2026   08:36:56     est     823446     17755   -805691   A1 A1.9 dirA4_exporter_unordered_pair_id vis | ppmlhdfe e(N); drop breakdown in .. |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:56    step     823446     17755   -805691   A1.9 stacked side test vis pair_id: keep directional common support                |
+  | 4 Nov 2026   08:36:56    step      17755     35510     17755   A1.9 stacked side test vis pair_id: expand 2 (side 1 importer, side 2 exporter)    |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:57     est      35510     35510         0   A1.9 stacked side test vis pair_id | ppmlhdfe e(N); drop breakdown in the ppmlhd.. |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:57    step      35510    823446    787936   A1.9 stacked side test vis pair_id: restore                                        |
+  | 4 Nov 2026   08:36:57    step     823446     17755   -805691   A1.9 stacked side test vis unordered_pair_id: keep directional common support      |
+  | 4 Nov 2026   08:36:57    step      17755     35510     17755   A1.9 stacked side test vis unordered_pair_id: expand 2 (side 1 importer, side 2 .. |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:58     est      35510     35510         0   A1.9 stacked side test vis unordered_pair_id | ppmlhdfe e(N); drop breakdown in .. |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:58    step      35510    823446    787936   A1.9 stacked side test vis unordered_pair_id: restore                              |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:36:59     est     823446     24969   -798477   A1.9 A4 support iteration 1 importer tour (immediate record, audit R1-10) | ppml.. |
+  | 4 Nov 2026   08:36:59     est     823446     22852   -800594   A1.9 A4 support iteration 1 exporter tour (immediate record, audit R1-10) | ppml.. |
+  | 4 Nov 2026   08:37:00     est     823446     21739   -801707   A1.9 A4 support iteration 2 importer tour (immediate record, audit R1-10) | ppml.. |
+  | 4 Nov 2026   08:37:00     est     823446     21744   -801702   A1.9 A4 support iteration 2 exporter tour (immediate record, audit R1-10) | ppml.. |
+  | 4 Nov 2026   08:37:00     est     823446     21733   -801713   A1.9 A4 support iteration 3 importer tour (immediate record, audit R1-10) | ppml.. |
+  | 4 Nov 2026   08:37:01     est     823446     21733   -801713   A1.9 A4 support iteration 3 exporter tour (immediate record, audit R1-10) | ppml.. |
+  | 4 Nov 2026   08:37:01     est     823446     21733   -801713   A1 A1.9 A4_bilat_importer tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe o.. |
+  | 4 Nov 2026   08:37:02     est     823446     21733   -801713   A1 A1.9 A4_bilat_exporter tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe o.. |
+  | 4 Nov 2026   08:37:02     est     823446     21733   -801713   A1.9 directional support iteration 1 importer tour (immediate record, audit R1-1.. |
+  | 4 Nov 2026   08:37:03     est     823446     21733   -801713   A1.9 directional support iteration 1 exporter tour (immediate record, audit R1-1.. |
+  | 4 Nov 2026   08:37:03     est     823446     21733   -801713   A1 A1.9 dirA4_importer_pair_id tour | ppmlhdfe e(N); drop breakdown in the ppmlh.. |
+  | 4 Nov 2026   08:37:04     est     823446     21733   -801713   A1 A1.9 dirA4_exporter_pair_id tour | ppmlhdfe e(N); drop breakdown in the ppmlh.. |
+  | 4 Nov 2026   08:37:04     est     823446     21733   -801713   A1 A1.9 dirA4_importer_unordered_pair_id tour | ppmlhdfe e(N); drop breakdown in.. |
+  | 4 Nov 2026   08:37:05     est     823446     21733   -801713   A1 A1.9 dirA4_exporter_unordered_pair_id tour | ppmlhdfe e(N); drop breakdown in.. |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:37:05    step     823446     21733   -801713   A1.9 stacked side test tour pair_id: keep directional common support               |
+  | 4 Nov 2026   08:37:05    step      21733     43466     21733   A1.9 stacked side test tour pair_id: expand 2 (side 1 importer, side 2 exporter)   |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:37:06     est      43466     43466         0   A1.9 stacked side test tour pair_id | ppmlhdfe e(N); drop breakdown in the ppmlh.. |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:37:06    step      43466    823446    779980   A1.9 stacked side test tour pair_id: restore                                       |
+  | 4 Nov 2026   08:37:06    step     823446     21733   -801713   A1.9 stacked side test tour unordered_pair_id: keep directional common support     |
+  | 4 Nov 2026   08:37:06    step      21733     43466     21733   A1.9 stacked side test tour unordered_pair_id: expand 2 (side 1 importer, side 2.. |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:37:07     est      43466     43466         0   A1.9 stacked side test tour unordered_pair_id | ppmlhdfe e(N); drop breakdown in.. |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:37:07    step      43466    823446    779980   A1.9 stacked side test tour unordered_pair_id: restore                             |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:37:08   start          .    823446         0   start: <PACKAGE_ROOT>/05_output/10_analysis/co.. |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:37:08    step     823446     20598   -802848   A1.10 keep baseline e(sample) rows (vis)                                           |
+  | 4 Nov 2026   08:37:27    step      20598    823446    802848   A1.10 restore full data (vis)                                                      |
+  | 4 Nov 2026   08:37:27    step     823446     26339   -797107   A1.10 keep baseline e(sample) rows (tour)                                          |
+  | 4 Nov 2026   08:37:38    step      26339    823446    797107   A1.10 restore full data (tour)                                                     |
+  +---------------------------------------------------------------------------------------------------------------------------------------------------+
+
+. display as result "A1_05_COMPLETE vintage=${VINTAGE} " c(current_date) " " c(current_time)
+A1_05_COMPLETE vintage=corrected2x  4 Nov 2026 08:37:38
+
+. log close
+      name:  <unnamed>
+       log:  <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/A1_05_did_corrected2x.log
+  log type:  text
+ closed on:   4 Nov 2026, 08:37:38
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

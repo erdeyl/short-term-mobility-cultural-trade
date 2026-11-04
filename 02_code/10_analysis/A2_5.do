@@ -1,0 +1,382 @@
+/*******************************************************************************
+ A2_5.do -- item A2.5 moderator interactions on own and identical observations (R1.4, R2.5)
+ Moderators (mod): cd    = cul_dist (package Hofstede cd6_ge4; Table 5)
+                   cdnp  = cul_dist on pairs without any regional proxy (any_regional_proxy==0)
+                   cdoff = cd_off, rebuilt from the official 2015-08-16 workbook only (A2_00_hofstede.py)
+                   col   = comlang_off (Table 5 language moderator)
+                   eth   = comlang_ethno (CEPII Gravity)
+                   csl   = Melitz-Toubal common spoken language (CEPII Language, ling_web.dta)
+                   cnl   = Melitz-Toubal common native language
+ Model (CORE 07_table5_moderators.do:11-43): ppmlhdfe v_ttl_k mob  mob*(M - c), FE as baseline,
+ directed-pair clusters. Two centrings for EVERY model (audit check):
+   orig     = Table 5 rule: cd types centred on the ELIGIBLE sample mean before ppmlhdfe drops
+              (07_table5:14-16 "summarize cul_dist if !missing(v_ttl_k, mob_bilat_vis, cul_dist)");
+              language types uncentred (07_table5:11-12), so the main slope is the slope at M = 0.
+   realized = centred on the mean of M over the realized e(sample); re-estimated, e(sample)
+              asserted unchanged (iterated if it changed).
+ The interaction coefficient must be invariant to the centring (asserted, 1e-6 relative); only
+ the main slope moves. Common visitor-tourist sample: rows retained in both own (orig) models,
+ then the fixed point of both refits; there "orig" keeps each measure's own Table 5 constant and
+ "realized" uses the common-sample mean for both measures (the stacked tests use the latter).
+ Help: ppmlhdfe.sthlp, [R] lincom, [R] test, [R] summarize (detail percentiles), [R] centile.
+*******************************************************************************/
+args vintage
+clear all
+set more off
+set varabbrev off
+set linesize 200
+version 18.0
+do "00_config.do" `vintage'
+version 18.0
+do "A2_00_programs.do"
+capture log close _all
+log using "${LOGS}/A2_5_${VINTAGE}.log", text replace
+display as result "A2_5_BEGIN vintage=${VINTAGE} " c(current_date) " " c(current_time)
+use "${OUT}/A2_work.dta", clear
+nflow start using "${OUT}/A2_nflow.csv", append
+a2_open "${OUT}/results/A2_5.dta"
+a2_topen "${OUT}/tables/A2_A2.5.dta"
+local FE "exporter_year importer_year pair_id"
+
+* positive-control references (PREP positive_controls.csv `reproduced`)
+preserve
+    import delimited using "${OUT}/positive_controls.csv", clear asdouble varnames(1) stringcols(1)
+    foreach it in original_culdist_b common_language_slope_vis common_language_slope_tour {
+        quietly summarize reproduced if item == "MIR.`it'"
+        assert r(N) == 1
+        local pc_`it' = r(mean)
+    }
+restore
+
+local M_cd    "cul_dist"
+local M_cdnp  "cul_dist"
+local M_cdoff "cd_off"
+local M_col   "comlang_off"
+local M_eth   "comlang_ethno"
+local M_csl   "mt_csl"
+local M_cnl   "mt_cnl"
+local X_cd    "1"
+local X_cdnp  "any_regional_proxy == 0"
+local X_cdoff "1"
+local X_col   "1"
+local X_eth   "1"
+local X_csl   "1"
+local X_cnl   "1"
+local T_cd "cd"
+local T_cdnp "cd"
+local T_cdoff "cd"
+local T_col "bin"
+local T_eth "bin"
+local T_csl "lang"
+local T_cnl "lang"
+local L_cd "package cultural distance (cd6_ge4)"
+local L_cdnp "package cultural distance, pairs without regional proxies"
+local L_cdoff "cultural distance from the official Hofstede workbook only"
+local L_col "common official language (CEPII Gravity comlang_off)"
+local L_eth "common language spoken by >=9% (CEPII Gravity comlang_ethno)"
+local L_csl "common spoken language (Melitz-Toubal csl)"
+local L_cnl "common native language (Melitz-Toubal cnl)"
+
+capture program drop a2_comp
+program define a2_comp
+    * composition of a sample: N, directed pairs, unordered pairs, economies, years
+    syntax, touse(varname) item(string) table(string) sample(string) mobility(string)
+    quietly count if `touse'
+    local N = r(N)
+    a2_tpost, item(`item') table(`table') sample(`sample') mobility(`mobility') stat(N) value(`N') n(`N')
+    tempvar t1 t2 t3 t4
+    quietly egen byte `t1' = tag(pair_id) if `touse'
+    quietly count if `t1' == 1
+    a2_tpost, item(`item') table(`table') sample(`sample') mobility(`mobility') stat(directed_pairs) value(`r(N)') n(`N')
+    quietly egen byte `t2' = tag(unordered_pair_id) if `touse'
+    quietly count if `t2' == 1
+    a2_tpost, item(`item') table(`table') sample(`sample') mobility(`mobility') stat(unordered_pairs) value(`r(N)') n(`N')
+    quietly egen byte `t3' = tag(exporter_id) if `touse'
+    quietly count if `t3' == 1
+    a2_tpost, item(`item') table(`table') sample(`sample') mobility(`mobility') stat(exporters) value(`r(N)') n(`N')
+    quietly egen byte `t4' = tag(importer_id) if `touse'
+    quietly count if `t4' == 1
+    a2_tpost, item(`item') table(`table') sample(`sample') mobility(`mobility') stat(importers) value(`r(N)') n(`N')
+    quietly levelsof iso3_o if `touse', local(lo) clean
+    quietly levelsof iso3_d if `touse', local(ld) clean
+    local le : list lo | ld
+    local ne : word count `le'
+    a2_tpost, item(`item') table(`table') sample(`sample') mobility(`mobility') stat(economies) value(`ne') n(`N')
+    forvalues y = 2007/2021 {
+        quietly count if `touse' & year == `y'
+        a2_tpost, item(`item') table(`table') sample(`sample') mobility(`mobility') stat(obs_`y') value(`r(N)') n(`N')
+    }
+    quietly count if `touse' & year >= 2020
+    a2_tpost, item(`item') table(`table') sample(`sample') mobility(`mobility') stat(share_obs_2020_2021) value(`=r(N)/`N'') n(`N')
+end
+
+capture program drop a2_slopes
+program define a2_slopes
+    * marginal slopes b + g*(v - c) at percentiles (cont) or at 0/1 (binary) of M over `touse'
+    syntax, touse(varname) mod(string) mvar(varname) mob(name) ix(name) c(real) type(string) ///
+        spec(string) sample(string) mobility(string)
+    if "`type'" == "bin" {
+        foreach v in 0 1 {
+            a2_post, item(A2.5) spec(`spec') sample(`sample') mobility(`mobility') term(`mob' + (`v' - `c') * `ix') label(slope at `mvar' = `v') note("marginal mobility slope; 95% CI (lincom)")
+        }
+    }
+    else {
+        quietly _pctile `mvar' if `touse', percentiles(5 10 25 50 75 90 95)
+        local k = 0
+        foreach q in 5 10 25 50 75 90 95 {
+            local ++k
+            local v = r(r`k')
+            local vv : display %9.6f `v'
+            a2_post, item(A2.5) spec(`spec') sample(`sample') mobility(`mobility') term(`mob' + (`v' - `c') * `ix') label(slope at p`q' of `mvar' = `=strtrim("`vv'")') note("marginal mobility slope; percentile over the sample's pair-years; 95% CI (lincom)")
+            quietly _pctile `mvar' if `touse', percentiles(5 10 25 50 75 90 95)
+        }
+    }
+end
+
+capture program drop a2_hist
+program define a2_hist
+    * 20 equal-width bins of M over `touse': pair-years and directed pairs per bin
+    syntax, touse(varname) mvar(varname) sample(string) mobility(string) mod(string)
+    quietly summarize `mvar' if `touse'
+    local ntot = r(N)
+    * audit check (rerun C2): endpoints kept at full double precision in scalars (a macro copy of
+    * r(min) can round above the minimum and put it in bin 0); bins clamped to [1, 20]; the bin
+    * counts must add up to the retained N (asserted below)
+    tempname slo shi sw
+    scalar `slo' = r(min)
+    scalar `shi' = r(max)
+    scalar `sw' = (scalar(`shi') - scalar(`slo')) / 20
+    local lo = r(min)
+    local hi = r(max)
+    local w = (`hi' - `lo') / 20
+    if scalar(`sw') <= 0 {
+        quietly count if `touse'
+        a2_tpost, item(A2.5) table(hist_`mod') sample(`sample') mobility(`mobility') stat(single_value) value(`r(N)') note("all pair-years have `mvar' = `lo'")
+        exit
+    }
+    tempvar bin tg
+    quietly gen int `bin' = max(1, min(20, 1 + floor((`mvar' - scalar(`slo')) / scalar(`sw')))) if `touse'
+    quietly count if `touse' & !inrange(`bin', 1, 20)
+    assert r(N) == 0
+    local nsum 0
+    forvalues b = 1/20 {
+        local bl = `lo' + (`b' - 1) * `w'
+        local bh = `lo' + `b' * `w'
+        quietly count if `touse' & `bin' == `b'
+        local nb = r(N)
+        local nsum = `nsum' + `nb'
+        quietly egen byte `tg' = tag(pair_id) if `touse' & `bin' == `b'
+        quietly count if `tg' == 1
+        local np = r(N)
+        drop `tg'
+        a2_tpost, item(A2.5) table(hist_`mod') sample(`sample') mobility(`mobility') stat(bin`b'_pairyears) value(`nb') note("bin [`: display %9.5f `bl'', `: display %9.5f `bh''`=cond(`b'==20,"]",")")'; directed pairs in bin = `np'")
+    }
+    assert `nsum' == `ntot'
+end
+
+foreach mod in cd cdnp cdoff col eth csl cnl {
+    if "`mod'" == "cdoff" {
+        * the no-proxy and official-only versions: are their candidate rows identical?
+        foreach m in vis tour {
+            quietly count if (has_both_`m' & !missing(v_ttl_k, mob_bilat_`m', cul_dist) & any_regional_proxy == 0) != (has_both_`m' & !missing(v_ttl_k, mob_bilat_`m', cd_off))
+            display as result "A2_5_CDNP_vs_CDOFF_candidate_rows_differing `m' = " r(N)
+            a2_tpost, item(A2.5) table(cdnp_vs_cdoff) sample(candidate rows) mobility(`m') stat(rows_differing) value(`r(N)')
+        }
+    }
+    local M "`M_`mod''"
+    local X "`X_`mod''"
+    local T "`T_`mod''"
+    foreach m in vis tour {
+        local mlab = cond("`m'" == "vis", "visitors", "tourists")
+        gen byte cand_`mod'_`m' = has_both_`m' & !missing(v_ttl_k, mob_bilat_`m', `M') & (`X')
+        quietly count if cand_`mod'_`m'
+        local ncand = r(N)
+        * ---------------- orig centring
+        local c0 = 0
+        local ctxt0 "uncentred (Table 5 language rule): main slope = slope at `M' = 0"
+        if "`T'" == "cd" {
+            quietly summarize `M' if cand_`mod'_`m'
+            local c0 = r(mean)
+            local ctxt0 "orig: centred on the eligible-sample mean `: display %9.6f `c0'' (N eligible `ncand', before ppmlhdfe drops; Table 5 rule)"
+        }
+        gen double ix0_`mod'_`m' = mob_bilat_`m' * (`M' - `c0') if cand_`mod'_`m'
+        quietly ppmlhdfe v_ttl_k mob_bilat_`m' ix0_`mod'_`m' if cand_`mod'_`m', absorb(`FE') vce(cluster pair_id)
+        a2_chk "A2.5 `mod' own `mlab' orig centring"
+        local g0 = _b[ix0_`mod'_`m']
+        local b0 = _b[mob_bilat_`m']
+        gen byte own_`mod'_`m' = e(sample)
+        a2_post, item(A2.5) spec(`mod'_own_orig) sample(own `mlab') mobility(`mlab') term(mob_bilat_`m') label(mobility slope at centring value) note("`ctxt0'")
+        a2_post, item(A2.5) spec(`mod'_own_orig) sample(own `mlab') mobility(`mlab') term(ix0_`mod'_`m') label(mobility x `M') note("`ctxt0'")
+        quietly test mob_bilat_`m' ix0_`mod'_`m'
+        a2_posttest, item(A2.5) spec(`mod'_own_orig) sample(own `mlab') mobility(`mlab') label(joint: mobility = interaction = 0) chi2(`r(chi2)') df(`r(df)') p(`r(p)') note("`ctxt0'")
+        * positive controls vs Table 5 (PREP-reproduced)
+        if "`mod'" == "cd" {
+            assert own_cd_`m' == s_cd_`m'
+            if "`m'" == "vis" assert abs(`g0' - `pc_original_culdist_b') < 1e-9
+        }
+        if "`mod'" == "col" {
+            assert own_col_`m' == s_lang_`m'
+            assert abs(`b0' + `g0' - `pc_common_language_slope_`m'') < 1e-9
+        }
+        * ---------------- realized-sample centring
+        quietly summarize `M' if own_`mod'_`m'
+        local c1 = r(mean)
+        local it = 0
+        local stable = 0
+        gen byte es_`mod'_`m' = own_`mod'_`m'
+        while `stable' == 0 {
+            local ++it
+            if `it' > 10 error 430
+            capture drop ix1_`mod'_`m'
+            gen double ix1_`mod'_`m' = mob_bilat_`m' * (`M' - `c1') if cand_`mod'_`m'
+            quietly ppmlhdfe v_ttl_k mob_bilat_`m' ix1_`mod'_`m' if cand_`mod'_`m', absorb(`FE') vce(cluster pair_id)
+            a2_chk "A2.5 `mod' own `mlab' realized centring iteration `it'"
+            tempvar e1
+            gen byte `e1' = e(sample)
+            quietly count if `e1' != es_`mod'_`m'
+            if r(N) == 0 local stable = 1
+            else {
+                quietly replace es_`mod'_`m' = `e1'
+                quietly summarize `M' if es_`mod'_`m'
+                local c1 = r(mean)
+            }
+            drop `e1'
+        }
+        quietly count if es_`mod'_`m'
+        local nreal = r(N)
+        local ctxt1 "realized: centred on the e(sample) mean `: display %9.6f `c1'' (N `nreal'); e(sample) unchanged after re-centring (iterations `it')"
+        local g1 = _b[ix1_`mod'_`m']
+        local dg = abs(`g1' - `g0') / max(1, abs(`g0'))
+        display as result "A2_5_CENTRING `mod' `m' c0=" %9.6f `c0' " c1=" %9.6f `c1' " g0=" %12.9f `g0' " g1=" %12.9f `g1' " b0=" %9.6f `b0' " b1=" %9.6f _b[mob_bilat_`m'] " N=" e(N)
+        assert `dg' < 1e-6
+        a2_post, item(A2.5) spec(`mod'_own_real) sample(own `mlab') mobility(`mlab') term(mob_bilat_`m') label(mobility slope at realized-sample mean) note("`ctxt1'")
+        a2_post, item(A2.5) spec(`mod'_own_real) sample(own `mlab') mobility(`mlab') term(ix1_`mod'_`m') label(mobility x `M') note("`ctxt1'; |g_real - g_orig|/max(1,|g|) = `: display %9.2e `dg''")
+        quietly test mob_bilat_`m' ix1_`mod'_`m'
+        a2_posttest, item(A2.5) spec(`mod'_own_real) sample(own `mlab') mobility(`mlab') label(joint: mobility = interaction = 0) chi2(`r(chi2)') df(`r(df)') p(`r(p)') note("`ctxt1'")
+        a2_slopes, touse(es_`mod'_`m') mod(`mod') mvar(`M') mob(mob_bilat_`m') ix(ix1_`mod'_`m') c(`c1') type(`T') spec(`mod'_own_slopes) sample(own `mlab') mobility(`mlab')
+        a2_tpost, item(A2.5) table(centring_`mod') sample(own `mlab') mobility(`mlab') stat(c_orig) value(`c0') n(`ncand') note("`ctxt0'")
+        a2_tpost, item(A2.5) table(centring_`mod') sample(own `mlab') mobility(`mlab') stat(c_realized) value(`c1') n(`nreal')
+        a2_comp, touse(es_`mod'_`m') item(A2.5) table(comp_`mod') sample(own `mlab') mobility(`mlab')
+        if "`T'" != "bin" a2_hist, touse(es_`mod'_`m') mvar(`M') sample(own `mlab') mobility(`mlab') mod(`mod')
+        if inlist("`mod'", "cd", "cdnp", "cdoff") {
+            local dv = cond("`mod'" == "cdoff", "cdim_off", "common_dim_count6")
+            foreach k in 4 5 6 {
+                quietly count if es_`mod'_`m' & `dv' == `k'
+                local nk = r(N)
+                tempvar tg
+                quietly egen byte `tg' = tag(pair_id) if es_`mod'_`m' & `dv' == `k'
+                quietly count if `tg' == 1
+                a2_tpost, item(A2.5) table(dims_`mod') sample(own `mlab') mobility(`mlab') stat(dims`k'_pairyears) value(`nk') note("`dv' == `k'; directed pairs = `r(N)'")
+                drop `tg'
+            }
+        }
+        if inlist("`mod'", "csl", "cnl") {
+            quietly count if has_both_`m' & !missing(v_ttl_k, mob_bilat_`m')
+            local nb = r(N)
+            quietly count if has_both_`m' & !missing(v_ttl_k, mob_bilat_`m') & ling_match == 1
+            a2_tpost, item(A2.5) table(ling_coverage) sample(has_both & trade observed) mobility(`mlab') stat(share_rows_matched) value(`=r(N)/`nb'') n(`nb') note("matched rows = `r(N)'; exact ISO3 merge with ling_web.dta (Belgium and Luxembourg appear there only as BLX)")
+            quietly count if s_base_`m'
+            local nsb = r(N)
+            quietly count if s_base_`m' & ling_match == 1
+            a2_tpost, item(A2.5) table(ling_coverage) sample(s_base_`m') mobility(`mlab') stat(share_baseline_rows_matched) value(`=r(N)/`nsb'') n(`nsb') note("baseline rows matched = `r(N)'")
+            * economies of the baseline sample that never match (absent from ling_web.dta)
+            tempvar mo md
+            quietly egen byte `mo' = max(ling_match), by(iso3_o)
+            quietly egen byte `md' = max(ling_match), by(iso3_d)
+            quietly levelsof iso3_o if s_base_`m' & `mo' == 0, local(u1) clean
+            quietly levelsof iso3_d if s_base_`m' & `md' == 0, local(u2) clean
+            drop `mo' `md'
+            local uu : list u1 | u2
+            a2_tpost, item(A2.5) table(ling_coverage) sample(s_base_`m') mobility(`mlab') stat(economies_absent_from_ling_web) value(`: word count `uu'') note("`uu'")
+        }
+    }
+
+    *--------------------------------------------------------------------------
+    * common visitor-tourist sample
+    *--------------------------------------------------------------------------
+    gen byte cm_`mod' = own_`mod'_vis & own_`mod'_tour
+    quietly count if cm_`mod'
+    local nstart = r(N)
+    a2_fix, touse(cm_`mod') models("v_ttl_k mob_bilat_vis ix0_`mod'_vis ; v_ttl_k mob_bilat_tour ix0_`mod'_tour")
+    local itc = ${A2_FIX_IT}
+    quietly count if cm_`mod'
+    local ncm = r(N)
+    display as result "A2_5_COMMON `mod' start=`nstart' final=`ncm' iterations=`itc'"
+    a2_comp, touse(cm_`mod') item(A2.5) table(comp_`mod') sample(common v-t) mobility(both)
+    a2_tpost, item(A2.5) table(comp_`mod') sample(common v-t) mobility(both) stat(N_start_rows_in_both_own_samples) value(`nstart') note("fixed-point iterations `itc'")
+    quietly summarize `M' if cm_`mod'
+    local cc = r(mean)
+    if "`T'" != "bin" a2_hist, touse(cm_`mod') mvar(`M') sample(common v-t) mobility(both) mod(`mod')
+    if inlist("`mod'", "cd", "cdnp", "cdoff") {
+        local dv = cond("`mod'" == "cdoff", "cdim_off", "common_dim_count6")
+        foreach k in 4 5 6 {
+            quietly count if cm_`mod' & `dv' == `k'
+            local nk = r(N)
+            tempvar tg
+            quietly egen byte `tg' = tag(pair_id) if cm_`mod' & `dv' == `k'
+            quietly count if `tg' == 1
+            a2_tpost, item(A2.5) table(dims_`mod') sample(common v-t) mobility(both) stat(dims`k'_pairyears) value(`nk') note("`dv' == `k'; directed pairs = `r(N)'")
+            drop `tg'
+        }
+    }
+    foreach m in vis tour {
+        local mlab = cond("`m'" == "vis", "visitors", "tourists")
+        * orig: the measure's own Table 5 constant (or uncentred)
+        local c0 = 0
+        if "`T'" == "cd" {
+            quietly summarize `M' if cand_`mod'_`m'
+            local c0 = r(mean)
+        }
+        local ctxt0 = cond("`T'" == "cd", "orig: centred on the own-measure eligible-sample mean `: display %9.6f `c0'' (Table 5 constant)", "uncentred: main slope = slope at `M' = 0")
+        quietly ppmlhdfe v_ttl_k mob_bilat_`m' ix0_`mod'_`m' if cm_`mod', absorb(`FE') vce(cluster pair_id)
+        a2_chk "A2.5 `mod' common `mlab' orig centring"
+        assert e(N) == `ncm'
+        local g0 = _b[ix0_`mod'_`m']
+        a2_post, item(A2.5) spec(`mod'_common_orig) sample(common v-t) mobility(`mlab') term(mob_bilat_`m') label(mobility slope at centring value) note("`ctxt0'")
+        a2_post, item(A2.5) spec(`mod'_common_orig) sample(common v-t) mobility(`mlab') term(ix0_`mod'_`m') label(mobility x `M') note("`ctxt0'")
+        quietly test mob_bilat_`m' ix0_`mod'_`m'
+        a2_posttest, item(A2.5) spec(`mod'_common_orig) sample(common v-t) mobility(`mlab') label(joint: mobility = interaction = 0) chi2(`r(chi2)') df(`r(df)') p(`r(p)') note("`ctxt0'")
+        * realized: common-sample mean for both measures
+        gen double ixc_`mod'_`m' = mob_bilat_`m' * (`M' - `cc') if cm_`mod'
+        quietly ppmlhdfe v_ttl_k mob_bilat_`m' ixc_`mod'_`m' if cm_`mod', absorb(`FE') vce(cluster pair_id)
+        a2_chk "A2.5 `mod' common `mlab' realized centring"
+        tempvar e1
+        gen byte `e1' = e(sample)
+        assert `e1' == cm_`mod'
+        drop `e1'
+        local g1 = _b[ixc_`mod'_`m']
+        assert abs(`g1' - `g0') / max(1, abs(`g0')) < 1e-6
+        local ctxt1 "realized: centred on the common-sample mean `: display %9.6f `cc'' (N `ncm'), e(sample) = common sample"
+        a2_post, item(A2.5) spec(`mod'_common_real) sample(common v-t) mobility(`mlab') term(mob_bilat_`m') label(mobility slope at realized-sample mean) note("`ctxt1'")
+        a2_post, item(A2.5) spec(`mod'_common_real) sample(common v-t) mobility(`mlab') term(ixc_`mod'_`m') label(mobility x `M') note("`ctxt1'")
+        quietly test mob_bilat_`m' ixc_`mod'_`m'
+        a2_posttest, item(A2.5) spec(`mod'_common_real) sample(common v-t) mobility(`mlab') label(joint: mobility = interaction = 0) chi2(`r(chi2)') df(`r(df)') p(`r(p)') note("`ctxt1'")
+        a2_slopes, touse(cm_`mod') mod(`mod') mvar(`M') mob(mob_bilat_`m') ix(ixc_`mod'_`m') c(`cc') type(`T') spec(`mod'_common_slopes) sample(common v-t) mobility(`mlab')
+    }
+    a2_tpost, item(A2.5) table(centring_`mod') sample(common v-t) mobility(both) stat(c_realized_common) value(`cc') n(`ncm')
+    * stacked joint model with measure-specific FE (realized common centring)
+    preserve
+    a2_stack, touse(cm_`mod') ys(v_ttl_k v_ttl_k) xs("mob_bilat_vis ixc_`mod'_vis ; mob_bilat_tour ixc_`mod'_tour") cluster(pair_id)
+    local nu = ${A2_NUNIQ}
+    local stx "stacked v-t, measure-specific FE; `M' centred on the common-sample mean `: display %9.6f `cc''"
+    a2_post, item(A2.5) spec(`mod'_common_stack) sample(common v-t) mobility(both) term(s1_2 - s2_2) label(interaction: visitors - tourists) nuniq(`nu') note("`stx'")
+    quietly test s1_2 = s2_2
+    a2_posttest, item(A2.5) spec(`mod'_common_stack) sample(common v-t) mobility(both) label(test (i) equal interaction coefficients) chi2(`r(chi2)') df(`r(df)') p(`r(p)') nuniq(`nu') note("`stx'")
+    a2_post, item(A2.5) spec(`mod'_common_stack) sample(common v-t) mobility(both) term(s1_1 - s2_1) label(slope at common mean: visitors - tourists) nuniq(`nu') note("`stx'")
+    quietly test s1_1 = s2_1
+    a2_posttest, item(A2.5) spec(`mod'_common_stack) sample(common v-t) mobility(both) label(test (ii) equal slopes at the common mean) chi2(`r(chi2)') df(`r(df)') p(`r(p)') nuniq(`nu') note("`stx'")
+    quietly test (s1_1 = s2_1) (s1_2 = s2_2)
+    a2_posttest, item(A2.5) spec(`mod'_common_stack) sample(common v-t) mobility(both) label(test (i)+(ii) jointly) chi2(`r(chi2)') df(`r(df)') p(`r(p)') nuniq(`nu') note("`stx'")
+    if "`T'" == "bin" {
+        foreach v in 0 1 {
+            a2_post, item(A2.5) spec(`mod'_common_stack) sample(common v-t) mobility(both) term((s1_1 + (`v' - `cc') * s1_2) - (s2_1 + (`v' - `cc') * s2_2)) label(slope at `M' = `v': visitors - tourists) nuniq(`nu') note("`stx'")
+        }
+    }
+    restore
+    nflow step "restore: after A2.5 `mod' stacked v-t model"
+}
+
+a2_close "${OUT}/results/A2_5.dta" "${OUT}/results/A2_5.csv"
+a2_tclose "${OUT}/tables/A2_A2.5.dta" "${OUT}/tables/A2_A2.5.csv"
+display as result "A2_5_DONE vintage=${VINTAGE} " c(current_time)
+log close

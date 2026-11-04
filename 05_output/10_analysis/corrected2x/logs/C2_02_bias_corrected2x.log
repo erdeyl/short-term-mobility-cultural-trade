@@ -1,0 +1,80 @@
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/C2_02_bias_corrected2x.log
+  log type:  text
+ opened on:   4 Nov 2026, 08:42:31
+
+. type "${OUT}/C2_bias_cmp.txt"
+CMP_IDENTICAL
+
+. * nflow sidecar (audit check): the original do-file has no nflow records, and ppml_fe_bias posts only
+. * e(b), e(V), e(cmd), e(cmdline) (ppml_fe_bias.ado:298-300; no e(N)). The sidecar records, right after the
+. * original returns, the preceding ppmlhdfe e(N) that the original stores in scalar orig_<m>_n
+. * (original lines 184, 224) for both the PPML fit and the bias correction on that sample. Same layout as nflow.
+. local sc_ok = !missing(scalar(orig_vis_n)) & !missing(scalar(orig_tour_n))
+
+. assert `sc_ok'
+
+. tempname NF
+
+. file open `NF' using "${OUT}/C2_bias_nflow.csv", write replace
+(file <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/C2_bias_nflow.csv not found)
+
+. file write `NF' "date,time,kind,n_before,n_after,change,reason" _n
+
+. foreach m in vis tour {
+  2.     local nn = scalar(orig_`m'_n)
+  3.     file write `NF' "`=strtrim(c(current_date))',`c(current_time)',est,823446,`nn',`=`nn'-823446',""C2_02_bias `m' ppmlhdfe baseline (original 03_ppml_bias_correction.do) | ppmlhdfe e(N) stored as scalar orig_`m'_n""" _n
+  4.     file write `NF' "`=strtrim(c(current_date))',`c(current_time)',est,823446,`nn',`=`nn'-823446',""C2_02_bias `m' ppml_fe_bias on the same e(sample) | no e(N) posted by ppml_fe_bias; N = preceding ppmlhdfe e(N)""" _n
+  5.     display as result "C2_BIAS_NFLOW `m' N=`nn' (preceding ppmlhdfe e(N))"
+  6. }
+C2_BIAS_NFLOW vis N=20598 (preceding ppmlhdfe e(N))
+C2_BIAS_NFLOW tour N=26339 (preceding ppmlhdfe e(N))
+
+. file close `NF'
+
+. local res "${C2_ROOT}/05_output/03_Mobility/01_diagnostics/sensitivity/03_ppml_bias_correction/ppml_bias_correction_results.csv"
+
+. confirm file "`res'"
+
+. copy "`res'" "${OUT}/C2_bias_results.csv", replace
+(file <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/C2_bias_results.csv not found)
+
+. import delimited using "`res'", clear varnames(1) asdouble case(lower)
+(encoding automatically selected: ISO-8859-1)
+(17 vars, 2 obs)
+
+. list measure original_b original_se corrected_b corrected_se corrected_p n, noobs clean
+[output of list removed in the release copy: it can contain UN Tourism values]
+. quietly summarize n if measure == "visitors", meanonly
+
+. assert r(mean) == scalar(orig_vis_n)
+
+. quietly summarize n if measure == "tourists", meanonly
+
+. assert r(mean) == scalar(orig_tour_n)
+
+. if "${VINTAGE}" == "corrected" {
+.     tempfile rep
+.     save `rep'
+.     import delimited using "${PUB_WZ}", clear varnames(1) asdouble case(lower)
+.     foreach v in original_b original_se corrected_b corrected_se corrected_p n {
+  2.         rename `v' pub_`v'
+  3.     }
+.     merge 1:1 measure using `rep', assert(match) nogen
+.     foreach v in original_b original_se corrected_b corrected_se corrected_p {
+  2.         assert abs(`v' - pub_`v') <= 1e-9 * max(1, abs(pub_`v'))
+  3.     }
+.     assert n == pub_n
+.     display as result "C2_BIAS_POSITIVE_CONTROL=PASS (corrected = stored COPY result, snapshot)"
+. }
+
+. display as result "C2_BIAS_DONE vintage=${VINTAGE}"
+C2_BIAS_DONE vintage=corrected2x
+
+. log close
+      name:  <unnamed>
+       log:  <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/C2_02_bias_corrected2x.log
+  log type:  text
+ closed on:   4 Nov 2026, 08:42:31
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

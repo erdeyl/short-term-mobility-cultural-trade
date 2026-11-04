@@ -1,0 +1,8 @@
+stat,value
+rows,163.0
+rows_tests,83.0
+rows_differences,52.0
+rows_interactions,28.0
+max_abs_dp,0.08581876855565168
+rows_crossing_05,6.0
+rows_crossing_10,5.0

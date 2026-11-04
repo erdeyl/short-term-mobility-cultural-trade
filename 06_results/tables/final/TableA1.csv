@@ -1,0 +1,4 @@
+Statistic,Bilateral visitors,Bilateral tourists,source
+Mobility coefficient,0.0143** (0.0059),−0.0004 (0.0045),out/corrected2x/pc/tables/tableA1_positive_trade_presence.csv ['Bilateral visitors' col (1); 'Bilateral tourists' col (2)]
+Observations (N),"23,395","31,759",out/corrected2x/pc/tables/tableA1_positive_trade_presence.csv [N]
+Adjusted R²,0.689,0.704,out/corrected2x/pc/tables/tableA1_positive_trade_presence.csv [Adjusted R2]

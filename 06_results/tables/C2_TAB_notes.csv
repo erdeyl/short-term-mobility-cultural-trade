@@ -1,0 +1,4 @@
+table,note
+7 Panel F,Directed-pair-trend rows: the default iterated-rectifier separation check stops at its iteration limit in trend models; the mu method removes the separated observations without changing the estimates (N from separation(fe simplex ir mu)).
+5,Cultural distance is centred at its mean over the estimation sample of each model.
+7 Panel B,"The data-quality row excludes the accommodation-based tourist series of Slovakia and Slovenia, all pairs with Paraguay, 36 importer-years that report an HS dataset without basket rows, constructed zeros (South Sudan 2011-12; Curaçao, Bonaire and Saint Maarten 2007-10), 15 importer-years re-released after the download, and the definitional mobility series (Section 3.6) (visitors: Rep. of Moldova 2007-15, Kazakhstan residence 2020-21, Saudi Arabia, South Africa and Norway residence, and Bolivia (Plurinational State of) nationality 2020-21; tourists: Belarus 2007-20, Kazakhstan residence 2020-21)."

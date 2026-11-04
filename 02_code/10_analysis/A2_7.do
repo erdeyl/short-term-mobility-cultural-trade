@@ -1,0 +1,85 @@
+/*******************************************************************************
+ A2_7.do -- item A2.7 non-cultural benchmark (R2.18, R1.7d).
+ tradeflow_comtrade_d = CEPII Gravity V202211 "Trade flow as reported by the importer (in
+ thousands current US$) (source: Comtrade)" (CEPII Gravity documentation);
+ v_ttl_k = cultural goods, importer-reported, thousand current USD (same unit). CEPII has no
+ 2021 values (PREP match_rates; DATA_CHECK_SUMMARY). Sample: baseline rows (s_base_*) with
+ year <= 2020 and tradeflow_comtrade_d observed. Identical observations = fixed point of the
+ cultural and the benchmark model; stacked test cultural = benchmark (block-specific FE).
+ Non-cultural = tradeflow_comtrade_d - v_ttl_k where >= 0 (negative rows reported, not used).
+ CEPII's Comtrade series and our Comtrade extraction are different vintages of UN Comtrade.
+ Help: ppmlhdfe.sthlp, [R] test.
+*******************************************************************************/
+args vintage
+clear all
+set more off
+set varabbrev off
+set linesize 200
+version 18.0
+do "00_config.do" `vintage'
+version 18.0
+do "A2_00_programs.do"
+capture log close _all
+log using "${LOGS}/A2_7_${VINTAGE}.log", text replace
+display as result "A2_7_BEGIN vintage=${VINTAGE} " c(current_date) " " c(current_time)
+use "${OUT}/A2_work.dta", clear
+nflow start using "${OUT}/A2_nflow.csv", append
+a2_open "${OUT}/results/A2_7.dta"
+a2_topen "${OUT}/tables/A2_A2.7.dta"
+local FE "exporter_year importer_year pair_id"
+
+gen double v_noncult_k = tradeflow_comtrade_d - v_ttl_k if !missing(tradeflow_comtrade_d, v_ttl_k) & tradeflow_comtrade_d - v_ttl_k >= 0
+label variable v_noncult_k "Non-cultural imports: CEPII tradeflow_comtrade_d - v_ttl_k where >= 0 (1000 USD)"
+
+foreach m in vis tour {
+    local mlab = cond("`m'" == "vis", "visitors", "tourists")
+    local smp "s_base_`m'"
+    quietly count if `smp' & year <= 2020
+    local n20 = r(N)
+    quietly count if `smp' & year <= 2020 & missing(tradeflow_comtrade_d)
+    a2_tpost, item(A2.7) table(coverage) sample(`smp' & year<=2020) mobility(`mlab') stat(rows_benchmark_missing) value(`r(N)') n(`n20')
+    quietly count if `smp' & year == 2021
+    a2_tpost, item(A2.7) table(coverage) sample(`smp') mobility(`mlab') stat(rows_2021_excluded) value(`r(N)')
+    quietly count if `smp' & year <= 2020 & !missing(tradeflow_comtrade_d) & tradeflow_comtrade_d < v_ttl_k
+    a2_tpost, item(A2.7) table(coverage) sample(`smp' & year<=2020) mobility(`mlab') stat(rows_noncultural_negative) value(`r(N)') n(`n20') note("CEPII total imports below our cultural imports; not used for the non-cultural outcome")
+    quietly count if `smp' & year <= 2020 & tradeflow_comtrade_d == 0
+    a2_tpost, item(A2.7) table(coverage) sample(`smp' & year<=2020) mobility(`mlab') stat(rows_benchmark_zero) value(`r(N)') n(`n20')
+    * reference: cultural trade on baseline rows with year <= 2020 (no benchmark restriction)
+    quietly ppmlhdfe v_ttl_k mob_bilat_`m' if `smp' & year <= 2020, absorb(`FE') vce(cluster pair_id)
+    a2_chk "A2.7 cultural `mlab' baseline rows year<=2020"
+    a2_post, item(A2.7) spec(cultural_year_le_2020) sample(`smp' & year<=2020) mobility(`mlab') term(mob_bilat_`m') label(cultural goods)
+    foreach bm in tradeflow_comtrade_d v_noncult_k {
+        local bl = cond("`bm'" == "tradeflow_comtrade_d", "total imports (CEPII Comtrade)", "non-cultural imports")
+        gen byte bm_`bm'_`m' = `smp' & year <= 2020 & !missing(`bm', v_ttl_k)
+        quietly count if bm_`bm'_`m'
+        local nc = r(N)
+        a2_fix, touse(bm_`bm'_`m') models("v_ttl_k mob_bilat_`m' ; `bm' mob_bilat_`m'")
+        local it = ${A2_FIX_IT}
+        quietly summarize v_ttl_k if bm_`bm'_`m', meanonly
+        local sc = r(sum)
+        quietly summarize tradeflow_comtrade_d if bm_`bm'_`m', meanonly
+        local st = r(sum)
+        a2_tpost, item(A2.7) table(cultural_share) sample(identical rows `bm') mobility(`mlab') stat(cultural_share_of_total_pct) value(`=100*`sc'/`st'') n(`r(N)') note("100 * sum(v_ttl_k) / sum(tradeflow_comtrade_d)")
+        tempvar r
+        gen double `r' = v_ttl_k / tradeflow_comtrade_d if bm_`bm'_`m'
+        quietly summarize `r', detail
+        a2_tpost, item(A2.7) table(cultural_share) sample(identical rows `bm') mobility(`mlab') stat(median_rowwise_cultural_share) value(`r(p50)') n(`r(N)')
+        a2_tpost, item(A2.7) table(cultural_share) sample(identical rows `bm') mobility(`mlab') stat(p99_rowwise_cultural_share) value(`r(p99)') n(`r(N)')
+        drop `r'
+        preserve
+        a2_stack, touse(bm_`bm'_`m') ys(v_ttl_k `bm') xs("mob_bilat_`m' ; mob_bilat_`m'") cluster(pair_id)
+        local nu = ${A2_NUNIQ}
+        a2_post, item(A2.7) spec(`bm'_identical_rows) sample(`smp' & year<=2020 & `bm' observed) mobility(`mlab') term(s1_1) label(cultural goods) nuniq(`nu') note("candidate rows `nc'; fixed-point iterations `it'")
+        a2_post, item(A2.7) spec(`bm'_identical_rows) sample(`smp' & year<=2020 & `bm' observed) mobility(`mlab') term(s2_1) label(`bl') nuniq(`nu')
+        a2_post, item(A2.7) spec(`bm'_identical_rows) sample(`smp' & year<=2020 & `bm' observed) mobility(`mlab') term(s1_1 - s2_1) label(cultural - benchmark) nuniq(`nu')
+        quietly test s1_1 = s2_1
+        a2_posttest, item(A2.7) spec(`bm'_identical_rows) sample(`smp' & year<=2020 & `bm' observed) mobility(`mlab') label(test cultural = benchmark) chi2(`r(chi2)') df(`r(df)') p(`r(p)') nuniq(`nu')
+        display as result "A2_7 `m' `bm' N=`nu' cultural=" %9.6f _b[s1_1] " benchmark=" %9.6f _b[s2_1] " gap=${A2_STACK_GAP}"
+        restore
+        nflow step "restore: after A2.7 `bm' `mlab' stacked test"
+    }
+}
+a2_close "${OUT}/results/A2_7.dta" "${OUT}/results/A2_7.csv"
+a2_tclose "${OUT}/tables/A2_A2.7.dta" "${OUT}/tables/A2_A2.7.csv"
+display as result "A2_7_DONE vintage=${VINTAGE} " c(current_time)
+log close

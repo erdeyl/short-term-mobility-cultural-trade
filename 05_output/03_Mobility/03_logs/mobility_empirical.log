@@ -1,0 +1,30 @@
+Project root: <PACKAGE_ROOT>
+
+Running Stata environment and packages
+STATA_ENVIRONMENT=PASS
+
+Running Core LB
+CORE_LB=PASS
+Results: <PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB
+
+Running Core UB
+CORE_UB=PASS
+Results: <PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/UB
+
+Running Common support
+
+Running Formal equality
+
+Running PPML bias correction
+
+Running Mirror input
+MIRROR_ANALYSIS_INPUT_BUILD=PASS
+Saved: <PACKAGE_ROOT>/03_intermediate/03_Mobility/sensitivity/04_mirror_trade/mirror_analysis_ready.dta
+ prepared_rows  rows_export_reporting_available  rows_export_sparse_present  rows_export_zero_filled  mirror_total_lb_nonmissing  importer_total_lb_nonmissing  visitor_mobility_nonmissing  tourist_mobility_nonmissing
+        823446                           611154                      179113                   432041                      611154                        615589                        25504                        34830
+
+Running Mirror sensitivity
+
+Running Reconciled trade
+
+CHAPTER_RUN=PASS

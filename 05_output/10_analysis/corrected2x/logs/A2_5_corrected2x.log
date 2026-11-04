@@ -1,0 +1,618 @@
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/A2_5_corrected2x.log
+  log type:  text
+ opened on:   4 Nov 2026, 08:40:22
+
+. display as result "A2_5_BEGIN vintage=${VINTAGE} " c(current_date) " " c(current_time)
+A2_5_BEGIN vintage=corrected2x  4 Nov 2026 08:40:22
+
+. use "${OUT}/A2_work.dta", clear
+(PREP analysis base, vintage corrected2x, built  4 Nov 2026 08:33:39 by 01_prep.d)
+
+. nflow start using "${OUT}/A2_nflow.csv", append
+nflow: log <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/A2_nflow.csv, start N =       56,500
+
+. a2_open "${OUT}/results/A2_5.dta"
+(file <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/results/A2_5.dta not found)
+
+. a2_topen "${OUT}/tables/A2_A2.5.dta"
+(file <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/tables/A2_A2.5.dta not found)
+
+. local FE "exporter_year importer_year pair_id"
+
+. 
+. * positive-control references (PREP positive_controls.csv `reproduced`)
+. preserve
+
+.     import delimited using "${OUT}/positive_controls.csv", clear asdouble varnames(1) stringcols(1)
+(encoding automatically selected: ISO-8859-1)
+(11 vars, 232 obs)
+
+.     foreach it in original_culdist_b common_language_slope_vis common_language_slope_tour {
+  2.         quietly summarize reproduced if item == "MIR.`it'"
+  3.         assert r(N) == 1
+  4.         local pc_`it' = r(mean)
+  5.     }
+
+. restore
+
+. 
+. local M_cd    "cul_dist"
+
+. local M_cdnp  "cul_dist"
+
+. local M_cdoff "cd_off"
+
+. local M_col   "comlang_off"
+
+. local M_eth   "comlang_ethno"
+
+. local M_csl   "mt_csl"
+
+. local M_cnl   "mt_cnl"
+
+. local X_cd    "1"
+
+. local X_cdnp  "any_regional_proxy == 0"
+
+. local X_cdoff "1"
+
+. local X_col   "1"
+
+. local X_eth   "1"
+
+. local X_csl   "1"
+
+. local X_cnl   "1"
+
+. local T_cd "cd"
+
+. local T_cdnp "cd"
+
+. local T_cdoff "cd"
+
+. local T_col "bin"
+
+. local T_eth "bin"
+
+. local T_csl "lang"
+
+. local T_cnl "lang"
+
+. local L_cd "package cultural distance (cd6_ge4)"
+
+. local L_cdnp "package cultural distance, pairs without regional proxies"
+
+. local L_cdoff "cultural distance from the official Hofstede workbook only"
+
+. local L_col "common official language (CEPII Gravity comlang_off)"
+
+. local L_eth "common language spoken by >=9% (CEPII Gravity comlang_ethno)"
+
+. local L_csl "common spoken language (Melitz-Toubal csl)"
+
+. local L_cnl "common native language (Melitz-Toubal cnl)"
+
+. 
+. capture program drop a2_comp
+
+. program define a2_comp
+  1.     * composition of a sample: N, directed pairs, unordered pairs, economies, years
+.     syntax, touse(varname) item(string) table(string) sample(string) mobility(string)
+  2.     quietly count if `touse'
+  3.     local N = r(N)
+  4.     a2_tpost, item(`item') table(`table') sample(`sample') mobility(`mobility') stat(N) value(`N') n(`N')
+  5.     tempvar t1 t2 t3 t4
+  6.     quietly egen byte `t1' = tag(pair_id) if `touse'
+  7.     quietly count if `t1' == 1
+  8.     a2_tpost, item(`item') table(`table') sample(`sample') mobility(`mobility') stat(directed_pairs) value(`r(N)') n(`N')
+  9.     quietly egen byte `t2' = tag(unordered_pair_id) if `touse'
+ 10.     quietly count if `t2' == 1
+ 11.     a2_tpost, item(`item') table(`table') sample(`sample') mobility(`mobility') stat(unordered_pairs) value(`r(N)') n(`N')
+ 12.     quietly egen byte `t3' = tag(exporter_id) if `touse'
+ 13.     quietly count if `t3' == 1
+ 14.     a2_tpost, item(`item') table(`table') sample(`sample') mobility(`mobility') stat(exporters) value(`r(N)') n(`N')
+ 15.     quietly egen byte `t4' = tag(importer_id) if `touse'
+ 16.     quietly count if `t4' == 1
+ 17.     a2_tpost, item(`item') table(`table') sample(`sample') mobility(`mobility') stat(importers) value(`r(N)') n(`N')
+ 18.     quietly levelsof iso3_o if `touse', local(lo) clean
+ 19.     quietly levelsof iso3_d if `touse', local(ld) clean
+ 20.     local le : list lo | ld
+ 21.     local ne : word count `le'
+ 22.     a2_tpost, item(`item') table(`table') sample(`sample') mobility(`mobility') stat(economies) value(`ne') n(`N')
+ 23.     forvalues y = 2007/2021 {
+ 24.         quietly count if `touse' & year == `y'
+ 25.         a2_tpost, item(`item') table(`table') sample(`sample') mobility(`mobility') stat(obs_`y') value(`r(N)') n(`N')
+ 26.     }
+ 27.     quietly count if `touse' & year >= 2020
+ 28.     a2_tpost, item(`item') table(`table') sample(`sample') mobility(`mobility') stat(share_obs_2020_2021) value(`=r(N)/`N'') n(`N')
+ 29. end
+
+. 
+. capture program drop a2_slopes
+
+. program define a2_slopes
+  1.     * marginal slopes b + g*(v - c) at percentiles (cont) or at 0/1 (binary) of M over `touse'
+.     syntax, touse(varname) mod(string) mvar(varname) mob(name) ix(name) c(real) type(string) ///
+>         spec(string) sample(string) mobility(string)
+  2.     if "`type'" == "bin" {
+  3.         foreach v in 0 1 {
+  4.             a2_post, item(A2.5) spec(`spec') sample(`sample') mobility(`mobility') term(`mob' + (`v' - `c') * `ix') label(slope at `mvar' = `v') note("marginal mobility slope; 95% CI (lincom)")
+  5.         }
+  6.     }
+  7.     else {
+  8.         quietly _pctile `mvar' if `touse', percentiles(5 10 25 50 75 90 95)
+  9.         local k = 0
+ 10.         foreach q in 5 10 25 50 75 90 95 {
+ 11.             local ++k
+ 12.             local v = r(r`k')
+ 13.             local vv : display %9.6f `v'
+ 14.             a2_post, item(A2.5) spec(`spec') sample(`sample') mobility(`mobility') term(`mob' + (`v' - `c') * `ix') label(slope at p`q' of `mvar' = `=strtrim("`vv'")') note("marginal mobility slo
+> pe; percentile over the sample's pair-years; 95% CI (lincom)")
+ 15.             quietly _pctile `mvar' if `touse', percentiles(5 10 25 50 75 90 95)
+ 16.         }
+ 17.     }
+ 18. end
+
+. 
+. capture program drop a2_hist
+
+. program define a2_hist
+  1.     * 20 equal-width bins of M over `touse': pair-years and directed pairs per bin
+.     syntax, touse(varname) mvar(varname) sample(string) mobility(string) mod(string)
+  2.     quietly summarize `mvar' if `touse'
+  3.     local ntot = r(N)
+  4.     * audit check (rerun C2): endpoints kept at full double precision in scalars (a macro copy of
+.     * r(min) can round above the minimum and put it in bin 0); bins clamped to [1, 20]; the bin
+.     * counts must add up to the retained N (asserted below)
+.     tempname slo shi sw
+  5.     scalar `slo' = r(min)
+  6.     scalar `shi' = r(max)
+  7.     scalar `sw' = (scalar(`shi') - scalar(`slo')) / 20
+  8.     local lo = r(min)
+  9.     local hi = r(max)
+ 10.     local w = (`hi' - `lo') / 20
+ 11.     if scalar(`sw') <= 0 {
+ 12.         quietly count if `touse'
+ 13.         a2_tpost, item(A2.5) table(hist_`mod') sample(`sample') mobility(`mobility') stat(single_value) value(`r(N)') note("all pair-years have `mvar' = `lo'")
+ 14.         exit
+ 15.     }
+ 16.     tempvar bin tg
+ 17.     quietly gen int `bin' = max(1, min(20, 1 + floor((`mvar' - scalar(`slo')) / scalar(`sw')))) if `touse'
+ 18.     quietly count if `touse' & !inrange(`bin', 1, 20)
+ 19.     assert r(N) == 0
+ 20.     local nsum 0
+ 21.     forvalues b = 1/20 {
+ 22.         local bl = `lo' + (`b' - 1) * `w'
+ 23.         local bh = `lo' + `b' * `w'
+ 24.         quietly count if `touse' & `bin' == `b'
+ 25.         local nb = r(N)
+ 26.         local nsum = `nsum' + `nb'
+ 27.         quietly egen byte `tg' = tag(pair_id) if `touse' & `bin' == `b'
+ 28.         quietly count if `tg' == 1
+ 29.         local np = r(N)
+ 30.         drop `tg'
+ 31.         a2_tpost, item(A2.5) table(hist_`mod') sample(`sample') mobility(`mobility') stat(bin`b'_pairyears) value(`nb') note("bin [`: display %9.5f `bl'', `: display %9.5f `bh''`=cond(`b'==20,"]"
+> ,")")'; directed pairs in bin = `np'")
+ 32.     }
+ 33.     assert `nsum' == `ntot'
+ 34. end
+
+. 
+. foreach mod in cd cdnp cdoff col eth csl cnl {
+  2.     if "`mod'" == "cdoff" {
+  3.         * the no-proxy and official-only versions: are their candidate rows identical?
+.         foreach m in vis tour {
+  4.             quietly count if (has_both_`m' & !missing(v_ttl_k, mob_bilat_`m', cul_dist) & any_regional_proxy == 0) != (has_both_`m' & !missing(v_ttl_k, mob_bilat_`m', cd_off))
+  5.             display as result "A2_5_CDNP_vs_CDOFF_candidate_rows_differing `m' = " r(N)
+  6.             a2_tpost, item(A2.5) table(cdnp_vs_cdoff) sample(candidate rows) mobility(`m') stat(rows_differing) value(`r(N)')
+  7.         }
+  8.     }
+  9.     local M "`M_`mod''"
+ 10.     local X "`X_`mod''"
+ 11.     local T "`T_`mod''"
+ 12.     foreach m in vis tour {
+ 13.         local mlab = cond("`m'" == "vis", "visitors", "tourists")
+ 14.         gen byte cand_`mod'_`m' = has_both_`m' & !missing(v_ttl_k, mob_bilat_`m', `M') & (`X')
+ 15.         quietly count if cand_`mod'_`m'
+ 16.         local ncand = r(N)
+ 17.         * ---------------- orig centring
+.         local c0 = 0
+ 18.         local ctxt0 "uncentred (Table 5 language rule): main slope = slope at `M' = 0"
+ 19.         if "`T'" == "cd" {
+ 20.             quietly summarize `M' if cand_`mod'_`m'
+ 21.             local c0 = r(mean)
+ 22.             local ctxt0 "orig: centred on the eligible-sample mean `: display %9.6f `c0'' (N eligible `ncand', before ppmlhdfe drops; Table 5 rule)"
+ 23.         }
+ 24.         gen double ix0_`mod'_`m' = mob_bilat_`m' * (`M' - `c0') if cand_`mod'_`m'
+ 25.         quietly ppmlhdfe v_ttl_k mob_bilat_`m' ix0_`mod'_`m' if cand_`mod'_`m', absorb(`FE') vce(cluster pair_id)
+ 26.         a2_chk "A2.5 `mod' own `mlab' orig centring"
+ 27.         local g0 = _b[ix0_`mod'_`m']
+ 28.         local b0 = _b[mob_bilat_`m']
+ 29.         gen byte own_`mod'_`m' = e(sample)
+ 30.         a2_post, item(A2.5) spec(`mod'_own_orig) sample(own `mlab') mobility(`mlab') term(mob_bilat_`m') label(mobility slope at centring value) note("`ctxt0'")
+ 31.         a2_post, item(A2.5) spec(`mod'_own_orig) sample(own `mlab') mobility(`mlab') term(ix0_`mod'_`m') label(mobility x `M') note("`ctxt0'")
+ 32.         quietly test mob_bilat_`m' ix0_`mod'_`m'
+ 33.         a2_posttest, item(A2.5) spec(`mod'_own_orig) sample(own `mlab') mobility(`mlab') label(joint: mobility = interaction = 0) chi2(`r(chi2)') df(`r(df)') p(`r(p)') note("`ctxt0'")
+ 34.         * positive controls vs Table 5 (PREP-reproduced)
+.         if "`mod'" == "cd" {
+ 35.             assert own_cd_`m' == s_cd_`m'
+ 36.             if "`m'" == "vis" assert abs(`g0' - `pc_original_culdist_b') < 1e-9
+ 37.         }
+ 38.         if "`mod'" == "col" {
+ 39.             assert own_col_`m' == s_lang_`m'
+ 40.             assert abs(`b0' + `g0' - `pc_common_language_slope_`m'') < 1e-9
+ 41.         }
+ 42.         * ---------------- realized-sample centring
+.         quietly summarize `M' if own_`mod'_`m'
+ 43.         local c1 = r(mean)
+ 44.         local it = 0
+ 45.         local stable = 0
+ 46.         gen byte es_`mod'_`m' = own_`mod'_`m'
+ 47.         while `stable' == 0 {
+ 48.             local ++it
+ 49.             if `it' > 10 error 430
+ 50.             capture drop ix1_`mod'_`m'
+ 51.             gen double ix1_`mod'_`m' = mob_bilat_`m' * (`M' - `c1') if cand_`mod'_`m'
+ 52.             quietly ppmlhdfe v_ttl_k mob_bilat_`m' ix1_`mod'_`m' if cand_`mod'_`m', absorb(`FE') vce(cluster pair_id)
+ 53.             a2_chk "A2.5 `mod' own `mlab' realized centring iteration `it'"
+ 54.             tempvar e1
+ 55.             gen byte `e1' = e(sample)
+ 56.             quietly count if `e1' != es_`mod'_`m'
+ 57.             if r(N) == 0 local stable = 1
+ 58.             else {
+ 59.                 quietly replace es_`mod'_`m' = `e1'
+ 60.                 quietly summarize `M' if es_`mod'_`m'
+ 61.                 local c1 = r(mean)
+ 62.             }
+ 63.             drop `e1'
+ 64.         }
+ 65.         quietly count if es_`mod'_`m'
+ 66.         local nreal = r(N)
+ 67.         local ctxt1 "realized: centred on the e(sample) mean `: display %9.6f `c1'' (N `nreal'); e(sample) unchanged after re-centring (iterations `it')"
+ 68.         local g1 = _b[ix1_`mod'_`m']
+ 69.         local dg = abs(`g1' - `g0') / max(1, abs(`g0'))
+ 70.         display as result "A2_5_CENTRING `mod' `m' c0=" %9.6f `c0' " c1=" %9.6f `c1' " g0=" %12.9f `g0' " g1=" %12.9f `g1' " b0=" %9.6f `b0' " b1=" %9.6f _b[mob_bilat_`m'] " N=" e(N)
+ 71.         assert `dg' < 1e-6
+ 72.         a2_post, item(A2.5) spec(`mod'_own_real) sample(own `mlab') mobility(`mlab') term(mob_bilat_`m') label(mobility slope at realized-sample mean) note("`ctxt1'")
+ 73.         a2_post, item(A2.5) spec(`mod'_own_real) sample(own `mlab') mobility(`mlab') term(ix1_`mod'_`m') label(mobility x `M') note("`ctxt1'; |g_real - g_orig|/max(1,|g|) = `: display %9.2e `dg''
+> ")
+ 74.         quietly test mob_bilat_`m' ix1_`mod'_`m'
+ 75.         a2_posttest, item(A2.5) spec(`mod'_own_real) sample(own `mlab') mobility(`mlab') label(joint: mobility = interaction = 0) chi2(`r(chi2)') df(`r(df)') p(`r(p)') note("`ctxt1'")
+ 76.         a2_slopes, touse(es_`mod'_`m') mod(`mod') mvar(`M') mob(mob_bilat_`m') ix(ix1_`mod'_`m') c(`c1') type(`T') spec(`mod'_own_slopes) sample(own `mlab') mobility(`mlab')
+ 77.         a2_tpost, item(A2.5) table(centring_`mod') sample(own `mlab') mobility(`mlab') stat(c_orig) value(`c0') n(`ncand') note("`ctxt0'")
+ 78.         a2_tpost, item(A2.5) table(centring_`mod') sample(own `mlab') mobility(`mlab') stat(c_realized) value(`c1') n(`nreal')
+ 79.         a2_comp, touse(es_`mod'_`m') item(A2.5) table(comp_`mod') sample(own `mlab') mobility(`mlab')
+ 80.         if "`T'" != "bin" a2_hist, touse(es_`mod'_`m') mvar(`M') sample(own `mlab') mobility(`mlab') mod(`mod')
+ 81.         if inlist("`mod'", "cd", "cdnp", "cdoff") {
+ 82.             local dv = cond("`mod'" == "cdoff", "cdim_off", "common_dim_count6")
+ 83.             foreach k in 4 5 6 {
+ 84.                 quietly count if es_`mod'_`m' & `dv' == `k'
+ 85.                 local nk = r(N)
+ 86.                 tempvar tg
+ 87.                 quietly egen byte `tg' = tag(pair_id) if es_`mod'_`m' & `dv' == `k'
+ 88.                 quietly count if `tg' == 1
+ 89.                 a2_tpost, item(A2.5) table(dims_`mod') sample(own `mlab') mobility(`mlab') stat(dims`k'_pairyears) value(`nk') note("`dv' == `k'; directed pairs = `r(N)'")
+ 90.                 drop `tg'
+ 91.             }
+ 92.         }
+ 93.         if inlist("`mod'", "csl", "cnl") {
+ 94.             quietly count if has_both_`m' & !missing(v_ttl_k, mob_bilat_`m')
+ 95.             local nb = r(N)
+ 96.             quietly count if has_both_`m' & !missing(v_ttl_k, mob_bilat_`m') & ling_match == 1
+ 97.             a2_tpost, item(A2.5) table(ling_coverage) sample(has_both & trade observed) mobility(`mlab') stat(share_rows_matched) value(`=r(N)/`nb'') n(`nb') note("matched rows = `r(N)'; exact IS
+> O3 merge with ling_web.dta (Belgium and Luxembourg appear there only as BLX)")
+ 98.             quietly count if s_base_`m'
+ 99.             local nsb = r(N)
+100.             quietly count if s_base_`m' & ling_match == 1
+101.             a2_tpost, item(A2.5) table(ling_coverage) sample(s_base_`m') mobility(`mlab') stat(share_baseline_rows_matched) value(`=r(N)/`nsb'') n(`nsb') note("baseline rows matched = `r(N)'")
+102.             * economies of the baseline sample that never match (absent from ling_web.dta)
+.             tempvar mo md
+103.             quietly egen byte `mo' = max(ling_match), by(iso3_o)
+104.             quietly egen byte `md' = max(ling_match), by(iso3_d)
+105.             quietly levelsof iso3_o if s_base_`m' & `mo' == 0, local(u1) clean
+106.             quietly levelsof iso3_d if s_base_`m' & `md' == 0, local(u2) clean
+107.             drop `mo' `md'
+108.             local uu : list u1 | u2
+109.             a2_tpost, item(A2.5) table(ling_coverage) sample(s_base_`m') mobility(`mlab') stat(economies_absent_from_ling_web) value(`: word count `uu'') note("`uu'")
+110.         }
+111.     }
+112. 
+.     *--------------------------------------------------------------------------
+.     * common visitor-tourist sample
+.     *--------------------------------------------------------------------------
+.     gen byte cm_`mod' = own_`mod'_vis & own_`mod'_tour
+113.     quietly count if cm_`mod'
+114.     local nstart = r(N)
+115.     a2_fix, touse(cm_`mod') models("v_ttl_k mob_bilat_vis ix0_`mod'_vis ; v_ttl_k mob_bilat_tour ix0_`mod'_tour")
+116.     local itc = ${A2_FIX_IT}
+117.     quietly count if cm_`mod'
+118.     local ncm = r(N)
+119.     display as result "A2_5_COMMON `mod' start=`nstart' final=`ncm' iterations=`itc'"
+120.     a2_comp, touse(cm_`mod') item(A2.5) table(comp_`mod') sample(common v-t) mobility(both)
+121.     a2_tpost, item(A2.5) table(comp_`mod') sample(common v-t) mobility(both) stat(N_start_rows_in_both_own_samples) value(`nstart') note("fixed-point iterations `itc'")
+122.     quietly summarize `M' if cm_`mod'
+123.     local cc = r(mean)
+124.     if "`T'" != "bin" a2_hist, touse(cm_`mod') mvar(`M') sample(common v-t) mobility(both) mod(`mod')
+125.     if inlist("`mod'", "cd", "cdnp", "cdoff") {
+126.         local dv = cond("`mod'" == "cdoff", "cdim_off", "common_dim_count6")
+127.         foreach k in 4 5 6 {
+128.             quietly count if cm_`mod' & `dv' == `k'
+129.             local nk = r(N)
+130.             tempvar tg
+131.             quietly egen byte `tg' = tag(pair_id) if cm_`mod' & `dv' == `k'
+132.             quietly count if `tg' == 1
+133.             a2_tpost, item(A2.5) table(dims_`mod') sample(common v-t) mobility(both) stat(dims`k'_pairyears) value(`nk') note("`dv' == `k'; directed pairs = `r(N)'")
+134.             drop `tg'
+135.         }
+136.     }
+137.     foreach m in vis tour {
+138.         local mlab = cond("`m'" == "vis", "visitors", "tourists")
+139.         * orig: the measure's own Table 5 constant (or uncentred)
+.         local c0 = 0
+140.         if "`T'" == "cd" {
+141.             quietly summarize `M' if cand_`mod'_`m'
+142.             local c0 = r(mean)
+143.         }
+144.         local ctxt0 = cond("`T'" == "cd", "orig: centred on the own-measure eligible-sample mean `: display %9.6f `c0'' (Table 5 constant)", "uncentred: main slope = slope at `M' = 0")
+145.         quietly ppmlhdfe v_ttl_k mob_bilat_`m' ix0_`mod'_`m' if cm_`mod', absorb(`FE') vce(cluster pair_id)
+146.         a2_chk "A2.5 `mod' common `mlab' orig centring"
+147.         assert e(N) == `ncm'
+148.         local g0 = _b[ix0_`mod'_`m']
+149.         a2_post, item(A2.5) spec(`mod'_common_orig) sample(common v-t) mobility(`mlab') term(mob_bilat_`m') label(mobility slope at centring value) note("`ctxt0'")
+150.         a2_post, item(A2.5) spec(`mod'_common_orig) sample(common v-t) mobility(`mlab') term(ix0_`mod'_`m') label(mobility x `M') note("`ctxt0'")
+151.         quietly test mob_bilat_`m' ix0_`mod'_`m'
+152.         a2_posttest, item(A2.5) spec(`mod'_common_orig) sample(common v-t) mobility(`mlab') label(joint: mobility = interaction = 0) chi2(`r(chi2)') df(`r(df)') p(`r(p)') note("`ctxt0'")
+153.         * realized: common-sample mean for both measures
+.         gen double ixc_`mod'_`m' = mob_bilat_`m' * (`M' - `cc') if cm_`mod'
+154.         quietly ppmlhdfe v_ttl_k mob_bilat_`m' ixc_`mod'_`m' if cm_`mod', absorb(`FE') vce(cluster pair_id)
+155.         a2_chk "A2.5 `mod' common `mlab' realized centring"
+156.         tempvar e1
+157.         gen byte `e1' = e(sample)
+158.         assert `e1' == cm_`mod'
+159.         drop `e1'
+160.         local g1 = _b[ixc_`mod'_`m']
+161.         assert abs(`g1' - `g0') / max(1, abs(`g0')) < 1e-6
+162.         local ctxt1 "realized: centred on the common-sample mean `: display %9.6f `cc'' (N `ncm'), e(sample) = common sample"
+163.         a2_post, item(A2.5) spec(`mod'_common_real) sample(common v-t) mobility(`mlab') term(mob_bilat_`m') label(mobility slope at realized-sample mean) note("`ctxt1'")
+164.         a2_post, item(A2.5) spec(`mod'_common_real) sample(common v-t) mobility(`mlab') term(ixc_`mod'_`m') label(mobility x `M') note("`ctxt1'")
+165.         quietly test mob_bilat_`m' ixc_`mod'_`m'
+166.         a2_posttest, item(A2.5) spec(`mod'_common_real) sample(common v-t) mobility(`mlab') label(joint: mobility = interaction = 0) chi2(`r(chi2)') df(`r(df)') p(`r(p)') note("`ctxt1'")
+167.         a2_slopes, touse(cm_`mod') mod(`mod') mvar(`M') mob(mob_bilat_`m') ix(ixc_`mod'_`m') c(`cc') type(`T') spec(`mod'_common_slopes) sample(common v-t) mobility(`mlab')
+168.     }
+169.     a2_tpost, item(A2.5) table(centring_`mod') sample(common v-t) mobility(both) stat(c_realized_common) value(`cc') n(`ncm')
+170.     * stacked joint model with measure-specific FE (realized common centring)
+.     preserve
+171.     a2_stack, touse(cm_`mod') ys(v_ttl_k v_ttl_k) xs("mob_bilat_vis ixc_`mod'_vis ; mob_bilat_tour ixc_`mod'_tour") cluster(pair_id)
+172.     local nu = ${A2_NUNIQ}
+173.     local stx "stacked v-t, measure-specific FE; `M' centred on the common-sample mean `: display %9.6f `cc''"
+174.     a2_post, item(A2.5) spec(`mod'_common_stack) sample(common v-t) mobility(both) term(s1_2 - s2_2) label(interaction: visitors - tourists) nuniq(`nu') note("`stx'")
+175.     quietly test s1_2 = s2_2
+176.     a2_posttest, item(A2.5) spec(`mod'_common_stack) sample(common v-t) mobility(both) label(test (i) equal interaction coefficients) chi2(`r(chi2)') df(`r(df)') p(`r(p)') nuniq(`nu') note("`stx'
+> ")
+177.     a2_post, item(A2.5) spec(`mod'_common_stack) sample(common v-t) mobility(both) term(s1_1 - s2_1) label(slope at common mean: visitors - tourists) nuniq(`nu') note("`stx'")
+178.     quietly test s1_1 = s2_1
+179.     a2_posttest, item(A2.5) spec(`mod'_common_stack) sample(common v-t) mobility(both) label(test (ii) equal slopes at the common mean) chi2(`r(chi2)') df(`r(df)') p(`r(p)') nuniq(`nu') note("`st
+> x'")
+180.     quietly test (s1_1 = s2_1) (s1_2 = s2_2)
+181.     a2_posttest, item(A2.5) spec(`mod'_common_stack) sample(common v-t) mobility(both) label(test (i)+(ii) jointly) chi2(`r(chi2)') df(`r(df)') p(`r(p)') nuniq(`nu') note("`stx'")
+182.     if "`T'" == "bin" {
+183.         foreach v in 0 1 {
+184.             a2_post, item(A2.5) spec(`mod'_common_stack) sample(common v-t) mobility(both) term((s1_1 + (`v' - `cc') * s1_2) - (s2_1 + (`v' - `cc') * s2_2)) label(slope at `M' = `v': visitors - t
+> ourists) nuniq(`nu') note("`stx'")
+185.         }
+186.     }
+187.     restore
+188.     nflow step "restore: after A2.5 `mod' stacked v-t model"
+189. }
+(43,706 missing values generated)
+nflow: estimation N =       11,971 (data N       56,500) A2.5 cd own visitors orig centring | 
+(43,706 missing values generated)
+nflow: estimation N =       11,971 (data N       56,500) A2.5 cd own visitors realized centring iteration 1 | 
+A2_5_CENTRING cd vis c0= 2.405766 c1= 2.443050 g0= 0.048451608 g1= 0.048451608 b0= 0.231756 b1= 0.233562 N=11971
+(44,384 missing values generated)
+nflow: estimation N =       10,932 (data N       56,500) A2.5 cd own tourists orig centring | 
+(44,384 missing values generated)
+nflow: estimation N =       10,932 (data N       56,500) A2.5 cd own tourists realized centring iteration 1 | 
+A2_5_CENTRING cd tour c0= 1.814020 c1= 1.836329 g0=-0.033402692 g1=-0.033402692 b0= 0.202090 b1= 0.201345 N=10932
+nflow: estimation N =        1,271 (data N       56,500) a2_fix iteration 1: v_ttl_k mob_bilat_vis ix0_cd_vis  | 
+nflow: estimation N =        1,271 (data N       56,500) a2_fix iteration 1: v_ttl_k mob_bilat_tour ix0_cd_tour | 
+nflow: estimation N =        1,271 (data N       56,500) a2_fix iteration 2: v_ttl_k mob_bilat_vis ix0_cd_vis  | 
+nflow: estimation N =        1,271 (data N       56,500) a2_fix iteration 2: v_ttl_k mob_bilat_tour ix0_cd_tour | 
+A2_5_COMMON cd start=1297 final=1271 iterations=2
+nflow: estimation N =        1,271 (data N       56,500) A2.5 cd common visitors orig centring | 
+(55,229 missing values generated)
+nflow: estimation N =        1,271 (data N       56,500) A2.5 cd common visitors realized centring | 
+nflow: estimation N =        1,271 (data N       56,500) A2.5 cd common tourists orig centring | 
+(55,229 missing values generated)
+nflow: estimation N =        1,271 (data N       56,500) A2.5 cd common tourists realized centring | 
+nflow: estimation N =        1,271 (data N       56,500) a2_stack separate fit 1: v_ttl_k on mob_bilat_vis ixc_cd_vis  | 
+nflow: estimation N =        1,271 (data N       56,500) a2_stack separate fit 2: v_ttl_k on mob_bilat_tour ixc_cd_tour | 
+nflow:       56,500 ->        1,271  a2_stack: keep the 1271 common rows (inside caller's preserve)
+nflow:        1,271 ->        2,542  a2_stack: expand to 2 blocks
+nflow: estimation N =        2,542 (data N        2,542) a2_stack stacked fit: 2 blocks (v_ttl_k v_ttl_k), cluster pair_id | 
+nflow:        2,542 ->       56,500  restore: after A2.5 cd stacked v-t model
+(48,617 missing values generated)
+nflow: estimation N =        7,641 (data N       56,500) A2.5 cdnp own visitors orig centring | 
+(48,617 missing values generated)
+nflow: estimation N =        7,641 (data N       56,500) A2.5 cdnp own visitors realized centring iteration 1 | 
+A2_5_CENTRING cdnp vis c0= 2.745698 c1= 2.750090 g0= 0.048311302 g1= 0.048311302 b0= 0.303682 b1= 0.303894 N=7641
+(49,741 missing values generated)
+nflow: estimation N =        6,481 (data N       56,500) A2.5 cdnp own tourists orig centring | 
+(49,741 missing values generated)
+nflow: estimation N =        6,481 (data N       56,500) A2.5 cdnp own tourists realized centring iteration 1 | 
+A2_5_CENTRING cdnp tour c0= 2.189575 c1= 2.173494 g0=-0.032413171 g1=-0.032413171 b0= 0.194570 b1= 0.195092 N=6481
+nflow: estimation N =          922 (data N       56,500) a2_fix iteration 1: v_ttl_k mob_bilat_vis ix0_cdnp_vis  | 
+nflow: estimation N =          922 (data N       56,500) a2_fix iteration 1: v_ttl_k mob_bilat_tour ix0_cdnp_tour | 
+nflow: estimation N =          922 (data N       56,500) a2_fix iteration 2: v_ttl_k mob_bilat_vis ix0_cdnp_vis  | 
+nflow: estimation N =          922 (data N       56,500) a2_fix iteration 2: v_ttl_k mob_bilat_tour ix0_cdnp_tour | 
+A2_5_COMMON cdnp start=948 final=922 iterations=2
+nflow: estimation N =          922 (data N       56,500) A2.5 cdnp common visitors orig centring | 
+(55,578 missing values generated)
+nflow: estimation N =          922 (data N       56,500) A2.5 cdnp common visitors realized centring | 
+nflow: estimation N =          922 (data N       56,500) A2.5 cdnp common tourists orig centring | 
+(55,578 missing values generated)
+nflow: estimation N =          922 (data N       56,500) A2.5 cdnp common tourists realized centring | 
+nflow: estimation N =          922 (data N       56,500) a2_stack separate fit 1: v_ttl_k on mob_bilat_vis ixc_cdnp_vis  | 
+nflow: estimation N =          922 (data N       56,500) a2_stack separate fit 2: v_ttl_k on mob_bilat_tour ixc_cdnp_tour | 
+nflow:       56,500 ->          922  a2_stack: keep the 922 common rows (inside caller's preserve)
+nflow:          922 ->        1,844  a2_stack: expand to 2 blocks
+nflow: estimation N =        1,844 (data N        1,844) a2_stack stacked fit: 2 blocks (v_ttl_k v_ttl_k), cluster pair_id | 
+nflow:        1,844 ->       56,500  restore: after A2.5 cdnp stacked v-t model
+A2_5_CDNP_vs_CDOFF_candidate_rows_differing vis = 0
+A2_5_CDNP_vs_CDOFF_candidate_rows_differing tour = 0
+(48,617 missing values generated)
+nflow: estimation N =        7,641 (data N       56,500) A2.5 cdoff own visitors orig centring | 
+(48,617 missing values generated)
+nflow: estimation N =        7,641 (data N       56,500) A2.5 cdoff own visitors realized centring iteration 1 | 
+A2_5_CENTRING cdoff vis c0= 2.010572 c1= 2.013023 g0= 0.069834149 g1= 0.069834149 b0= 0.316303 b1= 0.316474 N=7641
+(49,741 missing values generated)
+nflow: estimation N =        6,481 (data N       56,500) A2.5 cdoff own tourists orig centring | 
+(49,741 missing values generated)
+nflow: estimation N =        6,481 (data N       56,500) A2.5 cdoff own tourists realized centring iteration 1 | 
+A2_5_CENTRING cdoff tour c0= 1.590422 c1= 1.578332 g0=-0.044396538 g1=-0.044396538 b0= 0.201016 b1= 0.201553 N=6481
+nflow: estimation N =          922 (data N       56,500) a2_fix iteration 1: v_ttl_k mob_bilat_vis ix0_cdoff_vis  | 
+nflow: estimation N =          922 (data N       56,500) a2_fix iteration 1: v_ttl_k mob_bilat_tour ix0_cdoff_tour | 
+nflow: estimation N =          922 (data N       56,500) a2_fix iteration 2: v_ttl_k mob_bilat_vis ix0_cdoff_vis  | 
+nflow: estimation N =          922 (data N       56,500) a2_fix iteration 2: v_ttl_k mob_bilat_tour ix0_cdoff_tour | 
+A2_5_COMMON cdoff start=948 final=922 iterations=2
+nflow: estimation N =          922 (data N       56,500) A2.5 cdoff common visitors orig centring | 
+(55,578 missing values generated)
+nflow: estimation N =          922 (data N       56,500) A2.5 cdoff common visitors realized centring | 
+nflow: estimation N =          922 (data N       56,500) A2.5 cdoff common tourists orig centring | 
+(55,578 missing values generated)
+nflow: estimation N =          922 (data N       56,500) A2.5 cdoff common tourists realized centring | 
+nflow: estimation N =          922 (data N       56,500) a2_stack separate fit 1: v_ttl_k on mob_bilat_vis ixc_cdoff_vis  | 
+nflow: estimation N =          922 (data N       56,500) a2_stack separate fit 2: v_ttl_k on mob_bilat_tour ixc_cdoff_tour | 
+nflow:       56,500 ->          922  a2_stack: keep the 922 common rows (inside caller's preserve)
+nflow:          922 ->        1,844  a2_stack: expand to 2 blocks
+nflow: estimation N =        1,844 (data N        1,844) a2_stack stacked fit: 2 blocks (v_ttl_k v_ttl_k), cluster pair_id | 
+nflow:        1,844 ->       56,500  restore: after A2.5 cdoff stacked v-t model
+(32,724 missing values generated)
+nflow: estimation N =       20,598 (data N       56,500) A2.5 col own visitors orig centring | 
+(32,724 missing values generated)
+nflow: estimation N =       20,598 (data N       56,500) A2.5 col own visitors realized centring iteration 1 | 
+A2_5_CENTRING col vis c0= 0.000000 c1= 0.182591 g0=-0.093474261 g1=-0.093474261 b0= 0.160297 b1= 0.143230 N=20598
+(24,394 missing values generated)
+nflow: estimation N =       26,159 (data N       56,500) A2.5 col own tourists orig centring | 
+(24,394 missing values generated)
+nflow: estimation N =       26,159 (data N       56,500) A2.5 col own tourists realized centring iteration 1 | 
+A2_5_CENTRING col tour c0= 0.000000 c1= 0.309492 g0= 0.021620790 g1= 0.021620790 b0= 0.171564 b1= 0.178255 N=26159
+nflow: estimation N =        2,457 (data N       56,500) a2_fix iteration 1: v_ttl_k mob_bilat_vis ix0_col_vis  | 
+nflow: estimation N =        2,457 (data N       56,500) a2_fix iteration 1: v_ttl_k mob_bilat_tour ix0_col_tour | 
+nflow: estimation N =        2,457 (data N       56,500) a2_fix iteration 2: v_ttl_k mob_bilat_vis ix0_col_vis  | 
+nflow: estimation N =        2,457 (data N       56,500) a2_fix iteration 2: v_ttl_k mob_bilat_tour ix0_col_tour | 
+A2_5_COMMON col start=2516 final=2457 iterations=2
+nflow: estimation N =        2,457 (data N       56,500) A2.5 col common visitors orig centring | 
+(54,043 missing values generated)
+nflow: estimation N =        2,457 (data N       56,500) A2.5 col common visitors realized centring | 
+nflow: estimation N =        2,457 (data N       56,500) A2.5 col common tourists orig centring | 
+(54,043 missing values generated)
+nflow: estimation N =        2,457 (data N       56,500) A2.5 col common tourists realized centring | 
+nflow: estimation N =        2,457 (data N       56,500) a2_stack separate fit 1: v_ttl_k on mob_bilat_vis ixc_col_vis  | 
+nflow: estimation N =        2,457 (data N       56,500) a2_stack separate fit 2: v_ttl_k on mob_bilat_tour ixc_col_tour | 
+nflow:       56,500 ->        2,457  a2_stack: keep the 2457 common rows (inside caller's preserve)
+nflow:        2,457 ->        4,914  a2_stack: expand to 2 blocks
+nflow: estimation N =        4,914 (data N        4,914) a2_stack stacked fit: 2 blocks (v_ttl_k v_ttl_k), cluster pair_id | 
+nflow:        4,914 ->       56,500  restore: after A2.5 col stacked v-t model
+(32,724 missing values generated)
+nflow: estimation N =       20,598 (data N       56,500) A2.5 eth own visitors orig centring | 
+(32,724 missing values generated)
+nflow: estimation N =       20,598 (data N       56,500) A2.5 eth own visitors realized centring iteration 1 | 
+A2_5_CENTRING eth vis c0= 0.000000 c1= 0.222012 g0=-0.082669852 g1=-0.082669852 b0= 0.186326 b1= 0.167972 N=20598
+(24,394 missing values generated)
+nflow: estimation N =       26,159 (data N       56,500) A2.5 eth own tourists orig centring | 
+(24,394 missing values generated)
+nflow: estimation N =       26,159 (data N       56,500) A2.5 eth own tourists realized centring iteration 1 | 
+A2_5_CENTRING eth tour c0= 0.000000 c1= 0.326771 g0= 0.038624371 g1= 0.038624371 b0= 0.164393 b1= 0.177014 N=26159
+nflow: estimation N =        2,457 (data N       56,500) a2_fix iteration 1: v_ttl_k mob_bilat_vis ix0_eth_vis  | 
+nflow: estimation N =        2,457 (data N       56,500) a2_fix iteration 1: v_ttl_k mob_bilat_tour ix0_eth_tour | 
+nflow: estimation N =        2,457 (data N       56,500) a2_fix iteration 2: v_ttl_k mob_bilat_vis ix0_eth_vis  | 
+nflow: estimation N =        2,457 (data N       56,500) a2_fix iteration 2: v_ttl_k mob_bilat_tour ix0_eth_tour | 
+A2_5_COMMON eth start=2516 final=2457 iterations=2
+nflow: estimation N =        2,457 (data N       56,500) A2.5 eth common visitors orig centring | 
+(54,043 missing values generated)
+nflow: estimation N =        2,457 (data N       56,500) A2.5 eth common visitors realized centring | 
+nflow: estimation N =        2,457 (data N       56,500) A2.5 eth common tourists orig centring | 
+(54,043 missing values generated)
+nflow: estimation N =        2,457 (data N       56,500) A2.5 eth common tourists realized centring | 
+nflow: estimation N =        2,457 (data N       56,500) a2_stack separate fit 1: v_ttl_k on mob_bilat_vis ixc_eth_vis  | 
+nflow: estimation N =        2,457 (data N       56,500) a2_stack separate fit 2: v_ttl_k on mob_bilat_tour ixc_eth_tour | 
+nflow:       56,500 ->        2,457  a2_stack: keep the 2457 common rows (inside caller's preserve)
+nflow:        2,457 ->        4,914  a2_stack: expand to 2 blocks
+nflow: estimation N =        4,914 (data N        4,914) a2_stack stacked fit: 2 blocks (v_ttl_k v_ttl_k), cluster pair_id | 
+nflow:        4,914 ->       56,500  restore: after A2.5 eth stacked v-t model
+(35,205 missing values generated)
+nflow: estimation N =       18,735 (data N       56,500) A2.5 csl own visitors orig centring | 
+(35,205 missing values generated)
+nflow: estimation N =       18,735 (data N       56,500) A2.5 csl own visitors realized centring iteration 1 | 
+A2_5_CENTRING csl vis c0= 0.000000 c1= 0.135312 g0=-0.072960620 g1=-0.072960620 b0= 0.196775 b1= 0.186903 N=18735
+(27,479 missing values generated)
+nflow: estimation N =       24,090 (data N       56,500) A2.5 csl own tourists orig centring | 
+(27,479 missing values generated)
+nflow: estimation N =       24,090 (data N       56,500) A2.5 csl own tourists realized centring iteration 1 | 
+A2_5_CENTRING csl tour c0= 0.000000 c1= 0.230680 g0=-0.011645648 g1=-0.011645648 b0= 0.183947 b1= 0.181260 N=24090
+nflow: estimation N =        2,211 (data N       56,500) a2_fix iteration 1: v_ttl_k mob_bilat_vis ix0_csl_vis  | 
+nflow: estimation N =        2,211 (data N       56,500) a2_fix iteration 1: v_ttl_k mob_bilat_tour ix0_csl_tour | 
+nflow: estimation N =        2,211 (data N       56,500) a2_fix iteration 2: v_ttl_k mob_bilat_vis ix0_csl_vis  | 
+nflow: estimation N =        2,211 (data N       56,500) a2_fix iteration 2: v_ttl_k mob_bilat_tour ix0_csl_tour | 
+A2_5_COMMON csl start=2269 final=2211 iterations=2
+nflow: estimation N =        2,211 (data N       56,500) A2.5 csl common visitors orig centring | 
+(54,289 missing values generated)
+nflow: estimation N =        2,211 (data N       56,500) A2.5 csl common visitors realized centring | 
+nflow: estimation N =        2,211 (data N       56,500) A2.5 csl common tourists orig centring | 
+(54,289 missing values generated)
+nflow: estimation N =        2,211 (data N       56,500) A2.5 csl common tourists realized centring | 
+nflow: estimation N =        2,211 (data N       56,500) a2_stack separate fit 1: v_ttl_k on mob_bilat_vis ixc_csl_vis  | 
+nflow: estimation N =        2,211 (data N       56,500) a2_stack separate fit 2: v_ttl_k on mob_bilat_tour ixc_csl_tour | 
+nflow:       56,500 ->        2,211  a2_stack: keep the 2211 common rows (inside caller's preserve)
+nflow:        2,211 ->        4,422  a2_stack: expand to 2 blocks
+nflow: estimation N =        4,422 (data N        4,422) a2_stack stacked fit: 2 blocks (v_ttl_k v_ttl_k), cluster pair_id | 
+nflow:        4,422 ->       56,500  restore: after A2.5 csl stacked v-t model
+(35,205 missing values generated)
+nflow: estimation N =       18,735 (data N       56,500) A2.5 cnl own visitors orig centring | 
+(35,205 missing values generated)
+nflow: estimation N =       18,735 (data N       56,500) A2.5 cnl own visitors realized centring iteration 1 | 
+A2_5_CENTRING cnl vis c0= 0.000000 c1= 0.055482 g0=-0.062336403 g1=-0.062336403 b0= 0.196554 b1= 0.193096 N=18735
+(27,479 missing values generated)
+nflow: estimation N =       24,090 (data N       56,500) A2.5 cnl own tourists orig centring | 
+(27,479 missing values generated)
+nflow: estimation N =       24,090 (data N       56,500) A2.5 cnl own tourists realized centring iteration 1 | 
+A2_5_CENTRING cnl tour c0= 0.000000 c1= 0.119819 g0= 0.088979496 g1= 0.088979496 b0= 0.161105 b1= 0.171766 N=24090
+nflow: estimation N =        2,211 (data N       56,500) a2_fix iteration 1: v_ttl_k mob_bilat_vis ix0_cnl_vis  | 
+nflow: estimation N =        2,211 (data N       56,500) a2_fix iteration 1: v_ttl_k mob_bilat_tour ix0_cnl_tour | 
+nflow: estimation N =        2,211 (data N       56,500) a2_fix iteration 2: v_ttl_k mob_bilat_vis ix0_cnl_vis  | 
+nflow: estimation N =        2,211 (data N       56,500) a2_fix iteration 2: v_ttl_k mob_bilat_tour ix0_cnl_tour | 
+A2_5_COMMON cnl start=2269 final=2211 iterations=2
+nflow: estimation N =        2,211 (data N       56,500) A2.5 cnl common visitors orig centring | 
+(54,289 missing values generated)
+nflow: estimation N =        2,211 (data N       56,500) A2.5 cnl common visitors realized centring | 
+nflow: estimation N =        2,211 (data N       56,500) A2.5 cnl common tourists orig centring | 
+(54,289 missing values generated)
+nflow: estimation N =        2,211 (data N       56,500) A2.5 cnl common tourists realized centring | 
+nflow: estimation N =        2,211 (data N       56,500) a2_stack separate fit 1: v_ttl_k on mob_bilat_vis ixc_cnl_vis  | 
+nflow: estimation N =        2,211 (data N       56,500) a2_stack separate fit 2: v_ttl_k on mob_bilat_tour ixc_cnl_tour | 
+nflow:       56,500 ->        2,211  a2_stack: keep the 2211 common rows (inside caller's preserve)
+nflow:        2,211 ->        4,422  a2_stack: expand to 2 blocks
+nflow: estimation N =        4,422 (data N        4,422) a2_stack stacked fit: 2 blocks (v_ttl_k v_ttl_k), cluster pair_id | 
+nflow:        4,422 ->       56,500  restore: after A2.5 cnl stacked v-t model
+
+. 
+. a2_close "${OUT}/results/A2_5.dta" "${OUT}/results/A2_5.csv"
+(file <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/results/A2_5.csv not found)
+file <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/results/A2_5.csv saved
+
+. a2_tclose "${OUT}/tables/A2_A2.5.dta" "${OUT}/tables/A2_A2.5.csv"
+(file <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/tables/A2_A2.5.csv not found)
+file <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/tables/A2_A2.5.csv saved
+
+. display as result "A2_5_DONE vintage=${VINTAGE} " c(current_time)
+A2_5_DONE vintage=corrected2x 08:40:48
+
+. log close
+      name:  <unnamed>
+       log:  <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/A2_5_corrected2x.log
+  log type:  text
+ closed on:   4 Nov 2026, 08:40:48
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

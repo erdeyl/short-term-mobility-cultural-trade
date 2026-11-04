@@ -1,0 +1,1061 @@
+
+. /****************************************************************************
+> ***
+>  06_run_reconciled_trade_sensitivity.do
+> 
+>  STEP 4D: Simple reporting-side reconciled trade sensitivity.
+> 
+>  Purpose
+>  -------
+>  Step 4C showed:
+>    - tourists are robust to importer- vs exporter-reported trade;
+>    - visitors are materially reporting-side sensitive.
+> 
+>  This final measurement sensitivity asks what happens when neither reporting 
+> side
+>  alone determines the bilateral trade value.
+> 
+>  Reconciled outcome
+>  ------------------
+>  On dyad-years where BOTH importer- and exporter-reported LB cultural-trade
+>  outcomes are observed:
+> 
+>    v_ttl_reconciled_lb_k
+>       = (v_ttl_k + v_ttl_exporter_lb_k) / 2
+> 
+>  This is deliberately called a "simple reporting-side average", NOT "true tra
+> de".
+>  No attempt is made to correct CIF/FOB, timing, re-exports, or partner attrib
+> ution.
+> 
+>  Estimation
+>  ----------
+>  For visitors and tourists separately:
+>    1. require strict bilateral mobility support;
+>    2. require both importer- and exporter-reported LB trade outcomes;
+>    3. iteratively intersect realized ppmlhdfe e(sample) across
+>       importer, exporter, and reconciled outcomes;
+>    4. estimate all three outcomes on the exact same realized observations;
+>    5. use a stacked PPML to obtain formal covariance-aware tests:
+>         importer = reconciled
+>         exporter = reconciled
+>         importer = exporter
+>         all three equal
+> 
+>  All models:
+>    absorb(exporter_year importer_year pair_id)
+>    vce(cluster pair_id)
+> 
+>  Input
+>  -----
+>  08_sensitivity/04_mirror_trade/data/mirror_analysis_ready.dta
+> 
+>  Outputs
+>  -------
+>  08_sensitivity/04_mirror_trade/reconciled/
+> *****************************************************************************
+> **/
+. 
+. clear all
+
+. set more off
+
+. set linesize 255
+
+. version 18.0
+
+. set varabbrev off
+
+. 
+. args PROJECT_ROOT
+
+. if `"`PROJECT_ROOT'"'=="" {
+.     di as error "Supply replication_build root as argument 1."
+.     exit 198
+. }
+
+. local PROJECT_ROOT=subinstr(`"`PROJECT_ROOT'"',"\\","/",.)
+
+. 
+. global ROOT `"`PROJECT_ROOT'"'
+
+. global INDATA "${ROOT}/03_intermediate/03_Mobility/sensitivity/04_mirror_trade/mirror_analysis_ready.dta"
+
+. global OUTROOT "${ROOT}/05_output/03_Mobility/02_empirical_analysis/02_sensitivity/04_mirror_trade/reconciled"
+
+. global TABLES "${OUTROOT}/tables"
+
+. global DIAG "${ROOT}/05_output/03_Mobility/01_diagnostics/sensitivity/04_mirror_trade/reconciled"
+
+. global LOGS "${ROOT}/05_output/03_Mobility/03_logs/sensitivity/04_mirror_trade/reconciled"
+
+. 
+. capture mkdir "${OUTROOT}"
+
+. capture mkdir "${TABLES}"
+
+. capture mkdir "${DIAG}"
+
+. capture mkdir "${LOGS}"
+
+. 
+. capture log close _all
+
+. log using "${LOGS}/06_run_reconciled_trade_sensitivity.log", replace text
+(file <PACKAGE_ROOT>/05_output/03_Mobility/03_logs/sensitivity/04_mirror_trade/reconciled/06_run_reconciled_trade_sensitivity.log not found)
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  <PACKAGE_ROOT>/05_output/03_Mobility/03_logs/sensitivity/04_mirror_trade/reconciled/06_run_reconciled_trade_sensitivity.log
+  log type:  text
+ opened on:   4 Nov 2026, 08:32:33
+
+. 
+. capture confirm file "${INDATA}"
+
+. if _rc {
+.     di as error "Missing Step 4B mirror analysis input:"
+.     di as error "${INDATA}"
+.     exit 601
+. }
+
+. 
+. capture which ppmlhdfe
+
+. if _rc {
+.     di as error "Required command missing: ppmlhdfe"
+.     exit 199
+. }
+
+. capture which esttab
+
+. if _rc {
+.     di as error "Required command missing: esttab"
+.     exit 199
+. }
+
+. capture which eststo
+
+. if _rc {
+.     di as error "Required command missing: eststo"
+.     exit 199
+. }
+
+. 
+. use "${INDATA}", clear
+
+. isid year iso3_o iso3_d
+
+. 
+. foreach v in ///
+>     v_ttl_k v_ttl_exporter_lb_k ///
+>     mob_bilat_vis mob_bilat_tour ///
+>     has_both_vis has_both_tour ///
+>     exporter_year importer_year pair_id {
+  2.     capture confirm variable `v'
+  3.     if _rc {
+  4.         di as error "Required variable missing: `v'"
+  5.         exit 111
+  6.     }
+  7. }
+
+. 
+. * Simple reporting-side average, defined only when BOTH reports are observed.
+. gen double v_ttl_reconciled_lb_k = ///
+>     (v_ttl_k + v_ttl_exporter_lb_k) / 2 ///
+>     if !missing(v_ttl_k, v_ttl_exporter_lb_k)
+(367,084 missing values generated)
+
+. 
+. label var v_ttl_reconciled_lb_k ///
+>     "Simple average of importer- and exporter-reported LB cultural trade (thousand current USD)"
+note: label truncated to 80 characters
+
+. 
+. assert missing(v_ttl_reconciled_lb_k) ///
+>     if missing(v_ttl_k) | missing(v_ttl_exporter_lb_k)
+
+. 
+. assert abs(v_ttl_reconciled_lb_k - ///
+>     (v_ttl_k + v_ttl_exporter_lb_k)/2) < 1e-10 ///
+>     if !missing(v_ttl_reconciled_lb_k)
+
+. 
+. local FE "exporter_year importer_year pair_id"
+
+. local CLUSTER "pair_id"
+
+. 
+. eststo clear
+
+. 
+. * ======================================================================
+. * A. VISITORS: exact 3-outcome realized support
+. * ======================================================================
+. gen byte recon_vis = ///
+>     has_both_vis==1 & ///
+>     !missing(v_ttl_k, v_ttl_exporter_lb_k, ///
+>              v_ttl_reconciled_lb_k, mob_bilat_vis)
+
+. 
+. quietly count if recon_vis
+
+. scalar vis_candidate_n = r(N)
+
+. 
+. local vis_converged=0
+
+. local vis_iterations=0
+
+. 
+. forvalues iter=1/10 {
+  2.     local vis_iterations=`iter'
+  3.     capture drop __v_imp __v_exp __v_rec
+  4. 
+.     quietly ppmlhdfe v_ttl_k mob_bilat_vis if recon_vis, ///
+>         absorb(`FE') vce(cluster `CLUSTER')
+  5.     gen byte __v_imp=e(sample)
+  6. 
+.     quietly ppmlhdfe v_ttl_exporter_lb_k mob_bilat_vis if recon_vis, ///
+>         absorb(`FE') vce(cluster `CLUSTER')
+  7.     gen byte __v_exp=e(sample)
+  8. 
+.     quietly ppmlhdfe v_ttl_reconciled_lb_k mob_bilat_vis if recon_vis, ///
+>         absorb(`FE') vce(cluster `CLUSTER')
+  9.     gen byte __v_rec=e(sample)
+ 10. 
+.     quietly count if recon_vis & (!__v_imp | !__v_exp | !__v_rec)
+ 11.     local removed=r(N)
+ 12. 
+.     if `removed'==0 {
+ 13.         local vis_converged=1
+ 14.         continue, break
+ 15.     }
+ 16. 
+.     replace recon_vis = recon_vis & __v_imp & __v_exp & __v_rec
+ 17. }
+(4,754 real changes made)
+(19 real changes made)
+
+. 
+. if `vis_converged'==0 {
+.     di as error "Visitor exact three-outcome sample failed to converge."
+.     exit 430
+. }
+
+. drop __v_imp __v_exp __v_rec
+
+. 
+. quietly ppmlhdfe v_ttl_k mob_bilat_vis if recon_vis, ///
+>     absorb(`FE') vce(cluster `CLUSTER')
+
+. eststo V_IMP
+
+. gen byte __v_imp_final=e(sample)
+
+. scalar v_imp_b=_b[mob_bilat_vis]
+
+. scalar v_imp_se=_se[mob_bilat_vis]
+
+. scalar v_n=e(N)
+
+. 
+. quietly ppmlhdfe v_ttl_exporter_lb_k mob_bilat_vis if recon_vis, ///
+>     absorb(`FE') vce(cluster `CLUSTER')
+
+. eststo V_EXP
+
+. gen byte __v_exp_final=e(sample)
+
+. scalar v_exp_b=_b[mob_bilat_vis]
+
+. scalar v_exp_se=_se[mob_bilat_vis]
+
+. 
+. quietly ppmlhdfe v_ttl_reconciled_lb_k mob_bilat_vis if recon_vis, ///
+>     absorb(`FE') vce(cluster `CLUSTER')
+
+. eststo V_REC
+
+. gen byte __v_rec_final=e(sample)
+
+. scalar v_rec_b=_b[mob_bilat_vis]
+
+. scalar v_rec_se=_se[mob_bilat_vis]
+
+. 
+. quietly count if ///
+>     __v_imp_final!=__v_exp_final | ///
+>     __v_imp_final!=__v_rec_final
+
+. if r(N)!=0 {
+.     di as error "Visitor final realized samples are not identical."
+.     exit 459
+. }
+
+. 
+. quietly count if __v_imp_final
+
+. assert r(N)==scalar(v_n)
+
+. drop __v_imp_final __v_exp_final __v_rec_final
+
+. 
+. * Stacked visitor model for formal three-outcome covariance-aware tests.
+. preserve
+
+.     keep if recon_vis
+(805,496 observations deleted)
+
+.     keep year iso3_o iso3_d pair_id exporter_year importer_year ///
+>          v_ttl_k v_ttl_exporter_lb_k v_ttl_reconciled_lb_k mob_bilat_vis
+
+. 
+.     expand 3
+(35,900 observations created)
+
+.     bysort year iso3_o iso3_d: gen byte side=_n
+
+.     label define side3 1 "Importer" 2 "Exporter" 3 "Reconciled"
+
+.     label values side side3
+
+. 
+.     gen double stacked_trade = .
+(53,850 missing values generated)
+
+.     replace stacked_trade=v_ttl_k if side==1
+(17,950 real changes made)
+
+.     replace stacked_trade=v_ttl_exporter_lb_k if side==2
+(17,950 real changes made)
+
+.     replace stacked_trade=v_ttl_reconciled_lb_k if side==3
+(17,950 real changes made)
+
+. 
+.     gen double x_imp=cond(side==1,mob_bilat_vis,0)
+
+.     gen double x_exp=cond(side==2,mob_bilat_vis,0)
+
+.     gen double x_rec=cond(side==3,mob_bilat_vis,0)
+
+. 
+.     egen long exporter_year_s=group(exporter_year side)
+
+.     egen long importer_year_s=group(importer_year side)
+
+.     egen long pair_s=group(pair_id side)
+
+. 
+.     quietly ppmlhdfe stacked_trade x_imp x_exp x_rec, ///
+>         absorb(exporter_year_s importer_year_s pair_s) ///
+>         vce(cluster pair_id)
+
+. 
+.     scalar v_stack_imp=_b[x_imp]
+
+.     scalar v_stack_exp=_b[x_exp]
+
+.     scalar v_stack_rec=_b[x_rec]
+
+. 
+.     if abs(scalar(v_stack_imp)-scalar(v_imp_b))>1e-6 | ///
+>        abs(scalar(v_stack_exp)-scalar(v_exp_b))>1e-6 | ///
+>        abs(scalar(v_stack_rec)-scalar(v_rec_b))>1e-6 {
+.         di as error "Visitor stacked model failed coefficient reproduction check."
+.         exit 459
+.     }
+
+. 
+.     test x_imp=x_rec
+
+ ( 1)  x_imp - x_rec = 0
+
+           chi2(  1) =    4.81
+         Prob > chi2 =    0.0283
+
+.     scalar v_p_imp_rec=r(p)
+
+. 
+.     test x_exp=x_rec
+
+ ( 1)  x_exp - x_rec = 0
+
+           chi2(  1) =    6.13
+         Prob > chi2 =    0.0133
+
+.     scalar v_p_exp_rec=r(p)
+
+. 
+.     test x_imp=x_exp
+
+ ( 1)  x_imp - x_exp = 0
+
+           chi2(  1) =    5.87
+         Prob > chi2 =    0.0154
+
+.     scalar v_p_imp_exp=r(p)
+
+. 
+.     test x_imp=x_exp=x_rec
+
+ ( 1)  x_imp - x_exp = 0
+ ( 2)  x_imp - x_rec = 0
+
+           chi2(  2) =    6.15
+         Prob > chi2 =    0.0463
+
+.     scalar v_p_all_equal=r(p)
+
+. 
+.     lincom x_imp-x_rec
+
+ ( 1)  x_imp - x_rec = 0
+
+------------------------------------------------------------------------------
+stacked_tr~e | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+         (1) |   .0855943   .0390344     2.19   0.028     .0090882    .1621004
+------------------------------------------------------------------------------
+
+.     scalar v_diff_imp_rec=r(estimate)
+
+.     scalar v_diff_imp_rec_se=r(se)
+
+. 
+.     lincom x_exp-x_rec
+
+ ( 1)  x_exp - x_rec = 0
+
+------------------------------------------------------------------------------
+stacked_tr~e | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+         (1) |   -.099192   .0400639    -2.48   0.013    -.1777159   -.0206681
+------------------------------------------------------------------------------
+
+.     scalar v_diff_exp_rec=r(estimate)
+
+.     scalar v_diff_exp_rec_se=r(se)
+
+. restore
+
+. 
+. * ======================================================================
+. * B. TOURISTS: exact 3-outcome realized support
+. * ======================================================================
+. gen byte recon_tour = ///
+>     has_both_tour==1 & ///
+>     !missing(v_ttl_k, v_ttl_exporter_lb_k, ///
+>              v_ttl_reconciled_lb_k, mob_bilat_tour)
+
+. 
+. quietly count if recon_tour
+
+. scalar tour_candidate_n = r(N)
+
+. 
+. local tour_converged=0
+
+. local tour_iterations=0
+
+. 
+. forvalues iter=1/10 {
+  2.     local tour_iterations=`iter'
+  3.     capture drop __t_imp __t_exp __t_rec
+  4. 
+.     quietly ppmlhdfe v_ttl_k mob_bilat_tour if recon_tour, ///
+>         absorb(`FE') vce(cluster `CLUSTER')
+  5.     gen byte __t_imp=e(sample)
+  6. 
+.     quietly ppmlhdfe v_ttl_exporter_lb_k mob_bilat_tour if recon_tour, ///
+>         absorb(`FE') vce(cluster `CLUSTER')
+  7.     gen byte __t_exp=e(sample)
+  8. 
+.     quietly ppmlhdfe v_ttl_reconciled_lb_k mob_bilat_tour if recon_tour, ///
+>         absorb(`FE') vce(cluster `CLUSTER')
+  9.     gen byte __t_rec=e(sample)
+ 10. 
+.     quietly count if recon_tour & (!__t_imp | !__t_exp | !__t_rec)
+ 11.     local removed=r(N)
+ 12. 
+.     if `removed'==0 {
+ 13.         local tour_converged=1
+ 14.         continue, break
+ 15.     }
+ 16. 
+.     replace recon_tour = recon_tour & __t_imp & __t_exp & __t_rec
+ 17. }
+(8,584 real changes made)
+(18 real changes made)
+
+. 
+. if `tour_converged'==0 {
+.     di as error "Tourist exact three-outcome sample failed to converge."
+.     exit 430
+. }
+
+. drop __t_imp __t_exp __t_rec
+
+. 
+. quietly ppmlhdfe v_ttl_k mob_bilat_tour if recon_tour, ///
+>     absorb(`FE') vce(cluster `CLUSTER')
+
+. eststo T_IMP
+
+. gen byte __t_imp_final=e(sample)
+
+. scalar t_imp_b=_b[mob_bilat_tour]
+
+. scalar t_imp_se=_se[mob_bilat_tour]
+
+. scalar t_n=e(N)
+
+. 
+. quietly ppmlhdfe v_ttl_exporter_lb_k mob_bilat_tour if recon_tour, ///
+>     absorb(`FE') vce(cluster `CLUSTER')
+
+. eststo T_EXP
+
+. gen byte __t_exp_final=e(sample)
+
+. scalar t_exp_b=_b[mob_bilat_tour]
+
+. scalar t_exp_se=_se[mob_bilat_tour]
+
+. 
+. quietly ppmlhdfe v_ttl_reconciled_lb_k mob_bilat_tour if recon_tour, ///
+>     absorb(`FE') vce(cluster `CLUSTER')
+
+. eststo T_REC
+
+. gen byte __t_rec_final=e(sample)
+
+. scalar t_rec_b=_b[mob_bilat_tour]
+
+. scalar t_rec_se=_se[mob_bilat_tour]
+
+. 
+. quietly count if ///
+>     __t_imp_final!=__t_exp_final | ///
+>     __t_imp_final!=__t_rec_final
+
+. if r(N)!=0 {
+.     di as error "Tourist final realized samples are not identical."
+.     exit 459
+. }
+
+. 
+. quietly count if __t_imp_final
+
+. assert r(N)==scalar(t_n)
+
+. drop __t_imp_final __t_exp_final __t_rec_final
+
+. 
+. * Stacked tourist model for formal three-outcome covariance-aware tests.
+. preserve
+
+.     keep if recon_tour
+(801,454 observations deleted)
+
+.     keep year iso3_o iso3_d pair_id exporter_year importer_year ///
+>          v_ttl_k v_ttl_exporter_lb_k v_ttl_reconciled_lb_k mob_bilat_tour
+
+. 
+.     expand 3
+(43,984 observations created)
+
+.     bysort year iso3_o iso3_d: gen byte side=_n
+
+.     label define side3t 1 "Importer" 2 "Exporter" 3 "Reconciled"
+
+.     label values side side3t
+
+. 
+.     gen double stacked_trade = .
+(65,976 missing values generated)
+
+.     replace stacked_trade=v_ttl_k if side==1
+(21,992 real changes made)
+
+.     replace stacked_trade=v_ttl_exporter_lb_k if side==2
+(21,992 real changes made)
+
+.     replace stacked_trade=v_ttl_reconciled_lb_k if side==3
+(21,992 real changes made)
+
+. 
+.     gen double x_imp=cond(side==1,mob_bilat_tour,0)
+
+.     gen double x_exp=cond(side==2,mob_bilat_tour,0)
+
+.     gen double x_rec=cond(side==3,mob_bilat_tour,0)
+
+. 
+.     egen long exporter_year_s=group(exporter_year side)
+
+.     egen long importer_year_s=group(importer_year side)
+
+.     egen long pair_s=group(pair_id side)
+
+. 
+.     quietly ppmlhdfe stacked_trade x_imp x_exp x_rec, ///
+>         absorb(exporter_year_s importer_year_s pair_s) ///
+>         vce(cluster pair_id)
+
+. 
+.     scalar t_stack_imp=_b[x_imp]
+
+.     scalar t_stack_exp=_b[x_exp]
+
+.     scalar t_stack_rec=_b[x_rec]
+
+. 
+.     if abs(scalar(t_stack_imp)-scalar(t_imp_b))>1e-6 | ///
+>        abs(scalar(t_stack_exp)-scalar(t_exp_b))>1e-6 | ///
+>        abs(scalar(t_stack_rec)-scalar(t_rec_b))>1e-6 {
+.         di as error "Tourist stacked model failed coefficient reproduction check."
+.         exit 459
+.     }
+
+. 
+.     test x_imp=x_rec
+
+ ( 1)  x_imp - x_rec = 0
+
+           chi2(  1) =    0.02
+         Prob > chi2 =    0.8823
+
+.     scalar t_p_imp_rec=r(p)
+
+. 
+.     test x_exp=x_rec
+
+ ( 1)  x_exp - x_rec = 0
+
+           chi2(  1) =    1.64
+         Prob > chi2 =    0.2009
+
+.     scalar t_p_exp_rec=r(p)
+
+. 
+.     test x_imp=x_exp
+
+ ( 1)  x_imp - x_exp = 0
+
+           chi2(  1) =    0.41
+         Prob > chi2 =    0.5226
+
+.     scalar t_p_imp_exp=r(p)
+
+. 
+.     test x_imp=x_exp=x_rec
+
+ ( 1)  x_imp - x_exp = 0
+ ( 2)  x_imp - x_rec = 0
+
+           chi2(  2) =    2.12
+         Prob > chi2 =    0.3464
+
+.     scalar t_p_all_equal=r(p)
+
+. 
+.     lincom x_imp-x_rec
+
+ ( 1)  x_imp - x_rec = 0
+
+------------------------------------------------------------------------------
+stacked_tr~e | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+         (1) |  -.0068729   .0464018    -0.15   0.882    -.0978187     .084073
+------------------------------------------------------------------------------
+
+.     scalar t_diff_imp_rec=r(estimate)
+
+.     scalar t_diff_imp_rec_se=r(se)
+
+. 
+.     lincom x_exp-x_rec
+
+ ( 1)  x_exp - x_rec = 0
+
+------------------------------------------------------------------------------
+stacked_tr~e | Coefficient  Std. err.      z    P>|z|     [95% conf. interval]
+-------------+----------------------------------------------------------------
+         (1) |  -.0541107   .0423039    -1.28   0.201    -.1370249    .0288034
+------------------------------------------------------------------------------
+
+.     scalar t_diff_exp_rec=r(estimate)
+
+.     scalar t_diff_exp_rec_se=r(se)
+
+. restore
+
+. 
+. * ======================================================================
+. * C. Publication-facing table
+. * ======================================================================
+. foreach format in csv rtf {
+  2.     local extra ""
+  3.     if "`format'"=="csv" local extra "csv"
+  4. 
+.     esttab V_IMP V_EXP V_REC T_IMP T_EXP T_REC ///
+>         using "${TABLES}/table_reconciled_trade_sensitivity.`format'", ///
+>         replace `extra' ///
+>         mtitles( ///
+>             "Vis: importer" "Vis: exporter" "Vis: reconciled" ///
+>             "Tour: importer" "Tour: exporter" "Tour: reconciled" ///
+>         ) ///
+>         b(%9.3f) se(%9.3f) star(* 0.10 ** 0.05 *** 0.01) ///
+>         keep(mob_bilat_vis mob_bilat_tour) ///
+>         order(mob_bilat_vis mob_bilat_tour) ///
+>         coeflabels(mob_bilat_vis "Bilateral visitors" ///
+>                    mob_bilat_tour "Bilateral tourists") ///
+>         stats(N,labels("Exact three-outcome N") fmt(%12.0fc)) ///
+>         label compress nogaps ///
+>         addnotes( ///
+>             "Reconciled trade is the simple arithmetic mean of importer- and exporter-reported LB cultural trade.", ///
+>             "All three columns within each mobility measure use exactly the same realized PPML observations.", ///
+>             "All models absorb exporter-year, importer-year, and directed-pair fixed effects; SEs are clustered by pair.", ///
+>             "The reporting-side average is a measurement sensitivity and is not interpreted as true bilateral trade." ///
+>         )
+  5. }
+(file <PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/02_sensitivity/04_mirror_trade/reconciled/tables/table_reconciled_trade_sensitivity.csv not found)
+(output written to <PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/02_sensitivity/04_mirror_trade/reconciled/tables/table_reconciled_trade_sensitivity.csv)
+(file <PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/02_sensitivity/04_mirror_trade/reconciled/tables/table_reconciled_trade_sensitivity.rtf not found)
+(output written to <PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/02_sensitivity/04_mirror_trade/reconciled/tables/table_reconciled_trade_sensitivity.rtf)
+
+. 
+. * ======================================================================
+. * D. Machine-readable ledgers
+. * ======================================================================
+. preserve
+
+.     clear
+
+.     input str10 mobility str12 outcome double b se N
+
+       mobility       outcome           b         se          N
+  1.     "visitors" "importer" . . .
+  2.     "visitors" "exporter" . . .
+  3.     "visitors" "reconciled" . . .
+  4.     "tourists" "importer" . . .
+  5.     "tourists" "exporter" . . .
+  6.     "tourists" "reconciled" . . .
+  7.     end
+
+. 
+.     replace b=scalar(v_imp_b) in 1
+(1 real change made)
+
+.     replace se=scalar(v_imp_se) in 1
+(1 real change made)
+
+.     replace N=scalar(v_n) in 1
+(1 real change made)
+
+. 
+.     replace b=scalar(v_exp_b) in 2
+(1 real change made)
+
+.     replace se=scalar(v_exp_se) in 2
+(1 real change made)
+
+.     replace N=scalar(v_n) in 2
+(1 real change made)
+
+. 
+.     replace b=scalar(v_rec_b) in 3
+(1 real change made)
+
+.     replace se=scalar(v_rec_se) in 3
+(1 real change made)
+
+.     replace N=scalar(v_n) in 3
+(1 real change made)
+
+. 
+.     replace b=scalar(t_imp_b) in 4
+(1 real change made)
+
+.     replace se=scalar(t_imp_se) in 4
+(1 real change made)
+
+.     replace N=scalar(t_n) in 4
+(1 real change made)
+
+. 
+.     replace b=scalar(t_exp_b) in 5
+(1 real change made)
+
+.     replace se=scalar(t_exp_se) in 5
+(1 real change made)
+
+.     replace N=scalar(t_n) in 5
+(1 real change made)
+
+. 
+.     replace b=scalar(t_rec_b) in 6
+(1 real change made)
+
+.     replace se=scalar(t_rec_se) in 6
+(1 real change made)
+
+.     replace N=scalar(t_n) in 6
+(1 real change made)
+
+. 
+.     export delimited using ///
+>         "${DIAG}/reconciled_trade_key_results.csv", replace
+(file <PACKAGE_ROOT>/05_output/03_Mobility/01_diagnostics/sensitivity/04_mirror_trade/reconciled/reconciled_trade_key_results.csv not found)
+file <PACKAGE_ROOT>/05_output/03_Mobility/01_diagnostics/sensitivity/04_mirror_trade/reconciled/reconciled_trade_key_results.csv saved
+
+. restore
+
+. 
+. preserve
+
+.     clear
+
+.     set obs 2
+Number of observations (_N) was 0, now 2.
+
+. 
+.     gen str10 mobility=""
+(2 missing values generated)
+
+.     replace mobility="visitors" in 1
+(1 real change made)
+
+.     replace mobility="tourists" in 2
+(1 real change made)
+
+. 
+.     gen double candidate_N=.
+(2 missing values generated)
+
+.     gen double exact_three_outcome_N=.
+(2 missing values generated)
+
+.     gen double importer_b=.
+(2 missing values generated)
+
+.     gen double exporter_b=.
+(2 missing values generated)
+
+.     gen double reconciled_b=.
+(2 missing values generated)
+
+.     gen double p_importer_eq_reconciled=.
+(2 missing values generated)
+
+.     gen double p_exporter_eq_reconciled=.
+(2 missing values generated)
+
+.     gen double p_importer_eq_exporter=.
+(2 missing values generated)
+
+.     gen double p_all_three_equal=.
+(2 missing values generated)
+
+.     gen double importer_minus_reconciled=.
+(2 missing values generated)
+
+.     gen double importer_minus_reconciled_se=.
+(2 missing values generated)
+
+.     gen double exporter_minus_reconciled=.
+(2 missing values generated)
+
+.     gen double exporter_minus_reconciled_se=.
+(2 missing values generated)
+
+. 
+.     replace candidate_N=scalar(vis_candidate_n) in 1
+(1 real change made)
+
+.     replace exact_three_outcome_N=scalar(v_n) in 1
+(1 real change made)
+
+.     replace importer_b=scalar(v_imp_b) in 1
+(1 real change made)
+
+.     replace exporter_b=scalar(v_exp_b) in 1
+(1 real change made)
+
+.     replace reconciled_b=scalar(v_rec_b) in 1
+(1 real change made)
+
+.     replace p_importer_eq_reconciled=scalar(v_p_imp_rec) in 1
+(1 real change made)
+
+.     replace p_exporter_eq_reconciled=scalar(v_p_exp_rec) in 1
+(1 real change made)
+
+.     replace p_importer_eq_exporter=scalar(v_p_imp_exp) in 1
+(1 real change made)
+
+.     replace p_all_three_equal=scalar(v_p_all_equal) in 1
+(1 real change made)
+
+.     replace importer_minus_reconciled=scalar(v_diff_imp_rec) in 1
+(1 real change made)
+
+.     replace importer_minus_reconciled_se=scalar(v_diff_imp_rec_se) in 1
+(1 real change made)
+
+.     replace exporter_minus_reconciled=scalar(v_diff_exp_rec) in 1
+(1 real change made)
+
+.     replace exporter_minus_reconciled_se=scalar(v_diff_exp_rec_se) in 1
+(1 real change made)
+
+. 
+.     replace candidate_N=scalar(tour_candidate_n) in 2
+(1 real change made)
+
+.     replace exact_three_outcome_N=scalar(t_n) in 2
+(1 real change made)
+
+.     replace importer_b=scalar(t_imp_b) in 2
+(1 real change made)
+
+.     replace exporter_b=scalar(t_exp_b) in 2
+(1 real change made)
+
+.     replace reconciled_b=scalar(t_rec_b) in 2
+(1 real change made)
+
+.     replace p_importer_eq_reconciled=scalar(t_p_imp_rec) in 2
+(1 real change made)
+
+.     replace p_exporter_eq_reconciled=scalar(t_p_exp_rec) in 2
+(1 real change made)
+
+.     replace p_importer_eq_exporter=scalar(t_p_imp_exp) in 2
+(1 real change made)
+
+.     replace p_all_three_equal=scalar(t_p_all_equal) in 2
+(1 real change made)
+
+.     replace importer_minus_reconciled=scalar(t_diff_imp_rec) in 2
+(1 real change made)
+
+.     replace importer_minus_reconciled_se=scalar(t_diff_imp_rec_se) in 2
+(1 real change made)
+
+.     replace exporter_minus_reconciled=scalar(t_diff_exp_rec) in 2
+(1 real change made)
+
+.     replace exporter_minus_reconciled_se=scalar(t_diff_exp_rec_se) in 2
+(1 real change made)
+
+. 
+.     export delimited using ///
+>         "${DIAG}/reconciled_trade_formal_tests.csv", replace
+(file <PACKAGE_ROOT>/05_output/03_Mobility/01_diagnostics/sensitivity/04_mirror_trade/reconciled/reconciled_trade_formal_tests.csv not found)
+file <PACKAGE_ROOT>/05_output/03_Mobility/01_diagnostics/sensitivity/04_mirror_trade/reconciled/reconciled_trade_formal_tests.csv saved
+
+. restore
+
+. 
+. * Compact status marker.
+. file open done using ///
+>     "${DIAG}/06_RECONCILED_TRADE_SENSITIVITY_COMPLETE.txt", ///
+>     write replace text
+(file <PACKAGE_ROOT>/05_output/03_Mobility/01_diagnostics/sensitivity/04_mirror_trade/reconciled/06_RECONCILED_TRADE_SENSITIVITY_COMPLETE.txt not found)
+
+. 
+. file write done "RECONCILED_TRADE_STEP4D=PASS" _n
+
+. 
+. local vn : display %18.0f scalar(v_n)
+
+. local vb : display %12.9f scalar(v_rec_b)
+
+. local vp1 : display %12.9f scalar(v_p_imp_rec)
+
+. local vp2 : display %12.9f scalar(v_p_exp_rec)
+
+. local vpall : display %12.9f scalar(v_p_all_equal)
+
+. 
+. local tn : display %18.0f scalar(t_n)
+
+. local tb : display %12.9f scalar(t_rec_b)
+
+. local tp1 : display %12.9f scalar(t_p_imp_rec)
+
+. local tp2 : display %12.9f scalar(t_p_exp_rec)
+
+. local tpall : display %12.9f scalar(t_p_all_equal)
+
+. 
+. file write done "visitor_exact_three_outcome_N=`vn'" _n
+
+. file write done "visitor_reconciled_b=`vb'" _n
+
+. file write done "visitor_p_importer_eq_reconciled=`vp1'" _n
+
+. file write done "visitor_p_exporter_eq_reconciled=`vp2'" _n
+
+. file write done "visitor_p_all_three_equal=`vpall'" _n
+
+. 
+. file write done "tourist_exact_three_outcome_N=`tn'" _n
+
+. file write done "tourist_reconciled_b=`tb'" _n
+
+. file write done "tourist_p_importer_eq_reconciled=`tp1'" _n
+
+. file write done "tourist_p_exporter_eq_reconciled=`tp2'" _n
+
+. file write done "tourist_p_all_three_equal=`tpall'" _n
+
+. 
+. file close done
+
+. 
+. di as result "RECONCILED_TRADE_STEP4D=PASS"
+RECONCILED_TRADE_STEP4D=PASS
+
+. 
+. di as result ///
+>     "VISITORS: importer=" %12.9f scalar(v_imp_b) ///
+>     " exporter=" %12.9f scalar(v_exp_b) ///
+>     " reconciled=" %12.9f scalar(v_rec_b) ///
+>     " N=" %12.0f scalar(v_n)
+VISITORS: importer= 0.193613136 exporter= 0.008826834 reconciled= 0.108018811 N=       17950
+
+. 
+. di as result ///
+>     "VISITOR p(importer=reconciled)=" %12.9f scalar(v_p_imp_rec) ///
+>     " p(exporter=reconciled)=" %12.9f scalar(v_p_exp_rec) ///
+>     " p(all three equal)=" %12.9f scalar(v_p_all_equal)
+VISITOR p(importer=reconciled)= 0.028322539 p(exporter=reconciled)= 0.013292262 p(all three equal)= 0.046260144
+
+. 
+. di as result ///
+>     "TOURISTS: importer=" %12.9f scalar(t_imp_b) ///
+>     " exporter=" %12.9f scalar(t_exp_b) ///
+>     " reconciled=" %12.9f scalar(t_rec_b) ///
+>     " N=" %12.0f scalar(t_n)
+TOURISTS: importer= 0.240466175 exporter= 0.193228322 reconciled= 0.247339035 N=       21992
+
+. 
+. di as result ///
+>     "TOURIST p(importer=reconciled)=" %12.9f scalar(t_p_imp_rec) ///
+>     " p(exporter=reconciled)=" %12.9f scalar(t_p_exp_rec) ///
+>     " p(all three equal)=" %12.9f scalar(t_p_all_equal)
+TOURIST p(importer=reconciled)= 0.882251066 p(exporter=reconciled)= 0.200863696 p(all three equal)= 0.346423169
+
+. 
+. log close
+      name:  <unnamed>
+       log:  <PACKAGE_ROOT>/05_output/03_Mobility/03_logs/sensitivity/04_mirror_trade/reconciled/06_run_reconciled_trade_sensitivity.log
+  log type:  text
+ closed on:   4 Nov 2026, 08:32:50
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+. 
+end of do-file

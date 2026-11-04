@@ -1,0 +1,116 @@
+-------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  <PACKAGE_ROOT>/05_output/10_anal
+> ysis/corrected2x/logs/C2_04_compN_corrected2x.log
+  log type:  text
+ opened on:   4 Nov 2026, 08:41:59
+
+. use "${OUT}/A2_work.dta", clear
+(PREP analysis base, vintage corrected2x, built  4 Nov 2026 08:33:39 by 01_prep
+> .d)
+
+. nflow start using "${OUT}/A2_nflow.csv", append
+nflow: log <PACKAGE_ROOT>/05_output/10_analys
+> is/corrected2x/A2_nflow.csv, start N =       56,500
+
+. local FE "exporter_year importer_year pair_id"
+
+. tempname T
+
+. postfile `T' str5 mobility str60 step double(rows N N_full singletons separat
+> ed) str160 note using "${OUT}/tables/A2_A2.1e_composition_N.dta", replace
+(file <USER_HOME>/S1 test run
+    r3/Replication_Package/05_output/10_analysis/corrected2x/tables/A2_A2.1e_
+    > composition_N.dta not found)
+
+. foreach m in vis tour {
+  2.     local smp "s_base_`m'"
+  3.     quietly count if `smp'
+  4.     post `T' ("`m'") ("baseline estimation sample s_base") (r(N)) (.) (.) 
+> (.) (.) ("bilateral model N (Table 3 bilateral column)")
+  5.     gen double sh_`m' = rev_`m'_raw / (rev_`m'_raw + same_`m'_raw) if `smp
+> ' & (rev_`m'_raw + same_`m'_raw) > 0
+  6.     quietly count if `smp' & missing(sh_`m')
+  7.     post `T' ("`m'") ("pair-years with zero trips in both directions (shar
+> e undefined)") (r(N)) (.) (.) (.) (.) ("A2_1.do:74")
+  8.     gen byte cand_`m' = `smp' & !missing(sh_`m')
+  9.     local it 0
+ 10.     local done 0
+ 11.     while !`done' {
+ 12.         local ++it
+ 13.         quietly count if cand_`m'
+ 14.         local n0 = r(N)
+ 15.         quietly ppmlhdfe v_ttl_k mob_bilat_`m' sh_`m' if cand_`m', absorb(
+> `FE') vce(cluster pair_id)
+ 16.         a2_chk "C2_04 composition `m' iteration `it'"
+ 17.         post `T' ("`m'") ("iteration `it': composition model (mob_bilat + 
+> share)") (`n0') (e(N)) (e(N_full)) (e(num_singletons)) (e(num_separated)) ("f
+> it on the current candidate rows")
+ 18.         quietly replace cand_`m' = cand_`m' & e(sample)
+ 19.         quietly count if cand_`m'
+ 20.         local n1 = r(N)
+ 21.         quietly ppmlhdfe v_ttl_k mob_bilat_`m' if cand_`m', absorb(`FE') v
+> ce(cluster pair_id)
+ 22.         a2_chk "C2_04 bilateral on composition rows `m' iteration `it'"
+ 23.         post `T' ("`m'") ("iteration `it': bilateral model on the same row
+> s") (`n1') (e(N)) (e(N_full)) (e(num_singletons)) (e(num_separated)) ("")
+ 24.         quietly replace cand_`m' = cand_`m' & e(sample)
+ 25.         quietly count if cand_`m'
+ 26.         if r(N) == `n0' local done 1
+ 27.     }
+ 28.     quietly count if cand_`m'
+ 29.     local nf = r(N)
+ 30.     post `T' ("`m'") ("identical observations (fixed point)") (`nf') (.) (
+> .) (.) (.) ("= N of A2.1e composition_sh")
+ 31.     local exp = cond("`m'" == "vis", 20596, 26335)
+ 32.     assert `nf' == `exp'
+ 33.     display as result "C2_04 `m': final N `nf' (expected `exp') after `it'
+>  iteration(s)"
+ 34. }
+(35,903 missing values generated)
+nflow: estimation N =       20,596 (data N       56,500) C2_04 composition vis 
+> iteration 1 | 
+nflow: estimation N =       20,596 (data N       56,500) C2_04 bilateral on com
+> position rows vis iteration 1 | 
+nflow: estimation N =       20,596 (data N       56,500) C2_04 composition vis 
+> iteration 2 | 
+nflow: estimation N =       20,596 (data N       56,500) C2_04 bilateral on com
+> position rows vis iteration 2 | 
+C2_04 vis: final N 20596 (expected 20596) after 2 iteration(s)
+(30,163 missing values generated)
+nflow: estimation N =       26,335 (data N       56,500) C2_04 composition tour
+>  iteration 1 | 
+nflow: estimation N =       26,335 (data N       56,500) C2_04 bilateral on com
+> position rows tour iteration 1 | 
+nflow: estimation N =       26,335 (data N       56,500) C2_04 composition tour
+>  iteration 2 | 
+nflow: estimation N =       26,335 (data N       56,500) C2_04 bilateral on com
+> position rows tour iteration 2 | 
+C2_04 tour: final N 26335 (expected 26335) after 2 iteration(s)
+
+. postclose `T'
+
+. use "${OUT}/tables/A2_A2.1e_composition_N.dta", clear
+
+. gen str11 vintage = "${VINTAGE}"
+
+. order vintage
+
+. export delimited using "${OUT}/tables/A2_A2.1e_composition_N.csv", replace
+(file <USER_HOME>/S1 test run
+    r3/Replication_Package/05_output/10_analysis/corrected2x/tables/A2_A2.1e_
+    > composition_N.csv not found)
+file <PACKAGE_ROOT>/05_output/10_analysis/cor
+> rected2x/tables/A2_A2.1e_composition_N.csv saved
+
+. list, noobs clean
+[output of list removed in the release copy: it can contain UN Tourism values]
+. erase "${OUT}/tables/A2_A2.1e_composition_N.dta"
+
+. log close
+      name:  <unnamed>
+       log:  <PACKAGE_ROOT>/05_output/10_anal
+> ysis/corrected2x/logs/C2_04_compN_corrected2x.log
+  log type:  text
+ closed on:   4 Nov 2026, 08:42:02
+-------------------------------------------------------------------------------

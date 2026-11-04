@@ -1,0 +1,233 @@
+item,published,reproduced,diff,result,kind,decimals,tolerance,repro_source,display_match,source
+BKR.tourist_b,.240886677,.1804292254645059,-.0604574515354941,FAIL,b,9,.00002,full,,<PACKAGE_ROOT>/05_output/03_Mobility/01_diagnostics/core/LB/baseline-key-results.csv:5
+BKR.tourist_n,26682,26339,-343,FAIL,N,0,0,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/01_diagnostics/core/LB/baseline-key-results.csv:7
+BKR.tourist_se,.064089311,.0577185309910256,-.0063707800089744,FAIL,b,9,.00002,full,,<PACKAGE_ROOT>/05_output/03_Mobility/01_diagnostics/core/LB/baseline-key-results.csv:6
+BKR.visitor_b,.19132825,.1731302315274445,-.0181980184725555,FAIL,b,9,.00002,full,,<PACKAGE_ROOT>/05_output/03_Mobility/01_diagnostics/core/LB/baseline-key-results.csv:2
+BKR.visitor_direction_equality_p,.082646161,.0113263928497757,-.0713197681502243,FAIL,p,9,.0002,full,,<PACKAGE_ROOT>/05_output/03_Mobility/01_diagnostics/core/LB/baseline-key-results.csv:8
+BKR.visitor_n,20863,20598,-265,FAIL,N,0,0,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/01_diagnostics/core/LB/baseline-key-results.csv:4
+BKR.visitor_se,.081344919,.0835996161491642,.0022546971491642,FAIL,b,9,.00002,full,,<PACKAGE_ROOT>/05_output/03_Mobility/01_diagnostics/core/LB/baseline-key-results.csv:3
+CS.c1.Bilateral visitors.b,.191,.1731302315274445,-.0178697684725555,FAIL,b,3,.00052,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/02_sensitivity/01_common_support/tables/table_common_support_visitors_tourists.csv:3
+CS.c1.Bilateral visitors.se,.081,.0835996161491642,.0025996161491642,FAIL,se,3,.00052,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/02_sensitivity/01_common_support/tables/table_common_support_visitors_tourists.csv:4
+CS.c1.N.N,20863,20598,-265,FAIL,N,0,0,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/02_sensitivity/01_common_support/tables/table_common_support_visitors_tourists.csv:7
+CS.c2.Bilateral tourists.b,.241,.1804292254645059,-.0605707745354941,FAIL,b,3,.00052,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/02_sensitivity/01_common_support/tables/table_common_support_visitors_tourists.csv:5
+CS.c2.Bilateral tourists.se,.064,.0577185309910256,-.0062814690089744,FAIL,se,3,.00052,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/02_sensitivity/01_common_support/tables/table_common_support_visitors_tourists.csv:6
+CS.c2.N.N,26682,26339,-343,FAIL,N,0,0,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/02_sensitivity/01_common_support/tables/table_common_support_visitors_tourists.csv:7
+CS.c3.Bilateral visitors.b,.046,.0137814188362325,-.0322185811637675,FAIL,b,3,.00052,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/02_sensitivity/01_common_support/tables/table_common_support_visitors_tourists.csv:3
+CS.c3.Bilateral visitors.se,.092,.0915026101927101,-.0004973898072899,PASS,se,3,.00052,full,yes,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/02_sensitivity/01_common_support/tables/table_common_support_visitors_tourists.csv:4
+CS.c3.N.N,2553,2457,-96,FAIL,N,0,0,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/02_sensitivity/01_common_support/tables/table_common_support_visitors_tourists.csv:7
+CS.c4.Bilateral tourists.b,.03,-.0047528329712742,-.0347528329712742,FAIL,b,3,.00052,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/02_sensitivity/01_common_support/tables/table_common_support_visitors_tourists.csv:5
+CS.c4.Bilateral tourists.se,.1,.09958071601804,-.00041928398196,PASS,se,3,.00052,full,yes,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/02_sensitivity/01_common_support/tables/table_common_support_visitors_tourists.csv:6
+CS.c4.N.N,2553,2457,-96,FAIL,N,0,0,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/02_sensitivity/01_common_support/tables/table_common_support_visitors_tourists.csv:7
+CSK.tourists.exact.N,2553,2457,-96,FAIL,N,0,0,output_file,no,<PACKAGE_ROOT>/05_output/03_Mobility/01_diagnostics/sensitivity/01_common_support/common_support_key_results.csv:5
+CSK.tourists.exact.b,.0299753999229355,-.0047528329712742,-.0347282328942097,FAIL,b,16,.00002,full,,<PACKAGE_ROOT>/05_output/03_Mobility/01_diagnostics/sensitivity/01_common_support/common_support_key_results.csv:5
+CSK.tourists.exact.se,.099787705,.09958071601804,-.00020698898196,FAIL,b,9,.00002,full,,<PACKAGE_ROOT>/05_output/03_Mobility/01_diagnostics/sensitivity/01_common_support/common_support_key_results.csv:5
+CSK.tourists.own.N,26682,26339,-343,FAIL,N,0,0,output_file,no,<PACKAGE_ROOT>/05_output/03_Mobility/01_diagnostics/sensitivity/01_common_support/common_support_key_results.csv:3
+CSK.tourists.own.b,.2408866766808127,.1804292254645059,-.0604574512163068,FAIL,b,16,.00002,full,,<PACKAGE_ROOT>/05_output/03_Mobility/01_diagnostics/sensitivity/01_common_support/common_support_key_results.csv:3
+CSK.tourists.own.se,.064089313,.0577185309910256,-.0063707820089744,FAIL,b,9,.00002,full,,<PACKAGE_ROOT>/05_output/03_Mobility/01_diagnostics/sensitivity/01_common_support/common_support_key_results.csv:3
+CSK.visitors.exact.N,2553,2457,-96,FAIL,N,0,0,output_file,no,<PACKAGE_ROOT>/05_output/03_Mobility/01_diagnostics/sensitivity/01_common_support/common_support_key_results.csv:4
+CSK.visitors.exact.b,.0456976899554033,.0137814188362325,-.0319162711191708,FAIL,b,16,.00002,full,,<PACKAGE_ROOT>/05_output/03_Mobility/01_diagnostics/sensitivity/01_common_support/common_support_key_results.csv:4
+CSK.visitors.exact.se,.091552481,.0915026101927101,-.0000498708072899,FAIL,b,9,.00002,full,,<PACKAGE_ROOT>/05_output/03_Mobility/01_diagnostics/sensitivity/01_common_support/common_support_key_results.csv:4
+CSK.visitors.own.N,20863,20598,-265,FAIL,N,0,0,output_file,no,<PACKAGE_ROOT>/05_output/03_Mobility/01_diagnostics/sensitivity/01_common_support/common_support_key_results.csv:2
+CSK.visitors.own.b,.1913282498728964,.1731302315274445,-.0181980183454519,FAIL,b,16,.00002,full,,<PACKAGE_ROOT>/05_output/03_Mobility/01_diagnostics/sensitivity/01_common_support/common_support_key_results.csv:2
+CSK.visitors.own.se,.081344917,.0835996161491642,.0022546991491642,FAIL,b,9,.00002,full,,<PACKAGE_ROOT>/05_output/03_Mobility/01_diagnostics/sensitivity/01_common_support/common_support_key_results.csv:2
+CSL.exact_realized_common_rows,2553,2457,-96,FAIL,N,0,0,output_file,no,<PACKAGE_ROOT>/05_output/03_Mobility/01_diagnostics/sensitivity/01_common_support/common_support_ledger.csv:6
+CSL.prepared_rows,823446,823446,0,PASS,N,0,0,output_file,yes,<PACKAGE_ROOT>/05_output/03_Mobility/01_diagnostics/sensitivity/01_common_support/common_support_ledger.csv:2
+CSL.raw_common_candidate_rows,3327,3207,-120,FAIL,N,0,0,output_file,no,<PACKAGE_ROOT>/05_output/03_Mobility/01_diagnostics/sensitivity/01_common_support/common_support_ledger.csv:5
+CSL.strict_tourist_rows,34830,34578,-252,FAIL,N,0,0,output_file,no,<PACKAGE_ROOT>/05_output/03_Mobility/01_diagnostics/sensitivity/01_common_support/common_support_ledger.csv:4
+CSL.strict_visitor_rows,25504,25282,-222,FAIL,N,0,0,output_file,no,<PACKAGE_ROOT>/05_output/03_Mobility/01_diagnostics/sensitivity/01_common_support/common_support_ledger.csv:3
+CVS.validation_rows,823446,823446,0,PASS,N,0,0,full,yes,<PACKAGE_ROOT>/05_output/03_Mobility/01_diagnostics/core/LB/core_validation_summary.csv:2
+CVS.validation_strict_tour,34830,34578,-252,FAIL,N,0,0,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/01_diagnostics/core/LB/core_validation_summary.csv:4
+CVS.validation_strict_vis,25504,25282,-222,FAIL,N,0,0,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/01_diagnostics/core/LB/core_validation_summary.csv:3
+CVS.validation_tour_b,.2408866766808127,.1804292254645059,-.0604574512163068,FAIL,b,16,.00002,full,,<PACKAGE_ROOT>/05_output/03_Mobility/01_diagnostics/core/LB/core_validation_summary.csv:8
+CVS.validation_tour_n,26682,26339,-343,FAIL,N,0,0,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/01_diagnostics/core/LB/core_validation_summary.csv:10
+CVS.validation_tour_se,.0640893110505012,.0577185309910256,-.0063707800594756,FAIL,b,16,.00002,full,,<PACKAGE_ROOT>/05_output/03_Mobility/01_diagnostics/core/LB/core_validation_summary.csv:9
+CVS.validation_vis_b,.1913282498728964,.1731302315274445,-.0181980183454519,FAIL,b,16,.00002,full,,<PACKAGE_ROOT>/05_output/03_Mobility/01_diagnostics/core/LB/core_validation_summary.csv:5
+CVS.validation_vis_n,20863,20598,-265,FAIL,N,0,0,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/01_diagnostics/core/LB/core_validation_summary.csv:7
+CVS.validation_vis_se,.0813449193162749,.0835996161491642,.0022546968328893,FAIL,b,16,.00002,full,,<PACKAGE_ROOT>/05_output/03_Mobility/01_diagnostics/core/LB/core_validation_summary.csv:6
+FE.c1.Bilateral tourists.b,.03,-.0047528329712783,-.0347528329712783,FAIL,b,3,.00052,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/02_sensitivity/02_formal_equality/tables/table_formal_equality_visitors_tourists.csv:5
+FE.c1.Bilateral tourists.se,.1,.0995807150568185,-.0004192849431815,PASS,se,3,.00052,full,yes,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/02_sensitivity/02_formal_equality/tables/table_formal_equality_visitors_tourists.csv:6
+FE.c1.Bilateral visitors.b,.046,.0137814188362404,-.0322185811637596,FAIL,b,3,.00052,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/02_sensitivity/02_formal_equality/tables/table_formal_equality_visitors_tourists.csv:3
+FE.c1.Bilateral visitors.se,.092,.0915026095226708,-.0004973904773292,PASS,se,3,.00052,full,yes,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/02_sensitivity/02_formal_equality/tables/table_formal_equality_visitors_tourists.csv:4
+FE.c1.Original exact-common observations.N,2553,2457,-96,FAIL,N,0,0,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/02_sensitivity/02_formal_equality/tables/table_formal_equality_visitors_tourists.csv:9
+FE.c1.P-value: visitors = tourists.p,.3665,.2917500145031169,-.0747499854968831,FAIL,p,4,.00025,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/02_sensitivity/02_formal_equality/tables/table_formal_equality_visitors_tourists.csv:7
+FE.c1.Stacked estimation rows.N,5106,4914,-192,FAIL,N,0,0,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/02_sensitivity/02_formal_equality/tables/table_formal_equality_visitors_tourists.csv:10
+FE.c1.Visitor - tourist slope.b,.0157,.0185342518075187,.0028342518075187,FAIL,b,4,.00007,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/02_sensitivity/02_formal_equality/tables/table_formal_equality_visitors_tourists.csv:8
+FER.common_N,2553,2457,-96,FAIL,N,0,0,output_file,no,<PACKAGE_ROOT>/05_output/03_Mobility/01_diagnostics/sensitivity/02_formal_equality/formal_equality_results.csv:2
+FER.difference,.0157222900323955,.0185342518075187,.0028119617751232,FAIL,b,16,.00002,output_file,,<PACKAGE_ROOT>/05_output/03_Mobility/01_diagnostics/sensitivity/02_formal_equality/formal_equality_results.csv:2
+FER.difference_p,.3664545055351289,.2917500145031167,-.0747044910320122,FAIL,p,16,.0002,output_file,,<PACKAGE_ROOT>/05_output/03_Mobility/01_diagnostics/sensitivity/02_formal_equality/formal_equality_results.csv:2
+FER.difference_se,.0174085805606408,.0175798366687311,.0001712561080903,FAIL,b,16,.00002,output_file,,<PACKAGE_ROOT>/05_output/03_Mobility/01_diagnostics/sensitivity/02_formal_equality/formal_equality_results.csv:2
+FER.equality_chi2,.815651959543046,1.111528100494776,.2958761409517299,FAIL,b,15,.00002,output_file,,<PACKAGE_ROOT>/05_output/03_Mobility/01_diagnostics/sensitivity/02_formal_equality/formal_equality_results.csv:2
+FER.equality_p,.3664545055351291,.2917500145031169,-.0747044910320122,FAIL,p,16,.0002,output_file,,<PACKAGE_ROOT>/05_output/03_Mobility/01_diagnostics/sensitivity/02_formal_equality/formal_equality_results.csv:2
+FER.stacked_N,5106,4914,-192,FAIL,N,0,0,output_file,no,<PACKAGE_ROOT>/05_output/03_Mobility/01_diagnostics/sensitivity/02_formal_equality/formal_equality_results.csv:2
+FER.tourist_b,.0299753999228972,-.0047528329712783,-.0347282328941755,FAIL,b,16,.00002,output_file,,<PACKAGE_ROOT>/05_output/03_Mobility/01_diagnostics/sensitivity/02_formal_equality/formal_equality_results.csv:2
+FER.tourist_se,.0997877031039717,.0995807150568185,-.0002069880471532,FAIL,b,16,.00002,output_file,,<PACKAGE_ROOT>/05_output/03_Mobility/01_diagnostics/sensitivity/02_formal_equality/formal_equality_results.csv:2
+FER.visitor_b,.0456976899552927,.0137814188362404,-.0319162711190523,FAIL,b,16,.00002,output_file,,<PACKAGE_ROOT>/05_output/03_Mobility/01_diagnostics/sensitivity/02_formal_equality/formal_equality_results.csv:2
+FER.visitor_se,.0915524785730129,.0915026095226708,-.0000498690503421,FAIL,b,16,.00002,output_file,,<PACKAGE_ROOT>/05_output/03_Mobility/01_diagnostics/sensitivity/02_formal_equality/formal_equality_results.csv:2
+FLAG.s_base_tour,26682,26339,-343,FAIL,N,0,0,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table2_baseline_regression.csv:15
+FLAG.s_base_vis,20863,20598,-265,FAIL,N,0,0,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table2_baseline_regression.csv:15
+FLAG.s_cd_tour,11091,10932,-159,FAIL,N,0,0,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table5_moderators.csv:15
+FLAG.s_cd_vis,12108,11971,-137,FAIL,N,0,0,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table5_moderators.csv:15
+FLAG.s_cs_exact,2553,2457,-96,FAIL,N,0,0,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/01_diagnostics/sensitivity/01_common_support/common_support_ledger.csv:6
+FLAG.s_dyn_tour,19122,19061,-61,FAIL,N,0,0,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table3_dynamic_future_checks.csv:16
+FLAG.s_dyn_vis,13925,13872,-53,FAIL,N,0,0,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table3_dynamic_future_checks.csv:16
+FLAG.s_lang_tour,26502,26159,-343,FAIL,N,0,0,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table5_moderators.csv:15
+FLAG.s_lang_vis,20863,20598,-265,FAIL,N,0,0,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table5_moderators.csv:15
+FLAGID.s_cs_exact_vs_original_common_support_file,0,0,0,PASS,N,0,0,full,yes,expected zero mismatches (identity check)
+LOG.CATEGORY_EQUALITY.mob_bilat_tour,.017882699,.0752656597324059,.0573829607324059,FAIL,p,9,.0002,full,,<PACKAGE_ROOT>/05_output/03_Mobility/03_logs/core/LB/00_core_run.log:922
+LOG.CATEGORY_EQUALITY.mob_bilat_vis,.233339818,.1976824104679891,-.0356574075320109,FAIL,p,9,.0002,full,,<PACKAGE_ROOT>/05_output/03_Mobility/03_logs/core/LB/00_core_run.log:921
+LOG.FUTURE_TOURIST_P,.63752474,.5009992115799449,-.1365255284200552,FAIL,p,9,.0002,full,,<PACKAGE_ROOT>/05_output/03_Mobility/03_logs/core/LB/00_core_run.log:763
+LOG.FUTURE_VISITOR_P,.951783959,.9772192718166837,.0254353128166837,FAIL,p,9,.0002,full,,<PACKAGE_ROOT>/05_output/03_Mobility/03_logs/core/LB/00_core_run.log:760
+LOG.VISITOR_TOURIST_HIERARCHY_VIOLATIONS,333,333,0,PASS,N,0,0,full,yes,<PACKAGE_ROOT>/05_output/03_Mobility/03_logs/core/LB/00_core_run.log:425
+MIR.common_language_slope_tour,.272450807,.1931844690538369,-.0792663379461631,FAIL,b,9,.00002,full,,<PACKAGE_ROOT>/05_output/03_Mobility/01_diagnostics/core/LB/moderator-influence-results.csv:3
+MIR.common_language_slope_vis,.103265558,.0668229628126306,-.0364425951873694,FAIL,b,9,.00002,full,,<PACKAGE_ROOT>/05_output/03_Mobility/01_diagnostics/core/LB/moderator-influence-results.csv:2
+MIR.no_china_hk_b,.021820217,.0258346819432773,.0040144649432773,FAIL,b,9,.00002,full,,<PACKAGE_ROOT>/05_output/03_Mobility/01_diagnostics/core/LB/moderator-influence-results.csv:6
+MIR.no_china_hk_p,.283674881,.2203883669222898,-.0632865140777102,FAIL,p,9,.0002,full,,<PACKAGE_ROOT>/05_output/03_Mobility/01_diagnostics/core/LB/moderator-influence-results.csv:7
+MIR.no_crisis_full_b,.170794496,.1506132112076382,-.0201812847923618,FAIL,b,9,.00002,full,,<PACKAGE_ROOT>/05_output/03_Mobility/01_diagnostics/core/LB/moderator-influence-results.csv:8
+MIR.no_crisis_full_p,.06290551,.1095617885676303,.0466562785676303,FAIL,p,9,.0002,full,,<PACKAGE_ROOT>/05_output/03_Mobility/01_diagnostics/core/LB/moderator-influence-results.csv:9
+MIR.no_crisis_no_china_hk_b,.075603783,.0421432520929691,-.0334605309070308,FAIL,b,9,.00002,full,,<PACKAGE_ROOT>/05_output/03_Mobility/01_diagnostics/core/LB/moderator-influence-results.csv:10
+MIR.no_crisis_no_china_hk_p,.310875398,.5683803165551419,.2575049185551418,FAIL,p,9,.0002,full,,<PACKAGE_ROOT>/05_output/03_Mobility/01_diagnostics/core/LB/moderator-influence-results.csv:11
+MIR.original_culdist_b,.043556378,.048451607881133,.004895229881133,FAIL,b,9,.00002,full,,<PACKAGE_ROOT>/05_output/03_Mobility/01_diagnostics/core/LB/moderator-influence-results.csv:4
+MIR.original_culdist_p,.056799989,.0410727853446433,-.0157272036553567,FAIL,p,9,.0002,full,,<PACKAGE_ROOT>/05_output/03_Mobility/01_diagnostics/core/LB/moderator-influence-results.csv:5
+SHR.v_3706_k.full,.260862,.270572,.00971,FAIL,b,6,.00002,output_file,,<PACKAGE_ROOT>/05_output/03_Mobility/01_diagnostics/core/LB/category-value-shares.csv:2
+SHR.v_3706_k.tourist,.806531,.852863,.046332,FAIL,b,6,.00002,output_file,,<PACKAGE_ROOT>/05_output/03_Mobility/01_diagnostics/core/LB/category-value-shares.csv:4
+SHR.v_3706_k.visitor,.116515,.120841,.004326,FAIL,b,6,.00002,output_file,,<PACKAGE_ROOT>/05_output/03_Mobility/01_diagnostics/core/LB/category-value-shares.csv:3
+SHR.v_49_k.full,43.568866,41.468434,-2.100431999999998,FAIL,b,6,.00002,output_file,,<PACKAGE_ROOT>/05_output/03_Mobility/01_diagnostics/core/LB/category-value-shares.csv:5
+SHR.v_49_k.tourist,44.567337,41.396002,-3.171334999999999,FAIL,b,6,.00002,output_file,,<PACKAGE_ROOT>/05_output/03_Mobility/01_diagnostics/core/LB/category-value-shares.csv:7
+SHR.v_49_k.visitor,49.142561,47.269464,-1.873097000000001,FAIL,b,6,.00002,output_file,,<PACKAGE_ROOT>/05_output/03_Mobility/01_diagnostics/core/LB/category-value-shares.csv:6
+SHR.v_8523_k.full,31.313882,32.479421,1.165539000000003,FAIL,b,6,.00002,output_file,,<PACKAGE_ROOT>/05_output/03_Mobility/01_diagnostics/core/LB/category-value-shares.csv:8
+SHR.v_8523_k.tourist,21.824227,23.075831,1.251604,FAIL,b,6,.00002,output_file,,<PACKAGE_ROOT>/05_output/03_Mobility/01_diagnostics/core/LB/category-value-shares.csv:10
+SHR.v_8523_k.visitor,33.020314,34.243302,1.222988000000001,FAIL,b,6,.00002,output_file,,<PACKAGE_ROOT>/05_output/03_Mobility/01_diagnostics/core/LB/category-value-shares.csv:9
+SHR.v_97_k.full,24.856389,25.781573,.9251840000000016,FAIL,b,6,.00002,output_file,,<PACKAGE_ROOT>/05_output/03_Mobility/01_diagnostics/core/LB/category-value-shares.csv:11
+SHR.v_97_k.tourist,32.801905,34.675303,1.873398000000002,FAIL,b,6,.00002,output_file,,<PACKAGE_ROOT>/05_output/03_Mobility/01_diagnostics/core/LB/category-value-shares.csv:13
+SHR.v_97_k.visitor,17.72061,18.366393,.645782999999998,FAIL,b,6,.00002,output_file,,<PACKAGE_ROOT>/05_output/03_Mobility/01_diagnostics/core/LB/category-value-shares.csv:12
+SUP.both_tour,34830,34578,-252,FAIL,N,0,0,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/01_diagnostics/core/LB/support-ledger.csv:7
+SUP.both_vis,25504,25282,-222,FAIL,N,0,0,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/01_diagnostics/core/LB/support-ledger.csv:4
+SUP.rev_tour,136612,136144,-468,FAIL,N,0,0,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/01_diagnostics/core/LB/support-ledger.csv:5
+SUP.rev_vis,106736,106267,-469,FAIL,N,0,0,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/01_diagnostics/core/LB/support-ledger.csv:2
+SUP.same_tour,136612,136144,-468,FAIL,N,0,0,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/01_diagnostics/core/LB/support-ledger.csv:6
+SUP.same_vis,106736,106267,-469,FAIL,N,0,0,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/01_diagnostics/core/LB/support-ledger.csv:3
+SUP.trade_nonmissing,615589,615589,0,PASS,N,0,0,full,yes,<PACKAGE_ROOT>/05_output/03_Mobility/01_diagnostics/core/LB/support-ledger.csv:8
+T2.c1.Bilateral visitors.b,.191,.1731302315274445,-.0178697684725555,FAIL,b,3,.00052,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table2_baseline_regression.csv:3
+T2.c1.Bilateral visitors.se,.081,.0835996161491642,.0025996161491642,FAIL,se,3,.00052,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table2_baseline_regression.csv:4
+T2.c1.N.N,20863,20598,-265,FAIL,N,0,0,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table2_baseline_regression.csv:15
+T2.c2.N.N,20863,20598,-265,FAIL,N,0,0,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table2_baseline_regression.csv:15
+T2.c2.Reverse visitors.b,.216,.2432078060891948,.0272078060891948,FAIL,b,3,.00052,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table2_baseline_regression.csv:5
+T2.c2.Reverse visitors.se,.062,.062981207889526,.000981207889526,FAIL,se,3,.00052,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table2_baseline_regression.csv:6
+T2.c3.N.N,20863,20598,-265,FAIL,N,0,0,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table2_baseline_regression.csv:15
+T2.c3.Same-direction visitors.b,.084,.0575982672441396,-.0264017327558604,FAIL,b,3,.00052,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table2_baseline_regression.csv:7
+T2.c3.Same-direction visitors.se,.05,.0510886603485326,.0010886603485326,FAIL,se,3,.00052,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table2_baseline_regression.csv:8
+T2.c4.N.N,20863,20598,-265,FAIL,N,0,0,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table2_baseline_regression.csv:15
+T2.c4.Reverse visitors.b,.209,.2398261755963924,.0308261755963924,FAIL,b,3,.00052,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table2_baseline_regression.csv:5
+T2.c4.Reverse visitors.se,.063,.0632846642522585,.0002846642522585,PASS,se,3,.00052,full,yes,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table2_baseline_regression.csv:6
+T2.c4.Same-direction visitors.b,.062,.0319197179077452,-.0300802820922548,FAIL,b,3,.00052,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table2_baseline_regression.csv:7
+T2.c4.Same-direction visitors.se,.049,.0488269504142931,-.0001730495857069,PASS,se,3,.00052,full,yes,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table2_baseline_regression.csv:8
+T2.c5.Bilateral tourists.b,.241,.1804292254645059,-.0605707745354941,FAIL,b,3,.00052,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table2_baseline_regression.csv:9
+T2.c5.Bilateral tourists.se,.064,.0577185309910256,-.0062814690089744,FAIL,se,3,.00052,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table2_baseline_regression.csv:10
+T2.c5.N.N,26682,26339,-343,FAIL,N,0,0,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table2_baseline_regression.csv:15
+T2.c6.N.N,26682,26339,-343,FAIL,N,0,0,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table2_baseline_regression.csv:15
+T2.c6.Reverse tourists.b,.028,.0092281035820777,-.0187718964179223,FAIL,b,3,.00052,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table2_baseline_regression.csv:11
+T2.c6.Reverse tourists.se,.042,.0404317797082977,-.0015682202917023,FAIL,se,3,.00052,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table2_baseline_regression.csv:12
+T2.c7.N.N,26682,26339,-343,FAIL,N,0,0,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table2_baseline_regression.csv:15
+T2.c7.Same-direction tourists.b,-.002,.0505183946818949,.0525183946818949,FAIL,b,3,.00052,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table2_baseline_regression.csv:13
+T2.c7.Same-direction tourists.se,.052,.035143112054079,-.016856887945921,FAIL,se,3,.00052,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table2_baseline_regression.csv:14
+T2.c8.N.N,26682,26339,-343,FAIL,N,0,0,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table2_baseline_regression.csv:15
+T2.c8.Reverse tourists.b,.029,.0004086355120916,-.0285913644879084,FAIL,b,3,.00052,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table2_baseline_regression.csv:11
+T2.c8.Reverse tourists.se,.045,.0430251427486478,-.0019748572513522,FAIL,se,3,.00052,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table2_baseline_regression.csv:12
+T2.c8.Same-direction tourists.b,-.006,.0504515336555079,.0564515336555079,FAIL,b,3,.00052,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table2_baseline_regression.csv:13
+T2.c8.Same-direction tourists.se,.055,.038262827425811,-.016737172574189,FAIL,se,3,.00052,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table2_baseline_regression.csv:14
+T3.c1.Bilateral visitors.b,.23,.1972491694963685,-.0327508305036315,FAIL,b,3,.00052,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table3_dynamic_future_checks.csv:5
+T3.c1.Bilateral visitors.se,.08,.0791796499497197,-.0008203500502803,FAIL,se,3,.00052,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table3_dynamic_future_checks.csv:6
+T3.c1.Future bilateral visitors.b,-.004,.0017536233987257,.0057536233987257,FAIL,b,3,.00052,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table3_dynamic_future_checks.csv:7
+T3.c1.Future bilateral visitors.se,.06,.0614115096084029,.0014115096084029,FAIL,se,3,.00052,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table3_dynamic_future_checks.csv:8
+T3.c1.Future-mobility p-value.p,.952,.9772192718166837,.0252192718166837,FAIL,p,3,.0007,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table3_dynamic_future_checks.csv:15
+T3.c1.Lag bilateral visitors.b,-.033,-.0274126014766421,.0055873985233579,FAIL,b,3,.00052,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table3_dynamic_future_checks.csv:3
+T3.c1.Lag bilateral visitors.se,.134,.1339027117691952,-.0000972882308048,PASS,se,3,.00052,full,yes,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table3_dynamic_future_checks.csv:4
+T3.c1.N.N,13925,13872,-53,FAIL,N,0,0,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table3_dynamic_future_checks.csv:16
+T3.c2.Bilateral tourists.b,.157,.2064976262659311,.0494976262659311,FAIL,b,3,.00052,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table3_dynamic_future_checks.csv:11
+T3.c2.Bilateral tourists.se,.101,.0828424894728281,-.0181575105271719,FAIL,se,3,.00052,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table3_dynamic_future_checks.csv:12
+T3.c2.Future bilateral tourists.b,.027,.0378842078073432,.0108842078073432,FAIL,b,3,.00052,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table3_dynamic_future_checks.csv:13
+T3.c2.Future bilateral tourists.se,.057,.0562983689251202,-.0007016310748798,FAIL,se,3,.00052,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table3_dynamic_future_checks.csv:14
+T3.c2.Future-mobility p-value.p,.638,.5009992115799449,-.1370007884200551,FAIL,p,3,.0007,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table3_dynamic_future_checks.csv:15
+T3.c2.Lag bilateral tourists.b,.12,.0794391626134201,-.0405608373865799,FAIL,b,3,.00052,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table3_dynamic_future_checks.csv:9
+T3.c2.Lag bilateral tourists.se,.101,.0943673263127431,-.006632673687257,FAIL,se,3,.00052,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table3_dynamic_future_checks.csv:10
+T3.c2.N.N,19122,19061,-61,FAIL,N,0,0,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table3_dynamic_future_checks.csv:16
+T4.c1.Bilateral visitors.b,-.5590000000000001,-.5592137367867651,-.0002137367867651,PASS,b,3,.00052,full,yes,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table4_category_heterogeneity.csv:3
+T4.c1.Bilateral visitors.se,.423,.4226714879472402,-.0003285120527598,PASS,se,3,.00052,full,yes,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table4_category_heterogeneity.csv:4
+T4.c1.N.N,4231,4231,0,PASS,N,0,0,full,yes,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table4_category_heterogeneity.csv:7
+T4.c2.Bilateral tourists.b,.089,.0893019536706192,.0003019536706192,PASS,b,3,.00052,full,yes,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table4_category_heterogeneity.csv:5
+T4.c2.Bilateral tourists.se,.333,.3332830970663711,.0002830970663711,PASS,se,3,.00052,full,yes,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table4_category_heterogeneity.csv:6
+T4.c2.N.N,4631,4631,0,PASS,N,0,0,full,yes,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table4_category_heterogeneity.csv:7
+T4.c3.Bilateral visitors.b,.191,.1260258485487441,-.0649741514512559,FAIL,b,3,.00052,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table4_category_heterogeneity.csv:3
+T4.c3.Bilateral visitors.se,.082,.0784955783251351,-.0035044216748649,FAIL,se,3,.00052,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table4_category_heterogeneity.csv:4
+T4.c3.N.N,20256,19857,-399,FAIL,N,0,0,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table4_category_heterogeneity.csv:7
+T4.c4.Bilateral tourists.b,.238,.1259119152765148,-.1120880847234852,FAIL,b,3,.00052,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table4_category_heterogeneity.csv:5
+T4.c4.Bilateral tourists.se,.076,.0405820603843868,-.0354179396156132,FAIL,se,3,.00052,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table4_category_heterogeneity.csv:6
+T4.c4.N.N,25771,25354,-417,FAIL,N,0,0,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table4_category_heterogeneity.csv:7
+T4.c5.Bilateral visitors.b,.143,.1435217638675344,.0005217638675344,FAIL,b,3,.00052,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table4_category_heterogeneity.csv:3
+T4.c5.Bilateral visitors.se,.09,.0900480468291371,.0000480468291371,PASS,se,3,.00052,full,yes,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table4_category_heterogeneity.csv:4
+T4.c5.N.N,16304,16248,-56,FAIL,N,0,0,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table4_category_heterogeneity.csv:7
+T4.c6.Bilateral tourists.b,.271,.2720724636361702,.0010724636361701,FAIL,b,3,.00052,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table4_category_heterogeneity.csv:5
+T4.c6.Bilateral tourists.se,.132,.1321640294559758,.0001640294559758,PASS,se,3,.00052,full,yes,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table4_category_heterogeneity.csv:6
+T4.c6.N.N,19222,19102,-120,FAIL,N,0,0,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table4_category_heterogeneity.csv:7
+T4.c7.Bilateral visitors.b,.258,.258513116443201,.000513116443201,PASS,b,3,.00052,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table4_category_heterogeneity.csv:3
+T4.c7.Bilateral visitors.se,.077,.0772082796807404,.0002082796807404,PASS,se,3,.00052,full,yes,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table4_category_heterogeneity.csv:4
+T4.c7.N.N,15663,15609,-54,FAIL,N,0,0,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table4_category_heterogeneity.csv:7
+T4.c8.Bilateral tourists.b,-.1,-.0956633940973223,.0043366059026777,FAIL,b,3,.00052,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table4_category_heterogeneity.csv:5
+T4.c8.Bilateral tourists.se,.09,.0910128691292968,.0010128691292968,FAIL,se,3,.00052,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table4_category_heterogeneity.csv:6
+T4.c8.N.N,18850,18744,-106,FAIL,N,0,0,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table4_category_heterogeneity.csv:7
+T5.c1.Bilateral visitors.b,.182,.160297223781327,-.021702776218673,FAIL,b,3,.00052,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table5_moderators.csv:3
+T5.c1.Bilateral visitors.se,.079,.0808112666321043,.0018112666321042,FAIL,se,3,.00052,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table5_moderators.csv:4
+T5.c1.N.N,20863,20598,-265,FAIL,N,0,0,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table5_moderators.csv:15
+T5.c1.Visitors x common language.b,-.079,-.0934742609686964,-.0144742609686964,FAIL,b,3,.00052,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table5_moderators.csv:5
+T5.c1.Visitors x common language.se,.04,.0415219853208016,.0015219853208016,FAIL,se,3,.00052,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table5_moderators.csv:6
+T5.c2.Bilateral tourists.b,.219,.1715636787378132,-.0474363212621868,FAIL,b,3,.00052,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table5_moderators.csv:7
+T5.c2.Bilateral tourists.se,.063,.0498041005855352,-.0131958994144648,FAIL,se,3,.00052,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table5_moderators.csv:8
+T5.c2.N.N,26502,26159,-343,FAIL,N,0,0,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table5_moderators.csv:15
+T5.c2.Tourists x common language.b,.054,.0216207903160237,-.0323792096839763,FAIL,b,3,.00052,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table5_moderators.csv:9
+T5.c2.Tourists x common language.se,.056,.0570466145434311,.0010466145434311,FAIL,se,3,.00052,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table5_moderators.csv:10
+T5.c3.Bilateral visitors.b,.259,.2317556947650214,-.0272443052349786,FAIL,b,3,.00052,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table5_moderators.csv:3
+T5.c3.Bilateral visitors.se,.086,.0871348455430077,.0011348455430077,FAIL,se,3,.00052,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table5_moderators.csv:4
+T5.c3.N.N,12108,11971,-137,FAIL,N,0,0,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table5_moderators.csv:15
+T5.c3.Visitors x cultural distance.b,.044,.048451607881133,.004451607881133,FAIL,b,3,.00052,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table5_moderators.csv:11
+T5.c3.Visitors x cultural distance.se,.023,.0237182976079551,.0007182976079551,FAIL,se,3,.00052,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table5_moderators.csv:12
+T5.c4.Bilateral tourists.b,.247,.2020904242266529,-.0449095757733471,FAIL,b,3,.00052,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table5_moderators.csv:7
+T5.c4.Bilateral tourists.se,.067,.0646028413459517,-.0023971586540483,FAIL,se,3,.00052,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table5_moderators.csv:8
+T5.c4.N.N,11091,10932,-159,FAIL,N,0,0,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table5_moderators.csv:15
+T5.c4.Tourists x cultural distance.b,-.039,-.0334026917872127,.0055973082127873,FAIL,b,3,.00052,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table5_moderators.csv:13
+T5.c4.Tourists x cultural distance.se,.02,.0226553193290891,.0026553193290891,FAIL,se,3,.00052,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table5_moderators.csv:14
+T6.c1.Bilateral visitors.b,.191,.1731302315274445,-.0178697684725555,FAIL,b,3,.00052,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table6_robustness.csv:3
+T6.c1.Bilateral visitors.se,.102,.1086820776221997,.0066820776221997,FAIL,se,3,.00052,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table6_robustness.csv:4
+T6.c1.N.N,20863,20598,-265,FAIL,N,0,0,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table6_robustness.csv:9
+T6.c2.Bilateral tourists.b,.241,.1804292254645059,-.0605707745354941,FAIL,b,3,.00052,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table6_robustness.csv:5
+T6.c2.Bilateral tourists.se,.09,.0591181105655018,-.0308818894344981,FAIL,se,3,.00052,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table6_robustness.csv:6
+T6.c2.N.N,26682,26339,-343,FAIL,N,0,0,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table6_robustness.csv:9
+T6.c3.Bilateral visitors.b,.056,.0359860834385116,-.0200139165614884,FAIL,b,3,.00052,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table6_robustness.csv:3
+T6.c3.Bilateral visitors.se,.064,.064511280502905,.000511280502905,PASS,se,3,.00052,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table6_robustness.csv:4
+T6.c3.N.N,19803,19540,-263,FAIL,N,0,0,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table6_robustness.csv:9
+T6.c4.Bilateral tourists.b,.218,.1597742124593728,-.0582257875406272,FAIL,b,3,.00052,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table6_robustness.csv:5
+T6.c4.Bilateral tourists.se,.07,.0693067125062984,-.0006932874937016,FAIL,se,3,.00052,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table6_robustness.csv:6
+T6.c4.N.N,25260,24919,-341,FAIL,N,0,0,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table6_robustness.csv:9
+T6.c5.Bilateral visitors.b,.171,.1506132112076382,-.0203867887923619,FAIL,b,3,.00052,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table6_robustness.csv:3
+T6.c5.Bilateral visitors.se,.092,.0941234985870036,.0021234985870036,FAIL,se,3,.00052,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table6_robustness.csv:4
+T6.c5.N.N,16201,16109,-92,FAIL,N,0,0,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table6_robustness.csv:9
+T6.c6.Bilateral tourists.b,.24,.174105579451982,-.065894420548018,FAIL,b,3,.00052,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table6_robustness.csv:5
+T6.c6.Bilateral tourists.se,.072,.064424231415875,-.007575768584125,FAIL,se,3,.00052,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table6_robustness.csv:6
+T6.c6.N.N,22074,21896,-178,FAIL,N,0,0,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table6_robustness.csv:9
+T6.c7.Bilateral visitors.b,.191,.1728394946740208,-.0181605053259792,FAIL,b,3,.00052,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table6_robustness.csv:3
+T6.c7.Bilateral visitors.se,.081,.0834281909006928,.0024281909006928,FAIL,se,3,.00052,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table6_robustness.csv:4
+T6.c7.N.N,20863,20598,-265,FAIL,N,0,0,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table6_robustness.csv:9
+T6.c7.RTA/FTA indicator.b,.024,.0346064195935969,.0106064195935969,FAIL,b,3,.00052,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table6_robustness.csv:7
+T6.c7.RTA/FTA indicator.se,.105,.0994452028588616,-.0055547971411384,FAIL,se,3,.00052,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table6_robustness.csv:8
+T6.c8.Bilateral tourists.b,.247,.1842049638304721,-.0627950361695279,FAIL,b,3,.00052,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table6_robustness.csv:5
+T6.c8.Bilateral tourists.se,.064,.0591351936943779,-.0048648063056221,FAIL,se,3,.00052,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table6_robustness.csv:6
+T6.c8.N.N,26682,26339,-343,FAIL,N,0,0,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table6_robustness.csv:9
+T6.c8.RTA/FTA indicator.b,-.165,-.1266092319325244,.0383907680674757,FAIL,b,3,.00052,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table6_robustness.csv:7
+T6.c8.RTA/FTA indicator.se,.163,.1544906354988325,-.0085093645011675,FAIL,se,3,.00052,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/table6_robustness.csv:8
+TA1.c1.Adjusted R2.r2,.6879999999999999,.6886128934639484,.0006128934639484,FAIL,r2,3,.00052,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/tableA1_positive_trade_presence.csv:8
+TA1.c1.Bilateral visitors.b,.011,.0143480227418092,.0033480227418092,FAIL,b,3,.00052,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/tableA1_positive_trade_presence.csv:3
+TA1.c1.Bilateral visitors.se,.006,.0059118634713408,-.0000881365286592,PASS,se,3,.00052,full,yes,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/tableA1_positive_trade_presence.csv:4
+TA1.c1.N.N,23603,23395,-208,FAIL,N,0,0,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/tableA1_positive_trade_presence.csv:7
+TA1.c2.Adjusted R2.r2,.703,.7037000819545876,.0007000819545876,FAIL,r2,3,.00052,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/tableA1_positive_trade_presence.csv:8
+TA1.c2.Bilateral tourists.b,.001,-.0003830570075648,-.0013830570075648,FAIL,b,3,.00052,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/tableA1_positive_trade_presence.csv:5
+TA1.c2.Bilateral tourists.se,.004,.0044509483639675,.0004509483639675,PASS,se,3,.00052,full,yes,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/tableA1_positive_trade_presence.csv:6
+TA1.c2.N.N,32003,31759,-244,FAIL,N,0,0,full,no,<PACKAGE_ROOT>/05_output/03_Mobility/02_empirical_analysis/01_core/LB/tables/tableA1_positive_trade_presence.csv:7

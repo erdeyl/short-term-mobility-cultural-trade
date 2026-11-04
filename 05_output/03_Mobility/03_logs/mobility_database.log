@@ -1,0 +1,62 @@
+Project root: <PACKAGE_ROOT>
+
+Running Raw preflight
+RAW_INPUT_PREFLIGHT=PASS
+
+Running Stata temporary-directory check
+STATA_ENVIRONMENT=PASS
+
+Running UN Tourism
+
+Running Hofstede extraction
+HOFSTEDE_SOURCE_EXTRACTION_AND_AUDIT=PASS
+Source: 6-dimensions-for-website-2015-08-16 (1).xls
+Country rows: 137
+Countries with >=4 dimensions: 119
+Countries with all 6 dimensions: 111
+Regional-proxy flagged countries: 50
+
+Running Hofstede distance
+HOFSTEDE_BILATERAL_DISTANCE_BUILD=PASS
+Ordered non-domestic dyads: 18632
+cd6_ge4 nonmissing: 14042
+cd6_strict nonmissing: 12210
+cd4_ks nonmissing: 14042
+
+Running Master source schemas
+MASTER_SOURCE_TABLE_SCHEMA=PASS
+UN_Tourism -> <PACKAGE_ROOT>/03_intermediate/03_Mobility/source_tables/UN_Tourism/tourism_residence_first_2007_2021.dta
+Common_base -> <PACKAGE_ROOT>/03_intermediate/00_common/cultural_trade_gravity_base_2007_2021.dta
+Hofstede -> <PACKAGE_ROOT>/03_intermediate/03_Mobility/source_tables/Hofstede/hofstede_bilateral_cultural_distance.dta
+
+Running Merge mobility variables
+MASTER_STATA_VARIABLE_NAMES=PASS
+COMMON_BASE_FIELDS_PRESERVED=PASS
+MASTER_PANEL_BUILD=PASS
+International master rows: 823446
+Trade-reporting rows: 615589
+Rows with tourists observed: 136612
+Rows with visitors observed: 106736
+Comtrade zero-filled rows: 414327
+
+Running Validate mobility master
+COMMON_BASE_FIELDS_PRESERVED=PASS
+MASTER_PANEL_DIAGNOSTICS=PASS
+Rows: 823446
+Key duplicates: 0
+
+Running Master documentation
+MASTER_DOCUMENTATION_EXPORT=PASS
+
+Running LB and UB analysis files
+
+Running Analysis-file readback
+MOBILITY_ANALYSIS_INPUT_VALIDATION=PASS
+
+Running Archived exporter mirror
+EXPORTER_REPORTED_CULTURAL_TRADE_BUILD_COMPLETE=yes
+Sparse exporter dyad-years: 189129
+Exporter reporter-years available: 2641
+Final source table: <PACKAGE_ROOT>/03_intermediate/03_Mobility/source_tables/UN_Comtrade_mirror/cultural_trade_exporter_reported_2007_2021.dta
+
+CHAPTER_RUN=PASS

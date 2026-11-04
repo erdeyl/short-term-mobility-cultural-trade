@@ -1,0 +1,529 @@
+
+. /****************************************************************************
+> ***
+>  00_build_estimation_inputs.do
+> 
+>  Purpose:
+>    Create minimal direct-validation copies of the reconstructed master that e
+> xpose
+>    exactly the variable interface required by the frozen core estimation work
+> flow.
+> 
+>  IMPORTANT:
+>    - The frozen master is NEVER modified.
+>    - No observations are dropped.
+>    - Only variables are reduced in the direct-validation copies.
+>    - LB and UB inputs have identical variable names; only the two cultural-tr
+> ade
+>      aliases differ by lower/upper concordance treatment.
+> *****************************************************************************
+> **/
+. 
+. clear all
+
+. set more off
+
+. version 18.0
+
+. set varabbrev off
+
+. 
+. args PROJECT_ROOT
+
+. if `"`PROJECT_ROOT'"' == "" {
+.     di as error "Supply the replication_build root as argument 1."
+.     exit 198
+. }
+
+. local PROJECT_ROOT = subinstr(`"`PROJECT_ROOT'"', "\", "/", .)
+
+. 
+. global ROOT      `"`PROJECT_ROOT'"'
+
+. global MASTER    "${ROOT}/03_intermediate/03_Mobility/master/mobility_merged_
+> 2007_2021.dta"
+
+. global OUTDATA   "${ROOT}/04_analysis data/03_Mobility"
+
+. global DIAG      "${ROOT}/05_output/03_Mobility/01_diagnostics/analysis_input
+> s"
+
+. global LOGS      "${ROOT}/05_output/03_Mobility/03_logs/analysis_inputs"
+
+. 
+. capture mkdir "${ROOT}/04_analysis data"
+
+. capture mkdir "${ROOT}/04_analysis data/03_Mobility"
+
+. capture mkdir "${OUTDATA}"
+
+. capture mkdir "${DIAG}"
+
+. capture mkdir "${LOGS}"
+
+. 
+. capture log close _all
+
+. log using "${LOGS}/00_build_estimation_inputs.log", replace text
+(file <USER_HOME>/S1 test run
+    r3/Replication_Package/05_output/03_Mobility/03_logs/analysis_inputs/00_b
+    > uild_estimation_inputs.log not found)
+-------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  <PACKAGE_ROOT>/05_output/03_Mobi
+> lity/03_logs/analysis_inputs/00_build_estimation_inputs.log
+  log type:  text
+ opened on:   4 Nov 2026, 08:29:30
+
+. 
+. capture confirm file "${MASTER}"
+
+. if _rc {
+.     di as error "Missing frozen master: ${MASTER}"
+.     exit 601
+. }
+
+. 
+. use "${MASTER}", clear
+
+. isid year iso3_o iso3_d
+
+. quietly count
+
+. local N_master = r(N)
+
+. 
+. * ----------------------------------------------------------------------
+. * Required source variables from reconstructed master.
+. * ----------------------------------------------------------------------
+. local need_master ///
+>     year iso3_o iso3_d ///
+>     tourists_trips visitors_trips ///
+>     v_ttl_lb_k v_ttl_ub_k ///
+>     v_3706_k v_49_k v_8523_lb_k v_8523_ub_k v_97_k ///
+>     dist contig comlang_off comcol col45 ///
+>     cd6_ge4 fta_wto
+
+. 
+. foreach v of local need_master {
+  2.     capture confirm variable `v'
+  3.     if _rc {
+  4.         di as error "Required reconstructed-master variable missing: `v'"
+  5.         exit 111
+  6.     }
+  7. }
+
+. 
+. * ----------------------------------------------------------------------
+. * The common base already retains comrelig. A missing field is an interface e
+> rror.
+. capture confirm variable comrelig
+
+. if _rc {
+.     di as error "Common base must contain comrelig. Rebuild the common module
+> ."
+.     exit 111
+. }
+
+. 
+. * ----------------------------------------------------------------------
+. * estimation-interface aliases.
+. * These are interface translations, not changes to the reconstructed source d
+> ata.
+. * ----------------------------------------------------------------------
+. * Drop aliases individually because the master may already contain ln_dist
+. * while other aliases do not yet exist. A combined drop would abort as a whol
+> e
+. * when one listed variable is absent and would leave ln_dist behind (r(110)).
+. foreach v in tourists visitors v_ttl_k v_8523_k cul_dist ln_dist {
+  2.     capture drop `v'
+  3. }
+
+. 
+. gen double tourists = tourists_trips
+(686,834 missing values generated)
+
+. gen double visitors = visitors_trips
+(716,710 missing values generated)
+
+. 
+. gen double cul_dist = cd6_ge4
+(613,760 missing values generated)
+
+. 
+. * Preserve all observations. CEPII contains a tiny number of non-positive
+. * distance values; ln_dist is therefore defined only where dist > 0.
+. quietly count if !missing(dist) & dist <= 0
+
+. local N_nonpos_dist = r(N)
+
+. 
+. preserve
+
+.     keep if !missing(dist) & dist <= 0
+(823,438 observations deleted)
+
+.     keep year iso3_o iso3_d dist
+
+.     export delimited using "${DIAG}/nonpositive_distance_rows.csv", replace
+(file <USER_HOME>/S1 test run
+    r3/Replication_Package/05_output/03_Mobility/01_diagnostics/analysis_inpu
+    > ts/nonpositive_distance_rows.csv not found)
+file <PACKAGE_ROOT>/05_output/03_Mobility/01_
+> diagnostics/analysis_inputs/nonpositive_distance_rows.csv saved
+
+. restore
+
+. 
+. gen double ln_dist = ln(dist) if dist > 0
+(8 missing values generated)
+
+. 
+. label var tourists "Overnight tourists, trips"
+
+. label var visitors "Total visitors, trips"
+
+. label var cul_dist "Hofstede cultural distance, cd6_ge4"
+
+. label var ln_dist "Ln distance"
+
+. 
+. * ----------------------------------------------------------------------
+. * Exact minimal variable interface expected by core empirical workflow.
+. * ----------------------------------------------------------------------
+. local estimation_vars ///
+>     year iso3_o iso3_d ///
+>     tourists visitors ///
+>     v_ttl_k v_3706_k v_49_k v_8523_k v_97_k ///
+>     ln_dist contig comlang_off comcol col45 comrelig cul_dist fta_wto
+
+. 
+. 
+. local rescue_metadata "" // RESCUE C11b C11c C09-M
+
+. capture rescue_on C11b // RESCUE C11b I-M2
+
+. local rescue_on_C11b = (_rc==0 & r(on)==1) // RESCUE C11b I-M2
+
+. if `rescue_on_C11b' { // RESCUE C11b
+.     local rescue_metadata "conf_sub visitors_source_file visitors_flag visito
+> rs_flag_label visitors_notes visitors_release" // RESCUE C11b
+.     label variable visitors "Visitor-series arrivals, mixed coverage, trips" 
+> // RESCUE C11b
+. } // RESCUE C11b
+
+. capture rescue_on C11c // RESCUE C11c I-M2
+
+. local rescue_on_C11c = (_rc==0 & r(on)==1) // RESCUE C11c I-M2
+
+. if `rescue_on_C11c' { // RESCUE C11c
+.     local rescue_metadata "`rescue_metadata' tourists_basis visitors_basis to
+> urists_source_file tourists_flag tourists_flag_label tourists_notes tourists_
+> release visitors_source_file visitors_flag visitors_flag_label visitors_notes
+>  visitors_release basis_mismatch hierarchy_violation visitors_definition_diff
+>  tour_start tour_end tour_span2020 tour_study_switch vis_start vis_end vis_sp
+> an2020 vis_study_switch regional_proxy_flag_o regional_proxy_flag_d any_regio
+> nal_proxy common_dim_count6" // RESCUE C11c
+. } // RESCUE C11c
+
+. capture rescue_on C09-M // RESCUE C09-M I-M2
+
+. local rescue_on_C09_M = (_rc==0 & r(on)==1) // RESCUE C09-M I-M2
+
+. if `rescue_on_C09_M' { // RESCUE C09-M
+.     local rescue_metadata "`rescue_metadata' france251_component_o france251_
+> component_d france251_component_any" // RESCUE C09-M
+. } // RESCUE C09-M
+
+. capture rescue_on C12 // RESCUE C12 I-M2
+
+. local rescue_on_C12 = (_rc==0 & r(on)==1) // RESCUE C12 I-M2
+
+. if `rescue_on_C12' local rescue_metadata "`rescue_metadata' pry_res_quarantin
+> e" // RESCUE C12
+
+. local rescue_metadata : list uniq rescue_metadata // RESCUE C11b C11c C09-M
+
+. foreach field of local rescue_metadata { // RESCUE C11b C11c C09-M
+  2.     confirm variable `field', exact // RESCUE C11b C11c C09-M: installed [
+> P] confirm
+  3. } // RESCUE C11b C11c C09-M
+
+. local estimation_vars "`estimation_vars' `rescue_metadata'" // RESCUE C11b C1
+> 1c C09-M
+
+. 
+. * ----------------------------------------------------------------------
+. * Variable-level deletion audit.
+. * The audit is written BEFORE reduction, so every variable in the rebuilt mas
+> ter
+. * is explicitly accounted for.
+. * ----------------------------------------------------------------------
+. ds
+year          distw_harm~c  v_8523_exact  visitors_b~s  vis_study_~h
+country_id_o  distw_arit~c  n_source_r~s  tourists_r~k  pry_res_qu~e
+country_id_d  distw_harm~h  n_unreport~s  tourists_n~k  _m_tourism
+iso3_o        distw_arit~h  any_unrepo~d  visitors_r~k  tourism_pa~t
+iso3_d        comleg_pre~s  comtrade_s~n  visitors_n~k  tourists_o~d
+iso3num_o     comleg_pos~s  comtrade_p~e  basis_mism~h  visitors_o~d
+iso3num_d     transition~e  comtrade_p~c  same_basis    france251_~o
+country_ex~o  gatt_o        comtrade~ner  hierarchy_~n  france251_~d
+country_ex~d  gatt_d        comtrade_s~t  hierarchy_~s  france251_~y
+contig        fta_wto_so~e  comtrade_z~e  visitors_d~f  cd6_ge4
+dist          domestic_p~r  comtrade~490  tourists_f~p  cd6_strict
+comlang_off   trade_repo~e  zero_fill_~s  visitors_f~p  cd4_ks
+comlang_et~o  comtrade_h~n  territory_~o  conf_sub      common_dim~6
+comcol        com~ter_code  territory_~d  visitors_s~e  regional_p~o
+col45         comtrade_r~c  territor~492  visitors_f~g  regional_p~d
+col_dep_ever  comtrade~ter  territory_~r  visitors_f~l  any_region~y
+comrelig      comtrade_~le  sample_tra~g  visitors_n~s  _m_hofstede
+gdp_o         v_3706_k      contiguity    visitors_r~e  hofstede_p~t
+gdp_d         v_49_k        common_lan~e  tourists_s~e  sample_to~ts
+gdpcap_o      v_8523_id_k   colony_ever   tourists_f~g  sample_vi~rs
+gdpcap_d      v_8523_amb_k  common_leg~n  tourists_f~l  sample_tou~4
+wto_o         v_8523_lb_k   rta_fta       tourists_n~s  sample_vis~4
+wto_d         v_8523_ub_k   ttl_k         tourists_r~e  sample_tou~t
+eu_o          v_97_k        tourism_de~l  tour_start    sample_vis~t
+eu_d          v_ttl_lb_k    tourism_or~l  tour_end      sample_to~ks
+fta_wto       v_ttl_ub_k    tourists_k    tour_sp~2020  sample_vi~ks
+fta_wto_raw   v_4907_k      tourists_t~s  tour_study~h  tourists
+rta_coverage  ttl_ex8~lb_k  tourists_b~s  vis_start     visitors
+rta_type      ttl_ex8~ub_k  visitors_k    vis_end       cul_dist
+distcap       ttl_ex8523    visitors_t~s  vis_span2020  ln_dist
+
+. local allvars `r(varlist)'
+
+. 
+. file open va using "${DIAG}/variable_reduction_audit.csv", write replace text
+(file <USER_HOME>/S1 test run
+    r3/Replication_Package/05_output/03_Mobility/01_diagnostics/analysis_inpu
+    > ts/variable_reduction_audit.csv not found)
+
+. file write va "variable,action_in_minimal_input,reason" _n
+
+. 
+. foreach v of local allvars {
+  2.     local action "DROP_FROM_DIRECT_COPY"
+  3.     local reason "Not referenced by the core empirical modules; retained i
+> n frozen master."
+  4. 
+.     if strpos(" year iso3_o iso3_d v_3706_k v_49_k v_97_k contig comlang_off 
+> comcol col45 comrelig fta_wto ", " `v' ") {
+  5.         local action "KEEP"
+  6.         local reason "Directly required by core empirical modules."
+  7.     }
+  8. 
+.     if inlist("`v'","tourists_trips","visitors_trips","cd6_ge4","dist") {
+  9.         local action "DROP_AFTER_ALIAS"
+ 10.         local reason "Used to create estimation-interface alias; original 
+> remains in frozen master."
+ 11.     }
+ 12. 
+.     if inlist("`v'","v_ttl_lb_k","v_ttl_ub_k","v_8523_lb_k","v_8523_ub_k") {
+ 13.         local action "DROP_AFTER_ALIAS"
+ 14.         local reason "Used to create LB/UB estimation-interface trade alia
+> s; original remains in frozen master."
+ 15.     }
+ 16. 
+.     if strpos(" `rescue_metadata' ", " `v' ") { // RESCUE C11b C11c C09-M
+ 17.         local action "KEEP_RESCUE_METADATA" // RESCUE C11b C11c C09-M
+ 18.         local reason "Enabled ledger metadata; values unchanged." // RESCU
+> E C11b C11c C09-M
+ 19.     } // RESCUE C11b C11c C09-M
+ 20.     file write va "`v',`action',`reason'" _n
+ 21. }
+
+. 
+. foreach v in tourists visitors v_ttl_k v_8523_k cul_dist ln_dist {
+  2.     file write va "`v',CREATE_AND_KEEP,estimation-interface interface vari
+> able created from reconstructed source variable." _n
+  3. }
+
+. file close va
+
+. 
+. * ----------------------------------------------------------------------
+. * LOWER-BOUND direct-validation input.
+. * ----------------------------------------------------------------------
+. preserve
+
+.     gen double v_ttl_k  = v_ttl_lb_k
+(207,857 missing values generated)
+
+.     gen double v_8523_k = v_8523_lb_k
+(207,857 missing values generated)
+
+. 
+.     label var v_ttl_k  "Cultural-goods trade, lower bound, thousand current U
+> SD"
+
+.     label var v_8523_k "Recorded media, lower bound, thousand current USD"
+
+. 
+.     assert v_ttl_k == v_ttl_lb_k if !missing(v_ttl_lb_k)
+
+.     assert v_8523_k == v_8523_lb_k if !missing(v_8523_lb_k)
+
+. 
+.     keep `estimation_vars'
+
+.     order `estimation_vars'
+
+.     isid year iso3_o iso3_d
+
+.     quietly count
+
+.     assert r(N) == `N_master'
+
+. 
+.     save "${OUTDATA}/mobility_analysis_2007_2021.dta", replace
+(file <PACKAGE_ROOT>/04_analysis
+    data/03_Mobility/mobility_analysis_2007_2021.dta not found)
+file <PACKAGE_ROOT>/04_analysis
+    data/03_Mobility/mobility_analysis_2007_2021.dta saved
+
+. restore
+
+. 
+. * ----------------------------------------------------------------------
+. * UPPER-BOUND sensitivity input.
+. * ----------------------------------------------------------------------
+. preserve
+
+.     gen double v_ttl_k  = v_ttl_ub_k
+(207,857 missing values generated)
+
+.     gen double v_8523_k = v_8523_ub_k
+(207,857 missing values generated)
+
+. 
+.     label var v_ttl_k  "Cultural-goods trade, upper bound, thousand current U
+> SD"
+
+.     label var v_8523_k "Recorded media, upper bound, thousand current USD"
+
+. 
+.     assert v_ttl_k == v_ttl_ub_k if !missing(v_ttl_ub_k)
+
+.     assert v_8523_k == v_8523_ub_k if !missing(v_8523_ub_k)
+
+. 
+.     keep `estimation_vars'
+
+.     order `estimation_vars'
+
+.     isid year iso3_o iso3_d
+
+.     quietly count
+
+.     assert r(N) == `N_master'
+
+. 
+.     save "${OUTDATA}/mobility_analysis_UB_2007_2021.dta", replace
+(file <PACKAGE_ROOT>/04_analysis
+    data/03_Mobility/mobility_analysis_UB_2007_2021.dta not found)
+file <PACKAGE_ROOT>/04_analysis
+    data/03_Mobility/mobility_analysis_UB_2007_2021.dta saved
+
+. restore
+
+. 
+. * Compact interface dictionary.
+. preserve
+
+.     clear
+
+.     input str20 variable str28 source_variable str90 definition
+
+                 variable               source_variable                        
+>                                                           definition
+  1.     "year"       "year"            "Calendar year"
+  2.     "iso3_o"     "iso3_o"          "Trade exporter/origin ISO3"
+  3.     "iso3_d"     "iso3_d"          "Trade importer/destination ISO3"
+  4.     "tourists"   "tourists_trips"  "Reverse-direction overnight tourists i
+> n trips"
+  5.     "visitors"   "visitors_trips"  "Reverse-direction total visitors in tr
+> ips"
+  6.     "v_ttl_k"    "v_ttl_lb/ub_k"   "Aggregate cultural-goods trade in thou
+> sand current USD"
+  7.     "v_3706_k"   "v_3706_k"        "Audiovisual category trade"
+  8.     "v_49_k"     "v_49_k"          "Publications category trade"
+  9.     "v_8523_k"   "v_8523_lb/ub_k"  "Recorded-media category trade"
+ 10.     "v_97_k"     "v_97_k"          "Artworks category trade"
+ 11.     "ln_dist"    "ln(dist)"         "Natural log of CEPII bilateral distan
+> ce"
+ 12.     "contig"     "contig"           "CEPII contiguity indicator"
+ 13.     "comlang_off" "comlang_off"     "CEPII common official/primary languag
+> e"
+ 14.     "comcol"     "comcol"           "CEPII common colonizer"
+ 15.     "col45"      "col45"            "CEPII colonial relationship after 194
+> 5"
+ 16.     "comrelig"   "CEPII comrelig"   "CEPII common-religion index retained 
+> from the common base"
+ 17.     "cul_dist"   "cd6_ge4"          "Hofstede bilateral cultural distance;
+>  >=4 common dimensions"
+ 18.     "fta_wto"    "fta_wto"          "CEPII RTA/FTA indicator"
+ 19.     end
+
+.     capture rescue_on C11b // RESCUE C11b I-M2
+
+.     local rescue_on_C11b = (_rc==0 & r(on)==1) // RESCUE C11b I-M2
+
+.     if `rescue_on_C11b' replace definition = "Reverse-direction visitor-serie
+> s arrivals; mixed coverage" if variable=="visitors" // RESCUE C11b
+(1 real change made)
+
+.     export delimited using "${DIAG}/estimation_variable_interface.csv", repla
+> ce
+(file <USER_HOME>/S1 test run
+    r3/Replication_Package/05_output/03_Mobility/01_diagnostics/analysis_inpu
+    > ts/estimation_variable_interface.csv not found)
+file <PACKAGE_ROOT>/05_output/03_Mobility/01_
+> diagnostics/analysis_inputs/estimation_variable_interface.csv saved
+
+. restore
+
+. 
+. file open done using "${DIAG}/00_DIRECT_INPUT_BUILD_COMPLETE.txt", write repl
+> ace text
+(file <USER_HOME>/S1 test run
+    r3/Replication_Package/05_output/03_Mobility/01_diagnostics/analysis_inpu
+    > ts/00_DIRECT_INPUT_BUILD_COMPLETE.txt not found)
+
+. file write done "DIRECT_INPUT_BUILD=PASS" _n
+
+. file write done "master_rows=`N_master'" _n
+
+. file write done "nonpositive_distance_rows=`N_nonpos_dist'" _n
+
+. file write done "lb_input=mobility_analysis_2007_2021.dta" _n
+
+. file write done "ub_input=mobility_analysis_UB_2007_2021.dta" _n
+
+. file close done
+
+. 
+. di as result "DIRECT_INPUT_BUILD=PASS"
+DIRECT_INPUT_BUILD=PASS
+
+. di as result "Rows preserved: `N_master'"
+Rows preserved: 823446
+
+. di as result "LB: ${OUTDATA}/mobility_analysis_2007_2021.dta"
+LB: <PACKAGE_ROOT>/04_analysis data/03_Mobili
+> ty/mobility_analysis_2007_2021.dta
+
+. di as result "UB: ${OUTDATA}/mobility_analysis_UB_2007_2021.dta"
+UB: <PACKAGE_ROOT>/04_analysis data/03_Mobili
+> ty/mobility_analysis_UB_2007_2021.dta
+
+. log close
+      name:  <unnamed>
+       log:  <PACKAGE_ROOT>/05_output/03_Mobi
+> lity/03_logs/analysis_inputs/00_build_estimation_inputs.log
+  log type:  text
+ closed on:   4 Nov 2026, 08:29:36
+-------------------------------------------------------------------------------
+
+. 
+end of do-file

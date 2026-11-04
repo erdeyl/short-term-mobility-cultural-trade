@@ -1,0 +1,9 @@
+{
+  "COMTRADE_REPORTER_BATCH": 10,
+  "COMTRADE_CODE_BATCH": 40,
+  "COMTRADE_AVAIL_REPORTER_BATCH": 50,
+  "COMTRADE_SLEEP_SECONDS": 0.8,
+  "COMTRADE_MAX_NEW_CALLS": 500,
+  "MAXROWS": 100000,
+  "note": "All batch/rate defaults can be overridden with environment variables except MAXROWS."
+}

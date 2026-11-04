@@ -1,0 +1,32 @@
+{
+  "source_name": "Hofstede six-dimension data matrix",
+  "archived_filename_pattern": "6-dimensions-for-website-2015-08-16*.xls",
+  "official_source_page": "https://geerthofstede.com/research-and-vsm/dimension-data-matrix/",
+  "historical_file_url": "https://geerthofstede.com/wp-content/uploads/2016/08/6-dimensions-for-website-2015-08-16.xls",
+  "official_page_version_statement": "Base culture data for six dimensions; website currently describes the book-data release as version 2015-12-08.",
+  "dimensions": [
+    "pdi",
+    "idv",
+    "mas",
+    "uai",
+    "lto",
+    "ivr"
+  ],
+  "original_ks_dimensions": [
+    "pdi",
+    "idv",
+    "mas",
+    "uai"
+  ],
+  "regional_benchmark_names": [
+    "Africa East",
+    "Africa West",
+    "Arab countries"
+  ],
+  "old_construction_equivalent": "cd6_ge4",
+  "clean_strict_six_dimension_measure": "cd6_strict",
+  "original_kogut_singh_four_dimension_measure": "cd4_ks",
+  "variance_rule": "sample variance (N-1 denominator) over nonmissing country rows for each dimension",
+  "self_pairs": "excluded from bilateral source table",
+  "time_dimension": "time-invariant country-pair measure"
+}

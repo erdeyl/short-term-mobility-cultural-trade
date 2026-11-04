@@ -1,0 +1,21 @@
+{
+  "analysis_years": [
+    2007,
+    2021
+  ],
+  "backbone": "CEPII Gravity V202211 existing-country dyad-year panel",
+  "main_universe": "international ordered dyads only (iso3_o != iso3_d)",
+  "direction": {
+    "trade_iso3_o": "exporter/origin economy i",
+    "trade_iso3_d": "importer/destination economy j",
+    "comtrade_reporter": "iso3_d",
+    "comtrade_partner1": "iso3_o",
+    "tourism_reporter_destination": "iso3_o",
+    "tourism_partner_origin": "iso3_d",
+    "interpretation": "tourism flow j -> i is linked to cultural-goods trade i -> j"
+  },
+  "tourism_missing_rule": "Preserve missing. Do not convert absent UN Tourism observations to zero.",
+  "comtrade_zero_rule": "Convert absent sparse product-partner values to zero only when UN Comtrade reporter-year availability confirms reporting for iso3_d/year. Otherwise preserve missing.",
+  "hofstede_time_rule": "Time-invariant pair measure; merge by iso3_o + iso3_d only.",
+  "baseline_choice_policy": "Master build does not choose between v_ttl_lb/v_ttl_ub, tourists/visitors, or cd6_ge4/cd6_strict/cd4_ks. It preserves alternatives and creates sample flags."
+}

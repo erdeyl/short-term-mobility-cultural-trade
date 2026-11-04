@@ -1,0 +1,8 @@
+Independent Variables,(1) Bilateral Visitors,(2) Importer→Exporter Visitors,(3) Exporter→ Importer Visitors,(4) Joint Visitors,(5) Bilateral Tourists,(6) Importer→Exporter Tourists,(7) Exporter→ Importer Tourists,(8) Joint Tourists,source
+Bilateral visitors,0.173** (0.084),,,,,,,,out/corrected2x/pc/tables/table2_baseline_regression.csv ['Bilateral visitors' col (1)]
+Reverse visitors,,0.243*** (0.063),,0.240*** (0.063),,,,,out/corrected2x/pc/tables/table2_baseline_regression.csv ['Reverse visitors' col (2); 'Reverse visitors' col (4)]
+Same-direction visitors,,,0.058 (0.051),0.032 (0.049),,,,,out/corrected2x/pc/tables/table2_baseline_regression.csv ['Same-direction visitors' col (3); 'Same-direction visitors' col (4)]
+Bilateral tourists,,,,,0.180*** (0.058),,,,out/corrected2x/pc/tables/table2_baseline_regression.csv ['Bilateral tourists' col (5)]
+Reverse tourists,,,,,,0.009 (0.040),,0.000 (0.043),out/corrected2x/pc/tables/table2_baseline_regression.csv ['Reverse tourists' col (6); 'Reverse tourists' col (8)]
+Same-direction tourists,,,,,,,0.051 (0.035),0.050 (0.038),out/corrected2x/pc/tables/table2_baseline_regression.csv ['Same-direction tourists' col (7); 'Same-direction tourists' col (8)]
+N,"20,598","20,598","20,598","20,598","26,339","26,339","26,339","26,339",out/corrected2x/pc/tables/table2_baseline_regression.csv [N col (1); N col (2); N col (3); N col (4); N col (5); N col (6); N col (7); N col (8)]

@@ -1,0 +1,22 @@
+{
+  "purpose": "exporter-reported mirror sensitivity only",
+  "typeCode": "C",
+  "freqCode": "A",
+  "classificationSearchCode": "HS",
+  "period_start": 2007,
+  "period_end": 2021,
+  "flowCode": "X",
+  "trade_query_partner1": "all",
+  "export_flow_availability_partnerCode": 0,
+  "partner2Code": 0,
+  "customsCode": "C00",
+  "motCode": 0,
+  "value_field": "primaryValue",
+  "currency": "current USD",
+  "analysis_scaling": "divide by 1000",
+  "canonical_nomenclature": "H3 / HS2007",
+  "reporter_maps_to": "iso3_o",
+  "partner_maps_to": "iso3_d",
+  "baseline_mirror_outcome": "v_ttl_exporter_lb_k",
+  "mirror_reconciliation": "none"
+}

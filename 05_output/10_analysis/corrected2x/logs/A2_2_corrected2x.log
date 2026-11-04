@@ -1,0 +1,175 @@
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/A2_2_corrected2x.log
+  log type:  text
+ opened on:   4 Nov 2026, 08:38:22
+
+. display as result "A2_2_BEGIN vintage=${VINTAGE} " c(current_date) " " c(current_time)
+A2_2_BEGIN vintage=corrected2x  4 Nov 2026 08:38:22
+
+. use "${OUT}/A2_work.dta", clear
+(PREP analysis base, vintage corrected2x, built  4 Nov 2026 08:33:39 by 01_prep.d)
+
+. nflow start using "${OUT}/A2_nflow.csv", append
+nflow: log <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/A2_nflow.csv, start N =       56,500
+
+. a2_open "${OUT}/results/A2_2.dta"
+(file <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/results/A2_2.dta not found)
+
+. a2_topen "${OUT}/tables/A2_A2.2.dta"
+(file <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/tables/A2_A2.2.dta not found)
+
+. local FE "exporter_year importer_year pair_id"
+
+. 
+. foreach m in vis tour {
+  2.     local smp "s_base_`m'"
+  3.     local mlab = cond("`m'" == "vis", "visitors", "tourists")
+  4.     local x "bilat_`m'_raw"
+  5.     quietly count if `smp'
+  6.     local N0 = r(N)
+  7.     quietly count if `smp' & `x' == 0
+  8.     a2_tpost, item(A2.2) table(zeros) sample(`smp') mobility(`mlab') stat(n_bilat_zero) value(`r(N)') n(`N0')
+  9.     quietly count if `smp' & `x' > 0 & `x' < 1
+ 10.     a2_tpost, item(A2.2) table(zeros) sample(`smp') mobility(`mlab') stat(n_bilat_between_0_1) value(`r(N)') n(`N0') note("ln(max(x,1)) also sets these to 0")
+ 11.     foreach k in 10 1000 10000 1000000 10000000 {
+ 12.         quietly count if `smp' & `x' < `k'
+ 13.         a2_tpost, item(A2.2) table(scale) sample(`smp') mobility(`mlab') stat(share_bilat_lt_`k') value(`=r(N)/`N0'') n(`N0') note("count=`r(N)'; asinh(x/k) is close to ln(2x/k) only where x/k is
+>  large")
+ 14.     }
+ 15.     quietly summarize `x' if `smp', detail
+ 16.     a2_tpost, item(A2.2) table(scale) sample(`smp') mobility(`mlab') stat(median_bilat_trips) value(`r(p50)') n(`N0')
+ 17.     gen double t_ln_`m'   = ln(`x') if `smp' & `x' > 0
+ 18.     gen double t_lnm_`m'  = ln(max(`x', 1)) if `smp' & !missing(`x')
+ 19.     gen byte   t_z_`m'    = (`x' == 0) if `smp' & !missing(`x')
+ 20.     gen double t_ln1_`m'  = ln(1 + `x') if `smp' & !missing(`x')
+ 21.     gen double t_ak_`m'   = asinh(`x' / 1000) if `smp' & !missing(`x')
+ 22.     gen double t_am_`m'   = asinh(`x' / 1e6) if `smp' & !missing(`x')
+ 23.     label variable t_ln_`m' "ln(bilateral trips), x>0"
+ 24.     label variable t_lnm_`m' "ln(max(bilateral trips,1))"
+ 25.     label variable t_z_`m' "1[bilateral trips==0]"
+ 26.     label variable t_ln1_`m' "ln(1+bilateral trips)"
+ 27.     label variable t_ak_`m' "asinh(bilateral trips/1000)"
+ 28.     label variable t_am_`m' "asinh(bilateral trips/1e6)"
+ 29.     quietly ppmlhdfe v_ttl_k mob_bilat_`m' if `smp', absorb(`FE') vce(cluster pair_id)
+ 30.     a2_chk "A2.2 `mlab' baseline asinh"
+ 31.     a2_post, item(A2.2) spec(baseline_asinh) sample(`smp') mobility(`mlab') term(mob_bilat_`m') label(asinh(x))
+ 32.     foreach t in ln lnm ln1 ak am {
+ 33.         local reg "t_`t'_`m'"
+ 34.         if "`t'" == "lnm" local reg "t_lnm_`m' t_z_`m'"
+ 35.         gen byte cs_`t'_`m' = `smp' & !missing(t_`t'_`m')
+ 36.         quietly count if cs_`t'_`m'
+ 37.         local nc = r(N)
+ 38.         a2_fix, touse(cs_`t'_`m') models("v_ttl_k `reg' ; v_ttl_k mob_bilat_`m'")
+ 39.         local it = ${A2_FIX_IT}
+ 40.         quietly ppmlhdfe v_ttl_k `reg' if cs_`t'_`m', absorb(`FE') vce(cluster pair_id)
+ 41.         a2_chk "A2.2 `mlab' transform `t'"
+ 42.         local tl : variable label t_`t'_`m'
+ 43.         a2_post, item(A2.2) spec(`t') sample(`smp' & common) mobility(`mlab') term(t_`t'_`m') label(`tl') note("candidate rows=`nc'; fixed-point iterations=`it'")
+ 44.         if "`t'" == "lnm" {
+ 45.             quietly count if e(sample) & t_z_`m' == 1
+ 46.             local nz = r(N)
+ 47.             if `nz' > 0 & _se[t_z_`m'] > 0 {
+ 48.                 a2_post, item(A2.2) spec(`t') sample(`smp' & common) mobility(`mlab') term(t_z_`m') label(1[x==0]) note("zero indicator")
+ 49.             }
+ 50.             else {
+ 51.                 a2_postval, item(A2.2) spec(`t') sample(`smp' & common) mobility(`mlab') label(1[x==0] not identified) value(.) n(`=e(N)') note("x==0 rows left in the common sample: `nz'; the ind
+> icator gives each zero-mobility row its own parameter, so ppmlhdfe drops those rows in the first fit and the model equals ln(x) on x>0")
+ 52.             }
+ 53.         }
+ 54.         quietly ppmlhdfe v_ttl_k mob_bilat_`m' if cs_`t'_`m', absorb(`FE') vce(cluster pair_id)
+ 55.         a2_chk "A2.2 `mlab' baseline asinh on rows of transform `t'"
+ 56.         a2_post, item(A2.2) spec(`t'_baseline_same_rows) sample(`smp' & common) mobility(`mlab') term(mob_bilat_`m') label(asinh(x) on identical rows)
+ 57.         display as result "A2_2 `m' `t' N=" e(N) " (candidate `nc')"
+ 58.     }
+ 59. }
+(35,903 missing values generated)
+(35,902 missing values generated)
+(35,902 missing values generated)
+(35,902 missing values generated)
+(35,902 missing values generated)
+(35,902 missing values generated)
+nflow: estimation N =       20,598 (data N       56,500) A2.2 visitors baseline asinh | 
+nflow: estimation N =       20,596 (data N       56,500) a2_fix iteration 1: v_ttl_k t_ln_vis  | 
+nflow: estimation N =       20,596 (data N       56,500) a2_fix iteration 1: v_ttl_k mob_bilat_vis | 
+nflow: estimation N =       20,596 (data N       56,500) a2_fix iteration 2: v_ttl_k t_ln_vis  | 
+nflow: estimation N =       20,596 (data N       56,500) a2_fix iteration 2: v_ttl_k mob_bilat_vis | 
+nflow: estimation N =       20,596 (data N       56,500) A2.2 visitors transform ln | 
+nflow: estimation N =       20,596 (data N       56,500) A2.2 visitors baseline asinh on rows of transform ln | 
+A2_2 vis ln N=20596 (candidate 20597)
+nflow: estimation N =       20,596 (data N       56,500) a2_fix iteration 1: v_ttl_k t_lnm_vis t_z_vis  | 
+nflow: estimation N =       20,596 (data N       56,500) a2_fix iteration 1: v_ttl_k mob_bilat_vis | 
+nflow: estimation N =       20,596 (data N       56,500) a2_fix iteration 2: v_ttl_k t_lnm_vis t_z_vis  | 
+nflow: estimation N =       20,596 (data N       56,500) a2_fix iteration 2: v_ttl_k mob_bilat_vis | 
+nflow: estimation N =       20,596 (data N       56,500) A2.2 visitors transform lnm | 
+nflow: estimation N =       20,596 (data N       56,500) A2.2 visitors baseline asinh on rows of transform lnm | 
+A2_2 vis lnm N=20596 (candidate 20598)
+nflow: estimation N =       20,598 (data N       56,500) a2_fix iteration 1: v_ttl_k t_ln1_vis  | 
+nflow: estimation N =       20,598 (data N       56,500) a2_fix iteration 1: v_ttl_k mob_bilat_vis | 
+nflow: estimation N =       20,598 (data N       56,500) A2.2 visitors transform ln1 | 
+nflow: estimation N =       20,598 (data N       56,500) A2.2 visitors baseline asinh on rows of transform ln1 | 
+A2_2 vis ln1 N=20598 (candidate 20598)
+nflow: estimation N =       20,598 (data N       56,500) a2_fix iteration 1: v_ttl_k t_ak_vis  | 
+nflow: estimation N =       20,598 (data N       56,500) a2_fix iteration 1: v_ttl_k mob_bilat_vis | 
+nflow: estimation N =       20,598 (data N       56,500) A2.2 visitors transform ak | 
+nflow: estimation N =       20,598 (data N       56,500) A2.2 visitors baseline asinh on rows of transform ak | 
+A2_2 vis ak N=20598 (candidate 20598)
+nflow: estimation N =       20,598 (data N       56,500) a2_fix iteration 1: v_ttl_k t_am_vis  | 
+nflow: estimation N =       20,598 (data N       56,500) a2_fix iteration 1: v_ttl_k mob_bilat_vis | 
+nflow: estimation N =       20,598 (data N       56,500) A2.2 visitors transform am | 
+nflow: estimation N =       20,598 (data N       56,500) A2.2 visitors baseline asinh on rows of transform am | 
+A2_2 vis am N=20598 (candidate 20598)
+(30,163 missing values generated)
+(30,161 missing values generated)
+(30,161 missing values generated)
+(30,161 missing values generated)
+(30,161 missing values generated)
+(30,161 missing values generated)
+nflow: estimation N =       26,339 (data N       56,500) A2.2 tourists baseline asinh | 
+nflow: estimation N =       26,335 (data N       56,500) a2_fix iteration 1: v_ttl_k t_ln_tour  | 
+nflow: estimation N =       26,335 (data N       56,500) a2_fix iteration 1: v_ttl_k mob_bilat_tour | 
+nflow: estimation N =       26,335 (data N       56,500) a2_fix iteration 2: v_ttl_k t_ln_tour  | 
+nflow: estimation N =       26,335 (data N       56,500) a2_fix iteration 2: v_ttl_k mob_bilat_tour | 
+nflow: estimation N =       26,335 (data N       56,500) A2.2 tourists transform ln | 
+nflow: estimation N =       26,335 (data N       56,500) A2.2 tourists baseline asinh on rows of transform ln | 
+A2_2 tour ln N=26335 (candidate 26337)
+nflow: estimation N =       26,335 (data N       56,500) a2_fix iteration 1: v_ttl_k t_lnm_tour t_z_tour  | 
+nflow: estimation N =       26,335 (data N       56,500) a2_fix iteration 1: v_ttl_k mob_bilat_tour | 
+nflow: estimation N =       26,335 (data N       56,500) a2_fix iteration 2: v_ttl_k t_lnm_tour t_z_tour  | 
+nflow: estimation N =       26,335 (data N       56,500) a2_fix iteration 2: v_ttl_k mob_bilat_tour | 
+nflow: estimation N =       26,335 (data N       56,500) A2.2 tourists transform lnm | 
+nflow: estimation N =       26,335 (data N       56,500) A2.2 tourists baseline asinh on rows of transform lnm | 
+A2_2 tour lnm N=26335 (candidate 26339)
+nflow: estimation N =       26,339 (data N       56,500) a2_fix iteration 1: v_ttl_k t_ln1_tour  | 
+nflow: estimation N =       26,339 (data N       56,500) a2_fix iteration 1: v_ttl_k mob_bilat_tour | 
+nflow: estimation N =       26,339 (data N       56,500) A2.2 tourists transform ln1 | 
+nflow: estimation N =       26,339 (data N       56,500) A2.2 tourists baseline asinh on rows of transform ln1 | 
+A2_2 tour ln1 N=26339 (candidate 26339)
+nflow: estimation N =       26,339 (data N       56,500) a2_fix iteration 1: v_ttl_k t_ak_tour  | 
+nflow: estimation N =       26,339 (data N       56,500) a2_fix iteration 1: v_ttl_k mob_bilat_tour | 
+nflow: estimation N =       26,339 (data N       56,500) A2.2 tourists transform ak | 
+nflow: estimation N =       26,339 (data N       56,500) A2.2 tourists baseline asinh on rows of transform ak | 
+A2_2 tour ak N=26339 (candidate 26339)
+nflow: estimation N =       26,339 (data N       56,500) a2_fix iteration 1: v_ttl_k t_am_tour  | 
+nflow: estimation N =       26,339 (data N       56,500) a2_fix iteration 1: v_ttl_k mob_bilat_tour | 
+nflow: estimation N =       26,339 (data N       56,500) A2.2 tourists transform am | 
+nflow: estimation N =       26,339 (data N       56,500) A2.2 tourists baseline asinh on rows of transform am | 
+A2_2 tour am N=26339 (candidate 26339)
+
+. a2_close "${OUT}/results/A2_2.dta" "${OUT}/results/A2_2.csv"
+(file <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/results/A2_2.csv not found)
+file <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/results/A2_2.csv saved
+
+. a2_tclose "${OUT}/tables/A2_A2.2.dta" "${OUT}/tables/A2_A2.2.csv"
+(file <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/tables/A2_A2.2.csv not found)
+file <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/tables/A2_A2.2.csv saved
+
+. display as result "A2_2_DONE vintage=${VINTAGE} " c(current_time)
+A2_2_DONE vintage=corrected2x 08:38:42
+
+. log close
+      name:  <unnamed>
+       log:  <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/A2_2_corrected2x.log
+  log type:  text
+ closed on:   4 Nov 2026, 08:38:42
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

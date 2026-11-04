@@ -1,0 +1,605 @@
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/A2_3_corrected2x.log
+  log type:  text
+ opened on:   4 Nov 2026, 08:38:42
+
+. display as result "A2_3_BEGIN vintage=${VINTAGE} " c(current_date) " " c(current_time)
+A2_3_BEGIN vintage=corrected2x  4 Nov 2026 08:38:42
+
+. use "${OUT}/A2_work.dta", clear
+(PREP analysis base, vintage corrected2x, built  4 Nov 2026 08:33:39 by 01_prep.d)
+
+. nflow start using "${OUT}/A2_nflow.csv", append
+nflow: log <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/A2_nflow.csv, start N =       56,500
+
+. a2_open "${OUT}/results/A2_3.dta"
+(file <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/results/A2_3.dta not found)
+
+. local FE "exporter_year importer_year pair_id"
+
+. local cat1 "3706"
+
+. local cat2 "49"
+
+. local cat3 "8523"
+
+. local cat4 "97"
+
+. local cn1 "film"
+
+. local cn2 "publications"
+
+. local cn3 "recorded_media"
+
+. local cn4 "artworks"
+
+. gen double v_rec_k = (v_ttl_k + v_ttl_exporter_lb_k) / 2 if !missing(v_ttl_k, v_ttl_exporter_lb_k)
+(6,682 missing values generated)
+
+. label variable v_rec_k "Simple average of importer- and exporter-reported LB trade (05_run_reconciled:120-122)"
+note: label truncated to 80 characters
+
+. local tol_pub = 6e-4
+
+. 
+. *==============================================================================
+. * T1 exact visitor-tourist common support
+. *==============================================================================
+. foreach cl in pair_id unordered_pair_id {
+  2.     preserve
+  3.     a2_stack, touse(s_cs_exact) ys(v_ttl_k v_ttl_k) xs("mob_bilat_vis ; mob_bilat_tour") cluster(`cl')
+  4.     local nu = ${A2_NUNIQ}
+  5.     a2_post, item(A2.3) spec(T1_cs_exact_`cl') sample(s_cs_exact) mobility(both) term(s1_1) label(visitors) nuniq(`nu')
+  6.     a2_post, item(A2.3) spec(T1_cs_exact_`cl') sample(s_cs_exact) mobility(both) term(s2_1) label(tourists) nuniq(`nu')
+  7.     a2_post, item(A2.3) spec(T1_cs_exact_`cl') sample(s_cs_exact) mobility(both) term(s1_1 - s2_1) label(visitors - tourists) nuniq(`nu')
+  8.     quietly test s1_1 = s2_1
+  9.     local p = r(p)
+ 10.     a2_posttest, item(A2.3) spec(T1_cs_exact_`cl') sample(s_cs_exact) mobility(both) label(test visitors = tourists) chi2(`r(chi2)') df(`r(df)') p(`r(p)') nuniq(`nu') note("max reproduction gap $
+> {A2_STACK_GAP}")
+ 11.     display as result "A2_3_T1 `cl' p=" %12.10f `p' " N=`nu' clusters=" e(N_clust)
+ 12.     restore
+ 13.     nflow step "restore: after T1 `cl'"
+ 14.     if "`cl'" == "pair_id" {
+ 15.         preserve
+ 16.             import delimited using "${OUT}/positive_controls.csv", clear asdouble varnames(1) stringcols(1)
+ 17.             quietly summarize reproduced if item == "FER.equality_p"
+ 18.             local pcp = r(mean)
+ 19.         restore
+ 20.         display as result "A2_3_PC_T1 p=" %12.10f `p' " ref=" %12.10f `pcp'
+ 21.         assert abs(`p' - `pcp') < 1e-8
+ 22.     }
+ 23. }
+nflow: estimation N =        2,457 (data N       56,500) a2_stack separate fit 1: v_ttl_k on mob_bilat_vis  | 
+nflow: estimation N =        2,457 (data N       56,500) a2_stack separate fit 2: v_ttl_k on mob_bilat_tour | 
+nflow:       56,500 ->        2,457  a2_stack: keep the 2457 common rows (inside caller's preserve)
+nflow:        2,457 ->        4,914  a2_stack: expand to 2 blocks
+nflow: estimation N =        4,914 (data N        4,914) a2_stack stacked fit: 2 blocks (v_ttl_k v_ttl_k), cluster pair_id | 
+A2_3_T1 pair_id p=0.2917500145 N=2457 clusters=825
+nflow:        4,914 ->       56,500  restore: after T1 pair_id
+(encoding automatically selected: ISO-8859-1)
+(11 vars, 232 obs)
+A2_3_PC_T1 p=0.2917500145 ref=0.2917500145
+nflow: estimation N =        2,457 (data N       56,500) a2_stack separate fit 1: v_ttl_k on mob_bilat_vis  | 
+nflow: estimation N =        2,457 (data N       56,500) a2_stack separate fit 2: v_ttl_k on mob_bilat_tour | 
+nflow:       56,500 ->        2,457  a2_stack: keep the 2457 common rows (inside caller's preserve)
+nflow:        2,457 ->        4,914  a2_stack: expand to 2 blocks
+nflow: estimation N =        4,914 (data N        4,914) a2_stack stacked fit: 2 blocks (v_ttl_k v_ttl_k), cluster unordered_pair_id | 
+A2_3_T1 unordered_pair_id p=0.2783262014 N=2457 clusters=457
+nflow:        4,914 ->       56,500  restore: after T1 unordered_pair_id
+
+. 
+. *==============================================================================
+. * T2 four-category equality on separate category supports (Table 4)
+. *==============================================================================
+. global A2_STACK_NOTE ""
+
+. preserve
+
+.     import delimited using "${OUT}/positive_controls.csv", clear asdouble varnames(1) stringcols(1)
+(encoding automatically selected: ISO-8859-1)
+(11 vars, 232 obs)
+
+.     quietly summarize reproduced if item == "LOG.CATEGORY_EQUALITY.mob_bilat_vis"
+
+.     local pc_t2_vis = r(mean)
+
+.     quietly summarize reproduced if item == "LOG.CATEGORY_EQUALITY.mob_bilat_tour"
+
+.     local pc_t2_tour = r(mean)
+
+. restore
+
+. foreach m in vis tour {
+  2.     local mlab = cond("`m'" == "vis", "visitors", "tourists")
+  3.     * separate category fits (06_table4_categories.do:14-20)
+.     local nsum = 0
+  4.     forvalues k = 1/4 {
+  5.         quietly ppmlhdfe v_`cat`k''_k mob_bilat_`m', absorb(`FE') vce(cluster pair_id)
+  6.         a2_chk "A2.3 T2 separate category `cat`k'' `mlab'"
+  7.         tempname sep`k'
+  8.         scalar `sep`k'' = _b[mob_bilat_`m']
+  9.         local n`k' = e(N)
+ 10.         local nsum = `nsum' + e(N)
+ 11.         gen byte es`k'_`m' = e(sample)
+ 12.     }
+ 13.     egen byte esany_`m' = rowmax(es1_`m' es2_`m' es3_`m' es4_`m')
+ 14.     quietly count if esany_`m'
+ 15.     local nunion = r(N)
+ 16.     foreach cl in pair_id unordered_pair_id {
+ 17.         preserve
+ 18.             keep if has_both_`m' == 1
+ 19.             keep year iso3_o iso3_d exporter_year importer_year pair_id unordered_pair_id v_3706_k v_49_k v_8523_k v_97_k mob_bilat_`m'
+ 20.             nflow step "T2: keep rows with strict bilateral `mlab' (stacking input)"
+ 21.             quietly expand 4
+ 22.             nflow step "T2: expand to 4 category blocks"
+ 23.             bysort year iso3_o iso3_d: gen byte __blk = _n
+ 24.             quietly gen double __y = .
+ 25.             forvalues k = 1/4 {
+ 26.                 quietly replace __y = v_`cat`k''_k if __blk == `k'
+ 27.                 quietly gen double s`k'_1 = cond(__blk == `k', mob_bilat_`m', 0)
+ 28.             }
+ 29.             egen long __ey = group(exporter_year __blk)
+ 30.             egen long __iy = group(importer_year __blk)
+ 31.             egen long __pr = group(pair_id __blk)
+ 32.             quietly ppmlhdfe __y s1_1 s2_1 s3_1 s4_1, absorb(__ey __iy __pr) vce(cluster `cl')
+ 33.             a2_chk "A2.3 T2 stacked 4 categories `mlab' cluster `cl'"
+ 34.             assert e(N) == `nsum'
+ 35.             local gap = 0
+ 36.             forvalues k = 1/4 {
+ 37.                 local g = abs(_b[s`k'_1] - `sep`k'')
+ 38.                 if `g' > `gap' local gap = `g'
+ 39.             }
+ 40.             display as result "A2_3_T2 `m' `cl' reproduction gap=" `gap'
+ 41.             assert `gap' < 1e-6
+ 42.             forvalues k = 1/4 {
+ 43.                 a2_post, item(A2.3) spec(T2_sepsupport_`cl') sample(own category supports) mobility(`mlab') term(s`k'_1) label(`cn`k'') nuniq(`n`k'') note("separate-support N of this category; st
+> acked e(N)=`e(N)' = sum of the four category N; union of rows `nunion'")
+ 44.             }
+ 45.             quietly test (s1_1 = s2_1) (s1_1 = s3_1) (s1_1 = s4_1)
+ 46.             local pj = r(p)
+ 47.             a2_posttest, item(A2.3) spec(T2_sepsupport_`cl') sample(own category supports) mobility(`mlab') label(joint equality of 4 category slopes) chi2(`r(chi2)') df(`r(df)') p(`r(p)') nuniq(
+> `nunion') note("N = union of the four category supports")
+ 48.             display as result "A2_3_T2 `m' `cl' joint p=" %12.10f `pj'
+ 49.             if "`cl'" == "pair_id" assert abs(`pj' - `pc_t2_`m'') < 1e-8
+ 50.             local plist ""
+ 51.             local clist ""
+ 52.             forvalues a = 1/3 {
+ 53.                 local s = `a' + 1
+ 54.                 forvalues b = `s'/4 {
+ 55.                     a2_post, item(A2.3) spec(T2_sepsupport_`cl') sample(own category supports) mobility(`mlab') term(s`a'_1 - s`b'_1) label(`cn`a'' - `cn`b'') nuniq(`nunion')
+ 56.                     quietly test s`a'_1 = s`b'_1
+ 57.                     local plist "`plist' `r(p)'"
+ 58.                     local clist "`clist' `a'`b'"
+ 59.                     quietly lincom s`a'_1 - s`b'_1
+ 60.                     local est`a'`b' = r(estimate)
+ 61.                     local se`a'`b' = r(se)
+ 62.                     local raw`a'`b' = r(p)
+ 63.                 }
+ 64.             }
+ 65.             a2_holm `plist'
+ 66.             local i = 0
+ 67.             foreach ab of local clist {
+ 68.                 local ++i
+ 69.                 local a = substr("`ab'", 1, 1)
+ 70.                 local b = substr("`ab'", 2, 1)
+ 71.                 a2_postval, item(A2.3) spec(T2_sepsupport_`cl'_holm) sample(own category supports) mobility(`mlab') label(holm: `cn`a'' - `cn`b'') value(`est`ab'') se(`se`ab'') p(`=r(h`i')') n(`n
+> union') note("Holm family = six pairwise category differences, `mlab', clustering `cl', m=6; raw p=`raw`ab''")
+ 72.             }
+ 73.         restore
+ 74.         nflow step "restore: after T2 `m' `cl'"
+ 75.     }
+ 76.     drop es1_`m' es2_`m' es3_`m' es4_`m' esany_`m'
+ 77. }
+nflow: estimation N =        4,231 (data N       56,500) A2.3 T2 separate category 3706 visitors | 
+nflow: estimation N =       19,857 (data N       56,500) A2.3 T2 separate category 49 visitors | 
+nflow: estimation N =       16,248 (data N       56,500) A2.3 T2 separate category 8523 visitors | 
+nflow: estimation N =       15,609 (data N       56,500) A2.3 T2 separate category 97 visitors | 
+(31,218 observations deleted)
+nflow:       56,500 ->       25,282  T2: keep rows with strict bilateral visitors (stacking input)
+nflow:       25,282 ->      101,128  T2: expand to 4 category blocks
+nflow: estimation N =       55,945 (data N      101,128) A2.3 T2 stacked 4 categories visitors cluster pair_id | 
+A2_3_T2 vis pair_id reproduction gap=9.821e-09
+A2_3_T2 vis pair_id joint p=0.1976824105
+nflow:      101,128 ->       56,500  restore: after T2 vis pair_id
+(31,218 observations deleted)
+nflow:       56,500 ->       25,282  T2: keep rows with strict bilateral visitors (stacking input)
+nflow:       25,282 ->      101,128  T2: expand to 4 category blocks
+nflow: estimation N =       55,945 (data N      101,128) A2.3 T2 stacked 4 categories visitors cluster unordered_pair_id | 
+A2_3_T2 vis unordered_pair_id reproduction gap=9.821e-09
+A2_3_T2 vis unordered_pair_id joint p=0.1969832661
+nflow:      101,128 ->       56,500  restore: after T2 vis unordered_pair_id
+nflow: estimation N =        4,631 (data N       56,500) A2.3 T2 separate category 3706 tourists | 
+nflow: estimation N =       25,354 (data N       56,500) A2.3 T2 separate category 49 tourists | 
+nflow: estimation N =       19,102 (data N       56,500) A2.3 T2 separate category 8523 tourists | 
+nflow: estimation N =       18,744 (data N       56,500) A2.3 T2 separate category 97 tourists | 
+(21,922 observations deleted)
+nflow:       56,500 ->       34,578  T2: keep rows with strict bilateral tourists (stacking input)
+nflow:       34,578 ->      138,312  T2: expand to 4 category blocks
+nflow: estimation N =       67,831 (data N      138,312) A2.3 T2 stacked 4 categories tourists cluster pair_id | 
+A2_3_T2 tour pair_id reproduction gap=1.415e-07
+A2_3_T2 tour pair_id joint p=0.0752656597
+nflow:      138,312 ->       56,500  restore: after T2 tour pair_id
+(21,922 observations deleted)
+nflow:       56,500 ->       34,578  T2: keep rows with strict bilateral tourists (stacking input)
+nflow:       34,578 ->      138,312  T2: expand to 4 category blocks
+nflow: estimation N =       67,831 (data N      138,312) A2.3 T2 stacked 4 categories tourists cluster unordered_pair_id | 
+A2_3_T2 tour unordered_pair_id reproduction gap=1.415e-07
+A2_3_T2 tour unordered_pair_id joint p=0.0658262868
+nflow:      138,312 ->       56,500  restore: after T2 tour unordered_pair_id
+
+. 
+. *==============================================================================
+. * T3 four-category equality on the common category support (Table 7 Panel D)
+. *==============================================================================
+. foreach m in vis tour {
+  2.     local mlab = cond("`m'" == "vis", "visitors", "tourists")
+  3.     gen byte cc_`m' = has_both_`m' & !missing(v_3706_k, v_49_k, v_8523_k, v_97_k)
+  4.     a2_fix, touse(cc_`m') models("v_3706_k mob_bilat_`m' ; v_49_k mob_bilat_`m' ; v_8523_k mob_bilat_`m' ; v_97_k mob_bilat_`m'")
+  5.     local it = ${A2_FIX_IT}
+  6.     foreach cl in pair_id unordered_pair_id {
+  7.         preserve
+  8.         a2_stack, touse(cc_`m') ys(v_3706_k v_49_k v_8523_k v_97_k) xs("mob_bilat_`m' ; mob_bilat_`m' ; mob_bilat_`m' ; mob_bilat_`m'") cluster(`cl')
+  9.         local nu = ${A2_NUNIQ}
+ 10.         forvalues k = 1/4 {
+ 11.             a2_post, item(A2.3) spec(T3_commonsupport_`cl') sample(common category support) mobility(`mlab') term(s`k'_1) label(`cn`k'') nuniq(`nu') note("fixed-point iterations=`it'")
+ 12.         }
+ 13.         quietly test (s1_1 = s2_1) (s1_1 = s3_1) (s1_1 = s4_1)
+ 14.         local pj = r(p)
+ 15.         local cj = r(chi2)
+ 16.         a2_posttest, item(A2.3) spec(T3_commonsupport_`cl') sample(common category support) mobility(`mlab') label(joint equality of 4 category slopes) chi2(`r(chi2)') df(`r(df)') p(`r(p)') nuniq
+> (`nu')
+ 17.         display as result "A2_3_T3 `m' `cl' chi2=" %12.6f `cj' " p=" %12.9f `pj' " N=`nu'"
+ 18.         if "${VINTAGE}" == "submitted" & "`cl'" == "pair_id" {
+ 19.             local ref = cond("`m'" == "vis", 3.990108, 1.953561)
+ 20.             local refn = cond("`m'" == "vis", 3666, 4403)
+ 21.             * published chi2 (File S1 README T3b, default tolerance) to 1e-3: a2_stack may refit
+.             * with tolerance(1e-11), which moves chi2 in the 4th decimal (log line A2_3_T3)
+.             assert abs(`cj' - `ref') < 1e-3 & `nu' == `refn'
+ 22.         }
+ 23.         local plist ""
+ 24.         local clist ""
+ 25.         forvalues a = 1/3 {
+ 26.             local s = `a' + 1
+ 27.             forvalues b = `s'/4 {
+ 28.                 a2_post, item(A2.3) spec(T3_commonsupport_`cl') sample(common category support) mobility(`mlab') term(s`a'_1 - s`b'_1) label(`cn`a'' - `cn`b'') nuniq(`nu')
+ 29.                 quietly test s`a'_1 = s`b'_1
+ 30.                 local plist "`plist' `r(p)'"
+ 31.                 local clist "`clist' `a'`b'"
+ 32.                 quietly lincom s`a'_1 - s`b'_1
+ 33.                 local est`a'`b' = r(estimate)
+ 34.                 local se`a'`b' = r(se)
+ 35.                 local raw`a'`b' = r(p)
+ 36.             }
+ 37.         }
+ 38.         a2_holm `plist'
+ 39.         local i = 0
+ 40.         foreach ab of local clist {
+ 41.             local ++i
+ 42.             local a = substr("`ab'", 1, 1)
+ 43.             local b = substr("`ab'", 2, 1)
+ 44.             a2_postval, item(A2.3) spec(T3_commonsupport_`cl'_holm) sample(common category support) mobility(`mlab') label(holm: `cn`a'' - `cn`b'') value(`est`ab'') se(`se`ab'') p(`=r(h`i')') n(`
+> nu') note("Holm family = six pairwise category differences, `mlab', clustering `cl', m=6; raw p=`raw`ab''")
+ 45.         }
+ 46.         restore
+ 47.         nflow step "restore: after T3 `m' `cl'"
+ 48.     }
+ 49. }
+nflow: estimation N =        4,231 (data N       56,500) a2_fix iteration 1: v_3706_k mob_bilat_vis  | 
+nflow: estimation N =        4,227 (data N       56,500) a2_fix iteration 1: v_49_k mob_bilat_vis  | 
+nflow: estimation N =        4,172 (data N       56,500) a2_fix iteration 1: v_8523_k mob_bilat_vis  | 
+nflow: estimation N =        3,955 (data N       56,500) a2_fix iteration 1: v_97_k mob_bilat_vis | 
+nflow: estimation N =        3,928 (data N       56,500) a2_fix iteration 2: v_3706_k mob_bilat_vis  | 
+nflow: estimation N =        3,928 (data N       56,500) a2_fix iteration 2: v_49_k mob_bilat_vis  | 
+nflow: estimation N =        3,928 (data N       56,500) a2_fix iteration 2: v_8523_k mob_bilat_vis  | 
+nflow: estimation N =        3,928 (data N       56,500) a2_fix iteration 2: v_97_k mob_bilat_vis | 
+nflow: estimation N =        3,928 (data N       56,500) a2_fix iteration 3: v_3706_k mob_bilat_vis  | 
+nflow: estimation N =        3,928 (data N       56,500) a2_fix iteration 3: v_49_k mob_bilat_vis  | 
+nflow: estimation N =        3,928 (data N       56,500) a2_fix iteration 3: v_8523_k mob_bilat_vis  | 
+nflow: estimation N =        3,928 (data N       56,500) a2_fix iteration 3: v_97_k mob_bilat_vis | 
+nflow: estimation N =        3,928 (data N       56,500) a2_stack separate fit 1: v_3706_k on mob_bilat_vis  | 
+nflow: estimation N =        3,928 (data N       56,500) a2_stack separate fit 2: v_49_k on mob_bilat_vis  | 
+nflow: estimation N =        3,928 (data N       56,500) a2_stack separate fit 3: v_8523_k on mob_bilat_vis  | 
+nflow: estimation N =        3,928 (data N       56,500) a2_stack separate fit 4: v_97_k on mob_bilat_vis | 
+nflow:       56,500 ->        3,928  a2_stack: keep the 3928 common rows (inside caller's preserve)
+nflow:        3,928 ->       15,712  a2_stack: expand to 4 blocks
+nflow: estimation N =       15,712 (data N       15,712) a2_stack stacked fit: 4 blocks (v_3706_k v_49_k v_8523_k v_97_k), cluster pair_id | 
+nflow: estimation N =        3,928 (data N       15,712) a2_stack separate block 1 refit, tolerance(1e-11) | 
+nflow: estimation N =        3,928 (data N       15,712) a2_stack separate block 2 refit, tolerance(1e-11) | 
+nflow: estimation N =        3,928 (data N       15,712) a2_stack separate block 3 refit, tolerance(1e-11) | 
+nflow: estimation N =        3,928 (data N       15,712) a2_stack separate block 4 refit, tolerance(1e-11) | 
+nflow: estimation N =       15,712 (data N       15,712) a2_stack stacked refit, tolerance(1e-11) | 
+A2_3_T3 vis pair_id chi2=    2.104281 p= 0.551047117 N=3928
+nflow:       15,712 ->       56,500  restore: after T3 vis pair_id
+nflow: estimation N =        3,928 (data N       56,500) a2_stack separate fit 1: v_3706_k on mob_bilat_vis  | 
+nflow: estimation N =        3,928 (data N       56,500) a2_stack separate fit 2: v_49_k on mob_bilat_vis  | 
+nflow: estimation N =        3,928 (data N       56,500) a2_stack separate fit 3: v_8523_k on mob_bilat_vis  | 
+nflow: estimation N =        3,928 (data N       56,500) a2_stack separate fit 4: v_97_k on mob_bilat_vis | 
+nflow:       56,500 ->        3,928  a2_stack: keep the 3928 common rows (inside caller's preserve)
+nflow:        3,928 ->       15,712  a2_stack: expand to 4 blocks
+nflow: estimation N =       15,712 (data N       15,712) a2_stack stacked fit: 4 blocks (v_3706_k v_49_k v_8523_k v_97_k), cluster unordered_pair_id | 
+nflow: estimation N =        3,928 (data N       15,712) a2_stack separate block 1 refit, tolerance(1e-11) | 
+nflow: estimation N =        3,928 (data N       15,712) a2_stack separate block 2 refit, tolerance(1e-11) | 
+nflow: estimation N =        3,928 (data N       15,712) a2_stack separate block 3 refit, tolerance(1e-11) | 
+nflow: estimation N =        3,928 (data N       15,712) a2_stack separate block 4 refit, tolerance(1e-11) | 
+nflow: estimation N =       15,712 (data N       15,712) a2_stack stacked refit, tolerance(1e-11) | 
+A2_3_T3 vis unordered_pair_id chi2=    2.233409 p= 0.525397854 N=3928
+nflow:       15,712 ->       56,500  restore: after T3 vis unordered_pair_id
+nflow: estimation N =        4,631 (data N       56,500) a2_fix iteration 1: v_3706_k mob_bilat_tour  | 
+nflow: estimation N =        4,627 (data N       56,500) a2_fix iteration 1: v_49_k mob_bilat_tour  | 
+nflow: estimation N =        4,588 (data N       56,500) a2_fix iteration 1: v_8523_k mob_bilat_tour  | 
+nflow: estimation N =        4,411 (data N       56,500) a2_fix iteration 1: v_97_k mob_bilat_tour | 
+nflow: estimation N =        4,403 (data N       56,500) a2_fix iteration 2: v_3706_k mob_bilat_tour  | 
+nflow: estimation N =        4,403 (data N       56,500) a2_fix iteration 2: v_49_k mob_bilat_tour  | 
+nflow: estimation N =        4,403 (data N       56,500) a2_fix iteration 2: v_8523_k mob_bilat_tour  | 
+nflow: estimation N =        4,403 (data N       56,500) a2_fix iteration 2: v_97_k mob_bilat_tour | 
+nflow: estimation N =        4,403 (data N       56,500) a2_fix iteration 3: v_3706_k mob_bilat_tour  | 
+nflow: estimation N =        4,403 (data N       56,500) a2_fix iteration 3: v_49_k mob_bilat_tour  | 
+nflow: estimation N =        4,403 (data N       56,500) a2_fix iteration 3: v_8523_k mob_bilat_tour  | 
+nflow: estimation N =        4,403 (data N       56,500) a2_fix iteration 3: v_97_k mob_bilat_tour | 
+nflow: estimation N =        4,403 (data N       56,500) a2_stack separate fit 1: v_3706_k on mob_bilat_tour  | 
+nflow: estimation N =        4,403 (data N       56,500) a2_stack separate fit 2: v_49_k on mob_bilat_tour  | 
+nflow: estimation N =        4,403 (data N       56,500) a2_stack separate fit 3: v_8523_k on mob_bilat_tour  | 
+nflow: estimation N =        4,403 (data N       56,500) a2_stack separate fit 4: v_97_k on mob_bilat_tour | 
+nflow:       56,500 ->        4,403  a2_stack: keep the 4403 common rows (inside caller's preserve)
+nflow:        4,403 ->       17,612  a2_stack: expand to 4 blocks
+nflow: estimation N =       17,612 (data N       17,612) a2_stack stacked fit: 4 blocks (v_3706_k v_49_k v_8523_k v_97_k), cluster pair_id | 
+A2_3_T3 tour pair_id chi2=    1.417912 p= 0.701341558 N=4403
+nflow:       17,612 ->       56,500  restore: after T3 tour pair_id
+nflow: estimation N =        4,403 (data N       56,500) a2_stack separate fit 1: v_3706_k on mob_bilat_tour  | 
+nflow: estimation N =        4,403 (data N       56,500) a2_stack separate fit 2: v_49_k on mob_bilat_tour  | 
+nflow: estimation N =        4,403 (data N       56,500) a2_stack separate fit 3: v_8523_k on mob_bilat_tour  | 
+nflow: estimation N =        4,403 (data N       56,500) a2_stack separate fit 4: v_97_k on mob_bilat_tour | 
+nflow:       56,500 ->        4,403  a2_stack: keep the 4403 common rows (inside caller's preserve)
+nflow:        4,403 ->       17,612  a2_stack: expand to 4 blocks
+nflow: estimation N =       17,612 (data N       17,612) a2_stack stacked fit: 4 blocks (v_3706_k v_49_k v_8523_k v_97_k), cluster unordered_pair_id | 
+A2_3_T3 tour unordered_pair_id chi2=    1.483392 p= 0.686108672 N=4403
+nflow:       17,612 ->       56,500  restore: after T3 tour unordered_pair_id
+
+. 
+. *==============================================================================
+. * T4 reporting-side equality (Table A4)
+. *==============================================================================
+. local sn1 "importer"
+
+. local sn2 "exporter"
+
+. local sn3 "average"
+
+. foreach m in vis tour {
+  2.     local mlab = cond("`m'" == "vis", "visitors", "tourists")
+  3.     gen byte rc_`m' = has_both_`m' & !missing(v_ttl_k, v_ttl_exporter_lb_k, v_rec_k, mob_bilat_`m')
+  4.     quietly count if rc_`m'
+  5.     local ncand = r(N)
+  6.     a2_fix, touse(rc_`m') models("v_ttl_k mob_bilat_`m' ; v_ttl_exporter_lb_k mob_bilat_`m' ; v_rec_k mob_bilat_`m'")
+  7.     local it = ${A2_FIX_IT}
+  8.     foreach cl in pair_id unordered_pair_id {
+  9.         preserve
+ 10.         a2_stack, touse(rc_`m') ys(v_ttl_k v_ttl_exporter_lb_k v_rec_k) xs("mob_bilat_`m' ; mob_bilat_`m' ; mob_bilat_`m'") cluster(`cl')
+ 11.         local nu = ${A2_NUNIQ}
+ 12.         forvalues k = 1/3 {
+ 13.             a2_post, item(A2.3) spec(T4_reporting_`cl') sample(reporting-side common support) mobility(`mlab') term(s`k'_1) label(`sn`k'') nuniq(`nu') note("candidate rows=`ncand'; fixed-point it
+> erations=`it'")
+ 14.         }
+ 15.         quietly test (s1_1 = s2_1) (s1_1 = s3_1)
+ 16.         local pall = r(p)
+ 17.         a2_posttest, item(A2.3) spec(T4_reporting_`cl') sample(reporting-side common support) mobility(`mlab') label(all three equal) chi2(`r(chi2)') df(`r(df)') p(`r(p)') nuniq(`nu')
+ 18.         local plist ""
+ 19.         local clist ""
+ 20.         foreach ab in 12 13 23 {
+ 21.             local a = substr("`ab'", 1, 1)
+ 22.             local b = substr("`ab'", 2, 1)
+ 23.             a2_post, item(A2.3) spec(T4_reporting_`cl') sample(reporting-side common support) mobility(`mlab') term(s`a'_1 - s`b'_1) label(`sn`a'' - `sn`b'') nuniq(`nu')
+ 24.             quietly test s`a'_1 = s`b'_1
+ 25.             local plist "`plist' `r(p)'"
+ 26.             local clist "`clist' `ab'"
+ 27.             local pr`ab' = r(p)
+ 28.             quietly lincom s`a'_1 - s`b'_1
+ 29.             local est`ab' = r(estimate)
+ 30.             local se`ab' = r(se)
+ 31.         }
+ 32.         display as result "A2_3_T4 `m' `cl' N=`nu' imp=" %9.6f _b[s1_1] " exp=" %9.6f _b[s2_1] " avg=" %9.6f _b[s3_1] " p(imp=exp)=" %9.6f `pr12' " p(all)=" %9.6f `pall'
+ 33.         if "${VINTAGE}" == "submitted" & "`cl'" == "pair_id" {
+ 34.             local refn = cond("`m'" == "vis", 17612, 21992)
+ 35.             local refp = cond("`m'" == "vis", 0.003, 0.489)
+ 36.             local refa = cond("`m'" == "vis", 0.012, 0.332)
+ 37.             assert `nu' == `refn' & abs(`pr12' - `refp') < `tol_pub' & abs(`pall' - `refa') < `tol_pub'
+ 38.         }
+ 39.         a2_holm `plist'
+ 40.         local i = 0
+ 41.         foreach ab of local clist {
+ 42.             local ++i
+ 43.             local a = substr("`ab'", 1, 1)
+ 44.             local b = substr("`ab'", 2, 1)
+ 45.             a2_postval, item(A2.3) spec(T4_reporting_`cl'_holm) sample(reporting-side common support) mobility(`mlab') label(holm: `sn`a'' - `sn`b'') value(`est`ab'') se(`se`ab'') p(`=r(h`i')') n
+> (`nu') note("Holm family = three reporting-side contrasts, `mlab', clustering `cl', m=3; raw p=`pr`ab''")
+ 46.         }
+ 47.         restore
+ 48.         nflow step "restore: after T4 `m' `cl'"
+ 49.     }
+ 50. }
+nflow: estimation N =       19,623 (data N       56,500) a2_fix iteration 1: v_ttl_k mob_bilat_vis  | 
+nflow: estimation N =       17,760 (data N       56,500) a2_fix iteration 1: v_ttl_exporter_lb_k mob_bilat_vis  | 
+nflow: estimation N =       17,760 (data N       56,500) a2_fix iteration 1: v_rec_k mob_bilat_vis | 
+nflow: estimation N =       17,755 (data N       56,500) a2_fix iteration 2: v_ttl_k mob_bilat_vis  | 
+nflow: estimation N =       17,755 (data N       56,500) a2_fix iteration 2: v_ttl_exporter_lb_k mob_bilat_vis  | 
+nflow: estimation N =       17,755 (data N       56,500) a2_fix iteration 2: v_rec_k mob_bilat_vis | 
+nflow: estimation N =       17,755 (data N       56,500) a2_fix iteration 3: v_ttl_k mob_bilat_vis  | 
+nflow: estimation N =       17,755 (data N       56,500) a2_fix iteration 3: v_ttl_exporter_lb_k mob_bilat_vis  | 
+nflow: estimation N =       17,755 (data N       56,500) a2_fix iteration 3: v_rec_k mob_bilat_vis | 
+nflow: estimation N =       17,755 (data N       56,500) a2_stack separate fit 1: v_ttl_k on mob_bilat_vis  | 
+nflow: estimation N =       17,755 (data N       56,500) a2_stack separate fit 2: v_ttl_exporter_lb_k on mob_bilat_vis  | 
+nflow: estimation N =       17,755 (data N       56,500) a2_stack separate fit 3: v_rec_k on mob_bilat_vis | 
+nflow:       56,500 ->       17,755  a2_stack: keep the 17755 common rows (inside caller's preserve)
+nflow:       17,755 ->       53,265  a2_stack: expand to 3 blocks
+nflow: estimation N =       53,265 (data N       53,265) a2_stack stacked fit: 3 blocks (v_ttl_k v_ttl_exporter_lb_k v_rec_k), cluster pair_id | 
+A2_3_T4 vis pair_id N=17755 imp= 0.174396 exp=-0.000436 avg= 0.084076 p(imp=exp)= 0.023557 p(all)= 0.068187
+nflow:       53,265 ->       56,500  restore: after T4 vis pair_id
+nflow: estimation N =       17,755 (data N       56,500) a2_stack separate fit 1: v_ttl_k on mob_bilat_vis  | 
+nflow: estimation N =       17,755 (data N       56,500) a2_stack separate fit 2: v_ttl_exporter_lb_k on mob_bilat_vis  | 
+nflow: estimation N =       17,755 (data N       56,500) a2_stack separate fit 3: v_rec_k on mob_bilat_vis | 
+nflow:       56,500 ->       17,755  a2_stack: keep the 17755 common rows (inside caller's preserve)
+nflow:       17,755 ->       53,265  a2_stack: expand to 3 blocks
+nflow: estimation N =       53,265 (data N       53,265) a2_stack stacked fit: 3 blocks (v_ttl_k v_ttl_exporter_lb_k v_rec_k), cluster unordered_pair_id | 
+A2_3_T4 vis unordered_pair_id N=17755 imp= 0.174396 exp=-0.000436 avg= 0.084076 p(imp=exp)= 0.019999 p(all)= 0.064795
+nflow:       53,265 ->       56,500  restore: after T4 vis unordered_pair_id
+nflow: estimation N =       24,969 (data N       56,500) a2_fix iteration 1: v_ttl_k mob_bilat_tour  | 
+nflow: estimation N =       21,744 (data N       56,500) a2_fix iteration 1: v_ttl_exporter_lb_k mob_bilat_tour  | 
+nflow: estimation N =       21,744 (data N       56,500) a2_fix iteration 1: v_rec_k mob_bilat_tour | 
+nflow: estimation N =       21,733 (data N       56,500) a2_fix iteration 2: v_ttl_k mob_bilat_tour  | 
+nflow: estimation N =       21,733 (data N       56,500) a2_fix iteration 2: v_ttl_exporter_lb_k mob_bilat_tour  | 
+nflow: estimation N =       21,733 (data N       56,500) a2_fix iteration 2: v_rec_k mob_bilat_tour | 
+nflow: estimation N =       21,733 (data N       56,500) a2_fix iteration 3: v_ttl_k mob_bilat_tour  | 
+nflow: estimation N =       21,733 (data N       56,500) a2_fix iteration 3: v_ttl_exporter_lb_k mob_bilat_tour  | 
+nflow: estimation N =       21,733 (data N       56,500) a2_fix iteration 3: v_rec_k mob_bilat_tour | 
+nflow: estimation N =       21,733 (data N       56,500) a2_stack separate fit 1: v_ttl_k on mob_bilat_tour  | 
+nflow: estimation N =       21,733 (data N       56,500) a2_stack separate fit 2: v_ttl_exporter_lb_k on mob_bilat_tour  | 
+nflow: estimation N =       21,733 (data N       56,500) a2_stack separate fit 3: v_rec_k on mob_bilat_tour | 
+nflow:       56,500 ->       21,733  a2_stack: keep the 21733 common rows (inside caller's preserve)
+nflow:       21,733 ->       65,199  a2_stack: expand to 3 blocks
+nflow: estimation N =       65,199 (data N       65,199) a2_stack stacked fit: 3 blocks (v_ttl_k v_ttl_exporter_lb_k v_rec_k), cluster pair_id | 
+A2_3_T4 tour pair_id N=21733 imp= 0.180297 exp= 0.317705 avg= 0.290048 p(imp=exp)= 0.042936 p(all)= 0.022527
+nflow:       65,199 ->       56,500  restore: after T4 tour pair_id
+nflow: estimation N =       21,733 (data N       56,500) a2_stack separate fit 1: v_ttl_k on mob_bilat_tour  | 
+nflow: estimation N =       21,733 (data N       56,500) a2_stack separate fit 2: v_ttl_exporter_lb_k on mob_bilat_tour  | 
+nflow: estimation N =       21,733 (data N       56,500) a2_stack separate fit 3: v_rec_k on mob_bilat_tour | 
+nflow:       56,500 ->       21,733  a2_stack: keep the 21733 common rows (inside caller's preserve)
+nflow:       21,733 ->       65,199  a2_stack: expand to 3 blocks
+nflow: estimation N =       65,199 (data N       65,199) a2_stack stacked fit: 3 blocks (v_ttl_k v_ttl_exporter_lb_k v_rec_k), cluster unordered_pair_id | 
+A2_3_T4 tour unordered_pair_id N=21733 imp= 0.180297 exp= 0.317705 avg= 0.290048 p(imp=exp)= 0.046216 p(all)= 0.048876
+nflow:       65,199 ->       56,500  restore: after T4 tour unordered_pair_id
+
+. 
+. *==============================================================================
+. * T5 visitor-tourist contrasts by category on identical rows (Table 7 Panel E, all categories)
+. *==============================================================================
+. forvalues k = 1/4 {
+  2.     gen byte vt`k' = has_both_vis & has_both_tour & !missing(v_`cat`k''_k)
+  3.     a2_fix, touse(vt`k') models("v_`cat`k''_k mob_bilat_vis ; v_`cat`k''_k mob_bilat_tour")
+  4.     local it`k' = ${A2_FIX_IT}
+  5. }
+nflow: estimation N =          228 (data N       56,500) a2_fix iteration 1: v_3706_k mob_bilat_vis  | 
+nflow: estimation N =          228 (data N       56,500) a2_fix iteration 1: v_3706_k mob_bilat_tour | 
+nflow: estimation N =          228 (data N       56,500) a2_fix iteration 2: v_3706_k mob_bilat_vis  | 
+nflow: estimation N =          228 (data N       56,500) a2_fix iteration 2: v_3706_k mob_bilat_tour | 
+nflow: estimation N =        2,366 (data N       56,500) a2_fix iteration 1: v_49_k mob_bilat_vis  | 
+nflow: estimation N =        2,366 (data N       56,500) a2_fix iteration 1: v_49_k mob_bilat_tour | 
+nflow: estimation N =        2,366 (data N       56,500) a2_fix iteration 2: v_49_k mob_bilat_vis  | 
+nflow: estimation N =        2,366 (data N       56,500) a2_fix iteration 2: v_49_k mob_bilat_tour | 
+nflow: estimation N =        1,853 (data N       56,500) a2_fix iteration 1: v_8523_k mob_bilat_vis  | 
+nflow: estimation N =        1,853 (data N       56,500) a2_fix iteration 1: v_8523_k mob_bilat_tour | 
+nflow: estimation N =        1,853 (data N       56,500) a2_fix iteration 2: v_8523_k mob_bilat_vis  | 
+nflow: estimation N =        1,853 (data N       56,500) a2_fix iteration 2: v_8523_k mob_bilat_tour | 
+nflow: estimation N =        1,764 (data N       56,500) a2_fix iteration 1: v_97_k mob_bilat_vis  | 
+nflow: estimation N =        1,764 (data N       56,500) a2_fix iteration 1: v_97_k mob_bilat_tour | 
+nflow: estimation N =        1,764 (data N       56,500) a2_fix iteration 2: v_97_k mob_bilat_vis  | 
+nflow: estimation N =        1,764 (data N       56,500) a2_fix iteration 2: v_97_k mob_bilat_tour | 
+
+. foreach cl in pair_id unordered_pair_id {
+  2.     local plist ""
+  3.     forvalues k = 1/4 {
+  4.         preserve
+  5.         a2_stack, touse(vt`k') ys(v_`cat`k''_k v_`cat`k''_k) xs("mob_bilat_vis ; mob_bilat_tour") cluster(`cl')
+  6.         local nu`k' = ${A2_NUNIQ}
+  7.         a2_post, item(A2.3) spec(T5_vt_`cn`k''_`cl') sample(visitor-tourist identical rows) mobility(both) term(s1_1) label(visitors) nuniq(`nu`k'') note("fixed-point iterations=`it`k''")
+  8.         a2_post, item(A2.3) spec(T5_vt_`cn`k''_`cl') sample(visitor-tourist identical rows) mobility(both) term(s2_1) label(tourists) nuniq(`nu`k'')
+  9.         a2_post, item(A2.3) spec(T5_vt_`cn`k''_`cl') sample(visitor-tourist identical rows) mobility(both) term(s1_1 - s2_1) label(visitors - tourists) nuniq(`nu`k'')
+ 10.         quietly test s1_1 = s2_1
+ 11.         local plist "`plist' `r(p)'"
+ 12.         local raw`k' = r(p)
+ 13.         quietly lincom s1_1 - s2_1
+ 14.         local est`k' = r(estimate)
+ 15.         local se`k' = r(se)
+ 16.         display as result "A2_3_T5 `cn`k'' `cl' N=`nu`k'' diff=" %9.6f `est`k'' " se=" %9.6f `se`k'' " p=" %9.6f `raw`k''
+ 17.         if "${VINTAGE}" == "submitted" & "`cl'" == "pair_id" & inlist(`k', 3, 4) {
+ 18.             local refn = cond(`k' == 4, 1816, 1913)
+ 19.             local refd = cond(`k' == 4, -0.011, 0.048)
+ 20.             local refp = cond(`k' == 4, 0.792, 0.538)
+ 21.             assert `nu`k'' == `refn' & abs(`est`k'' - `refd') < `tol_pub' & abs(`raw`k'' - `refp') < `tol_pub'
+ 22.         }
+ 23.         restore
+ 24.         nflow step "restore: after T5 `cn`k'' `cl'"
+ 25.     }
+ 26.     a2_holm `plist'
+ 27.     forvalues k = 1/4 {
+ 28.         a2_postval, item(A2.3) spec(T5_vt_`cl'_holm) sample(visitor-tourist identical rows) mobility(both) label(holm: `cn`k'' visitors - tourists) value(`est`k'') se(`se`k'') p(`=r(h`k')') n(`nu
+> `k'') note("Holm family = visitor-tourist contrasts across the four categories, clustering `cl', m=4; raw p=`raw`k''")
+ 29.     }
+ 30. }
+nflow: estimation N =          228 (data N       56,500) a2_stack separate fit 1: v_3706_k on mob_bilat_vis  | 
+nflow: estimation N =          228 (data N       56,500) a2_stack separate fit 2: v_3706_k on mob_bilat_tour | 
+nflow:       56,500 ->          228  a2_stack: keep the 228 common rows (inside caller's preserve)
+nflow:          228 ->          456  a2_stack: expand to 2 blocks
+nflow: estimation N =          456 (data N          456) a2_stack stacked fit: 2 blocks (v_3706_k v_3706_k), cluster pair_id | 
+nflow: estimation N =          228 (data N          456) a2_stack separate block 1 refit, tolerance(1e-11) | 
+nflow: estimation N =          228 (data N          456) a2_stack separate block 2 refit, tolerance(1e-11) | 
+nflow: estimation N =          456 (data N          456) a2_stack stacked refit, tolerance(1e-11) | 
+A2_3_T5 film pair_id N=228 diff= 0.381796 se= 0.609270 p= 0.530891
+nflow:          456 ->       56,500  restore: after T5 film pair_id
+nflow: estimation N =        2,366 (data N       56,500) a2_stack separate fit 1: v_49_k on mob_bilat_vis  | 
+nflow: estimation N =        2,366 (data N       56,500) a2_stack separate fit 2: v_49_k on mob_bilat_tour | 
+nflow:       56,500 ->        2,366  a2_stack: keep the 2366 common rows (inside caller's preserve)
+nflow:        2,366 ->        4,732  a2_stack: expand to 2 blocks
+nflow: estimation N =        4,732 (data N        4,732) a2_stack stacked fit: 2 blocks (v_49_k v_49_k), cluster pair_id | 
+A2_3_T5 publications pair_id N=2366 diff= 0.014386 se= 0.017962 p= 0.423182
+nflow:        4,732 ->       56,500  restore: after T5 publications pair_id
+nflow: estimation N =        1,853 (data N       56,500) a2_stack separate fit 1: v_8523_k on mob_bilat_vis  | 
+nflow: estimation N =        1,853 (data N       56,500) a2_stack separate fit 2: v_8523_k on mob_bilat_tour | 
+nflow:       56,500 ->        1,853  a2_stack: keep the 1853 common rows (inside caller's preserve)
+nflow:        1,853 ->        3,706  a2_stack: expand to 2 blocks
+nflow: estimation N =        3,706 (data N        3,706) a2_stack stacked fit: 2 blocks (v_8523_k v_8523_k), cluster pair_id | 
+A2_3_T5 recorded_media pair_id N=1853 diff= 0.039958 se= 0.077477 p= 0.606040
+nflow:        3,706 ->       56,500  restore: after T5 recorded_media pair_id
+nflow: estimation N =        1,764 (data N       56,500) a2_stack separate fit 1: v_97_k on mob_bilat_vis  | 
+nflow: estimation N =        1,764 (data N       56,500) a2_stack separate fit 2: v_97_k on mob_bilat_tour | 
+nflow:       56,500 ->        1,764  a2_stack: keep the 1764 common rows (inside caller's preserve)
+nflow:        1,764 ->        3,528  a2_stack: expand to 2 blocks
+nflow: estimation N =        3,528 (data N        3,528) a2_stack stacked fit: 2 blocks (v_97_k v_97_k), cluster pair_id | 
+A2_3_T5 artworks pair_id N=1764 diff=-0.013795 se= 0.043030 p= 0.748513
+nflow:        3,528 ->       56,500  restore: after T5 artworks pair_id
+nflow: estimation N =          228 (data N       56,500) a2_stack separate fit 1: v_3706_k on mob_bilat_vis  | 
+nflow: estimation N =          228 (data N       56,500) a2_stack separate fit 2: v_3706_k on mob_bilat_tour | 
+nflow:       56,500 ->          228  a2_stack: keep the 228 common rows (inside caller's preserve)
+nflow:          228 ->          456  a2_stack: expand to 2 blocks
+nflow: estimation N =          456 (data N          456) a2_stack stacked fit: 2 blocks (v_3706_k v_3706_k), cluster unordered_pair_id | 
+nflow: estimation N =          228 (data N          456) a2_stack separate block 1 refit, tolerance(1e-11) | 
+nflow: estimation N =          228 (data N          456) a2_stack separate block 2 refit, tolerance(1e-11) | 
+nflow: estimation N =          456 (data N          456) a2_stack stacked refit, tolerance(1e-11) | 
+A2_3_T5 film unordered_pair_id N=228 diff= 0.381796 se= 0.613325 p= 0.533612
+nflow:          456 ->       56,500  restore: after T5 film unordered_pair_id
+nflow: estimation N =        2,366 (data N       56,500) a2_stack separate fit 1: v_49_k on mob_bilat_vis  | 
+nflow: estimation N =        2,366 (data N       56,500) a2_stack separate fit 2: v_49_k on mob_bilat_tour | 
+nflow:       56,500 ->        2,366  a2_stack: keep the 2366 common rows (inside caller's preserve)
+nflow:        2,366 ->        4,732  a2_stack: expand to 2 blocks
+nflow: estimation N =        4,732 (data N        4,732) a2_stack stacked fit: 2 blocks (v_49_k v_49_k), cluster unordered_pair_id | 
+A2_3_T5 publications unordered_pair_id N=2366 diff= 0.014386 se= 0.017088 p= 0.399845
+nflow:        4,732 ->       56,500  restore: after T5 publications unordered_pair_id
+nflow: estimation N =        1,853 (data N       56,500) a2_stack separate fit 1: v_8523_k on mob_bilat_vis  | 
+nflow: estimation N =        1,853 (data N       56,500) a2_stack separate fit 2: v_8523_k on mob_bilat_tour | 
+nflow:       56,500 ->        1,853  a2_stack: keep the 1853 common rows (inside caller's preserve)
+nflow:        1,853 ->        3,706  a2_stack: expand to 2 blocks
+nflow: estimation N =        3,706 (data N        3,706) a2_stack stacked fit: 2 blocks (v_8523_k v_8523_k), cluster unordered_pair_id | 
+A2_3_T5 recorded_media unordered_pair_id N=1853 diff= 0.039958 se= 0.079690 p= 0.616079
+nflow:        3,706 ->       56,500  restore: after T5 recorded_media unordered_pair_id
+nflow: estimation N =        1,764 (data N       56,500) a2_stack separate fit 1: v_97_k on mob_bilat_vis  | 
+nflow: estimation N =        1,764 (data N       56,500) a2_stack separate fit 2: v_97_k on mob_bilat_tour | 
+nflow:       56,500 ->        1,764  a2_stack: keep the 1764 common rows (inside caller's preserve)
+nflow:        1,764 ->        3,528  a2_stack: expand to 2 blocks
+nflow: estimation N =        3,528 (data N        3,528) a2_stack stacked fit: 2 blocks (v_97_k v_97_k), cluster unordered_pair_id | 
+A2_3_T5 artworks unordered_pair_id N=1764 diff=-0.013795 se= 0.042999 p= 0.748338
+nflow:        3,528 ->       56,500  restore: after T5 artworks unordered_pair_id
+
+. 
+. a2_close "${OUT}/results/A2_3.dta" "${OUT}/results/A2_3.csv"
+(file <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/results/A2_3.csv not found)
+file <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/results/A2_3.csv saved
+
+. display as result "A2_3_DONE vintage=${VINTAGE} " c(current_time)
+A2_3_DONE vintage=corrected2x 08:40:15
+
+. log close
+      name:  <unnamed>
+       log:  <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/A2_3_corrected2x.log
+  log type:  text
+ closed on:   4 Nov 2026, 08:40:15
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

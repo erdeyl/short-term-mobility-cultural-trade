@@ -1,0 +1,10 @@
+date,time,kind,n_before,n_after,change,reason
+4 Nov 2026,08:48:19,start,,823446,0,"start: <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/prepared.dta"
+4 Nov 2026,08:48:21,est,823446,13579,-809867,"C2_A1_11 vis dynamic pair-trend fit, default separation (control = A1.8.T7_pair) | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output"
+4 Nov 2026,08:48:23,est,823446,13578,-809868,"C2_A1_11 vis static pair-trend fit on the default dynamic sample (control = A1.7.static_on_dyn_pairtrend) | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output"
+4 Nov 2026,08:48:26,est,823446,13565,-809881,"C2_A1_11 vis dynamic pair-trend fit, separation(fe simplex ir mu) (= A1.8.T7_pair_sepmu) | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output"
+4 Nov 2026,08:48:27,est,823446,13564,-809882,"C2_A1_11 vis static pair-trend fit on the mu dynamic sample (reference static_same_sample) | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output"
+4 Nov 2026,08:48:40,est,823446,19061,-804385,"C2_A1_11 tour dynamic pair-trend fit, default separation (control = A1.8.T7_pair) | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output"
+4 Nov 2026,08:48:52,est,823446,19061,-804385,"C2_A1_11 tour static pair-trend fit on the default dynamic sample (control = A1.7.static_on_dyn_pairtrend) | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output"
+4 Nov 2026,08:49:08,est,823446,18868,-804578,"C2_A1_11 tour dynamic pair-trend fit, separation(fe simplex ir mu) (= A1.8.T7_pair_sepmu) | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output"
+4 Nov 2026,08:49:22,est,823446,18865,-804581,"C2_A1_11 tour static pair-trend fit on the mu dynamic sample (reference static_same_sample) | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output"

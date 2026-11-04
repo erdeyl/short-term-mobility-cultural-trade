@@ -1,0 +1,267 @@
+/*******************************************************************************
+ C2_A1_08_overlap.do -- rerun C2, request R1-2.12 (fixed-observation measurement comparison) and
+ R1-2.9/R1-2.10 (nesting violations); final data only.
+ Usage (cwd = 02_code/10_analysis):  stata-mp -b -q do C2_A1_08_overlap.do corrected2x
+ Output: ${OUT}/results/A1_parts/A1_08.csv (A1_combine.py picks it up), ${OUT}/tables/A1_A1.5_m_overlap.csv,
+         ${OUT}/tables/A1_A1.3_nesting.csv, log, nflow records in ${OUT}/A1_nflow.csv.
+ Step 0 (feasibility): prepared.dta carries only the selected (residence-first) series. The separate
+ residence and nationality series are in the master of the build, read from the unchanged pre-C14 snapshot
+ (00_config.do MASTER_FILE): tourists_res_k, tourists_nat_k, visitors_res_k, visitors_nat_k, thousand trips,
+ stored-row direction (reporter = iso3_o). Trips = thousand trips x 1000 (COPY 01_build_UN_Tourism.do:668-669).
+ The corrected2x quarantines are applied to the residence series exactly as 01_prep.do A0 does (PAK residence
+ cells pak_res_quarantine_rev == 1; BLR->LIE visitors blr_lie_quarantine_rev == 1). Positive control: the
+ residence-first combination of the two series reproduces the prepared values tourists/visitors on every row.
+ Mirror (same direction) by swapping origin and destination, as 01_prep.do section A.
+ (A) Overlap = baseline rows (s_base_<m>) where residence and nationality values exist in both directions.
+     Identical observations = fixed point of the residence-built and nationality-built PPML models (same FE,
+     clusters by directed pair). On the overlap the baseline construction (residence first) equals the
+     residence-built measure (asserted). Stacked test residence = nationality: A1_stack (authors' design,
+     block-specific FE, cluster by the original pair id, 1e-6 reproduction check; A1_00_programs.do).
+ (B) Nesting: hier_rev/hier_same (tourists > visitors where both series of that direction exist; FLAGS_CODEBOOK
+     section 3); same basis = basis_mismatch_<dir> == 0; accommodation-based reporters SVK, SVN (reporter of the
+     rev cell = iso3_o, of the same cell = iso3_d). Exclusions are if-conditions; no value is altered.
+ Help consulted: ppmlhdfe.sthlp 2.3.4 (absorb(), vce(cluster), e(sample), e(N), e(N_full),
+ e(num_singletons), e(num_separated), e(converged)); [R] test; [R] lincom; [D] merge; [D] egen (tag());
+ [P] postfile; nflow.sthlp 1.0.1.
+*******************************************************************************/
+args vintage
+clear all
+set more off
+set varabbrev off
+set linesize 200
+version 18.0
+do "00_config.do" `vintage'
+version 18.0
+do "A1_00_programs.do"
+assert "${VINTAGE}" == "corrected2x"
+capture log close _all
+log using "${LOGS}/C2_A1_08_overlap_${VINTAGE}.log", text replace
+display as result "C2_A1_08_BEGIN vintage=${VINTAGE} " c(current_date) " " c(current_time)
+
+use year iso3_o iso3_d v_ttl_k tourists visitors has_both_vis has_both_tour mob_bilat_vis mob_bilat_tour ///
+    rev_vis_raw same_vis_raw rev_tour_raw same_tour_raw exporter_year importer_year pair_id unordered_pair_id ///
+    s_base_vis s_base_tour pak_res_quarantine_rev blr_lie_quarantine_rev basis_rev_vis basis_same_vis ///
+    basis_rev_tour basis_same_tour hier_rev hier_same basis_mismatch_rev basis_mismatch_same ///
+    using "${PREPARED}", clear
+nflow start using "${OUT}/A1_nflow.csv", append expected(823446)
+A1_open A1_08
+preserve
+    use year iso3_o iso3_d tourists_res_k tourists_nat_k visitors_res_k visitors_nat_k using "${MASTER_FILE}", clear
+    isid year iso3_o iso3_d
+    tempfile rn
+    save `rn'
+restore
+merge 1:1 year iso3_o iso3_d using `rn', assert(match) nogen
+nflow step "C2_A1_08 merge snapshot master residence/nationality series (assert all match; no row change)"
+* stored-row series in trips, corrected2x quarantines applied to the residence series
+gen double tres = tourists_res_k * 1000
+gen double tnat = tourists_nat_k * 1000
+gen double vres = visitors_res_k * 1000
+gen double vnat = visitors_nat_k * 1000
+replace tres = . if pak_res_quarantine_rev == 1
+replace vres = . if pak_res_quarantine_rev == 1 | blr_lie_quarantine_rev == 1
+* positive control: residence first, nationality fallback = prepared value on every row
+gen double __t = cond(!missing(tres), tres, tnat)
+gen double __v = cond(!missing(vres), vres, vnat)
+quietly count if !((__t == tourists) | (missing(__t) & missing(tourists)))
+local dt = r(N)
+quietly count if !((__v == visitors) | (missing(__v) & missing(visitors)))
+local dv = r(N)
+display as result "C2_A1_08_PC residence-first reproduces prepared: tourists diff rows `dt', visitors diff rows `dv'"
+assert `dt' == 0 & `dv' == 0
+drop __t __v
+* same-direction series from the opposite row
+preserve
+    keep year iso3_o iso3_d tres tnat vres vnat
+    rename (tres tnat vres vnat) (s_tres s_tnat s_vres s_vnat)
+    rename (iso3_o iso3_d) (iso3_d iso3_o)
+    tempfile opp
+    save `opp'
+restore
+merge 1:1 year iso3_o iso3_d using `opp', keep(master match) nogen
+nflow step "C2_A1_08 mirror merge of same-direction residence/nationality series (keep master match)"
+foreach m in vis tour {
+    local s = cond("`m'" == "vis", "v", "t")
+    gen byte ov_`m' = !missing(`s'res, `s'nat, s_`s'res, s_`s'nat)
+    gen double mob_res_`m' = asinh(`s'res + s_`s'res) if ov_`m'
+    gen double mob_nat_`m' = asinh(`s'nat + s_`s'nat) if ov_`m'
+    label variable mob_res_`m' "IHS bilateral `m', residence series in both directions"
+    label variable mob_nat_`m' "IHS bilateral `m', nationality series in both directions"
+}
+
+*------------------------------------------------------------------------------ step 0 counts and (A)
+tempname OV
+postfile `OV' str5 measure str48 stat double value str120 note using "${OUT}/tables/A1_A1.5_m_overlap.dta", replace
+foreach m in vis tour {
+    quietly count if s_base_`m'
+    local nb = r(N)
+    quietly count if s_base_`m' & ov_`m'
+    local n0 = r(N)
+    quietly count if has_both_`m' & ov_`m'
+    local nhb = r(N)
+    display as result "C2_A1_08_STEP0 `m': baseline rows `nb'; with residence AND nationality in both directions `n0' (has_both rows with both: `nhb')"
+    post `OV' ("`m'") ("baseline_rows") (`nb') ("s_base_`m'")
+    post `OV' ("`m'") ("step0_baseline_rows_both_bases_both_directions") (`n0') ("residence and nationality values exist in both directions")
+    post `OV' ("`m'") ("step0_has_both_rows_both_bases_both_directions") (`nhb') ("")
+    * baseline construction = residence on the overlap (residence first in each direction)
+    gen double __d = abs(mob_bilat_`m' - mob_res_`m') if s_base_`m' & ov_`m'
+    quietly summarize __d
+    display as result "C2_A1_08 `m' max |baseline - residence-built| on the overlap = " r(max)
+    assert r(max) == 0 | r(N) == 0
+    drop __d
+    * identical observations: fixed point of the residence-built and nationality-built models
+    gen byte io_`m' = s_base_`m' & ov_`m'
+    local it 0
+    local done 0
+    while !`done' {
+        local ++it
+        if `it' > 20 error 430
+        quietly count if io_`m'
+        local n_start = r(N)
+        quietly ppmlhdfe v_ttl_k mob_res_`m' if io_`m', absorb(${FE}) vce(cluster pair_id)
+        assert e(converged) == 1
+        nflow est "C2_A1_08 `m' overlap fixed point iteration `it' residence"
+        quietly replace io_`m' = io_`m' & e(sample)
+        quietly ppmlhdfe v_ttl_k mob_nat_`m' if io_`m', absorb(${FE}) vce(cluster pair_id)
+        assert e(converged) == 1
+        nflow est "C2_A1_08 `m' overlap fixed point iteration `it' nationality"
+        quietly replace io_`m' = io_`m' & e(sample)
+        quietly count if io_`m'
+        if r(N) == `n_start' local done 1
+    }
+    quietly count if io_`m'
+    local nio = r(N)
+    post `OV' ("`m'") ("identical_observations_N") (`nio') ("fixed point after `it' iteration(s)")
+    post `OV' ("`m'") ("share_of_baseline_N") (`nio' / `nb') ("")
+    tempvar te
+    quietly egen byte `te' = tag(pair_id) if io_`m'
+    quietly count if `te' == 1
+    post `OV' ("`m'") ("directed_pairs") (r(N)) ("")
+    quietly levelsof iso3_o if io_`m', local(lo) clean
+    quietly levelsof iso3_d if io_`m', local(ld) clean
+    local le : list lo | ld
+    post `OV' ("`m'") ("economies") (`: word count `le'') ("`: word count `lo'' as exporter, `: word count `ld'' as importer: `le'")
+    quietly levelsof year if io_`m', local(ly) clean
+    post `OV' ("`m'") ("years") (`: word count `ly'') ("`ly'")
+    forvalues y = 2007/2021 {
+        quietly count if io_`m' & year == `y'
+        post `OV' ("`m'") ("rows_`y'") (r(N)) ("")
+    }
+    display as result "C2_A1_08 `m' identical observations N=`nio' share=" %6.4f `nio' / `nb' " economies=`: word count `le'' years: `ly'"
+    * baseline construction on the identical observations (= residence by construction; reported)
+    capture noisily ppmlhdfe v_ttl_k mob_bilat_`m' if io_`m', absorb(${FE}) vce(cluster pair_id)
+    A1_after, rc(`=_rc') item(A1.5) spec(m_overlap_base) sample(baseline rows with both bases in both directions, identical obs) mobility(`m') ///
+        terms(mob_bilat_`m') note("baseline construction (residence first) on the overlap; equals the residence-built measure there")
+    * residence vs nationality, separate fits and stacked test (identical observations). A1_stack does not
+    * handle an omitted (collinear) slope (it would post the omitted 0 as a stacked slope), so the
+    * identification of both slopes is checked first; if either is omitted, the separate fits are posted
+    * (TERM OMITTED) and the test is posted as not identified.
+    local sn "baseline rows with both bases in both directions, identical obs"
+    local nt "R1-2.12 fixed-observation measurement comparison; residence and nationality series of the snapshot master, corrected2x quarantines applied"
+    local idok 1
+    foreach x in res nat {
+        quietly ppmlhdfe v_ttl_k mob_`x'_`m' if io_`m', absorb(${FE}) vce(cluster pair_id)
+        assert e(converged) == 1
+        nflow est "C2_A1_08 `m' identification check `x'"
+        if _se[mob_`x'_`m'] == 0 | missing(_se[mob_`x'_`m']) local idok 0
+    }
+    if `idok' {
+        gen byte __s1 = io_`m'
+        gen byte __s2 = io_`m'
+        A1_stack, y1(v_ttl_k) x1(mob_res_`m') s1(__s1) y2(v_ttl_k) x2(mob_nat_`m') s2(__s2) ///
+            item(A1.5) spec(m_overlap) mobility(`m') lab1(residence) lab2(nationality) sample(`sn') note("`nt'")
+        drop __s1 __s2
+    }
+    else {
+        foreach x in res nat {
+            local lb = cond("`x'" == "res", "residence", "nationality")
+            capture noisily ppmlhdfe v_ttl_k mob_`x'_`m' if io_`m', absorb(${FE}) vce(cluster pair_id)
+            A1_after, rc(`=_rc') item(A1.5) spec(m_overlap_sep_`lb') sample(`lb') mobility(`m') terms(mob_`x'_`m') note("`nt'")
+        }
+        A1_posttest, item(A1.5) spec(m_overlap_test) sample(`sn') mobility(`m') term(residence_eq_nationality) ///
+            stat(.) df(.) p(.) nobs(`nio') note("NOT IDENTIFIED: the mobility slope is omitted (collinear with the fixed effects) in the separate fit(s) on the `nio' identical observations; no stacked test")
+    }
+}
+postclose `OV'
+preserve
+    use "${OUT}/tables/A1_A1.5_m_overlap.dta", clear
+    gen str11 vintage = "${VINTAGE}"
+    order vintage
+    format value %24.17g
+    export delimited using "${OUT}/tables/A1_A1.5_m_overlap.csv", replace datafmt
+restore
+erase "${OUT}/tables/A1_A1.5_m_overlap.dta"
+
+*------------------------------------------------------------------------------ (B) nesting violations
+gen byte __svk_rev = inlist(iso3_o, "SVK", "SVN")
+gen byte __svk_same = inlist(iso3_d, "SVK", "SVN")
+gen byte xn_any = hier_rev == 1 | hier_same == 1
+gen byte xn_same = (hier_rev == 1 & basis_mismatch_rev == 0) | (hier_same == 1 & basis_mismatch_same == 0)
+gen byte xn_same_nosk = (hier_rev == 1 & basis_mismatch_rev == 0 & !__svk_rev) | (hier_same == 1 & basis_mismatch_same == 0 & !__svk_same)
+gen byte r1b_vis = basis_rev_vis == basis_same_vis & inlist(basis_rev_vis, "residence", "nationality")
+gen byte r1b_tour = basis_rev_tour == basis_same_tour & inlist(basis_rev_tour, "residence", "nationality")
+tempname NS
+postfile `NS' str5 measure str24 sample str40 stat double(value base_N) str120 note using "${OUT}/tables/A1_A1.3_nesting.dta", replace
+foreach m in vis tour {
+    quietly count if s_base_`m'
+    local nb = r(N)
+    * direction cells with both series observed, by basis match (as A1_A1.3_hierarchy.csv s_base_*_dirs)
+    foreach bm in any same same_nosk {
+        local cells 0
+        local viol 0
+        foreach dir in rev same {
+            local c "s_base_`m' & !missing(hier_`dir')"
+            if "`bm'" != "any" local c "`c' & basis_mismatch_`dir' == 0"
+            if "`bm'" == "same_nosk" local c "`c' & !__svk_`dir'"
+            quietly count if `c'
+            local cells = `cells' + r(N)
+            quietly count if `c' & hier_`dir' == 1
+            local viol = `viol' + r(N)
+        }
+        post `NS' ("`m'") ("s_base_`m'") ("cells_both_series_`bm'") (`cells') (`nb') ("direction cells with tourists and visitors observed; `bm' basis match (same_nosk: reporter not SVK/SVN)")
+        post `NS' ("`m'") ("s_base_`m'") ("cells_visitors_lt_tourists_`bm'") (`viol') (`nb') ("hier_<dir> == 1")
+        local xv = cond("`bm'" == "any", "xn_any", cond("`bm'" == "same", "xn_same", "xn_same_nosk"))
+        quietly count if s_base_`m' & `xv'
+        post `NS' ("`m'") ("s_base_`m'") ("pairyears_with_violation_`bm'") (r(N)) (`nb') ("baseline rows with a violation in either direction")
+    }
+}
+* the panel-level count reported by A1_A1.3_hierarchy.csv (stored rows, same basis): reproduced
+gen byte __bothm = !missing(tourists, visitors)
+quietly count if __bothm & basis_mismatch_rev == 0
+local c0 = r(N)
+quietly count if __bothm & basis_mismatch_rev == 0 & hier_rev == 1
+local v0 = r(N)
+display as result "C2_A1_08 nesting panel stored rows same basis: `v0' of `c0' (A1_A1.3_hierarchy.csv panel_stored/same)"
+post `NS' ("all") ("panel stored rows") ("rows_same_basis_both_series") (`c0') (.) ("positive control: A1_A1.3_hierarchy.csv panel_stored same")
+post `NS' ("all") ("panel stored rows") ("visitors_lt_tourists_same_basis") (`v0') (.) ("")
+quietly count if __bothm & basis_mismatch_rev == 0 & hier_rev == 1 & !inlist(iso3_o, "SVK", "SVN")
+post `NS' ("all") ("panel stored rows") ("visitors_lt_tourists_same_basis_excl_SVK_SVN") (r(N)) (.) ("reporter iso3_o not SVK/SVN")
+quietly count if __bothm & basis_mismatch_rev == 0 & !inlist(iso3_o, "SVK", "SVN")
+post `NS' ("all") ("panel stored rows") ("rows_same_basis_both_series_excl_SVK_SVN") (r(N)) (.) ("")
+postclose `NS'
+preserve
+    use "${OUT}/tables/A1_A1.3_nesting.dta", clear
+    gen str11 vintage = "${VINTAGE}"
+    order vintage
+    format value base_N %24.17g
+    export delimited using "${OUT}/tables/A1_A1.3_nesting.csv", replace datafmt
+    list, noobs clean
+restore
+erase "${OUT}/tables/A1_A1.3_nesting.dta"
+* estimates excluding violation rows (any basis), baseline and same-basis (r1) restricted model
+foreach m in vis tour {
+    foreach x in xn_any xn_same {
+        quietly count if s_base_`m' & `x'
+        local eb = r(N)
+        capture noisily ppmlhdfe v_ttl_k mob_bilat_`m' if has_both_`m' & !`x', absorb(${FE}) vce(cluster pair_id)
+        A1_after, rc(`=_rc') item(A1.3) spec(nest_`x'_base) sample(has_both_`m' & !`x') mobility(`m') terms(mob_bilat_`m') ///
+            note("baseline excluding pair-years with visitors < tourists in either direction (`x'); baseline rows excluded `eb'")
+        capture noisily ppmlhdfe v_ttl_k mob_bilat_`m' if has_both_`m' & r1b_`m' & !`x', absorb(${FE}) vce(cluster pair_id)
+        A1_after, rc(`=_rc') item(A1.3) spec(nest_`x'_r1) sample(has_both_`m' & r1 & !`x') mobility(`m') terms(mob_bilat_`m') ///
+            note("same basis in both directions (A1.5 r1 restricted) excluding pair-years with visitors < tourists (`x')")
+    }
+}
+A1_close
+nflow report
+display as result "C2_A1_08_COMPLETE vintage=${VINTAGE} " c(current_date) " " c(current_time)
+log close

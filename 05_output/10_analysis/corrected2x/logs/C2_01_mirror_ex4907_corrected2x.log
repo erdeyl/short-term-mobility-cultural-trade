@@ -1,0 +1,10 @@
+raw mirror rows 1352946 files 330 empty 8
+PC rebuilt exporter 31-code LB = COPY v_ttl_exporter_lb_k on sparse rows: PASS | expected 0 rows beyond 1e-6+1e-9|v| | observed 0 of 178908 (max |diff| 9.313e-10)
+PC sparse rows only where export reporting is available: PASS | expected 0 | observed 0
+PC available, no sparse row -> COPY value 0: PASS | expected all 0 | observed 432246 of 432246
+PC not available -> COPY value missing: PASS | expected all missing | observed 212292 of 212292
+rebuilt dyad-years outside the master universe (dropped, as the original merge): 3391
+PC exporter: 31-code LB - 30-code = exporter HS 490700 (all rows): PASS | expected max |diff| <= 1e-6 | observed max 9.339e-10; missingness equal True
+PC COPY mirror importer v_ttl_k = corrected2x v_ttl31_k (31-code): PASS | expected all rows | observed True
+PC corrected2x v_ttl_k = v_ttl_ex4907: PASS | expected all rows | observed True
+MIRROR_EX4907=PASS rows 823446 exporter 490700 total k 50412702.47967502

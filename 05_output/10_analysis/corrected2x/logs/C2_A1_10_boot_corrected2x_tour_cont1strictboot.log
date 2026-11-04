@@ -1,0 +1,169 @@
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/C2_A1_10_boot_corrected2x_tour_cont1strictboot.log
+  log type:  text
+ opened on:   4 Nov 2026, 08:56:54
+
+. display as result "C2_A1_10_BOOT_BEGIN vintage=${VINTAGE} m=`m' variant=`variant' " c(current_date) " " c(current_time)
+C2_A1_10_BOOT_BEGIN vintage=corrected2x m=tour variant=cont1strictboot  4 Nov 2026 08:56:54
+
+. which did_multiplegt_dyn
+<USER_HOME>/Library/Application Support/Stata/ado/plus/d/did_multiplegt_dyn.ado
+
+. set type double
+
+. display as result "A1.10_STORAGE c(type)=`c(type)' tmpdir=`c(tmpdir)'"
+A1.10_STORAGE c(type)=double tmpdir=<TMP>
+
+. assert strpos("`c(tmpdir)'", " ") == 0
+
+. use year iso3_o iso3_d v_ttl_k pair_id mob_bilat_`m' s_base_`m' using "${PREPARED}", clear
+(PREP analysis base, vintage corrected2x, built  4 Nov 2026 08:33:39 by 01_prep.d)
+
+. nflow start using "${OUT}/A1_nflow_boot_`m'_`variant'.csv", replace expected(823446)
+nflow: log <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/A1_nflow_boot_tour_cont1strictboot.csv, start N =      823,446
+
+. A1_open A1_05b_`m'_`variant'
+(file <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/results/A1_parts/A1_05b_tour_cont1strictboot.dta not found)
+
+. keep if s_base_`m' == 1
+(797,107 observations deleted)
+
+. nflow step "C2_A1_10_boot keep baseline e(sample) rows (`m')"
+nflow:      823,446 ->       26,339  C2_A1_10_boot keep baseline e(sample) rows (tour)
+
+. isid pair_id year
+
+. local ifc ""
+
+. local smp "s_base_`m'"
+
+. local snote ""
+
+. if "`variant'" == "cont1strictboot" {
+.     preserve
+.         import delimited using "${OUT}/tables/A1_A1.10_classifier.csv", clear varnames(1) stringcols(_all) case(lower)
+(encoding automatically selected: ISO-8859-1)
+(5 vars, 199 obs)
+.         quietly levelsof rvalue if mobility == "`m'" & mode == "strict" & rname == "n_groups", local(ng) clean
+.         quietly levelsof rvalue if mobility == "`m'" & mode == "strict" & rname == "sfsd_case", local(sc) clean
+.     restore
+.     assert "`ng'" != ""
+.     * reconstruction verbatim from A1_05_did.do (strict-mode sample)
+.     bysort pair_id: egen byte __o07 = max(year == 2007)
+.     gen double __d07x = mob_bilat_`m' if year == 2007
+(24,971 missing values generated)
+.     bysort pair_id: egen double __d07 = max(__d07x)
+(8,982 missing values generated)
+.     bysort pair_id: egen int __Fg = min(cond(!missing(__d07) & mob_bilat_`m' != __d07, year, .))
+(8,982 missing values generated)
+.     bysort pair_id: egen int __nbefore = total(year < __Fg)
+.     gen byte __strict = __o07 == 1 & !missing(__Fg) & __nbefore == __Fg - 2007
+.     egen byte __tgs = tag(pair_id) if __strict
+.     quietly count if __tgs == 1
+.     local ngs = r(N)
+.     display as result "A1.10_STRICT_SAMPLE `m' reconstructed groups=`ngs' classifier n_groups=`ng' case=`sc'"
+A1.10_STRICT_SAMPLE tour reconstructed groups=1253 classifier n_groups=1253 case=continuous-baseline
+.     if `ngs' != real("`ng'") | "`sc'" != "continuous-baseline" {
+.         post A1post ("A1.10.dmdyn2_`variant'.`m'.Effect_1") ("${VINTAGE}") ("A1") ("A1.10") ("dmdyn2_`variant'") ("strict sample") ("`m'") ("Effect_1") ///
+>             (.) (.) (.) (.) (.) (.) (.) (.) (.) (.) ("pair_id") ("NOT RUN: strict sample `ngs' groups vs classifier `ng' (case `sc')")
+.         A1_close
+.         log close
+.         exit
+.     }
+.     local ifc "if __strict"
+.     local smp "strict sample"
+.     local snote "; strict-classifier sample (`ngs' groups)"
+. }
+
+. local vopt "continuous(1) bootstrap(100,20261103)"
+
+. timer clear 1
+
+. timer on 1
+
+. set varabbrev on
+
+. display as result "A1.10_VARABBREV on for did_multiplegt_dyn: package requires variable abbreviation, ado lines 2010-2014 (getmata scalars_XX* creates scalars_XX1, read as scalars_XX)"
+A1.10_VARABBREV on for did_multiplegt_dyn: package requires variable abbreviation, ado lines 2010-2014 (getmata scalars_XX* creates scalars_XX1, read as scalars_XX)
+
+. capture noisily did_multiplegt_dyn v_ttl_k pair_id year mob_bilat_`m' `ifc', effects(1) `vopt' cluster(pair_id) graph_off _no_updates
+You specified the continuous option without the bootstrap option. Please be aware that we recommend to compute bootstraped standard errors when you are using the continuous option as the analytical st
+> andard errors can be liberal in that case.
+
+
+--------------------------------------------------------------------------------
+             Estimation of treatment effects: Event-study effects
+--------------------------------------------------------------------------------
+
+             |  Estimate         SE      LB CI      UB CI          N  Switchers 
+-------------+-----------------------------------------------------------------
+    Effect_1 |  318.1565   782.5964  -1215.704   1852.017       1253       1250 
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+               Average cumulative (total) effect per treatment unit
+--------------------------------------------------------------------------------
+
+             |  Estimate         SE      LB CI      UB CI          N     Switch  x Periods 
+-------------+----------------------------------------------------------------------------
+  Av_tot_eff |  1597.041   3970.911  -6185.801   9379.883       1253       1250            
+--------------------------------------------------------------------------------
+Average number of time periods over which a treatment's effect is accumulated = 1
+
+
+The development of this package was funded by the European Union (ERC, REALLYCREDIBLE,GA N°101043899).
+
+. local rc = _rc
+
+. set varabbrev off
+
+. timer off 1
+
+. quietly timer list 1
+
+. display as result "C2_A1_10_BOOT_RC `m' `variant' rc=`rc' seconds=" r(t1)
+C2_A1_10_BOOT_RC tour cont1strictboot rc=0 seconds=20.456
+
+. if `rc' == 0 {
+.     local bb = e(Effect_1)
+.     local ss = e(se_effect_1)
+.     local nn = e(N_effect_1)
+.     local ns = e(N_switchers_effect_1)
+.     post A1post ("A1.10.dmdyn2_`variant'.`m'.Effect_1") ("${VINTAGE}") ("A1") ("A1.10") ("dmdyn2_`variant'") ("`smp'") ("`m'") ("Effect_1") ///
+>         (`bb') (`ss') (2 * normal(-abs(`bb' / `ss'))) (`bb' - invnormal(.975) * `ss') (`bb' + invnormal(.975) * `ss') ///
+>         (`nn') (.) (.) (.) (.) ("pair_id") ("did_multiplegt_dyn effects(1) `vopt', no placebo() (placebo() with bootstrap() stops with rc 122 when the placebo is not estimable: did_multiplegt_dyn.ad
+> o SSC 20260629 lines 1976-1989); se = bootstrap SE; fresh Stata process`snote'; level outcome; switchers=`ns'; N-switchers=`=`nn'-`ns''; double storage")
+. }
+
+. else {
+.     post A1post ("A1.10.dmdyn2_`variant'.`m'.Effect_1") ("${VINTAGE}") ("A1") ("A1.10") ("dmdyn2_`variant'") ("`smp'") ("`m'") ("Effect_1") ///
+>         (.) (.) (.) (.) (.) (.) (.) (.) (.) (.) ("pair_id") ("`=cond(`rc'==301, "FAILED rc=301: bootstrap(100,20261103) stops when a bootstrap sample draws too few of the 3 control (non-switching) o
+> bservations: the command reports insufficient observations and that no effect can be estimated (replay: authors' working notes); no seed search", "FAILED rc=`rc': did_multiplegt_dyn e
+> ffects(1) `vopt' (no placebo), fresh Stata process`snote'")'")
+. }
+
+. A1_close
+(file <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/results/A1_parts/A1_05b_tour_cont1strictboot.csv not found)
+file <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/results/A1_parts/A1_05b_tour_cont1strictboot.csv saved
+
+. nflow report
+
+  +---------------------------------------------------------------------------------------------------------------------------------------------------+
+  |       date       time    kind   n_before   n_after    change   reason                                                                             |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:56:54   start          .    823446         0   start: <PACKAGE_ROOT>/05_output/10_analysis/co.. |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 4 Nov 2026   08:56:54    step     823446     26339   -797107   C2_A1_10_boot keep baseline e(sample) rows (tour)                                  |
+  +---------------------------------------------------------------------------------------------------------------------------------------------------+
+
+. display as result "C2_A1_10_BOOT_COMPLETE vintage=${VINTAGE} m=`m' variant=`variant' " c(current_date) " " c(current_time)
+C2_A1_10_BOOT_COMPLETE vintage=corrected2x m=tour variant=cont1strictboot  4 Nov 2026 08:57:15
+
+. log close
+      name:  <unnamed>
+       log:  <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/C2_A1_10_boot_corrected2x_tour_cont1strictboot.log
+  log type:  text
+ closed on:   4 Nov 2026, 08:57:15
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -1,0 +1,4 @@
+comtrade_code,iso3,applies_to,source_url,quote
+490,TWN,reporter,https://uncomtrade.org/docs/taiwan-province-of-china-trade-data/,(code 490) in both reporter and partner
+490,TWN,partner,https://uncomtrade.org/docs/taiwan-province-of-china-trade-data/,(code 490) in both reporter and partner
+490,TWN,availability,https://uncomtrade.org/docs/taiwan-province-of-china-trade-data/,(code 490) in both reporter and partner

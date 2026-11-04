@@ -1,0 +1,84 @@
+COMMON DISSERTATION BASE | 2026-11-04T07:28:09.562538+00:00
+Project root: <PACKAGE_ROOT>
+Python: 3.13.2
+Requested stage: all
+pandas: 3.0.5
+numpy: 2.2.3
+openpyxl: 3.1.5
+PREFLIGHT=PASS
+
+Running 01_UN_Comtrade/00_validate_and_prepare.py
+COMTRADE_STRUCTURE_AND_SOURCE_ARCHIVE=PASS
+Archived trade CSV files: 330
+Project root: <PACKAGE_ROOT>
+
+Running 01_UN_Comtrade/01_build_reported_classification_audit.py
+REPORTED_CLASSIFICATION_AUDIT=PASS
+Reporter-years: 2660
+Unique reporters: 202
+
+Running 01_UN_Comtrade/02_build_HS_concordance.py
+HS_CONCORDANCE_BUILD=PASS
+Canonical target codes: 31
+Concordance rows: 219
+Ambiguous rows: 8
+Output folder: <PACKAGE_ROOT>/03_intermediate/00_common/01_UN_Comtrade/concordance
+
+Running 01_UN_Comtrade/04_build_comtrade_references.py
+COMTRADE_REFERENCE_BUILD=PASS
+Reporter reference rows: 255
+Partner reference rows: 310
+
+Running 01_UN_Comtrade/05_build_cultural_trade.py
+VALIDATION_LAYER_1_DOWNLOAD_COMPLETENESS=PASS
+RAW_SOURCE_SCHEMA_PREFLIGHT=PASS
+Read 50/330 raw CSV files
+Read 100/330 raw CSV files
+Read 150/330 raw CSV files
+LEGITIMATE_ZERO_ROW_FILE=PASS: HS_2014_H3_R1cdba346_C04e99238.csv
+Read 200/330 raw CSV files
+Read 250/330 raw CSV files
+Read 300/330 raw CSV files
+LEGITIMATE_ZERO_ROW_FILES=1
+VALIDATION_LAYER_2_RAW_QUERY_PROVENANCE=PASS
+VALIDATION_LAYER_3_OFFICIAL_CONCORDANCE=PASS
+VALIDATION_LAYER_4_VALUATION=PASS
+VALIDATION_LAYER_5_CATEGORY_AGGREGATION=PASS
+VALIDATION_LAYER_6_OUTPUT_ARCHIVE=PASS
+COMTRADE_CLEAN_REBUILD_COMPLETE=yes
+Final sparse rows: 211684
+Positive ambiguous v_8523 pool dyads: 5852
+Output folder: <PACKAGE_ROOT>/03_intermediate/00_common/01_UN_Comtrade/source_tables
+
+Running 02_Gravity/00_validate_cepii_source.py
+CEPII_SOURCE_ARCHIVE_AND_SCHEMA=PASS
+Replication root detected automatically:
+<PACKAGE_ROOT>
+Gravity variables: 87
+Countries variables: 12
+
+Running 02_Gravity/01_audit_and_extract_gravity_v202211.py
+Read 1,000,000 CEPII source rows
+Read 2,000,000 CEPII source rows
+Read 3,000,000 CEPII source rows
+Read 4,000,000 CEPII source rows
+CEPII_V202211_AUDIT_AND_EXTRACTION=PASS
+Source min/max year: 1948 2021
+Rows 2007-2021, all CEPII configurations: 952560
+Rows 2007-2021, existing-country pairs: 826968
+Rows in 2021 existing-country pairs: 55225
+2021 is read directly from Gravity_V202211.dta; no extension was performed.
+
+Running 03_base/01_build_common_base.py
+COMMON_BASE_BUILD=PASS
+Rows: 823446
+Base: <PACKAGE_ROOT>/03_intermediate/00_common/cultural_trade_gravity_base_2007_2021.dta
+Chapter datasets remain a separate downstream step.
+
+Running 03_base/02_validate_common_base.py
+COMMON_BASE_VALIDATION=PASS
+Saved base preserves the backbone and all matched source trade values.
+
+COMMON_BASE_BUILD_COMPLETE=yes
+Final base: <PACKAGE_ROOT>/03_intermediate/00_common/cultural_trade_gravity_base_2007_2021.dta
+Log: <PACKAGE_ROOT>/05_output/00_common/03_logs/common_latest.log

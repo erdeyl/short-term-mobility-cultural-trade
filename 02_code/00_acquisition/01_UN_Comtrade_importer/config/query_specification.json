@@ -1,0 +1,17 @@
+{
+  "typeCode": "C",
+  "freqCode": "A",
+  "classificationSearchCode": "HS",
+  "period_start": 2007,
+  "period_end": 2021,
+  "flowCode": "M",
+  "partner1": "all",
+  "partner2Code": 0,
+  "customsCode": "C00",
+  "motCode": 0,
+  "value_field": "primaryValue",
+  "currency": "current USD",
+  "analysis_scaling": "divide by 1000",
+  "mirror_reconciliation": "none",
+  "canonical_nomenclature": "H3 / HS2007"
+}

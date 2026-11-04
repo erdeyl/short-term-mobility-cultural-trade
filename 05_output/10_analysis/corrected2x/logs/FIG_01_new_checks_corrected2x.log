@@ -1,0 +1,324 @@
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/FIG_01_new_checks_corrected2x.log
+  log type:  text
+ opened on:   4 Nov 2026, 08:42:05
+
+. display as result "FIG_01_BEGIN vintage=${VINTAGE} " c(current_date) " " c(current_time)
+FIG_01_BEGIN vintage=corrected2x  4 Nov 2026 08:42:05
+
+. 
+. global FE "exporter_year importer_year pair_id"
+
+. 
+. use year iso3_o iso3_d v_ttl_k has_both_vis has_both_tour mob_bilat_vis mob_bilat_tour ///
+>     rev_vis_raw same_vis_raw rev_tour_raw same_tour_raw ///
+>     exporter_year importer_year pair_id unordered_pair_id using "${PREPARED}", clear
+(PREP analysis base, vintage corrected2x, built  4 Nov 2026 08:33:39 by 01_prep.d)
+
+. nflow start using "${OUT}/FIG_nflow.csv", replace expected(823446)
+nflow: log <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/FIG_nflow.csv, start N =      823,446
+
+. 
+. tempname H
+
+. postfile `H' str10 vintage str24 check str5 mobility double(b se ci_lo ci_hi N N_full n_singletons n_separated n_clusters) ///
+>     str20 cluster_var double(cutoff_rev cutoff_same n_candidate_excluded) str200 note using "${OUT}/FIG_new_checks.dta", replace
+(file <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/FIG_new_checks.dta not found)
+
+. 
+. * positive-control targets (submitted vintage): File S1 estimates.csv
+. local pc_unord_vis_b  0.24287017
+
+. local pc_unord_vis_se 0.091529384
+
+. local pc_unord_vis_N  20543
+
+. local pc_unord_tour_b  0.24048044
+
+. local pc_unord_tour_se 0.065553479
+
+. local pc_unord_tour_N  26682
+
+. local pc_trim_vis_b  0.12063225
+
+. local pc_trim_vis_se 0.070991881
+
+. local pc_trim_vis_N  20509
+
+. local pc_trim_tour_b  0.22182305
+
+. local pc_trim_tour_se 0.073281154
+
+. local pc_trim_tour_N  26626
+
+. 
+. foreach m in vis tour {
+  2.     * ---------------- (a) unordered-pair clusters
+.     ppmlhdfe v_ttl_k mob_bilat_`m' if has_both_`m', absorb($FE) vce(cluster unordered_pair_id)
+  3.     assert e(converged) == 1
+  4.     assert e(N_full) == e(N) + e(num_singletons) + e(num_separated)
+  5.     local b = _b[mob_bilat_`m']
+  6.     local se = _se[mob_bilat_`m']
+  7.     post `H' ("${VINTAGE}") ("unordered_pair_clusters") ("`m'") (`b') (`se') ///
+>         (`b' - invnormal(0.975) * `se') (`b' + invnormal(0.975) * `se') (e(N)) (e(N_full)) ///
+>         (e(num_singletons)) (e(num_separated)) (e(N_clust)) ("`e(clustvar)'") (.) (.) (.) ("")
+  8.     nflow est "FIG unordered-pair clusters `m'"
+  9.     display as result "FIG_FIT unordered `m' b=" %12.9f `b' " se=" %12.9f `se' " N=" e(N) " clusters=" e(N_clust)
+ 10.     if "${VINTAGE}" == "submitted" {
+ 11.         assert abs(`b' - `pc_unord_`m'_b') < 1e-5
+ 12.         assert abs(`se' - `pc_unord_`m'_se') < 1e-5
+ 13.         assert e(N) == `pc_unord_`m'_N'
+ 14.         display as result "FIG_PC_PASS unordered `m'"
+ 15.     }
+ 16. 
+.     * ---------------- (b) top 0.1% directional mobility values (File S1 T11, directional)
+.     quietly _pctile rev_`m'_raw if has_both_`m' & !missing(v_ttl_k), p(99.9)
+ 17.     local cut_rev = r(r1)
+ 18.     quietly _pctile same_`m'_raw if has_both_`m' & !missing(v_ttl_k), p(99.9)
+ 19.     local cut_same = r(r1)
+ 20.     tempvar trimmed
+ 21.     gen byte `trimmed' = has_both_`m' & !missing(v_ttl_k) & (rev_`m'_raw > `cut_rev' | same_`m'_raw > `cut_same')
+ 22.     quietly count if `trimmed'
+ 23.     local drop_n = r(N)
+ 24.     ppmlhdfe v_ttl_k mob_bilat_`m' if has_both_`m' & !`trimmed', absorb($FE) vce(cluster pair_id)
+ 25.     assert e(converged) == 1
+ 26.     assert e(N_full) == e(N) + e(num_singletons) + e(num_separated)
+ 27.     local b = _b[mob_bilat_`m']
+ 28.     local se = _se[mob_bilat_`m']
+ 29.     post `H' ("${VINTAGE}") ("trim_top0.1pct_directional") ("`m'") (`b') (`se') ///
+>         (`b' - invnormal(0.975) * `se') (`b' + invnormal(0.975) * `se') (e(N)) (e(N_full)) ///
+>         (e(num_singletons)) (e(num_separated)) (e(N_clust)) ("`e(clustvar)'") (`cut_rev') (`cut_same') (`drop_n') ///
+>         ("candidate pair-years dropped (above 99.9th pct of reverse or same-direction raw flow)")
+ 30.     nflow est "FIG trim top 0.1pct directional `m'"
+ 31.     display as result "FIG_FIT trim `m' b=" %12.9f `b' " se=" %12.9f `se' " N=" e(N) " cutoffs=" `cut_rev' " " `cut_same' " candidate_excl=" `drop_n'
+ 32.     if "${VINTAGE}" == "submitted" {
+ 33.         assert abs(`b' - `pc_trim_`m'_b') < 1e-5
+ 34.         assert abs(`se' - `pc_trim_`m'_se') < 1e-5
+ 35.         assert e(N) == `pc_trim_`m'_N'
+ 36.         display as result "FIG_PC_PASS trim `m'"
+ 37.     }
+ 38.     drop `trimmed'
+ 39. }
+(dropped 3282 observations that are either singletons or separated by a fixed effect)
+warning: dependent variable takes very low values after standardizing (1.1016e-09)
+Iteration 1:   deviance = 8.8670e+07  eps = .         iters = 10   tol = 1.0e-04  min(eta) =  -4.27  P   
+Iteration 2:   deviance = 3.5274e+07  eps = 1.51e+00  iters = 9    tol = 1.0e-04  min(eta) =  -5.86      
+Iteration 3:   deviance = 2.2523e+07  eps = 5.66e-01  iters = 9    tol = 1.0e-04  min(eta) =  -7.69      
+Iteration 4:   deviance = 1.8507e+07  eps = 2.17e-01  iters = 9    tol = 1.0e-04  min(eta) =  -9.88      
+Iteration 5:   deviance = 1.7253e+07  eps = 7.27e-02  iters = 9    tol = 1.0e-04  min(eta) = -11.93      
+Iteration 6:   deviance = 1.6873e+07  eps = 2.25e-02  iters = 9    tol = 1.0e-04  min(eta) = -13.73      
+Iteration 7:   deviance = 1.6762e+07  eps = 6.63e-03  iters = 8    tol = 1.0e-04  min(eta) = -15.17      
+Iteration 8:   deviance = 1.6731e+07  eps = 1.84e-03  iters = 7    tol = 1.0e-04  min(eta) = -16.08      
+Iteration 9:   deviance = 1.6723e+07  eps = 4.90e-04  iters = 5    tol = 1.0e-04  min(eta) = -17.33      
+Iteration 10:  deviance = 1.6720e+07  eps = 1.26e-04  iters = 4    tol = 1.0e-04  min(eta) = -19.24      
+Iteration 11:  deviance = 1.6720e+07  eps = 3.02e-05  iters = 2    tol = 1.0e-04  min(eta) = -21.00      
+Iteration 12:  deviance = 1.6720e+07  eps = 6.81e-06  iters = 7    tol = 1.0e-05  min(eta) = -22.51      
+Iteration 13:  deviance = 1.6720e+07  eps = 1.39e-06  iters = 9    tol = 1.0e-06  min(eta) = -23.71   S  
+Iteration 14:  deviance = 1.6720e+07  eps = 2.83e-07  iters = 4    tol = 1.0e-06  min(eta) = -24.56   S  
+Iteration 15:  deviance = 1.6720e+07  eps = 5.69e-08  iters = 15   tol = 1.0e-07  min(eta) = -25.14   S  
+Iteration 16:  deviance = 1.6720e+07  eps = 9.14e-09  iters = 8    tol = 1.0e-08  min(eta) = -25.39   S  
+Iteration 17:  deviance = 1.6720e+07  eps = 1.10e-09  iters = 15   tol = 1.0e-09  min(eta) = -25.43   S O
+------------------------------------------------------------------------------------------------------------
+(legend: p: exact partial-out   s: exact solver   h: step-halving   o: epsilon below tolerance)
+Converged in 17 iterations and 139 HDFE sub-iterations (tol = 1.0e-08)
+
+HDFE PPML regression                              No. of obs      =     20,598
+Absorbing 3 HDFE groups                           Residual df     =      1,664
+Statistics robust to heteroskedasticity           Wald chi2(1)    =       4.13
+Deviance             =  16719780.57               Prob > chi2     =     0.0422
+Log pseudolikelihood =   -8416409.5               Pseudo R2       =     0.9863
+
+Number of clusters (unordered_pair_id)=     1,665
+                   (Std. err. adjusted for 1,665 clusters in unordered_pair_id)
+-------------------------------------------------------------------------------
+              |               Robust
+      v_ttl_k | Coefficient  std. err.      z    P>|z|     [95% conf. interval]
+--------------+----------------------------------------------------------------
+mob_bilat_vis |   .1731302   .0852276     2.03   0.042     .0060873    .3401732
+        _cons |    9.46803   1.279893     7.40   0.000     6.959486    11.97657
+-------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+-------------------------------------------------------+
+   Absorbed FE | Categories  - Redundant  = Num. Coefs |
+---------------+---------------------------------------|
+ exporter_year |       936           1         935     |
+ importer_year |       855          15         840     |
+       pair_id |      2994        2994           0    *|
+-------------------------------------------------------+
+* = FE nested within cluster; treated as redundant for DoF computation
+nflow: estimation N =       20,598 (data N      823,446) FIG unordered-pair clusters vis | 
+FIG_FIT unordered vis b= 0.173130232 se= 0.085227551 N=20598 clusters=1665
+(dropped 3284 observations that are either singletons or separated by a fixed effect)
+warning: dependent variable takes very low values after standardizing (1.2828e-09)
+Iteration 1:   deviance = 7.9109e+07  eps = .         iters = 10   tol = 1.0e-04  min(eta) =  -4.25  P   
+Iteration 2:   deviance = 3.1706e+07  eps = 1.50e+00  iters = 9    tol = 1.0e-04  min(eta) =  -5.85      
+Iteration 3:   deviance = 2.0345e+07  eps = 5.58e-01  iters = 9    tol = 1.0e-04  min(eta) =  -7.66      
+Iteration 4:   deviance = 1.6780e+07  eps = 2.13e-01  iters = 9    tol = 1.0e-04  min(eta) =  -9.85      
+Iteration 5:   deviance = 1.5670e+07  eps = 7.08e-02  iters = 9    tol = 1.0e-04  min(eta) = -11.88      
+Iteration 6:   deviance = 1.5336e+07  eps = 2.18e-02  iters = 9    tol = 1.0e-04  min(eta) = -13.65      
+Iteration 7:   deviance = 1.5239e+07  eps = 6.37e-03  iters = 8    tol = 1.0e-04  min(eta) = -15.06      
+Iteration 8:   deviance = 1.5212e+07  eps = 1.76e-03  iters = 7    tol = 1.0e-04  min(eta) = -15.91      
+Iteration 9:   deviance = 1.5205e+07  eps = 4.67e-04  iters = 5    tol = 1.0e-04  min(eta) = -17.32      
+Iteration 10:  deviance = 1.5203e+07  eps = 1.19e-04  iters = 4    tol = 1.0e-04  min(eta) = -19.21      
+Iteration 11:  deviance = 1.5203e+07  eps = 2.83e-05  iters = 2    tol = 1.0e-04  min(eta) = -20.97      
+Iteration 12:  deviance = 1.5203e+07  eps = 6.34e-06  iters = 7    tol = 1.0e-05  min(eta) = -22.50      
+Iteration 13:  deviance = 1.5203e+07  eps = 1.28e-06  iters = 9    tol = 1.0e-06  min(eta) = -23.66   S  
+Iteration 14:  deviance = 1.5203e+07  eps = 2.63e-07  iters = 4    tol = 1.0e-06  min(eta) = -24.49   S  
+Iteration 15:  deviance = 1.5203e+07  eps = 5.23e-08  iters = 16   tol = 1.0e-07  min(eta) = -25.04   S  
+Iteration 16:  deviance = 1.5203e+07  eps = 8.11e-09  iters = 7    tol = 1.0e-08  min(eta) = -25.26   S  
+Iteration 17:  deviance = 1.5203e+07  eps = 9.52e-10  iters = 13   tol = 1.0e-09  min(eta) = -25.28   S O
+------------------------------------------------------------------------------------------------------------
+(legend: p: exact partial-out   s: exact solver   h: step-halving   o: epsilon below tolerance)
+Converged in 17 iterations and 137 HDFE sub-iterations (tol = 1.0e-08)
+
+HDFE PPML regression                              No. of obs      =     20,568
+Absorbing 3 HDFE groups                           Residual df     =      2,989
+Statistics robust to heteroskedasticity           Wald chi2(1)    =       1.08
+Deviance             =  15202624.66               Prob > chi2     =     0.2989
+Log pseudolikelihood = -7657606.668               Pseudo R2       =     0.9857
+
+Number of clusters (pair_id)=      2,990
+                             (Std. err. adjusted for 2,990 clusters in pair_id)
+-------------------------------------------------------------------------------
+              |               Robust
+      v_ttl_k | Coefficient  std. err.      z    P>|z|     [95% conf. interval]
+--------------+----------------------------------------------------------------
+mob_bilat_vis |   .0663946   .0639188     1.04   0.299    -.0588839    .1916732
+        _cons |    10.9058   .9297671    11.73   0.000     9.083493    12.72811
+-------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+-------------------------------------------------------+
+   Absorbed FE | Categories  - Redundant  = Num. Coefs |
+---------------+---------------------------------------|
+ exporter_year |       936           1         935     |
+ importer_year |       855          15         840     |
+       pair_id |      2990        2990           0    *|
+-------------------------------------------------------+
+* = FE nested within cluster; treated as redundant for DoF computation
+nflow: estimation N =       20,568 (data N      823,446) FIG trim top 0.1pct directional vis | 
+FIG_FIT trim vis b= 0.066394609 se= 0.063918802 N=20568 cutoffs=27923219 27923219 candidate_excl=28
+(dropped 6132 observations that are either singletons or separated by a fixed effect)
+warning: dependent variable takes very low values after standardizing (9.2837e-11)
+Iteration 1:   deviance = 9.6403e+07  eps = .         iters = 8    tol = 1.0e-04  min(eta) =  -5.05  P   
+Iteration 2:   deviance = 3.1226e+07  eps = 2.09e+00  iters = 8    tol = 1.0e-04  min(eta) =  -6.58      
+Iteration 3:   deviance = 1.5727e+07  eps = 9.85e-01  iters = 8    tol = 1.0e-04  min(eta) =  -8.30      
+Iteration 4:   deviance = 1.0723e+07  eps = 4.67e-01  iters = 7    tol = 1.0e-04  min(eta) = -10.04      
+Iteration 5:   deviance = 9.1008e+06  eps = 1.78e-01  iters = 6    tol = 1.0e-04  min(eta) = -11.65      
+Iteration 6:   deviance = 8.5926e+06  eps = 5.91e-02  iters = 6    tol = 1.0e-04  min(eta) = -13.20      
+Iteration 7:   deviance = 8.4399e+06  eps = 1.81e-02  iters = 6    tol = 1.0e-04  min(eta) = -14.70      
+Iteration 8:   deviance = 8.3958e+06  eps = 5.26e-03  iters = 5    tol = 1.0e-04  min(eta) = -16.31      
+Iteration 9:   deviance = 8.3835e+06  eps = 1.46e-03  iters = 5    tol = 1.0e-04  min(eta) = -18.03      
+Iteration 10:  deviance = 8.3804e+06  eps = 3.78e-04  iters = 4    tol = 1.0e-04  min(eta) = -19.32      
+Iteration 11:  deviance = 8.3796e+06  eps = 9.17e-05  iters = 3    tol = 1.0e-04  min(eta) = -20.39      
+Iteration 12:  deviance = 8.3794e+06  eps = 2.15e-05  iters = 4    tol = 1.0e-05  min(eta) = -21.34      
+Iteration 13:  deviance = 8.3794e+06  eps = 4.91e-06  iters = 2    tol = 1.0e-05  min(eta) = -22.11   S  
+Iteration 14:  deviance = 8.3794e+06  eps = 1.07e-06  iters = 4    tol = 1.0e-06  min(eta) = -22.61   S  
+Iteration 15:  deviance = 8.3794e+06  eps = 2.09e-07  iters = 3    tol = 1.0e-06  min(eta) = -23.08   S  
+Iteration 16:  deviance = 8.3794e+06  eps = 3.51e-08  iters = 3    tol = 1.0e-07  min(eta) = -23.64   S  
+Iteration 17:  deviance = 8.3794e+06  eps = 4.95e-09  iters = 4    tol = 1.0e-08  min(eta) = -24.48   S  
+Iteration 18:  deviance = 8.3794e+06  eps = 5.38e-10  iters = 3    tol = 1.0e-09  min(eta) = -25.12   S O
+------------------------------------------------------------------------------------------------------------
+(legend: p: exact partial-out   s: exact solver   h: step-halving   o: epsilon below tolerance)
+Converged in 18 iterations and 89 HDFE sub-iterations (tol = 1.0e-08)
+
+HDFE PPML regression                              No. of obs      =     26,339
+Absorbing 3 HDFE groups                           Residual df     =      1,687
+Statistics robust to heteroskedasticity           Wald chi2(1)    =       8.72
+Deviance             =  8379372.011               Prob > chi2     =     0.0032
+Log pseudolikelihood = -4250214.065               Pseudo R2       =     0.9955
+
+Number of clusters (unordered_pair_id)=     1,688
+                    (Std. err. adjusted for 1,688 clusters in unordered_pair_id)
+--------------------------------------------------------------------------------
+               |               Robust
+       v_ttl_k | Coefficient  std. err.      z    P>|z|     [95% conf. interval]
+---------------+----------------------------------------------------------------
+mob_bilat_tour |   .1804292   .0611126     2.95   0.003     .0606508    .3002077
+         _cons |    10.1831   .9730665    10.46   0.000     8.275929    12.09028
+--------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+-------------------------------------------------------+
+   Absorbed FE | Categories  - Redundant  = Num. Coefs |
+---------------+---------------------------------------|
+ exporter_year |      1441           1        1440     |
+ importer_year |      1297          15        1282     |
+       pair_id |      2915        2915           0    *|
+-------------------------------------------------------+
+* = FE nested within cluster; treated as redundant for DoF computation
+nflow: estimation N =       26,339 (data N      823,446) FIG unordered-pair clusters tour | 
+FIG_FIT unordered tour b= 0.180429225 se= 0.061112577 N=26339 clusters=1688
+(dropped 6134 observations that are either singletons or separated by a fixed effect)
+warning: dependent variable takes very low values after standardizing (1.3236e-10)
+Iteration 1:   deviance = 6.7183e+07  eps = .         iters = 10   tol = 1.0e-04  min(eta) =  -5.06  P   
+Iteration 2:   deviance = 2.3087e+07  eps = 1.91e+00  iters = 11   tol = 1.0e-04  min(eta) =  -6.72      
+Iteration 3:   deviance = 1.2598e+07  eps = 8.33e-01  iters = 10   tol = 1.0e-04  min(eta) =  -8.43      
+Iteration 4:   deviance = 9.2345e+06  eps = 3.64e-01  iters = 9    tol = 1.0e-04  min(eta) = -10.14      
+Iteration 5:   deviance = 8.1570e+06  eps = 1.32e-01  iters = 9    tol = 1.0e-04  min(eta) = -11.69      
+Iteration 6:   deviance = 7.8243e+06  eps = 4.25e-02  iters = 7    tol = 1.0e-04  min(eta) = -13.53      
+Iteration 7:   deviance = 7.7257e+06  eps = 1.28e-02  iters = 6    tol = 1.0e-04  min(eta) = -14.82      
+Iteration 8:   deviance = 7.6976e+06  eps = 3.65e-03  iters = 5    tol = 1.0e-04  min(eta) = -16.50      
+Iteration 9:   deviance = 7.6899e+06  eps = 9.91e-04  iters = 4    tol = 1.0e-04  min(eta) = -18.02      
+Iteration 10:  deviance = 7.6880e+06  eps = 2.50e-04  iters = 4    tol = 1.0e-04  min(eta) = -19.39      
+Iteration 11:  deviance = 7.6876e+06  eps = 5.97e-05  iters = 2    tol = 1.0e-04  min(eta) = -20.48      
+Iteration 12:  deviance = 7.6875e+06  eps = 1.39e-05  iters = 4    tol = 1.0e-05  min(eta) = -21.32      
+Iteration 13:  deviance = 7.6874e+06  eps = 3.13e-06  iters = 2    tol = 1.0e-05  min(eta) = -21.93   S  
+Iteration 14:  deviance = 7.6874e+06  eps = 6.60e-07  iters = 5    tol = 1.0e-06  min(eta) = -22.30   S  
+Iteration 15:  deviance = 7.6874e+06  eps = 1.23e-07  iters = 4    tol = 1.0e-07  min(eta) = -22.79   S  
+Iteration 16:  deviance = 7.6874e+06  eps = 1.94e-08  iters = 3    tol = 1.0e-07  min(eta) = -23.71   S  
+Iteration 17:  deviance = 7.6874e+06  eps = 2.55e-09  iters = 4    tol = 1.0e-08  min(eta) = -24.49   S  
+Iteration 18:  deviance = 7.6874e+06  eps = 2.31e-10  iters = 2    tol = 1.0e-09  min(eta) = -25.02   S O
+------------------------------------------------------------------------------------------------------------
+(legend: p: exact partial-out   s: exact solver   h: step-halving   o: epsilon below tolerance)
+Converged in 18 iterations and 101 HDFE sub-iterations (tol = 1.0e-08)
+
+HDFE PPML regression                              No. of obs      =     26,283
+Absorbing 3 HDFE groups                           Residual df     =      2,912
+Statistics robust to heteroskedasticity           Wald chi2(1)    =       2.20
+Deviance             =  7687422.301               Prob > chi2     =     0.1381
+Log pseudolikelihood = -3903800.301               Pseudo R2       =     0.9938
+
+Number of clusters (pair_id)=      2,913
+                              (Std. err. adjusted for 2,913 clusters in pair_id)
+--------------------------------------------------------------------------------
+               |               Robust
+       v_ttl_k | Coefficient  std. err.      z    P>|z|     [95% conf. interval]
+---------------+----------------------------------------------------------------
+mob_bilat_tour |   .1078231    .072702     1.48   0.138    -.0346702    .2503165
+         _cons |    10.8825   1.090969     9.98   0.000     8.744237    13.02076
+--------------------------------------------------------------------------------
+
+Absorbed degrees of freedom:
+-------------------------------------------------------+
+   Absorbed FE | Categories  - Redundant  = Num. Coefs |
+---------------+---------------------------------------|
+ exporter_year |      1441           1        1440     |
+ importer_year |      1297          15        1282     |
+       pair_id |      2913        2913           0    *|
+-------------------------------------------------------+
+* = FE nested within cluster; treated as redundant for DoF computation
+nflow: estimation N =       26,283 (data N      823,446) FIG trim top 0.1pct directional tour | 
+FIG_FIT trim tour b= 0.107823147 se= 0.072702013 N=26283 cutoffs=17154718 17154718 candidate_excl=54
+
+. postclose `H'
+
+. use "${OUT}/FIG_new_checks.dta", clear
+
+. format b se ci_lo ci_hi %24.17g
+
+. export delimited using "${OUT}/FIG_new_checks.csv", replace datafmt
+(file <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/FIG_new_checks.csv not found)
+file <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/FIG_new_checks.csv saved
+
+. display as result "FIG_01_DONE " c(current_date) " " c(current_time)
+FIG_01_DONE  4 Nov 2026 08:42:07
+
+. log close
+      name:  <unnamed>
+       log:  <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/FIG_01_new_checks_corrected2x.log
+  log type:  text
+ closed on:   4 Nov 2026, 08:42:07
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

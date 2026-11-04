@@ -1,0 +1,16 @@
+{
+  "snapshot_date": "2026-08-24",
+  "years": [
+    2007,
+    2021
+  ],
+  "raw_trade_csv_files": 330,
+  "raw_trade_rows": 1611818,
+  "trade_download_manifest_rows": 330,
+  "reporter_years": 2660,
+  "concordance_rows": 219,
+  "ambiguous_mapping_rows": 8,
+  "sparse_dyad_year_rows": 211684,
+  "positive_ambiguous_pool_dyads": 5852,
+  "explicit_primary_zeros": 4
+}

@@ -1,0 +1,8 @@
+Independent Variables,Language (Visitors),Language (Tourists),Cultural Distance (Visitors),Cultural Distance (Tourists),source
+Bilateral visitors,0.160** (0.081),,0.234*** (0.087),,"out/corrected2x/pc/tables/table5_moderators.csv ['Bilateral visitors' col (1)]; out/corrected2x/results/A2.csv line 427 (item A2.5, spec cd_own_real, term mobility slope at realized-sample mean) (cultural distance centred on the realized estimation sample)"
+Visitors × common language,-0.093** (0.042),,,,out/corrected2x/pc/tables/table5_moderators.csv ['Visitors x common language' col (1)]
+Bilateral tourists,,0.172*** (0.050),,0.201*** (0.064),"out/corrected2x/pc/tables/table5_moderators.csv ['Bilateral tourists' col (2)]; out/corrected2x/results/A2.csv line 440 (item A2.5, spec cd_own_real, term mobility slope at realized-sample mean) (cultural distance centred on the realized estimation sample)"
+Tourists × common language,,0.022 (0.057),,,out/corrected2x/pc/tables/table5_moderators.csv ['Tourists x common language' col (2)]
+Visitors × cultural distance,,,0.048** (0.024),,out/corrected2x/pc/tables/table5_moderators.csv ['Visitors x cultural distance' col (3)]
+Tourists × cultural distance,,,,-0.033 (0.023),out/corrected2x/pc/tables/table5_moderators.csv ['Tourists x cultural distance' col (4)]
+N,"20,598","26,159","11,971","10,932",out/corrected2x/pc/tables/table5_moderators.csv [N col (1); N col (2); N col (3); N col (4)]

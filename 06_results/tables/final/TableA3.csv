@@ -1,0 +1,3 @@
+Mobility Measure,Original β,Original SE,Corrected β,Corrected SE,Corrected p-value,Observations (N),source
+Visitors,0.173,0.084,0.188,0.109,0.082,"20,598",out/corrected2x/C2_bias_results.csv (original 03_ppml_bias_correction.do run by C2_02_bias.do) row visitors
+Tourists,0.180,0.058,0.173,0.067,0.010,"26,339",out/corrected2x/C2_bias_results.csv (original 03_ppml_bias_correction.do run by C2_02_bias.do) row tourists

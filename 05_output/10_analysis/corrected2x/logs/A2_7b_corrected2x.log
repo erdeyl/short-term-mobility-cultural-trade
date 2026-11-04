@@ -1,0 +1,204 @@
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/A2_7b_corrected2x.log
+  log type:  text
+ opened on:   4 Nov 2026, 08:41:26
+
+. display as result "A2_7b_BEGIN vintage=${VINTAGE} " c(current_date) " " c(current_time)
+A2_7b_BEGIN vintage=corrected2x  4 Nov 2026 08:41:26
+
+. use "${OUT}/A2_work.dta", clear
+(PREP analysis base, vintage corrected2x, built  4 Nov 2026 08:33:39 by 01_prep.d)
+
+. nflow start using "${OUT}/A2_nflow.csv", append
+nflow: log <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/A2_nflow.csv, start N =       56,500
+
+. a2_open "${OUT}/results/A2_7b.dta"
+(file <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/results/A2_7b.dta not found)
+
+. a2_topen "${OUT}/tables/A2_A2.7b.dta"
+(file <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/tables/A2_A2.7b.dta not found)
+
+. local FE "exporter_year importer_year pair_id"
+
+. 
+. gen double v_noncult_k = tradeflow_comtrade_d - v_ttl_k if !missing(tradeflow_comtrade_d, v_ttl_k) & tradeflow_comtrade_d - v_ttl_k >= 0
+(12,720 missing values generated)
+
+. label variable v_noncult_k "Non-cultural imports: CEPII tradeflow_comtrade_d - v_ttl_k where >= 0 (1000 USD)"
+
+. gen double v_nomedia = v_ttl_k - v_8523_k if !missing(v_ttl_k, v_8523_k)
+(3,356 missing values generated)
+
+. label variable v_nomedia "Cultural trade without recorded media: v_ttl_k - v_8523_k (1000 USD)"
+
+. quietly count if v_nomedia < 0
+
+. assert r(N) == 0
+
+. foreach Y in v_unesco_b v_nomedia {
+  2.     local ytag = cond("`Y'" == "v_unesco_b", "unesco_b", "nomedia")
+  3.     local ylab = cond("`Y'" == "v_unesco_b", "Narrow-B basket", "no recorded media")
+  4. 
+. 
+.     foreach m in vis tour {
+  5.         local mlab = cond("`m'" == "vis", "visitors", "tourists")
+  6.         local smp "s_base_`m'"
+  7.         * reference: the outcome on baseline rows with year <= 2020 (no benchmark restriction)
+.         quietly ppmlhdfe `Y' mob_bilat_`m' if `smp' & year <= 2020, absorb(`FE') vce(cluster pair_id)
+  8.         a2_chk "A2.7b `ytag' `mlab' baseline rows year<=2020"
+  9.         a2_post, item(A2.7b) spec(A2.7b_`ytag'_year_le_2020) sample(`smp' & year<=2020) mobility(`mlab') term(mob_bilat_`m') label(`ylab')
+ 10.         foreach bm in tradeflow_comtrade_d v_noncult_k {
+ 11.             local bl = cond("`bm'" == "tradeflow_comtrade_d", "total imports (CEPII Comtrade)", "non-cultural imports")
+ 12.             capture drop bm_`bm'_`m'
+ 13.             gen byte bm_`bm'_`m' = `smp' & year <= 2020 & !missing(`bm', `Y')
+ 14.             quietly count if bm_`bm'_`m'
+ 15.             local nc = r(N)
+ 16.             a2_fix, touse(bm_`bm'_`m') models("`Y' mob_bilat_`m' ; `bm' mob_bilat_`m'")
+ 17.             local it = ${A2_FIX_IT}
+ 18.             quietly summarize `Y' if bm_`bm'_`m', meanonly
+ 19.             local sc = r(sum)
+ 20.             quietly summarize tradeflow_comtrade_d if bm_`bm'_`m', meanonly
+ 21.             local st = r(sum)
+ 22.             a2_tpost, item(A2.7b) table(`ytag'_share) sample(identical rows `bm') mobility(`mlab') stat(outcome_share_of_total_pct) value(`=100*`sc'/`st'') n(`r(N)') note("100 * sum(`Y') / sum(tr
+> adeflow_comtrade_d)")
+ 23.             tempvar r
+ 24.             gen double `r' = `Y' / tradeflow_comtrade_d if bm_`bm'_`m'
+ 25.             quietly summarize `r', detail
+ 26.             a2_tpost, item(A2.7b) table(`ytag'_share) sample(identical rows `bm') mobility(`mlab') stat(median_rowwise_outcome_share) value(`r(p50)') n(`r(N)')
+ 27.             a2_tpost, item(A2.7b) table(`ytag'_share) sample(identical rows `bm') mobility(`mlab') stat(p99_rowwise_outcome_share) value(`r(p99)') n(`r(N)')
+ 28.             drop `r'
+ 29.             preserve
+ 30.             a2_stack, touse(bm_`bm'_`m') ys(`Y' `bm') xs("mob_bilat_`m' ; mob_bilat_`m'") cluster(pair_id)
+ 31.             local nu = ${A2_NUNIQ}
+ 32.             a2_post, item(A2.7b) spec(A2.7b_`ytag'_`bm'_identical_rows) sample(`smp' & year<=2020 & `bm' observed) mobility(`mlab') term(s1_1) label(`ylab') nuniq(`nu') note("outcome `Y'; candida
+> te rows `nc'; fixed-point iterations `it'")
+ 33.             a2_post, item(A2.7b) spec(A2.7b_`ytag'_`bm'_identical_rows) sample(`smp' & year<=2020 & `bm' observed) mobility(`mlab') term(s2_1) label(`bl') nuniq(`nu')
+ 34.             a2_post, item(A2.7b) spec(A2.7b_`ytag'_`bm'_identical_rows) sample(`smp' & year<=2020 & `bm' observed) mobility(`mlab') term(s1_1 - s2_1) label(`ylab' - benchmark) nuniq(`nu')
+ 35.             quietly test s1_1 = s2_1
+ 36.             a2_posttest, item(A2.7b) spec(A2.7b_`ytag'_`bm'_identical_rows) sample(`smp' & year<=2020 & `bm' observed) mobility(`mlab') label(test `ytag' = benchmark) chi2(`r(chi2)') df(`r(df)') 
+> p(`r(p)') nuniq(`nu')
+ 37.             display as result "A2_7b `ytag' `m' `bm' N=`nu' outcome=" %9.6f _b[s1_1] " benchmark=" %9.6f _b[s2_1] " gap=${A2_STACK_GAP}"
+ 38.             restore
+ 39.             nflow step "restore: after A2.7b `ytag' `bm' `mlab' stacked test"
+ 40.         }
+ 41.     }
+ 42. }
+nflow: estimation N =       16,785 (data N       56,500) A2.7b unesco_b visitors baseline rows year<=2020 | 
+nflow: estimation N =       16,373 (data N       56,500) a2_fix iteration 1: v_unesco_b mob_bilat_vis  | 
+nflow: estimation N =       16,373 (data N       56,500) a2_fix iteration 1: tradeflow_comtrade_d mob_bilat_vis | 
+nflow: estimation N =       16,373 (data N       56,500) a2_fix iteration 2: v_unesco_b mob_bilat_vis  | 
+nflow: estimation N =       16,373 (data N       56,500) a2_fix iteration 2: tradeflow_comtrade_d mob_bilat_vis | 
+(40,127 missing values generated)
+nflow: estimation N =       16,373 (data N       56,500) a2_stack separate fit 1: v_unesco_b on mob_bilat_vis  | 
+nflow: estimation N =       16,373 (data N       56,500) a2_stack separate fit 2: tradeflow_comtrade_d on mob_bilat_vis | 
+nflow:       56,500 ->       16,373  a2_stack: keep the 16373 common rows (inside caller's preserve)
+nflow:       16,373 ->       32,746  a2_stack: expand to 2 blocks
+nflow: estimation N =       32,746 (data N       32,746) a2_stack stacked fit: 2 blocks (v_unesco_b tradeflow_comtrade_d), cluster pair_id | 
+A2_7b unesco_b vis tradeflow_comtrade_d N=16373 outcome= 0.405936 benchmark= 0.182848 gap=3.24475557534e-10
+nflow:       32,746 ->       56,500  restore: after A2.7b unesco_b tradeflow_comtrade_d visitors stacked test
+nflow: estimation N =       16,372 (data N       56,500) a2_fix iteration 1: v_unesco_b mob_bilat_vis  | 
+nflow: estimation N =       16,372 (data N       56,500) a2_fix iteration 1: v_noncult_k mob_bilat_vis | 
+nflow: estimation N =       16,372 (data N       56,500) a2_fix iteration 2: v_unesco_b mob_bilat_vis  | 
+nflow: estimation N =       16,372 (data N       56,500) a2_fix iteration 2: v_noncult_k mob_bilat_vis | 
+(40,128 missing values generated)
+nflow: estimation N =       16,372 (data N       56,500) a2_stack separate fit 1: v_unesco_b on mob_bilat_vis  | 
+nflow: estimation N =       16,372 (data N       56,500) a2_stack separate fit 2: v_noncult_k on mob_bilat_vis | 
+nflow:       56,500 ->       16,372  a2_stack: keep the 16372 common rows (inside caller's preserve)
+nflow:       16,372 ->       32,744  a2_stack: expand to 2 blocks
+nflow: estimation N =       32,744 (data N       32,744) a2_stack stacked fit: 2 blocks (v_unesco_b v_noncult_k), cluster pair_id | 
+A2_7b unesco_b vis v_noncult_k N=16372 outcome= 0.405936 benchmark= 0.183202 gap=3.21722537500e-10
+nflow:       32,744 ->       56,500  restore: after A2.7b unesco_b v_noncult_k visitors stacked test
+nflow: estimation N =       22,532 (data N       56,500) A2.7b unesco_b tourists baseline rows year<=2020 | 
+nflow: estimation N =       21,136 (data N       56,500) a2_fix iteration 1: v_unesco_b mob_bilat_tour  | 
+nflow: estimation N =       21,136 (data N       56,500) a2_fix iteration 1: tradeflow_comtrade_d mob_bilat_tour | 
+nflow: estimation N =       21,136 (data N       56,500) a2_fix iteration 2: v_unesco_b mob_bilat_tour  | 
+nflow: estimation N =       21,136 (data N       56,500) a2_fix iteration 2: tradeflow_comtrade_d mob_bilat_tour | 
+(35,364 missing values generated)
+nflow: estimation N =       21,136 (data N       56,500) a2_stack separate fit 1: v_unesco_b on mob_bilat_tour  | 
+nflow: estimation N =       21,136 (data N       56,500) a2_stack separate fit 2: tradeflow_comtrade_d on mob_bilat_tour | 
+nflow:       56,500 ->       21,136  a2_stack: keep the 21136 common rows (inside caller's preserve)
+nflow:       21,136 ->       42,272  a2_stack: expand to 2 blocks
+nflow: estimation N =       42,272 (data N       42,272) a2_stack stacked fit: 2 blocks (v_unesco_b tradeflow_comtrade_d), cluster pair_id | 
+A2_7b unesco_b tour tradeflow_comtrade_d N=21136 outcome= 0.153949 benchmark= 0.022817 gap=3.02179670175e-11
+nflow:       42,272 ->       56,500  restore: after A2.7b unesco_b tradeflow_comtrade_d tourists stacked test
+nflow: estimation N =       21,118 (data N       56,500) a2_fix iteration 1: v_unesco_b mob_bilat_tour  | 
+nflow: estimation N =       21,118 (data N       56,500) a2_fix iteration 1: v_noncult_k mob_bilat_tour | 
+nflow: estimation N =       21,118 (data N       56,500) a2_fix iteration 2: v_unesco_b mob_bilat_tour  | 
+nflow: estimation N =       21,118 (data N       56,500) a2_fix iteration 2: v_noncult_k mob_bilat_tour | 
+(35,382 missing values generated)
+nflow: estimation N =       21,118 (data N       56,500) a2_stack separate fit 1: v_unesco_b on mob_bilat_tour  | 
+nflow: estimation N =       21,118 (data N       56,500) a2_stack separate fit 2: v_noncult_k on mob_bilat_tour | 
+nflow:       56,500 ->       21,118  a2_stack: keep the 21118 common rows (inside caller's preserve)
+nflow:       21,118 ->       42,236  a2_stack: expand to 2 blocks
+nflow: estimation N =       42,236 (data N       42,236) a2_stack stacked fit: 2 blocks (v_unesco_b v_noncult_k), cluster pair_id | 
+A2_7b unesco_b tour v_noncult_k N=21118 outcome= 0.153941 benchmark= 0.021041 gap=4.32642810466e-11
+nflow:       42,236 ->       56,500  restore: after A2.7b unesco_b v_noncult_k tourists stacked test
+nflow: estimation N =       17,156 (data N       56,500) A2.7b nomedia visitors baseline rows year<=2020 | 
+nflow: estimation N =       16,726 (data N       56,500) a2_fix iteration 1: v_nomedia mob_bilat_vis  | 
+nflow: estimation N =       16,726 (data N       56,500) a2_fix iteration 1: tradeflow_comtrade_d mob_bilat_vis | 
+nflow: estimation N =       16,726 (data N       56,500) a2_fix iteration 2: v_nomedia mob_bilat_vis  | 
+nflow: estimation N =       16,726 (data N       56,500) a2_fix iteration 2: tradeflow_comtrade_d mob_bilat_vis | 
+(39,774 missing values generated)
+nflow: estimation N =       16,726 (data N       56,500) a2_stack separate fit 1: v_nomedia on mob_bilat_vis  | 
+nflow: estimation N =       16,726 (data N       56,500) a2_stack separate fit 2: tradeflow_comtrade_d on mob_bilat_vis | 
+nflow:       56,500 ->       16,726  a2_stack: keep the 16726 common rows (inside caller's preserve)
+nflow:       16,726 ->       33,452  a2_stack: expand to 2 blocks
+nflow: estimation N =       33,452 (data N       33,452) a2_stack stacked fit: 2 blocks (v_nomedia tradeflow_comtrade_d), cluster pair_id | 
+A2_7b nomedia vis tradeflow_comtrade_d N=16726 outcome= 0.426745 benchmark= 0.182693 gap=1.54600554580e-10
+nflow:       33,452 ->       56,500  restore: after A2.7b nomedia tradeflow_comtrade_d visitors stacked test
+nflow: estimation N =       16,725 (data N       56,500) a2_fix iteration 1: v_nomedia mob_bilat_vis  | 
+nflow: estimation N =       16,725 (data N       56,500) a2_fix iteration 1: v_noncult_k mob_bilat_vis | 
+nflow: estimation N =       16,725 (data N       56,500) a2_fix iteration 2: v_nomedia mob_bilat_vis  | 
+nflow: estimation N =       16,725 (data N       56,500) a2_fix iteration 2: v_noncult_k mob_bilat_vis | 
+(39,775 missing values generated)
+nflow: estimation N =       16,725 (data N       56,500) a2_stack separate fit 1: v_nomedia on mob_bilat_vis  | 
+nflow: estimation N =       16,725 (data N       56,500) a2_stack separate fit 2: v_noncult_k on mob_bilat_vis | 
+nflow:       56,500 ->       16,725  a2_stack: keep the 16725 common rows (inside caller's preserve)
+nflow:       16,725 ->       33,450  a2_stack: expand to 2 blocks
+nflow: estimation N =       33,450 (data N       33,450) a2_stack stacked fit: 2 blocks (v_nomedia v_noncult_k), cluster pair_id | 
+A2_7b nomedia vis v_noncult_k N=16725 outcome= 0.426742 benchmark= 0.183048 gap=1.52909129802e-10
+nflow:       33,450 ->       56,500  restore: after A2.7b nomedia v_noncult_k visitors stacked test
+nflow: estimation N =       23,199 (data N       56,500) A2.7b nomedia tourists baseline rows year<=2020 | 
+nflow: estimation N =       21,713 (data N       56,500) a2_fix iteration 1: v_nomedia mob_bilat_tour  | 
+nflow: estimation N =       21,713 (data N       56,500) a2_fix iteration 1: tradeflow_comtrade_d mob_bilat_tour | 
+nflow: estimation N =       21,713 (data N       56,500) a2_fix iteration 2: v_nomedia mob_bilat_tour  | 
+nflow: estimation N =       21,713 (data N       56,500) a2_fix iteration 2: tradeflow_comtrade_d mob_bilat_tour | 
+(34,787 missing values generated)
+nflow: estimation N =       21,713 (data N       56,500) a2_stack separate fit 1: v_nomedia on mob_bilat_tour  | 
+nflow: estimation N =       21,713 (data N       56,500) a2_stack separate fit 2: tradeflow_comtrade_d on mob_bilat_tour | 
+nflow:       56,500 ->       21,713  a2_stack: keep the 21713 common rows (inside caller's preserve)
+nflow:       21,713 ->       43,426  a2_stack: expand to 2 blocks
+nflow: estimation N =       43,426 (data N       43,426) a2_stack stacked fit: 2 blocks (v_nomedia tradeflow_comtrade_d), cluster pair_id | 
+A2_7b nomedia tour tradeflow_comtrade_d N=21713 outcome= 0.151964 benchmark= 0.022508 gap=9.11998254693e-12
+nflow:       43,426 ->       56,500  restore: after A2.7b nomedia tradeflow_comtrade_d tourists stacked test
+nflow: estimation N =       21,689 (data N       56,500) a2_fix iteration 1: v_nomedia mob_bilat_tour  | 
+nflow: estimation N =       21,689 (data N       56,500) a2_fix iteration 1: v_noncult_k mob_bilat_tour | 
+nflow: estimation N =       21,689 (data N       56,500) a2_fix iteration 2: v_nomedia mob_bilat_tour  | 
+nflow: estimation N =       21,689 (data N       56,500) a2_fix iteration 2: v_noncult_k mob_bilat_tour | 
+(34,811 missing values generated)
+nflow: estimation N =       21,689 (data N       56,500) a2_stack separate fit 1: v_nomedia on mob_bilat_tour  | 
+nflow: estimation N =       21,689 (data N       56,500) a2_stack separate fit 2: v_noncult_k on mob_bilat_tour | 
+nflow:       56,500 ->       21,689  a2_stack: keep the 21689 common rows (inside caller's preserve)
+nflow:       21,689 ->       43,378  a2_stack: expand to 2 blocks
+nflow: estimation N =       43,378 (data N       43,378) a2_stack stacked fit: 2 blocks (v_nomedia v_noncult_k), cluster pair_id | 
+A2_7b nomedia tour v_noncult_k N=21689 outcome= 0.151956 benchmark= 0.020731 gap=1.27848009956e-11
+nflow:       43,378 ->       56,500  restore: after A2.7b nomedia v_noncult_k tourists stacked test
+
+. a2_close "${OUT}/results/A2_7b.dta" "${OUT}/results/A2_7b.csv"
+(file <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/results/A2_7b.csv not found)
+file <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/results/A2_7b.csv saved
+
+. a2_tclose "${OUT}/tables/A2_A2.7b.dta" "${OUT}/tables/A2_A2.7b.csv"
+(file <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/tables/A2_A2.7b.csv not found)
+file <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/tables/A2_A2.7b.csv saved
+
+. display as result "A2_7b_DONE vintage=${VINTAGE} " c(current_time)
+A2_7b_DONE vintage=corrected2x 08:41:48
+
+. log close
+      name:  <unnamed>
+       log:  <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/A2_7b_corrected2x.log
+  log type:  text
+ closed on:   4 Nov 2026, 08:41:48
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
