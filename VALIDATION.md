@@ -1,6 +1,6 @@
 # Validation of the replication package (clean-room run)
 
-The package was copied to a new folder whose path contains no spaces (`<clean-room folder>/Replication_Package`), the raw files were copied into its `01_raw/` (no links; `tools/verify_raw_inputs.py`: 1,100 files, 0 missing, 0 changed), a new Python environment was created from `requirements.txt` (PyPI), and `python run_all.py` ran every stage (check, build, analysis, results). The outputs were then compared with the results reported in the revision (frozen 2026-11-05 01:41:52; SHA-256 manifest of 187 files), cell by cell: non-numeric text identical, integers (N) identical, other numbers within a relative tolerance of 1e-6.
+The package was copied to a new folder whose path contains no spaces (`<clean-room folder>/Replication_Package`), the raw files were copied into its `01_raw/` (no links; `tools/verify_raw_inputs.py`: 1,100 files, 0 missing, 0 changed), a new Python environment was created from `requirements.txt` (PyPI), and `python run_all.py` ran every stage (check, build, analysis, results). The outputs were then compared with the results reported in the revision (frozen 2026-11-05 01:41:52; SHA-256 manifest of 187 files), cell by cell: non-numeric text identical apart from the reworded free-text notes listed below, integers (N) identical, other numbers within a relative tolerance of 1e-6.
 
 This is one full run of the final code: every step of the four stages ran in this clean room in one call of `run_all.py`, and no step was run separately.
 
@@ -8,7 +8,7 @@ Scope. The default run computes the final data version (`corrected2x`) only. The
 
 Machine: Apple M5 Pro, 18 logical CPUs, 48 GB RAM, macOS-27.2-arm64-arm-64bit-Mach-O. Stata: 19.5 MP; Python 3.13.2.
 
-Result: 68 of 68 files match; 0 differ (4 of the matching files differ only in the wording of some free-text notes; every number is identical). Figure 1 controls: 56 of 56 checks PASS. Controls of `C2_A1_11_leadpower_mu.do` (`C2_A1_11_check.py`): 296 of 296 PASS.
+Result: 68 of 68 files match; 0 differ (4 of the matching files differ in the wording of some free-text notes, 1 of them also in its line ends; every number is identical). Figure 1 controls: 56 of 56 checks PASS. Controls of `C2_A1_11_leadpower_mu.do` (`C2_A1_11_check.py`): 296 of 296 PASS.
 
 ## Run time (wall clock)
 
@@ -118,9 +118,9 @@ Notes worded differently. In the files below every number and every other cell i
 
 ## Exhibit-level scope (revised numbering)
 
-All 43 exhibits of the revised numbering (manuscript Tables 1–8 and Figures 1–2, Appendix Tables A1–A5, Supplementary Tables S2.1–S11.1) were traced, entry by entry, to the files their numbers are read from, and each file was compared with the clean-room output under the rule above (comparison of stored files; no further run). Text state: revised manuscript, appendix and supplement drafts as of 2026-11-05 02:08:24. Counting unit: a source-key entry is one distinct reference in the text to a value or to a table in a file, counted once per exhibit. An entry can insert a single number or a whole table (for example Supplementary Tables S2.7 and S10.1, one entry each), so the totals below count source-key entries, not printed numeric cells; the files behind the entries are compared cell by cell (Comparison above). Columns: source-key entries in the exhibit; entries read from a compared file that is identical; entries computed from such entries (sums, shares, differences); documented facts that the run does not compute (data checks, provider documentation); entries not compared, with the reason. Table 1, Figure 1 and Figure 2 are compared as whole files. The comparison table above names the package table files `Table1.csv` … `Table7.csv`, which keep the layout of the submitted tables; `README.md`, Section 3, maps them to the revised exhibits.
+All 43 exhibits of the revised numbering (manuscript Tables 1–8 and Figures 1–2, Appendix Tables A1–A5, Supplementary Tables S2.1–S11.1) were traced, entry by entry, to the files their numbers are read from, and each file was compared with the clean-room output under the rule above (comparison of stored files; no further run). Text state: revised manuscript, appendix and supplement drafts as of 2026-11-05 16:54:32. Counting unit: a source-key entry is one distinct reference in the text to a value or to a table in a file, counted once per exhibit. An entry can insert a single number or a whole table (for example Supplementary Tables S2.7 and S10.1, one entry each), so the totals below count source-key entries, not printed numeric cells; the files behind the entries are compared cell by cell (Comparison above). Columns: source-key entries in the exhibit; entries read from a compared file that is identical in every number; entries computed from such entries (sums, shares, differences); documented facts that the run does not compute (data checks, provider documentation); entries not compared, with the reason. Table 1, Figure 1 and Figure 2 are compared as whole files. The comparison table above names the package table files `Table1.csv` … `Table7.csv`, which keep the layout of the submitted tables; `README.md`, Section 3, maps them to the revised exhibits.
 
-| Exhibit | source-key entries | read from compared files (all identical) | computed from compared entries | documented facts (not computed) | not compared |
+| Exhibit | source-key entries | read from compared files (identical in every number) | computed from compared entries | documented facts (not computed) | not compared |
 |---|---|---|---|---|---|
 | Table 1 | 0 | whole exhibit file: `06_results/tables/final/Table1.csv` identical | 0 | 0 | 0 |
 | Table 2 | 83 | 76 | 6 | 1 | 0 |
