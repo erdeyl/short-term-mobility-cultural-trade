@@ -1,198 +1,132 @@
-2026-11-04 08:28:08 RUN_ALL_START root=Replication_Package stages=['check', 'build', 'analysis', 'results'] vintages=['corrected2x'] corrections=all stata=stata-mp python=3.13.2 os=Darwin 27.2.0
-2026-11-04 08:28:08 CHECK python 3.13.2 (<RUN_FOLDER>/venv/bin/python); platform macOS-27.2-arm64-arm-64bit-Mach-O; machine arm64; logical CPUs 18
-2026-11-04 08:28:08 CHECK module pandas 3.0.5
-2026-11-04 08:28:08 CHECK module numpy 2.2.3
-2026-11-04 08:28:08 CHECK module openpyxl 3.1.5
-2026-11-04 08:28:08 CHECK module xlrd 2.0.2
-2026-11-04 08:28:08 CHECK module matplotlib 3.11.2
-2026-11-04 08:28:08 CHECK module requests 2.34.2
-2026-11-04 08:28:08 CHECK Stata /Applications/StataNow/StataMP.app/Contents/MacOS/stata-mp
-2026-11-04 08:28:08 RUN (cwd 05_output/_run): /Applications/StataNow/StataMP.app/Contents/MacOS/stata-mp -b -q do "<PACKAGE_ROOT>/install/check_stata_packages.do"
-2026-11-04 08:28:08 RUN (cwd .): <RUN_FOLDER>/venv/bin/python <PACKAGE_ROOT>/tools/verify_raw_inputs.py --root <PACKAGE_ROOT> --optional 01_raw/05_Mobility/6-dimensions-for-website-2015-08-16 (1).xls
-2026-11-04 08:28:09 END check check - OK 1.2s
-2026-11-04 08:28:09 BUILD RESCUE_CORRECTIONS=C01,C02,C02-M,C03,C05,C09,C09-M,C10,C11a,C11b,C11c,C12
-2026-11-04 08:28:09 RUN (cwd 02_code/00_common): <RUN_FOLDER>/venv/bin/python -u run_common.py
-2026-11-04 08:28:42 END build common_base - OK 33.1s
-2026-11-04 08:28:42 RUN (cwd 02_code/03_Mobility): <RUN_FOLDER>/venv/bin/python -u run_chapter.py all
-2026-11-04 08:32:50 END build mobility_chapter - OK 248.1s
-2026-11-04 08:32:50 RUN (cwd .): <RUN_FOLDER>/venv/bin/python <PACKAGE_ROOT>/02_code/10_analysis/A1_names.py <PACKAGE_ROOT>/01_raw/02_UN_Comtrade/reference/partnerAreas.json <PACKAGE_ROOT>/05_output/10_analysis/A1_un_names.csv
-2026-11-04 08:32:50 END analysis A1_names - OK 0.0s
-2026-11-04 08:32:50 RUN (cwd .): <RUN_FOLDER>/venv/bin/python <PACKAGE_ROOT>/02_code/10_analysis/A2_00a_hofstede_sheets.py <PACKAGE_ROOT>/01_raw/08_Hofstede_official/6-dimensions-for-website-2015-08-16.xls <PACKAGE_ROOT>/01_raw/05_Mobility/6-dimensions-for-website-2015-08-16 (1).xls <PACKAGE_ROOT>/05_output/10_analysis/A2_hofstede/sheets
-2026-11-04 08:32:50 END analysis A2_00a_hofstede_sheets - OK 0.0s
-2026-11-04 08:32:50 RUN (cwd .): <RUN_FOLDER>/venv/bin/python <PACKAGE_ROOT>/02_code/10_analysis/A2_00_hofstede.py <PACKAGE_ROOT>/05_output/10_analysis/A2_hofstede/sheets <PACKAGE_ROOT>/05_output/10_analysis/A2_hofstede
-2026-11-04 08:32:50 END analysis A2_00_hofstede - OK 0.2s
-2026-11-04 08:32:50 RUN (cwd 05_output/10_analysis/corrected2x/logs): /Applications/StataNow/StataMP.app/Contents/MacOS/stata-mp -b -q do "<PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/01_prep_corrected2x_batch.do" "<PACKAGE_ROOT>"
-2026-11-04 08:33:42 END analysis 01_prep corrected2x OK 51.6s
-2026-11-04 08:33:42 RUN (cwd .): <RUN_FOLDER>/venv/bin/python <PACKAGE_ROOT>/02_code/10_analysis/C2_01_mirror_ex4907.py
-2026-11-04 08:33:50 END analysis MIRROR30 corrected2x OK 8.3s
-2026-11-04 08:33:50 RUN (cwd 05_output/10_analysis/corrected2x/logs): /Applications/StataNow/StataMP.app/Contents/MacOS/stata-mp -b -q do "<PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/02_positive_controls_corrected2x_batch.do" "<PACKAGE_ROOT>"
-2026-11-04 08:35:19 END analysis 02_positive_controls corrected2x OK 88.4s
-2026-11-04 08:35:19 RUN (cwd 05_output/10_analysis/corrected2x/logs): /Applications/StataNow/StataMP.app/Contents/MacOS/stata-mp -b -q do "<PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/A1_01_flow_coverage_corrected2x_batch.do" "<PACKAGE_ROOT>"
-2026-11-04 08:35:34 END analysis A1_01_flow_coverage corrected2x OK 15.3s
-2026-11-04 08:35:34 RUN (cwd 05_output/10_analysis/corrected2x/logs): /Applications/StataNow/StataMP.app/Contents/MacOS/stata-mp -b -q do "<PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/A1_02_measurement_corrected2x_batch.do" "<PACKAGE_ROOT>"
-2026-11-04 08:36:40 END analysis A1_02_measurement corrected2x OK 65.9s
-2026-11-04 08:36:40 RUN (cwd 05_output/10_analysis/corrected2x/logs): /Applications/StataNow/StataMP.app/Contents/MacOS/stata-mp -b -q do "<PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/C2_A1_07_sweep2_corrected2x_batch.do" "<PACKAGE_ROOT>"
-2026-11-04 08:36:45 END analysis C2_A1_07_sweep2 corrected2x OK 5.5s
-2026-11-04 08:36:45 RUN (cwd 05_output/10_analysis/corrected2x/logs): /Applications/StataNow/StataMP.app/Contents/MacOS/stata-mp -b -q do "<PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/A1_04_directional_corrected2x_batch.do" "<PACKAGE_ROOT>"
-2026-11-04 08:37:08 END analysis A1_04_directional corrected2x OK 22.4s
-2026-11-04 08:37:08 RUN (cwd 05_output/10_analysis/corrected2x/logs): /Applications/StataNow/StataMP.app/Contents/MacOS/stata-mp -b -q do "<PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/A1_05_did_corrected2x_batch.do" "<PACKAGE_ROOT>"
-2026-11-04 08:37:39 END analysis A1_05_did corrected2x OK 31.1s
-2026-11-04 08:37:39 RUN (cwd 05_output/10_analysis/corrected2x/logs): /Applications/StataNow/StataMP.app/Contents/MacOS/stata-mp -b -q do "<PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/A2_01_build_corrected2x_batch.do" "<PACKAGE_ROOT>"
-2026-11-04 08:37:43 END analysis A2_01_build corrected2x OK 3.9s
-2026-11-04 08:37:43 RUN (cwd 05_output/10_analysis/corrected2x/logs): /Applications/StataNow/StataMP.app/Contents/MacOS/stata-mp -b -q do "<PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/A2_1_corrected2x_batch.do" "<PACKAGE_ROOT>"
-2026-11-04 08:38:22 END analysis A2_1 corrected2x OK 39.1s
-2026-11-04 08:38:22 RUN (cwd 05_output/10_analysis/corrected2x/logs): /Applications/StataNow/StataMP.app/Contents/MacOS/stata-mp -b -q do "<PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/A2_2_corrected2x_batch.do" "<PACKAGE_ROOT>"
-2026-11-04 08:38:42 END analysis A2_2 corrected2x OK 20.0s
-2026-11-04 08:38:42 RUN (cwd 05_output/10_analysis/corrected2x/logs): /Applications/StataNow/StataMP.app/Contents/MacOS/stata-mp -b -q do "<PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/A2_3_corrected2x_batch.do" "<PACKAGE_ROOT>"
-2026-11-04 08:40:16 END analysis A2_3 corrected2x OK 93.7s
-2026-11-04 08:40:16 RUN (cwd 05_output/10_analysis/corrected2x/logs): /Applications/StataNow/StataMP.app/Contents/MacOS/stata-mp -b -q do "<PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/A2_4_corrected2x_batch.do" "<PACKAGE_ROOT>"
-2026-11-04 08:40:22 END analysis A2_4 corrected2x OK 6.2s
-2026-11-04 08:40:22 RUN (cwd 05_output/10_analysis/corrected2x/logs): /Applications/StataNow/StataMP.app/Contents/MacOS/stata-mp -b -q do "<PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/A2_5_corrected2x_batch.do" "<PACKAGE_ROOT>"
-2026-11-04 08:40:48 END analysis A2_5 corrected2x OK 26.3s
-2026-11-04 08:40:48 RUN (cwd 05_output/10_analysis/corrected2x/logs): /Applications/StataNow/StataMP.app/Contents/MacOS/stata-mp -b -q do "<PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/A2_6_corrected2x_batch.do" "<PACKAGE_ROOT>"
-2026-11-04 08:41:15 END analysis A2_6 corrected2x OK 27.0s
-2026-11-04 08:41:15 RUN (cwd 05_output/10_analysis/corrected2x/logs): /Applications/StataNow/StataMP.app/Contents/MacOS/stata-mp -b -q do "<PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/A2_7_corrected2x_batch.do" "<PACKAGE_ROOT>"
-2026-11-04 08:41:26 END analysis A2_7 corrected2x OK 11.0s
-2026-11-04 08:41:26 RUN (cwd 05_output/10_analysis/corrected2x/logs): /Applications/StataNow/StataMP.app/Contents/MacOS/stata-mp -b -q do "<PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/A2_7b_corrected2x_batch.do" "<PACKAGE_ROOT>"
-2026-11-04 08:41:48 END analysis A2_7b corrected2x OK 21.7s
-2026-11-04 08:41:48 RUN (cwd 05_output/10_analysis/corrected2x/logs): /Applications/StataNow/StataMP.app/Contents/MacOS/stata-mp -b -q do "<PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/C2_A2_7c_narrowA_corrected2x_batch.do" "<PACKAGE_ROOT>"
-2026-11-04 08:41:59 END analysis C2_A2_7c_narrowA corrected2x OK 10.8s
-2026-11-04 08:41:59 RUN (cwd 05_output/10_analysis/corrected2x/logs): /Applications/StataNow/StataMP.app/Contents/MacOS/stata-mp -b -q do "<PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/A2_99_combine_corrected2x_batch.do" "<PACKAGE_ROOT>"
-2026-11-04 08:41:59 END analysis A2_99_combine corrected2x OK 0.1s
-2026-11-04 08:41:59 RUN (cwd 05_output/10_analysis/corrected2x/logs): /Applications/StataNow/StataMP.app/Contents/MacOS/stata-mp -b -q do "<PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/C2_04_compN_corrected2x_batch.do" "<PACKAGE_ROOT>"
-2026-11-04 08:42:02 END analysis C2_04_compN corrected2x OK 3.7s
-2026-11-04 08:42:02 RUN (cwd 05_output/10_analysis/corrected2x/logs): /Applications/StataNow/StataMP.app/Contents/MacOS/stata-mp -b -q do "<PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/FIG_03_cd_slopes_corrected2x_batch.do" "<PACKAGE_ROOT>"
-2026-11-04 08:42:05 END analysis FIG_03_cd_slopes corrected2x OK 2.5s
-2026-11-04 08:42:05 RUN (cwd 05_output/10_analysis/corrected2x/logs): /Applications/StataNow/StataMP.app/Contents/MacOS/stata-mp -b -q do "<PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/FIG_01_new_checks_corrected2x_batch.do" "<PACKAGE_ROOT>"
-2026-11-04 08:42:07 END analysis FIG_01_new_checks corrected2x OK 2.1s
-2026-11-04 08:42:07 RUN (cwd 05_output/10_analysis/corrected2x/logs): /Applications/StataNow/StataMP.app/Contents/MacOS/stata-mp -b -q do "<PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/TAB_01_corrected2x_batch.do" "<PACKAGE_ROOT>"
-2026-11-04 08:42:14 END analysis TAB_01 corrected2x OK 7.2s
-2026-11-04 08:42:14 RUN (cwd 05_output/10_analysis/corrected2x/logs): /Applications/StataNow/StataMP.app/Contents/MacOS/stata-mp -b -q do "<PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/TAB_02_corrected2x_batch.do" "<PACKAGE_ROOT>"
-2026-11-04 08:42:15 END analysis TAB_02 corrected2x OK 1.1s
-2026-11-04 08:42:15 RUN (cwd 05_output/10_analysis/corrected2x/logs): /Applications/StataNow/StataMP.app/Contents/MacOS/stata-mp -b -q do "<PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/C2_02_bias_corrected2x_batch.do" "<PACKAGE_ROOT>"
-2026-11-04 08:42:31 END analysis C2_02_bias corrected2x OK 16.3s
-2026-11-04 08:42:31 RUN (cwd 05_output/10_analysis/corrected2x/logs): /Applications/StataNow/StataMP.app/Contents/MacOS/stata-mp -b -q do "<PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/A1_03_time_corrected2x_batch.do" "<PACKAGE_ROOT>"
-2026-11-04 08:48:19 END analysis A1_03_time corrected2x OK 347.7s
-2026-11-04 08:48:19 RUN (cwd 05_output/10_analysis/corrected2x/logs): /Applications/StataNow/StataMP.app/Contents/MacOS/stata-mp -b -q do "<PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/C2_A1_11_leadpower_mu_corrected2x_batch.do" "<PACKAGE_ROOT>"
-2026-11-04 08:49:22 END analysis C2_A1_11_leadpower_mu corrected2x OK 63.0s
-2026-11-04 08:49:22 RUN (cwd 05_output/10_analysis/corrected2x/logs): /Applications/StataNow/StataMP.app/Contents/MacOS/stata-mp -b -q do "<PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/C2_03_extras_corrected2x_batch.do" "<PACKAGE_ROOT>"
-2026-11-04 08:49:23 END analysis C2_03_extras corrected2x OK 0.6s
-2026-11-04 08:49:23 RUN (cwd 05_output/10_analysis/corrected2x/logs): /Applications/StataNow/StataMP.app/Contents/MacOS/stata-mp -b -q do "<PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/C2_A1_10_boot_corrected2x_tour_cont1boot_batch.do" "<PACKAGE_ROOT>"
-2026-11-04 08:56:20 END analysis C2_A1_10_boot:tour:cont1boot corrected2x OK 416.9s
-2026-11-04 08:56:20 RUN (cwd 05_output/10_analysis/corrected2x/logs): /Applications/StataNow/StataMP.app/Contents/MacOS/stata-mp -b -q do "<PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/C2_A1_10_boot_corrected2x_vis_cont1boot_batch.do" "<PACKAGE_ROOT>"
-2026-11-04 08:56:54 END analysis C2_A1_10_boot:vis:cont1boot corrected2x OK 34.4s
-2026-11-04 08:56:54 RUN (cwd 05_output/10_analysis/corrected2x/logs): /Applications/StataNow/StataMP.app/Contents/MacOS/stata-mp -b -q do "<PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/C2_A1_10_boot_corrected2x_tour_cont1strictboot_batch.do" "<PACKAGE_ROOT>"
-2026-11-04 08:57:15 END analysis C2_A1_10_boot:tour:cont1strictboot corrected2x OK 21.3s
-2026-11-04 08:57:15 RUN (cwd 05_output/10_analysis/corrected2x/logs): /Applications/StataNow/StataMP.app/Contents/MacOS/stata-mp -b -q do "<PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/C2_A1_08_overlap_corrected2x_batch.do" "<PACKAGE_ROOT>"
-2026-11-04 08:57:27 END analysis C2_A1_08_overlap corrected2x OK 11.3s
-2026-11-04 08:57:27 RUN (cwd 05_output/10_analysis/corrected2x/logs): /Applications/StataNow/StataMP.app/Contents/MacOS/stata-mp -b -q do "<PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/C2_A1_09_natfirst_corrected2x_batch.do" "<PACKAGE_ROOT>"
-2026-11-04 08:57:46 END analysis C2_A1_09_natfirst corrected2x OK 19.4s
-2026-11-04 08:57:46 RUN (cwd 05_output/10_analysis/corrected2x/logs): /Applications/StataNow/StataMP.app/Contents/MacOS/stata-mp -b -q do "<PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/UP_A2_5_corrected2x_batch.do" "<PACKAGE_ROOT>"
-2026-11-04 08:58:10 END analysis UP_A2_5 corrected2x OK 23.9s
-2026-11-04 08:58:10 RUN (cwd 05_output/10_analysis/corrected2x/logs): /Applications/StataNow/StataMP.app/Contents/MacOS/stata-mp -b -q do "<PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/UP_A2_6_corrected2x_batch.do" "<PACKAGE_ROOT>"
-2026-11-04 08:58:36 END analysis UP_A2_6 corrected2x OK 26.4s
-2026-11-04 08:58:36 RUN (cwd 05_output/10_analysis/corrected2x/logs): /Applications/StataNow/StataMP.app/Contents/MacOS/stata-mp -b -q do "<PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/UP_A2_7_corrected2x_batch.do" "<PACKAGE_ROOT>"
-2026-11-04 08:58:47 END analysis UP_A2_7 corrected2x OK 10.4s
-2026-11-04 08:58:47 RUN (cwd 05_output/10_analysis/corrected2x/logs): /Applications/StataNow/StataMP.app/Contents/MacOS/stata-mp -b -q do "<PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/UP_A2_7b_corrected2x_batch.do" "<PACKAGE_ROOT>"
-2026-11-04 08:59:08 END analysis UP_A2_7b corrected2x OK 20.8s
-2026-11-04 08:59:08 RUN (cwd 05_output/10_analysis/corrected2x/logs): /Applications/StataNow/StataMP.app/Contents/MacOS/stata-mp -b -q do "<PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/UP_C2_A2_7c_narrowA_corrected2x_batch.do" "<PACKAGE_ROOT>"
-2026-11-04 08:59:18 END analysis UP_C2_A2_7c_narrowA corrected2x OK 10.2s
-2026-11-04 08:59:18 RUN (cwd 05_output/10_analysis/corrected2x/logs): /Applications/StataNow/StataMP.app/Contents/MacOS/stata-mp -b -q do "<PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/UP_A1_02_measurement_corrected2x_batch.do" "<PACKAGE_ROOT>"
-2026-11-04 09:00:25 END analysis UP_A1_02_measurement corrected2x OK 67.5s
-2026-11-04 09:00:25 RUN (cwd 05_output/10_analysis/corrected2x/logs): /Applications/StataNow/StataMP.app/Contents/MacOS/stata-mp -b -q do "<PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/UP_C2_A1_08_overlap_corrected2x_batch.do" "<PACKAGE_ROOT>"
-2026-11-04 09:00:37 END analysis UP_C2_A1_08_overlap corrected2x OK 11.9s
-2026-11-04 09:00:37 RUN (cwd 05_output/10_analysis/corrected2x/logs): /Applications/StataNow/StataMP.app/Contents/MacOS/stata-mp -b -q do "<PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/UP_C2_A1_09_natfirst_corrected2x_batch.do" "<PACKAGE_ROOT>"
-2026-11-04 09:00:56 END analysis UP_C2_A1_09_natfirst corrected2x OK 18.4s
-2026-11-04 09:00:56 RUN (cwd .): <RUN_FOLDER>/venv/bin/python <PACKAGE_ROOT>/02_code/10_analysis/A1_combine.py <PACKAGE_ROOT>/05_output/10_analysis corrected2x
-2026-11-04 09:00:56 END results A1_combine - OK 0.0s
-2026-11-04 09:00:56 RUN (cwd .): <RUN_FOLDER>/venv/bin/python <PACKAGE_ROOT>/02_code/10_analysis/C2_A1_12_make_upair.py --check
-2026-11-04 09:00:56 END results C2_A1_12_make_upair_check - OK 0.0s
-2026-11-04 09:00:56 RUN (cwd .): <RUN_FOLDER>/venv/bin/python <PACKAGE_ROOT>/02_code/10_analysis/C2_A1_12_upair_table.py <PACKAGE_ROOT>/05_output/10_analysis/corrected2x <PACKAGE_ROOT>/05_output/10_analysis/corrected2x_upair
-2026-11-04 09:00:56 END results C2_A1_12_upair_table - OK 0.3s
-2026-11-04 09:00:56 RUN (cwd .): <RUN_FOLDER>/venv/bin/python <PACKAGE_ROOT>/02_code/10_analysis/C2_A1_13_sample_overlap.py <PACKAGE_ROOT>/05_output/10_analysis/corrected2x
-2026-11-04 09:00:56 END results C2_A1_13_sample_overlap - OK 0.1s
-2026-11-04 09:00:56 RUN (cwd .): <RUN_FOLDER>/venv/bin/python <PACKAGE_ROOT>/02_code/10_analysis/C2_post.py
-2026-11-04 09:00:56 END results C2_post - OK 0.2s
-2026-11-04 09:00:56 RUN (cwd .): <RUN_FOLDER>/venv/bin/python <PACKAGE_ROOT>/02_code/10_analysis/A1_combine.py <PACKAGE_ROOT>/05_output/10_analysis corrected2x
-2026-11-04 09:00:56 END results A1_combine_after_relabel - OK 0.0s
-2026-11-04 09:00:56 RUN (cwd .): <RUN_FOLDER>/venv/bin/python <PACKAGE_ROOT>/02_code/10_analysis/C2_A1_11_check.py
-2026-11-04 09:00:56 END results C2_A1_11_check - OK 0.0s
-2026-11-04 09:00:56 RUN (cwd .): <RUN_FOLDER>/venv/bin/python <PACKAGE_ROOT>/02_code/10_analysis/C2_TAB_build.py
-2026-11-04 09:00:57 END results C2_TAB_build - OK 0.2s
-2026-11-04 09:00:57 RUN (cwd .): <RUN_FOLDER>/venv/bin/python <PACKAGE_ROOT>/02_code/10_analysis/C2_supplement.py corrected2x
-2026-11-04 09:00:59 END results C2_supplement - OK 2.4s
-2026-11-04 09:00:59 RUN (cwd .): <RUN_FOLDER>/venv/bin/python <PACKAGE_ROOT>/02_code/10_analysis/FIG_02_coefplot.py corrected2x
-2026-11-04 09:01:12 END results FIG_02_coefplot - OK 13.0s
-2026-11-04 09:01:12 RUN (cwd .): <RUN_FOLDER>/venv/bin/python <PACKAGE_ROOT>/02_code/10_analysis/FIG_03_cd_slopes.py corrected2x
-2026-11-04 09:01:13 END results FIG_03_cd_slopes - OK 0.7s
-2026-11-04 09:01:13 RUN (cwd .): <RUN_FOLDER>/venv/bin/python <PACKAGE_ROOT>/02_code/10_analysis/C2_05_panel_tables.py
-2026-11-04 09:01:13 END results C2_05_panel_tables - OK 0.2s
-2026-11-04 09:01:13 RUN_ALL_DONE total 1985.0s
-2026-11-05 01:43:59 PARTIAL step C2_A1_11b_common_sample vintage corrected2x
-2026-11-05 01:43:59 RUN (cwd 05_output/10_analysis/corrected2x/logs): /Applications/StataNow/StataMP.app/Contents/MacOS/stata-mp -b -q do <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/C2_A1_11b_common_sample_corrected2x_batch.do <PACKAGE_ROOT>
-2026-11-05 01:44:43 STATA_ERROR C2_A1_11b_common_sample_corrected2x_batch: exit 0 no batch log (log 05_output/10_analysis/corrected2x/logs/C2_A1_11b_common_sample_corrected2x_batch.log)
-2026-11-05 01:44:43 END analysis C2_A1_11b_common_sample corrected2x FAIL 44.2s
-2026-11-05 01:46:03 PARTIAL step C2_A1_11b_common_sample vintage corrected2x
-2026-11-05 01:46:03 RUN (cwd 05_output/10_analysis/corrected2x/logs): /Applications/StataNow/StataMP.app/Contents/MacOS/stata-mp -b -q do "<PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/C2_A1_11b_common_sample_corrected2x_batch.do" "<PACKAGE_ROOT>"
-2026-11-05 01:46:47 END analysis C2_A1_11b_common_sample corrected2x OK 44.0s
-2026-11-05 01:46:47 PARTIAL_DONE
-2026-11-05 01:47:06 RUN_ALL_START root=Replication_Package stages=['results'] vintages=['corrected2x'] corrections=all stata=stata-mp python=3.13.2 os=Darwin 27.2.0
-2026-11-05 01:47:06 RUN (cwd .): <RUN_FOLDER>/venv/bin/python <PACKAGE_ROOT>/02_code/10_analysis/A1_combine.py <PACKAGE_ROOT>/05_output/10_analysis corrected2x
-2026-11-05 01:47:06 END results A1_combine - OK 0.0s
-2026-11-05 01:47:06 RUN (cwd .): <RUN_FOLDER>/venv/bin/python <PACKAGE_ROOT>/02_code/10_analysis/C2_A1_12_make_upair.py --check
-2026-11-05 01:47:07 END results C2_A1_12_make_upair_check - OK 0.0s
-2026-11-05 01:47:07 RUN (cwd .): <RUN_FOLDER>/venv/bin/python <PACKAGE_ROOT>/02_code/10_analysis/C2_A1_12_upair_table.py <PACKAGE_ROOT>/05_output/10_analysis/corrected2x <PACKAGE_ROOT>/05_output/10_analysis/corrected2x_upair
-2026-11-05 01:47:07 END results C2_A1_12_upair_table - OK 0.5s
-2026-11-05 01:47:07 RUN (cwd .): <RUN_FOLDER>/venv/bin/python <PACKAGE_ROOT>/02_code/10_analysis/C2_A1_13_sample_overlap.py <PACKAGE_ROOT>/05_output/10_analysis/corrected2x
-2026-11-05 01:47:07 END results C2_A1_13_sample_overlap - OK 0.1s
-2026-11-05 01:47:07 RUN (cwd .): <RUN_FOLDER>/venv/bin/python <PACKAGE_ROOT>/02_code/10_analysis/C2_post.py
-2026-11-05 01:47:07 END results C2_post - OK 0.2s
-2026-11-05 01:47:07 RUN (cwd .): <RUN_FOLDER>/venv/bin/python <PACKAGE_ROOT>/02_code/10_analysis/A1_combine.py <PACKAGE_ROOT>/05_output/10_analysis corrected2x
-2026-11-05 01:47:07 END results A1_combine_after_relabel - OK 0.0s
-2026-11-05 01:47:07 RUN (cwd .): <RUN_FOLDER>/venv/bin/python <PACKAGE_ROOT>/02_code/10_analysis/C2_A1_11_check.py
-2026-11-05 01:47:07 END results C2_A1_11_check - OK 0.0s
-2026-11-05 01:47:07 RUN (cwd .): <RUN_FOLDER>/venv/bin/python <PACKAGE_ROOT>/02_code/10_analysis/C2_TAB_build.py
-2026-11-05 01:47:08 END results C2_TAB_build - OK 0.2s
-2026-11-05 01:47:08 RUN (cwd .): <RUN_FOLDER>/venv/bin/python <PACKAGE_ROOT>/02_code/10_analysis/C2_supplement.py corrected2x
-2026-11-05 01:47:10 END results C2_supplement - OK 2.4s
-2026-11-05 01:47:10 RUN (cwd .): <RUN_FOLDER>/venv/bin/python <PACKAGE_ROOT>/02_code/10_analysis/FIG_02_coefplot.py corrected2x
-2026-11-05 01:47:11 END results FIG_02_coefplot - OK 1.1s
-2026-11-05 01:47:11 RUN (cwd .): <RUN_FOLDER>/venv/bin/python <PACKAGE_ROOT>/02_code/10_analysis/FIG_03_cd_slopes.py corrected2x
-2026-11-05 01:47:12 END results FIG_03_cd_slopes - OK 0.7s
-2026-11-05 01:47:12 RUN (cwd .): <RUN_FOLDER>/venv/bin/python <PACKAGE_ROOT>/02_code/10_analysis/C2_05_panel_tables.py
-2026-11-05 01:47:12 END results C2_05_panel_tables - OK 0.2s
-2026-11-05 01:47:12 RUN_ALL_DONE total 5.5s
-2026-11-05 08:55:34 RUN_ALL_START root=Replication_Package stages=['check'] vintages=['corrected2x'] corrections=all stata=stata-mp python=3.13.2 os=Darwin 27.2.0
-2026-11-05 08:55:34 CHECK python 3.13.2 (<USER_HOME>/S1r3_nospace/Replication_Package/../venv/bin/python); platform macOS-27.2-arm64-arm-64bit-Mach-O; machine arm64; logical CPUs 18
-2026-11-05 08:55:35 CHECK module pandas 3.0.5
-2026-11-05 08:55:35 CHECK module numpy 2.2.3
-2026-11-05 08:55:35 CHECK module openpyxl 3.1.5
-2026-11-05 08:55:35 CHECK module xlrd 2.0.2
-2026-11-05 08:55:35 CHECK module matplotlib 3.11.2
-2026-11-05 08:55:35 CHECK module requests 2.34.2
-2026-11-05 08:55:35 CHECK Stata /Applications/StataNow/StataMP.app/Contents/MacOS/stata-mp
-2026-11-05 08:55:35 RUN (cwd 05_output/_run): /Applications/StataNow/StataMP.app/Contents/MacOS/stata-mp -b -q do "<USER_HOME>/S1r3_nospace/Replication_Package/install/check_stata_packages.do"
-2026-11-05 08:55:35 RUN (cwd .): <USER_HOME>/S1r3_nospace/Replication_Package/../venv/bin/python <USER_HOME>/S1r3_nospace/Replication_Package/tools/verify_raw_inputs.py --root <USER_HOME>/S1r3_nospace/Replication_Package --optional 01_raw/05_Mobility/6-dimensions-for-website-2015-08-16 (1).xls
-2026-11-05 08:55:36 END check check - OK 1.8s
-2026-11-05 08:55:36 RUN_ALL_DONE total 1.8s
-2026-11-05 08:55:43 PARTIAL step C2_A1_11b_common_sample vintage corrected2x
-2026-11-05 08:55:43 RUN (cwd 05_output/10_analysis/corrected2x/logs): /Applications/StataNow/StataMP.app/Contents/MacOS/stata-mp -b -q do "<USER_HOME>/S1r3_nospace/Replication_Package/05_output/10_analysis/corrected2x/logs/C2_A1_11b_common_sample_corrected2x_batch.do" "<USER_HOME>/S1r3_nospace/Replication_Package"
-2026-11-05 08:56:26 END analysis C2_A1_11b_common_sample corrected2x OK 43.7s
-2026-11-05 08:56:26 PARTIAL_DONE
-2026-11-05 08:56:41 RUN_ALL_START root=Replication_Package stages=['check'] vintages=['corrected2x'] corrections=all stata=stata-mp python=3.13.2 os=Darwin 27.2.0
-2026-11-05 08:56:41 CHECK python 3.13.2 (<PACKAGE_ROOT>/../venv/bin/python); platform macOS-27.2-arm64-arm-64bit-Mach-O; machine arm64; logical CPUs 18
-2026-11-05 08:56:41 CHECK module pandas 3.0.5
-2026-11-05 08:56:41 CHECK module numpy 2.2.3
-2026-11-05 08:56:41 CHECK module openpyxl 3.1.5
-2026-11-05 08:56:41 CHECK module xlrd 2.0.2
-2026-11-05 08:56:41 CHECK module matplotlib 3.11.2
-2026-11-05 08:56:41 CHECK module requests 2.34.2
-2026-11-05 08:56:41 CHECK Stata /Applications/StataNow/StataMP.app/Contents/MacOS/stata-mp
-2026-11-05 08:56:41 RUN (cwd 05_output/_run): /Applications/StataNow/StataMP.app/Contents/MacOS/stata-mp -b -q do "<PACKAGE_ROOT>/install/check_stata_packages.do"
-2026-11-05 08:56:42 RUN (cwd .): <PACKAGE_ROOT>/../venv/bin/python <PACKAGE_ROOT>/tools/verify_raw_inputs.py --root <PACKAGE_ROOT> --optional 01_raw/05_Mobility/6-dimensions-for-website-2015-08-16 (1).xls
-2026-11-05 08:56:42 END check check - OK 1.1s
-2026-11-05 08:56:42 RUN_ALL_DONE total 1.1s
-2026-11-05 08:56:42 PARTIAL step C2_A1_11b_common_sample vintage corrected2x
-2026-11-05 08:56:42 RUN (cwd 05_output/10_analysis/corrected2x/logs): /Applications/StataNow/StataMP.app/Contents/MacOS/stata-mp -b -q do "<PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/C2_A1_11b_common_sample_corrected2x_batch.do" "<PACKAGE_ROOT>"
-2026-11-05 08:57:26 END analysis C2_A1_11b_common_sample corrected2x OK 43.4s
-2026-11-05 08:57:26 PARTIAL_DONE
+2026-11-05 10:36:15 RUN_ALL_START root=Replication_Package stages=['check', 'build', 'analysis', 'results'] vintages=['corrected2x'] corrections=all stata=stata-mp python=3.13.2 os=Darwin 27.2.0
+2026-11-05 10:36:15 CHECK python 3.13.2 (<PACKAGE_ROOT>/../venv/bin/python); platform macOS-27.2-arm64-arm-64bit-Mach-O; machine arm64; logical CPUs 18
+2026-11-05 10:36:15 CHECK module pandas 3.0.5
+2026-11-05 10:36:15 CHECK module numpy 2.2.3
+2026-11-05 10:36:15 CHECK module openpyxl 3.1.5
+2026-11-05 10:36:15 CHECK module xlrd 2.0.2
+2026-11-05 10:36:15 CHECK module matplotlib 3.11.2
+2026-11-05 10:36:15 CHECK module requests 2.34.2
+2026-11-05 10:36:15 CHECK Stata /Applications/StataNow/StataMP.app/Contents/MacOS/stata-mp
+2026-11-05 10:36:15 RUN (cwd 05_output/_run): /Applications/StataNow/StataMP.app/Contents/MacOS/stata-mp -b -q do "<PACKAGE_ROOT>/install/check_stata_packages.do"
+2026-11-05 10:36:15 RUN (cwd .): <PACKAGE_ROOT>/../venv/bin/python <PACKAGE_ROOT>/tools/verify_raw_inputs.py --root <PACKAGE_ROOT> --optional 01_raw/05_Mobility/6-dimensions-for-website-2015-08-16 (1).xls
+2026-11-05 10:36:16 END check check - OK 1.5s
+2026-11-05 10:36:16 BUILD RESCUE_CORRECTIONS=C01,C02,C02-M,C03,C05,C09,C09-M,C10,C11a,C11b,C11c,C12
+2026-11-05 10:36:16 RUN (cwd 02_code/00_common): <PACKAGE_ROOT>/../venv/bin/python -u run_common.py
+2026-11-05 10:36:48 END build common_base - OK 31.7s
+2026-11-05 10:36:48 RUN (cwd 02_code/03_Mobility): <PACKAGE_ROOT>/../venv/bin/python -u run_chapter.py all
+2026-11-05 10:40:48 END build mobility_chapter - OK 240.4s
+2026-11-05 10:40:48 RUN (cwd .): <PACKAGE_ROOT>/../venv/bin/python <PACKAGE_ROOT>/02_code/10_analysis/A1_names.py <PACKAGE_ROOT>/01_raw/02_UN_Comtrade/reference/partnerAreas.json <PACKAGE_ROOT>/05_output/10_analysis/A1_un_names.csv
+2026-11-05 10:40:48 END analysis A1_names - OK 0.0s
+2026-11-05 10:40:48 RUN (cwd .): <PACKAGE_ROOT>/../venv/bin/python <PACKAGE_ROOT>/02_code/10_analysis/A2_00a_hofstede_sheets.py <PACKAGE_ROOT>/01_raw/08_Hofstede_official/6-dimensions-for-website-2015-08-16.xls <PACKAGE_ROOT>/01_raw/05_Mobility/6-dimensions-for-website-2015-08-16 (1).xls <PACKAGE_ROOT>/05_output/10_analysis/A2_hofstede/sheets
+2026-11-05 10:40:48 END analysis A2_00a_hofstede_sheets - OK 0.0s
+2026-11-05 10:40:48 RUN (cwd .): <PACKAGE_ROOT>/../venv/bin/python <PACKAGE_ROOT>/02_code/10_analysis/A2_00_hofstede.py <PACKAGE_ROOT>/05_output/10_analysis/A2_hofstede/sheets <PACKAGE_ROOT>/05_output/10_analysis/A2_hofstede
+2026-11-05 10:40:49 END analysis A2_00_hofstede - OK 0.2s
+2026-11-05 10:40:49 RUN (cwd 05_output/10_analysis/corrected2x/logs): /Applications/StataNow/StataMP.app/Contents/MacOS/stata-mp -b -q do "<PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/01_prep_corrected2x_batch.do" "<PACKAGE_ROOT>"
+2026-11-05 10:41:40 END analysis 01_prep corrected2x OK 51.3s
+2026-11-05 10:41:40 RUN (cwd .): <PACKAGE_ROOT>/../venv/bin/python <PACKAGE_ROOT>/02_code/10_analysis/C2_01_mirror_ex4907.py
+2026-11-05 10:41:48 END analysis MIRROR30 corrected2x OK 7.7s
+2026-11-05 10:41:48 RUN (cwd 05_output/10_analysis/corrected2x/logs): /Applications/StataNow/StataMP.app/Contents/MacOS/stata-mp -b -q do "<PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/02_positive_controls_corrected2x_batch.do" "<PACKAGE_ROOT>"
+2026-11-05 10:43:12 END analysis 02_positive_controls corrected2x OK 84.3s
+2026-11-05 10:43:12 RUN (cwd 05_output/10_analysis/corrected2x/logs): /Applications/StataNow/StataMP.app/Contents/MacOS/stata-mp -b -q do "<PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/A1_01_flow_coverage_corrected2x_batch.do" "<PACKAGE_ROOT>"
+2026-11-05 10:43:27 END analysis A1_01_flow_coverage corrected2x OK 15.1s
+2026-11-05 10:43:27 RUN (cwd 05_output/10_analysis/corrected2x/logs): /Applications/StataNow/StataMP.app/Contents/MacOS/stata-mp -b -q do "<PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/A1_02_measurement_corrected2x_batch.do" "<PACKAGE_ROOT>"
+2026-11-05 10:44:30 END analysis A1_02_measurement corrected2x OK 63.2s
+2026-11-05 10:44:30 RUN (cwd 05_output/10_analysis/corrected2x/logs): /Applications/StataNow/StataMP.app/Contents/MacOS/stata-mp -b -q do "<PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/C2_A1_07_sweep2_corrected2x_batch.do" "<PACKAGE_ROOT>"
+2026-11-05 10:44:35 END analysis C2_A1_07_sweep2 corrected2x OK 5.1s
+2026-11-05 10:44:35 RUN (cwd 05_output/10_analysis/corrected2x/logs): /Applications/StataNow/StataMP.app/Contents/MacOS/stata-mp -b -q do "<PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/A1_04_directional_corrected2x_batch.do" "<PACKAGE_ROOT>"
+2026-11-05 10:44:56 END analysis A1_04_directional corrected2x OK 20.9s
+2026-11-05 10:44:56 RUN (cwd 05_output/10_analysis/corrected2x/logs): /Applications/StataNow/StataMP.app/Contents/MacOS/stata-mp -b -q do "<PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/A1_05_did_corrected2x_batch.do" "<PACKAGE_ROOT>"
+2026-11-05 10:45:24 END analysis A1_05_did corrected2x OK 27.7s
+2026-11-05 10:45:24 RUN (cwd 05_output/10_analysis/corrected2x/logs): /Applications/StataNow/StataMP.app/Contents/MacOS/stata-mp -b -q do "<PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/A2_01_build_corrected2x_batch.do" "<PACKAGE_ROOT>"
+2026-11-05 10:45:28 END analysis A2_01_build corrected2x OK 3.7s
+2026-11-05 10:45:28 RUN (cwd 05_output/10_analysis/corrected2x/logs): /Applications/StataNow/StataMP.app/Contents/MacOS/stata-mp -b -q do "<PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/A2_1_corrected2x_batch.do" "<PACKAGE_ROOT>"
+2026-11-05 10:46:04 END analysis A2_1 corrected2x OK 36.4s
+2026-11-05 10:46:04 RUN (cwd 05_output/10_analysis/corrected2x/logs): /Applications/StataNow/StataMP.app/Contents/MacOS/stata-mp -b -q do "<PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/A2_2_corrected2x_batch.do" "<PACKAGE_ROOT>"
+2026-11-05 10:46:22 END analysis A2_2 corrected2x OK 18.5s
+2026-11-05 10:46:22 RUN (cwd 05_output/10_analysis/corrected2x/logs): /Applications/StataNow/StataMP.app/Contents/MacOS/stata-mp -b -q do "<PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/A2_3_corrected2x_batch.do" "<PACKAGE_ROOT>"
+2026-11-05 10:47:50 END analysis A2_3 corrected2x OK 87.3s
+2026-11-05 10:47:50 RUN (cwd 05_output/10_analysis/corrected2x/logs): /Applications/StataNow/StataMP.app/Contents/MacOS/stata-mp -b -q do "<PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/A2_4_corrected2x_batch.do" "<PACKAGE_ROOT>"
+2026-11-05 10:47:56 END analysis A2_4 corrected2x OK 5.8s
+2026-11-05 10:47:56 RUN (cwd 05_output/10_analysis/corrected2x/logs): /Applications/StataNow/StataMP.app/Contents/MacOS/stata-mp -b -q do "<PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/A2_5_corrected2x_batch.do" "<PACKAGE_ROOT>"
+2026-11-05 10:48:19 END analysis A2_5 corrected2x OK 23.1s
+2026-11-05 10:48:19 RUN (cwd 05_output/10_analysis/corrected2x/logs): /Applications/StataNow/StataMP.app/Contents/MacOS/stata-mp -b -q do "<PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/A2_6_corrected2x_batch.do" "<PACKAGE_ROOT>"
+2026-11-05 10:48:44 END analysis A2_6 corrected2x OK 25.2s
+2026-11-05 10:48:44 RUN (cwd 05_output/10_analysis/corrected2x/logs): /Applications/StataNow/StataMP.app/Contents/MacOS/stata-mp -b -q do "<PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/A2_7_corrected2x_batch.do" "<PACKAGE_ROOT>"
+2026-11-05 10:48:54 END analysis A2_7 corrected2x OK 10.2s
+2026-11-05 10:48:54 RUN (cwd 05_output/10_analysis/corrected2x/logs): /Applications/StataNow/StataMP.app/Contents/MacOS/stata-mp -b -q do "<PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/A2_7b_corrected2x_batch.do" "<PACKAGE_ROOT>"
+2026-11-05 10:49:14 END analysis A2_7b corrected2x OK 20.2s
+2026-11-05 10:49:14 RUN (cwd 05_output/10_analysis/corrected2x/logs): /Applications/StataNow/StataMP.app/Contents/MacOS/stata-mp -b -q do "<PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/C2_A2_7c_narrowA_corrected2x_batch.do" "<PACKAGE_ROOT>"
+2026-11-05 10:49:24 END analysis C2_A2_7c_narrowA corrected2x OK 10.2s
+2026-11-05 10:49:24 RUN (cwd 05_output/10_analysis/corrected2x/logs): /Applications/StataNow/StataMP.app/Contents/MacOS/stata-mp -b -q do "<PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/A2_99_combine_corrected2x_batch.do" "<PACKAGE_ROOT>"
+2026-11-05 10:49:25 END analysis A2_99_combine corrected2x OK 0.1s
+2026-11-05 10:49:25 RUN (cwd 05_output/10_analysis/corrected2x/logs): /Applications/StataNow/StataMP.app/Contents/MacOS/stata-mp -b -q do "<PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/C2_04_compN_corrected2x_batch.do" "<PACKAGE_ROOT>"
+2026-11-05 10:49:28 END analysis C2_04_compN corrected2x OK 3.5s
+2026-11-05 10:49:28 RUN (cwd 05_output/10_analysis/corrected2x/logs): /Applications/StataNow/StataMP.app/Contents/MacOS/stata-mp -b -q do "<PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/FIG_03_cd_slopes_corrected2x_batch.do" "<PACKAGE_ROOT>"
+2026-11-05 10:49:30 END analysis FIG_03_cd_slopes corrected2x OK 2.3s
+2026-11-05 10:49:30 RUN (cwd 05_output/10_analysis/corrected2x/logs): /Applications/StataNow/StataMP.app/Contents/MacOS/stata-mp -b -q do "<PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/FIG_01_new_checks_corrected2x_batch.do" "<PACKAGE_ROOT>"
+2026-11-05 10:49:32 END analysis FIG_01_new_checks corrected2x OK 2.0s
+2026-11-05 10:49:32 RUN (cwd 05_output/10_analysis/corrected2x/logs): /Applications/StataNow/StataMP.app/Contents/MacOS/stata-mp -b -q do "<PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/TAB_01_corrected2x_batch.do" "<PACKAGE_ROOT>"
+2026-11-05 10:49:39 END analysis TAB_01 corrected2x OK 6.9s
+2026-11-05 10:49:39 RUN (cwd 05_output/10_analysis/corrected2x/logs): /Applications/StataNow/StataMP.app/Contents/MacOS/stata-mp -b -q do "<PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/TAB_02_corrected2x_batch.do" "<PACKAGE_ROOT>"
+2026-11-05 10:49:40 END analysis TAB_02 corrected2x OK 1.0s
+2026-11-05 10:49:40 RUN (cwd 05_output/10_analysis/corrected2x/logs): /Applications/StataNow/StataMP.app/Contents/MacOS/stata-mp -b -q do "<PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/C2_02_bias_corrected2x_batch.do" "<PACKAGE_ROOT>"
+2026-11-05 10:49:55 END analysis C2_02_bias corrected2x OK 14.8s
+2026-11-05 10:49:55 RUN (cwd 05_output/10_analysis/corrected2x/logs): /Applications/StataNow/StataMP.app/Contents/MacOS/stata-mp -b -q do "<PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/A1_03_time_corrected2x_batch.do" "<PACKAGE_ROOT>"
+2026-11-05 10:55:04 END analysis A1_03_time corrected2x OK 309.0s
+2026-11-05 10:55:04 RUN (cwd 05_output/10_analysis/corrected2x/logs): /Applications/StataNow/StataMP.app/Contents/MacOS/stata-mp -b -q do "<PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/C2_A1_11_leadpower_mu_corrected2x_batch.do" "<PACKAGE_ROOT>"
+2026-11-05 10:55:59 END analysis C2_A1_11_leadpower_mu corrected2x OK 55.5s
+2026-11-05 10:55:59 RUN (cwd 05_output/10_analysis/corrected2x/logs): /Applications/StataNow/StataMP.app/Contents/MacOS/stata-mp -b -q do "<PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/C2_A1_11b_common_sample_corrected2x_batch.do" "<PACKAGE_ROOT>"
+2026-11-05 10:56:44 END analysis C2_A1_11b_common_sample corrected2x OK 44.0s
+2026-11-05 10:56:44 RUN (cwd 05_output/10_analysis/corrected2x/logs): /Applications/StataNow/StataMP.app/Contents/MacOS/stata-mp -b -q do "<PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/C2_03_extras_corrected2x_batch.do" "<PACKAGE_ROOT>"
+2026-11-05 10:56:44 END analysis C2_03_extras corrected2x OK 0.6s
+2026-11-05 10:56:44 RUN (cwd 05_output/10_analysis/corrected2x/logs): /Applications/StataNow/StataMP.app/Contents/MacOS/stata-mp -b -q do "<PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/C2_A1_10_boot_corrected2x_tour_cont1boot_batch.do" "<PACKAGE_ROOT>"
+2026-11-05 11:03:19 END analysis C2_A1_10_boot:tour:cont1boot corrected2x OK 395.0s
+2026-11-05 11:03:19 RUN (cwd 05_output/10_analysis/corrected2x/logs): /Applications/StataNow/StataMP.app/Contents/MacOS/stata-mp -b -q do "<PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/C2_A1_10_boot_corrected2x_vis_cont1boot_batch.do" "<PACKAGE_ROOT>"
+2026-11-05 11:03:57 END analysis C2_A1_10_boot:vis:cont1boot corrected2x OK 37.7s
+2026-11-05 11:03:57 RUN (cwd 05_output/10_analysis/corrected2x/logs): /Applications/StataNow/StataMP.app/Contents/MacOS/stata-mp -b -q do "<PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/C2_A1_10_boot_corrected2x_tour_cont1strictboot_batch.do" "<PACKAGE_ROOT>"
+2026-11-05 11:04:17 END analysis C2_A1_10_boot:tour:cont1strictboot corrected2x OK 20.2s
+2026-11-05 11:04:17 RUN (cwd 05_output/10_analysis/corrected2x/logs): /Applications/StataNow/StataMP.app/Contents/MacOS/stata-mp -b -q do "<PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/C2_A1_08_overlap_corrected2x_batch.do" "<PACKAGE_ROOT>"
+2026-11-05 11:04:28 END analysis C2_A1_08_overlap corrected2x OK 11.3s
+2026-11-05 11:04:28 RUN (cwd 05_output/10_analysis/corrected2x/logs): /Applications/StataNow/StataMP.app/Contents/MacOS/stata-mp -b -q do "<PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/C2_A1_09_natfirst_corrected2x_batch.do" "<PACKAGE_ROOT>"
+2026-11-05 11:04:47 END analysis C2_A1_09_natfirst corrected2x OK 18.5s
+2026-11-05 11:04:47 RUN (cwd 05_output/10_analysis/corrected2x/logs): /Applications/StataNow/StataMP.app/Contents/MacOS/stata-mp -b -q do "<PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/UP_A2_5_corrected2x_batch.do" "<PACKAGE_ROOT>"
+2026-11-05 11:05:11 END analysis UP_A2_5 corrected2x OK 24.5s
+2026-11-05 11:05:11 RUN (cwd 05_output/10_analysis/corrected2x/logs): /Applications/StataNow/StataMP.app/Contents/MacOS/stata-mp -b -q do "<PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/UP_A2_6_corrected2x_batch.do" "<PACKAGE_ROOT>"
+2026-11-05 11:05:37 END analysis UP_A2_6 corrected2x OK 26.0s
+2026-11-05 11:05:37 RUN (cwd 05_output/10_analysis/corrected2x/logs): /Applications/StataNow/StataMP.app/Contents/MacOS/stata-mp -b -q do "<PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/UP_A2_7_corrected2x_batch.do" "<PACKAGE_ROOT>"
+2026-11-05 11:05:48 END analysis UP_A2_7 corrected2x OK 10.5s
+2026-11-05 11:05:48 RUN (cwd 05_output/10_analysis/corrected2x/logs): /Applications/StataNow/StataMP.app/Contents/MacOS/stata-mp -b -q do "<PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/UP_A2_7b_corrected2x_batch.do" "<PACKAGE_ROOT>"
+2026-11-05 11:06:08 END analysis UP_A2_7b corrected2x OK 20.6s
+2026-11-05 11:06:08 RUN (cwd 05_output/10_analysis/corrected2x/logs): /Applications/StataNow/StataMP.app/Contents/MacOS/stata-mp -b -q do "<PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/UP_C2_A2_7c_narrowA_corrected2x_batch.do" "<PACKAGE_ROOT>"
+2026-11-05 11:06:19 END analysis UP_C2_A2_7c_narrowA corrected2x OK 10.3s
+2026-11-05 11:06:19 RUN (cwd 05_output/10_analysis/corrected2x/logs): /Applications/StataNow/StataMP.app/Contents/MacOS/stata-mp -b -q do "<PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/UP_A1_02_measurement_corrected2x_batch.do" "<PACKAGE_ROOT>"
+2026-11-05 11:07:23 END analysis UP_A1_02_measurement corrected2x OK 64.2s
+2026-11-05 11:07:23 RUN (cwd 05_output/10_analysis/corrected2x/logs): /Applications/StataNow/StataMP.app/Contents/MacOS/stata-mp -b -q do "<PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/UP_C2_A1_08_overlap_corrected2x_batch.do" "<PACKAGE_ROOT>"
+2026-11-05 11:07:34 END analysis UP_C2_A1_08_overlap corrected2x OK 11.4s
+2026-11-05 11:07:34 RUN (cwd 05_output/10_analysis/corrected2x/logs): /Applications/StataNow/StataMP.app/Contents/MacOS/stata-mp -b -q do "<PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/UP_C2_A1_09_natfirst_corrected2x_batch.do" "<PACKAGE_ROOT>"
+2026-11-05 11:07:52 END analysis UP_C2_A1_09_natfirst corrected2x OK 18.1s
+2026-11-05 11:07:52 RUN (cwd .): <PACKAGE_ROOT>/../venv/bin/python <PACKAGE_ROOT>/02_code/10_analysis/A1_combine.py <PACKAGE_ROOT>/05_output/10_analysis corrected2x
+2026-11-05 11:07:52 END results A1_combine - OK 0.0s
+2026-11-05 11:07:52 RUN (cwd .): <PACKAGE_ROOT>/../venv/bin/python <PACKAGE_ROOT>/02_code/10_analysis/C2_A1_12_make_upair.py --check
+2026-11-05 11:07:52 END results C2_A1_12_make_upair_check - OK 0.0s
+2026-11-05 11:07:52 RUN (cwd .): <PACKAGE_ROOT>/../venv/bin/python <PACKAGE_ROOT>/02_code/10_analysis/C2_A1_12_upair_table.py <PACKAGE_ROOT>/05_output/10_analysis/corrected2x <PACKAGE_ROOT>/05_output/10_analysis/corrected2x_upair
+2026-11-05 11:07:53 END results C2_A1_12_upair_table - OK 0.3s
+2026-11-05 11:07:53 RUN (cwd .): <PACKAGE_ROOT>/../venv/bin/python <PACKAGE_ROOT>/02_code/10_analysis/C2_A1_13_sample_overlap.py <PACKAGE_ROOT>/05_output/10_analysis/corrected2x
+2026-11-05 11:07:53 END results C2_A1_13_sample_overlap - OK 0.1s
+2026-11-05 11:07:53 RUN (cwd .): <PACKAGE_ROOT>/../venv/bin/python <PACKAGE_ROOT>/02_code/10_analysis/C2_post.py
+2026-11-05 11:07:53 END results C2_post - OK 0.2s
+2026-11-05 11:07:53 RUN (cwd .): <PACKAGE_ROOT>/../venv/bin/python <PACKAGE_ROOT>/02_code/10_analysis/A1_combine.py <PACKAGE_ROOT>/05_output/10_analysis corrected2x
+2026-11-05 11:07:53 END results A1_combine_after_relabel - OK 0.0s
+2026-11-05 11:07:53 RUN (cwd .): <PACKAGE_ROOT>/../venv/bin/python <PACKAGE_ROOT>/02_code/10_analysis/C2_A1_11_check.py
+2026-11-05 11:07:53 END results C2_A1_11_check - OK 0.0s
+2026-11-05 11:07:53 RUN (cwd .): <PACKAGE_ROOT>/../venv/bin/python <PACKAGE_ROOT>/02_code/10_analysis/C2_TAB_build.py
+2026-11-05 11:07:53 END results C2_TAB_build - OK 0.2s
+2026-11-05 11:07:53 RUN (cwd .): <PACKAGE_ROOT>/../venv/bin/python <PACKAGE_ROOT>/02_code/10_analysis/C2_supplement.py corrected2x
+2026-11-05 11:07:55 END results C2_supplement - OK 2.2s
+2026-11-05 11:07:55 RUN (cwd .): <PACKAGE_ROOT>/../venv/bin/python <PACKAGE_ROOT>/02_code/10_analysis/FIG_02_coefplot.py corrected2x
+2026-11-05 11:08:09 END results FIG_02_coefplot - OK 13.9s
+2026-11-05 11:08:09 RUN (cwd .): <PACKAGE_ROOT>/../venv/bin/python <PACKAGE_ROOT>/02_code/10_analysis/FIG_03_cd_slopes.py corrected2x
+2026-11-05 11:08:10 END results FIG_03_cd_slopes - OK 0.7s
+2026-11-05 11:08:10 RUN (cwd .): <PACKAGE_ROOT>/../venv/bin/python <PACKAGE_ROOT>/02_code/10_analysis/C2_05_panel_tables.py
+2026-11-05 11:08:10 END results C2_05_panel_tables - OK 0.2s
+2026-11-05 11:08:10 RUN_ALL_DONE total 1915.5s

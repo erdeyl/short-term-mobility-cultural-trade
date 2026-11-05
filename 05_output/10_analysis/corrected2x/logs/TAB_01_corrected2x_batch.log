@@ -13,8 +13,8 @@
 > ***
 >  TAB_01.do -- TAB step: table cells with no corrected-vintage estimate yet (o
 > ne vintage per run).
->  Usage (cwd = 02_code/10_analysis):  "$STATA" -b -q do TAB_01.do <vintage>     (v
-> intage = submitted | corrected)
+>  Usage (cwd = 02_code/10_analysis):  "$STATA" -b -q do TAB_01.do <vintage>   
+>   (vintage = submitted | corrected)
 >  Specification = File S1 code (run_tests.do T5/T10/T11/T12, run_T6.do) and PK
 > G 03_table1_descriptives.do:
 >    ppmlhdfe y x [if], absorb(exporter_year importer_year pair_id) vce(cluster
@@ -279,10 +279,10 @@ end of do-file
       name:  <unnamed>
        log:  <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/TAB_01_corrected2x.log
   log type:  text
- opened on:   4 Nov 2026, 08:42:07
+ opened on:   5 Nov 2026, 10:49:32
 
 . display as result "TAB_01_BEGIN vintage=${VINTAGE} " c(current_date) " " c(current_time)
-TAB_01_BEGIN vintage=corrected2x  4 Nov 2026 08:42:07
+TAB_01_BEGIN vintage=corrected2x  5 Nov 2026 10:49:32
 
 . 
 . local FE "exporter_year importer_year pair_id"
@@ -343,7 +343,7 @@ TAB_01_BEGIN vintage=corrected2x  4 Nov 2026 08:42:07
 . 
 . * ---------------------------------------------------------------- T1: Table 1 on the full prepared file
 . use "${PREPARED}", clear
-(PREP analysis base, vintage corrected2x, built  4 Nov 2026 08:33:39 by 01_prep.d)
+(PREP analysis base, vintage corrected2x, built  5 Nov 2026 10:41:37 by 01_prep.d)
 
 . nflow start using "${OUT}/TAB_nflow.csv", append
 nflow: log <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/TAB_nflow.csv, start N =      823,446
@@ -649,13 +649,13 @@ TAB_FIT T5 strict6_interaction strict_x b=-0.034420580 se= 0.022904441 p= 0.1328
 file <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/TAB_results.csv saved
 
 . display as result "TAB_01_COMPLETE vintage=${VINTAGE} " c(current_date) " " c(current_time)
-TAB_01_COMPLETE vintage=corrected2x  4 Nov 2026 08:42:14
+TAB_01_COMPLETE vintage=corrected2x  5 Nov 2026 10:49:39
 
 . log close
       name:  <unnamed>
        log:  <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/TAB_01_corrected2x.log
   log type:  text
- closed on:   4 Nov 2026, 08:42:14
+ closed on:   5 Nov 2026, 10:49:39
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 . exit, clear

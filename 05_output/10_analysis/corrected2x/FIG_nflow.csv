@@ -1,6 +1,6 @@
 date,time,kind,n_before,n_after,change,reason
-4 Nov 2026,08:42:05,start,,823446,0,"start: <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/prepared.dta"
-4 Nov 2026,08:42:05,est,823446,20598,-802848,"FIG unordered-pair clusters vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output"
-4 Nov 2026,08:42:06,est,823446,20568,-802878,"FIG trim top 0.1pct directional vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output"
-4 Nov 2026,08:42:06,est,823446,26339,-797107,"FIG unordered-pair clusters tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output"
-4 Nov 2026,08:42:07,est,823446,26283,-797163,"FIG trim top 0.1pct directional tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output"
+5 Nov 2026,10:49:30,start,,823446,0,"start: <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/prepared.dta"
+5 Nov 2026,10:49:31,est,823446,20598,-802848,"FIG unordered-pair clusters vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output"
+5 Nov 2026,10:49:31,est,823446,20568,-802878,"FIG trim top 0.1pct directional vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output"
+5 Nov 2026,10:49:32,est,823446,26339,-797107,"FIG unordered-pair clusters tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output"
+5 Nov 2026,10:49:32,est,823446,26283,-797163,"FIG trim top 0.1pct directional tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output"

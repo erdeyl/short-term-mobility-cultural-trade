@@ -12,8 +12,8 @@
 . /****************************************************************************
 > ***
 >  01_prep.do  --  audited analysis base for the response to the reviewers
->  Usage (cwd = 02_code/10_analysis):  stata-mp -b -q do 01_prep.do <submitted|corr
-> ected>
+>  Usage (cwd = 02_code/10_analysis):  stata-mp -b -q do 01_prep.do <submitted|
+> corrected>
 >  Output: ${OUT}/prepared.dta (+ logs, nflow.csv, sample_counts.csv, control C
 > SVs)
 > 
@@ -265,10 +265,10 @@ end of do-file
       name:  <unnamed>
        log:  <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/01_prep_corrected2x.log
   log type:  text
- opened on:   4 Nov 2026, 08:32:51
+ opened on:   5 Nov 2026, 10:40:49
 
 . display as result "PREP_BEGIN vintage=${VINTAGE} " c(current_date) " " c(current_time) " stata=" c(stata_version)
-PREP_BEGIN vintage=corrected2x  4 Nov 2026 08:32:51 stata=19.5
+PREP_BEGIN vintage=corrected2x  5 Nov 2026 10:40:49 stata=19.5
 
 . 
 . foreach f in DATA_FILE MASTER_FILE COPY_DATA_FILE CT_MANIFEST CT_CROSSWALK CEPII_FILE WB_CLASS WB_OGHIST {
@@ -2398,42 +2398,42 @@ file <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/prepared.dta saved
   +---------------------------------------------------------------------------------------------------------------------------------------------------+
   |       date       time    kind   n_before   n_after    change   reason                                                                             |
   |---------------------------------------------------------------------------------------------------------------------------------------------------|
-  | 4 Nov 2026   08:32:54   start          .    823446         0   start: <PACKAGE_ROOT>/04_analysis data/03_Mobi.. |
+  | 5 Nov 2026   10:40:52   start          .    823446         0   start: <PACKAGE_ROOT>/04_analysis data/03_Mobil.. |
   |---------------------------------------------------------------------------------------------------------------------------------------------------|
-  | 4 Nov 2026   08:32:58    step     823446    823446         0   corrected2: merge COPY master residence/nationality series by key (assert all ma.. |
-  | 4 Nov 2026   08:33:08    step     823446    823446         0   STUDENT 02_prepare_data.do:40 mirror merge of opposite-direction flows (keep mas.. |
-  | 4 Nov 2026   08:33:10    step     823446    823446         0   COPY 02_prepare_data.do:104-style mirror merge of source flags (keep master match) |
-  | 4 Nov 2026   08:33:13    step     823446    823446         0   merge master metadata (comtrade_reporting_available, any_unreported, v_8523_exac.. |
-  | 4 Nov 2026   08:33:14    step     823446    823446         0   merge HS6 dyad-year values; drop using-only rows (outside CEPII existing-country.. |
-  | 4 Nov 2026   08:33:25    step     823446    823446         0   merge CEPII Gravity V202211 trade flows and language/GDP fields (keep master mat.. |
-  | 4 Nov 2026   08:33:26    step     823446    823446         0   merge World Bank current classification for iso3_o (m:1, keep master match)        |
-  | 4 Nov 2026   08:33:27    step     823446    823446         0   merge World Bank historical income (FY t+1 and FY t) for iso3_o (m:1, keep maste.. |
-  | 4 Nov 2026   08:33:28    step     823446    823446         0   merge World Bank current classification for iso3_d (m:1, keep master match)        |
-  | 4 Nov 2026   08:33:29    step     823446    823446         0   merge World Bank historical income (FY t+1 and FY t) for iso3_d (m:1, keep maste.. |
+  | 5 Nov 2026   10:40:56    step     823446    823446         0   corrected2: merge COPY master residence/nationality series by key (assert all ma.. |
+  | 5 Nov 2026   10:41:05    step     823446    823446         0   STUDENT 02_prepare_data.do:40 mirror merge of opposite-direction flows (keep mas.. |
+  | 5 Nov 2026   10:41:08    step     823446    823446         0   COPY 02_prepare_data.do:104-style mirror merge of source flags (keep master match) |
+  | 5 Nov 2026   10:41:10    step     823446    823446         0   merge master metadata (comtrade_reporting_available, any_unreported, v_8523_exac.. |
+  | 5 Nov 2026   10:41:12    step     823446    823446         0   merge HS6 dyad-year values; drop using-only rows (outside CEPII existing-country.. |
+  | 5 Nov 2026   10:41:23    step     823446    823446         0   merge CEPII Gravity V202211 trade flows and language/GDP fields (keep master mat.. |
+  | 5 Nov 2026   10:41:24    step     823446    823446         0   merge World Bank current classification for iso3_o (m:1, keep master match)        |
+  | 5 Nov 2026   10:41:25    step     823446    823446         0   merge World Bank historical income (FY t+1 and FY t) for iso3_o (m:1, keep maste.. |
+  | 5 Nov 2026   10:41:26    step     823446    823446         0   merge World Bank current classification for iso3_d (m:1, keep master match)        |
+  | 5 Nov 2026   10:41:27    step     823446    823446         0   merge World Bank historical income (FY t+1 and FY t) for iso3_d (m:1, keep maste.. |
   |---------------------------------------------------------------------------------------------------------------------------------------------------|
-  | 4 Nov 2026   08:33:29     est     823446     20598   -802848   Table 2 col 1 baseline visitors | ppmlhdfe e(N); drop breakdown in the ppmlhdfe .. |
-  | 4 Nov 2026   08:33:30     est     823446     26339   -797107   Table 2 col 5 baseline tourists | ppmlhdfe e(N); drop breakdown in the ppmlhdfe .. |
-  | 4 Nov 2026   08:33:30     est     823446     13872   -809574   Table 3 col 1 dynamic visitors | ppmlhdfe e(N); drop breakdown in the ppmlhdfe o.. |
-  | 4 Nov 2026   08:33:31     est     823446     19061   -804385   Table 3 col 2 dynamic tourists | ppmlhdfe e(N); drop breakdown in the ppmlhdfe o.. |
-  | 4 Nov 2026   08:33:32     est     823446     20598   -802848   Table 5 col 1 language visitors | ppmlhdfe e(N); drop breakdown in the ppmlhdfe .. |
-  | 4 Nov 2026   08:33:32     est     823446     26159   -797287   Table 5 col 2 language tourists | ppmlhdfe e(N); drop breakdown in the ppmlhdfe .. |
-  | 4 Nov 2026   08:33:33     est     823446     11971   -811475   Table 5 col 3 cultural distance visitors | ppmlhdfe e(N); drop breakdown in the .. |
-  | 4 Nov 2026   08:33:33     est     823446     10932   -812514   Table 5 col 4 cultural distance tourists | ppmlhdfe e(N); drop breakdown in the .. |
+  | 5 Nov 2026   10:41:27     est     823446     20598   -802848   Table 2 col 1 baseline visitors | ppmlhdfe e(N); drop breakdown in the ppmlhdfe .. |
+  | 5 Nov 2026   10:41:28     est     823446     26339   -797107   Table 2 col 5 baseline tourists | ppmlhdfe e(N); drop breakdown in the ppmlhdfe .. |
+  | 5 Nov 2026   10:41:28     est     823446     13872   -809574   Table 3 col 1 dynamic visitors | ppmlhdfe e(N); drop breakdown in the ppmlhdfe o.. |
+  | 5 Nov 2026   10:41:29     est     823446     19061   -804385   Table 3 col 2 dynamic tourists | ppmlhdfe e(N); drop breakdown in the ppmlhdfe o.. |
+  | 5 Nov 2026   10:41:29     est     823446     20598   -802848   Table 5 col 1 language visitors | ppmlhdfe e(N); drop breakdown in the ppmlhdfe .. |
+  | 5 Nov 2026   10:41:30     est     823446     26159   -797287   Table 5 col 2 language tourists | ppmlhdfe e(N); drop breakdown in the ppmlhdfe .. |
+  | 5 Nov 2026   10:41:30     est     823446     11971   -811475   Table 5 col 3 cultural distance visitors | ppmlhdfe e(N); drop breakdown in the .. |
+  | 5 Nov 2026   10:41:31     est     823446     10932   -812514   Table 5 col 4 cultural distance tourists | ppmlhdfe e(N); drop breakdown in the .. |
   |---------------------------------------------------------------------------------------------------------------------------------------------------|
-  | 4 Nov 2026   08:33:41    step     823446    823446         0   final check before save (no row change expected)                                   |
+  | 5 Nov 2026   10:41:39    step     823446    823446         0   final check before save (no row change expected)                                   |
   +---------------------------------------------------------------------------------------------------------------------------------------------------+
 
 . display as result "PREPARED_SAVED=${PREPARED} ROWS=" _N " VARS=" c(k)
 PREPARED_SAVED=<PACKAGE_ROOT>/05_output/10_analysis/corrected2x/prepared.dta ROWS=823446 VARS=171
 
 . display as result "PREP_COMPLETE vintage=${VINTAGE} " c(current_date) " " c(current_time)
-PREP_COMPLETE vintage=corrected2x  4 Nov 2026 08:33:42
+PREP_COMPLETE vintage=corrected2x  5 Nov 2026 10:41:39
 
 . log close
       name:  <unnamed>
        log:  <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/01_prep_corrected2x.log
   log type:  text
- closed on:   4 Nov 2026, 08:33:42
+ closed on:   5 Nov 2026, 10:41:39
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 . exit, clear

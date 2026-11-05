@@ -2,16 +2,16 @@
       name:  <unnamed>
        log:  <PACKAGE_ROOT>/05_output/10_analysis/corrected2x_upair/logs/C2_A1_09_natfirst_corrected2x.log
   log type:  text
- opened on:   4 Nov 2026, 09:00:37
+ opened on:   5 Nov 2026, 11:07:34
 
 . display as result "C2_A1_09_BEGIN vintage=${VINTAGE} " c(current_date) " " c(current_time)
-C2_A1_09_BEGIN vintage=corrected2x  4 Nov 2026 09:00:37
+C2_A1_09_BEGIN vintage=corrected2x  5 Nov 2026 11:07:34
 
 . use year iso3_o iso3_d v_ttl_k tourists visitors has_both_vis has_both_tour mob_bilat_vis mob_bilat_tour ///
 >     rev_vis_raw same_vis_raw rev_tour_raw same_tour_raw exporter_year importer_year pair_id unordered_pair_id ///
 >     s_base_vis s_base_tour pak_res_quarantine_rev blr_lie_quarantine_rev basis_rev_vis basis_same_vis ///
 >     basis_rev_tour basis_same_tour using "${PREPARED}", clear
-(PREP analysis base, vintage corrected2x, built  4 Nov 2026 08:33:39 by 01_prep.d)
+(PREP analysis base, vintage corrected2x, built  5 Nov 2026 10:41:37 by 01_prep.d)
 
 . isid year iso3_o iso3_d
 
@@ -1057,276 +1057,276 @@ file <PACKAGE_ROOT>/05_output/10_analysis/corrected2x_upair/results/A1_parts/A1_
   +---------------------------------------------------------------------------------------------------------------------------------------------------+
   |       date       time    kind   n_before   n_after    change   reason                                                                             |
   |---------------------------------------------------------------------------------------------------------------------------------------------------|
-  | 4 Nov 2026   08:59:18   start          .    823446         0   start: <PACKAGE_ROOT>/05_output/10_analysis/co.. |
+  | 5 Nov 2026   11:06:19   start          .    823446         0   start: <PACKAGE_ROOT>/05_output/10_analysis/cor.. |
   |---------------------------------------------------------------------------------------------------------------------------------------------------|
-  | 4 Nov 2026   08:59:40    step     823446    823446         0   A1.4 merge reverse-direction reporter flags (m:1 keep master match; no row change) |
-  | 4 Nov 2026   08:59:40    step     823446    823446         0   A1.4 merge same-direction reporter flags (m:1 keep master match; no row change)    |
+  | 5 Nov 2026   11:06:40    step     823446    823446         0   A1.4 merge reverse-direction reporter flags (m:1 keep master match; no row change) |
+  | 5 Nov 2026   11:06:40    step     823446    823446         0   A1.4 merge same-direction reporter flags (m:1 keep master match; no row change)    |
   |---------------------------------------------------------------------------------------------------------------------------------------------------|
-  | 4 Nov 2026   08:59:41     est     823446     20598   -802848   A1 A1.4 excl_ratio50_own vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe out.. |
-  | 4 Nov 2026   08:59:41     est     823446     20598   -802848   A1 A1.4 excl_ratio50_union vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe o.. |
-  | 4 Nov 2026   08:59:42     est     823446     26339   -797107   A1 A1.4 excl_ratio50_own tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe ou.. |
-  | 4 Nov 2026   08:59:43     est     823446     26339   -797107   A1 A1.4 excl_ratio50_union tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe .. |
-  | 4 Nov 2026   08:59:43     est     823446     20502   -802944   A1 A1.4 excl_ratio10_own vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe out.. |
-  | 4 Nov 2026   08:59:44     est     823446     20502   -802944   A1 A1.4 excl_ratio10_union vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe o.. |
-  | 4 Nov 2026   08:59:44     est     823446     26339   -797107   A1 A1.4 excl_ratio10_own tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe ou.. |
-  | 4 Nov 2026   08:59:45     est     823446     26291   -797155   A1 A1.4 excl_ratio10_union tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe .. |
-  | 4 Nov 2026   08:59:51     est     823446     20598   -802848   A1 A1.5 full vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output            |
-  | 4 Nov 2026   08:59:52     est     823446     10634   -812812   A1 A1.5 r1 separate restricted pass 1 (immediate record, audit R1-10) | ppmlhdfe.. |
-  | 4 Nov 2026   08:59:53     est     823446      9584   -813862   A1 A1.5 r1 separate complement pass 1 (immediate record, audit R1-10) | ppmlhdfe.. |
+  | 5 Nov 2026   11:06:41     est     823446     20598   -802848   A1 A1.4 excl_ratio50_own vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe out.. |
+  | 5 Nov 2026   11:06:41     est     823446     20598   -802848   A1 A1.4 excl_ratio50_union vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe o.. |
+  | 5 Nov 2026   11:06:42     est     823446     26339   -797107   A1 A1.4 excl_ratio50_own tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe ou.. |
+  | 5 Nov 2026   11:06:42     est     823446     26339   -797107   A1 A1.4 excl_ratio50_union tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe .. |
+  | 5 Nov 2026   11:06:43     est     823446     20502   -802944   A1 A1.4 excl_ratio10_own vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe out.. |
+  | 5 Nov 2026   11:06:43     est     823446     20502   -802944   A1 A1.4 excl_ratio10_union vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe o.. |
+  | 5 Nov 2026   11:06:44     est     823446     26339   -797107   A1 A1.4 excl_ratio10_own tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe ou.. |
+  | 5 Nov 2026   11:06:44     est     823446     26291   -797155   A1 A1.4 excl_ratio10_union tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe .. |
+  | 5 Nov 2026   11:06:50     est     823446     20598   -802848   A1 A1.5 full vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output            |
+  | 5 Nov 2026   11:06:51     est     823446     10634   -812812   A1 A1.5 r1 separate restricted pass 1 (immediate record, audit R1-10) | ppmlhdfe.. |
+  | 5 Nov 2026   11:06:52     est     823446      9584   -813862   A1 A1.5 r1 separate complement pass 1 (immediate record, audit R1-10) | ppmlhdfe.. |
   |---------------------------------------------------------------------------------------------------------------------------------------------------|
-  | 4 Nov 2026   08:59:53    step     823446     20218   -803228   A1_stack A1.5 r1 pass 1: keep rows in either separate e(sample)                    |
-  | 4 Nov 2026   08:59:53    step      20218     40436     20218   A1_stack A1.5 r1 pass 1: expand 2 (one copy per block)                             |
-  | 4 Nov 2026   08:59:53    step      40436     20218    -20218   A1_stack A1.5 r1 pass 1: keep block copies inside their own e(sample)              |
+  | 5 Nov 2026   11:06:52    step     823446     20218   -803228   A1_stack A1.5 r1 pass 1: keep rows in either separate e(sample)                    |
+  | 5 Nov 2026   11:06:52    step      20218     40436     20218   A1_stack A1.5 r1 pass 1: expand 2 (one copy per block)                             |
+  | 5 Nov 2026   11:06:52    step      40436     20218    -20218   A1_stack A1.5 r1 pass 1: keep block copies inside their own e(sample)              |
   |---------------------------------------------------------------------------------------------------------------------------------------------------|
-  | 4 Nov 2026   08:59:55     est      20218     20218         0   A1 A1.5 r1 stacked pass 1 | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output   |
+  | 5 Nov 2026   11:06:54     est      20218     20218         0   A1 A1.5 r1 stacked pass 1 | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output   |
   |---------------------------------------------------------------------------------------------------------------------------------------------------|
-  | 4 Nov 2026   08:59:55    step      20218    823446    803228   A1_stack A1.5 r1 pass 1: restore                                                   |
+  | 5 Nov 2026   11:06:54    step      20218    823446    803228   A1_stack A1.5 r1 pass 1: restore                                                   |
   |---------------------------------------------------------------------------------------------------------------------------------------------------|
-  | 4 Nov 2026   08:59:56     est     823446     10634   -812812   A1 A1.5 r1_sep_restricted vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe ou.. |
-  | 4 Nov 2026   08:59:56     est     823446      9584   -813862   A1 A1.5 r1_sep_complement vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe ou.. |
-  | 4 Nov 2026   08:59:56     est     823446      8321   -815125   A1 A1.5 r2 separate restricted pass 1 (immediate record, audit R1-10) | ppmlhdfe.. |
-  | 4 Nov 2026   08:59:57     est     823446     12085   -811361   A1 A1.5 r2 separate complement pass 1 (immediate record, audit R1-10) | ppmlhdfe.. |
+  | 5 Nov 2026   11:06:55     est     823446     10634   -812812   A1 A1.5 r1_sep_restricted vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe ou.. |
+  | 5 Nov 2026   11:06:55     est     823446      9584   -813862   A1 A1.5 r1_sep_complement vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe ou.. |
+  | 5 Nov 2026   11:06:55     est     823446      8321   -815125   A1 A1.5 r2 separate restricted pass 1 (immediate record, audit R1-10) | ppmlhdfe.. |
+  | 5 Nov 2026   11:06:55     est     823446     12085   -811361   A1 A1.5 r2 separate complement pass 1 (immediate record, audit R1-10) | ppmlhdfe.. |
   |---------------------------------------------------------------------------------------------------------------------------------------------------|
-  | 4 Nov 2026   08:59:57    step     823446     20406   -803040   A1_stack A1.5 r2 pass 1: keep rows in either separate e(sample)                    |
-  | 4 Nov 2026   08:59:57    step      20406     40812     20406   A1_stack A1.5 r2 pass 1: expand 2 (one copy per block)                             |
-  | 4 Nov 2026   08:59:57    step      40812     20406    -20406   A1_stack A1.5 r2 pass 1: keep block copies inside their own e(sample)              |
+  | 5 Nov 2026   11:06:56    step     823446     20406   -803040   A1_stack A1.5 r2 pass 1: keep rows in either separate e(sample)                    |
+  | 5 Nov 2026   11:06:56    step      20406     40812     20406   A1_stack A1.5 r2 pass 1: expand 2 (one copy per block)                             |
+  | 5 Nov 2026   11:06:56    step      40812     20406    -20406   A1_stack A1.5 r2 pass 1: keep block copies inside their own e(sample)              |
   |---------------------------------------------------------------------------------------------------------------------------------------------------|
-  | 4 Nov 2026   08:59:57     est      20406     20406         0   A1 A1.5 r2 stacked pass 1 | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output   |
+  | 5 Nov 2026   11:06:56     est      20406     20406         0   A1 A1.5 r2 stacked pass 1 | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output   |
   |---------------------------------------------------------------------------------------------------------------------------------------------------|
-  | 4 Nov 2026   08:59:57    step      20406    823446    803040   A1_stack A1.5 r2 pass 1: restore                                                   |
+  | 5 Nov 2026   11:06:56    step      20406    823446    803040   A1_stack A1.5 r2 pass 1: restore                                                   |
   |---------------------------------------------------------------------------------------------------------------------------------------------------|
-  | 4 Nov 2026   08:59:58     est     823446      8321   -815125   A1 A1.5 r2_sep_restricted vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe ou.. |
-  | 4 Nov 2026   08:59:58     est     823446     12085   -811361   A1 A1.5 r2_sep_complement vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe ou.. |
-  | 4 Nov 2026   08:59:58     est     823446      7643   -815803   A1 A1.5 r2all separate restricted pass 1 (immediate record, audit R1-10) | ppmlh.. |
-  | 4 Nov 2026   08:59:59     est     823446     12752   -810694   A1 A1.5 r2all separate complement pass 1 (immediate record, audit R1-10) | ppmlh.. |
+  | 5 Nov 2026   11:06:56     est     823446      8321   -815125   A1 A1.5 r2_sep_restricted vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe ou.. |
+  | 5 Nov 2026   11:06:57     est     823446     12085   -811361   A1 A1.5 r2_sep_complement vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe ou.. |
+  | 5 Nov 2026   11:06:57     est     823446      7643   -815803   A1 A1.5 r2all separate restricted pass 1 (immediate record, audit R1-10) | ppmlh.. |
+  | 5 Nov 2026   11:06:57     est     823446     12752   -810694   A1 A1.5 r2all separate complement pass 1 (immediate record, audit R1-10) | ppmlh.. |
   |---------------------------------------------------------------------------------------------------------------------------------------------------|
-  | 4 Nov 2026   08:59:59    step     823446     20395   -803051   A1_stack A1.5 r2all pass 1: keep rows in either separate e(sample)                 |
-  | 4 Nov 2026   08:59:59    step      20395     40790     20395   A1_stack A1.5 r2all pass 1: expand 2 (one copy per block)                          |
-  | 4 Nov 2026   08:59:59    step      40790     20395    -20395   A1_stack A1.5 r2all pass 1: keep block copies inside their own e(sample)           |
+  | 5 Nov 2026   11:06:57    step     823446     20395   -803051   A1_stack A1.5 r2all pass 1: keep rows in either separate e(sample)                 |
+  | 5 Nov 2026   11:06:57    step      20395     40790     20395   A1_stack A1.5 r2all pass 1: expand 2 (one copy per block)                          |
+  | 5 Nov 2026   11:06:57    step      40790     20395    -20395   A1_stack A1.5 r2all pass 1: keep block copies inside their own e(sample)           |
   |---------------------------------------------------------------------------------------------------------------------------------------------------|
-  | 4 Nov 2026   08:59:59     est      20395     20395         0   A1 A1.5 r2all stacked pass 1 | ppmlhdfe e(N); drop breakdown in the ppmlhdfe out.. |
+  | 5 Nov 2026   11:06:58     est      20395     20395         0   A1 A1.5 r2all stacked pass 1 | ppmlhdfe e(N); drop breakdown in the ppmlhdfe out.. |
   |---------------------------------------------------------------------------------------------------------------------------------------------------|
-  | 4 Nov 2026   08:59:59    step      20395    823446    803051   A1_stack A1.5 r2all pass 1: restore                                                |
+  | 5 Nov 2026   11:06:58    step      20395    823446    803051   A1_stack A1.5 r2all pass 1: restore                                                |
   |---------------------------------------------------------------------------------------------------------------------------------------------------|
-  | 4 Nov 2026   09:00:00     est     823446      7643   -815803   A1 A1.5 r2all_sep_restricted vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe.. |
-  | 4 Nov 2026   09:00:00     est     823446     12752   -810694   A1 A1.5 r2all_sep_complement vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe.. |
-  | 4 Nov 2026   09:00:00     est     823446     17938   -805508   A1 A1.5 r3 separate restricted pass 1 (immediate record, audit R1-10) | ppmlhdfe.. |
-  | 4 Nov 2026   09:00:00     est     823446      2466   -820980   A1 A1.5 r3 separate complement pass 1 (immediate record, audit R1-10) | ppmlhdfe.. |
+  | 5 Nov 2026   11:06:58     est     823446      7643   -815803   A1 A1.5 r2all_sep_restricted vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe.. |
+  | 5 Nov 2026   11:06:58     est     823446     12752   -810694   A1 A1.5 r2all_sep_complement vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe.. |
+  | 5 Nov 2026   11:06:59     est     823446     17938   -805508   A1 A1.5 r3 separate restricted pass 1 (immediate record, audit R1-10) | ppmlhdfe.. |
+  | 5 Nov 2026   11:06:59     est     823446      2466   -820980   A1 A1.5 r3 separate complement pass 1 (immediate record, audit R1-10) | ppmlhdfe.. |
   |---------------------------------------------------------------------------------------------------------------------------------------------------|
-  | 4 Nov 2026   09:00:00    step     823446     20404   -803042   A1_stack A1.5 r3 pass 1: keep rows in either separate e(sample)                    |
-  | 4 Nov 2026   09:00:00    step      20404     40808     20404   A1_stack A1.5 r3 pass 1: expand 2 (one copy per block)                             |
-  | 4 Nov 2026   09:00:00    step      40808     20404    -20404   A1_stack A1.5 r3 pass 1: keep block copies inside their own e(sample)              |
+  | 5 Nov 2026   11:06:59    step     823446     20404   -803042   A1_stack A1.5 r3 pass 1: keep rows in either separate e(sample)                    |
+  | 5 Nov 2026   11:06:59    step      20404     40808     20404   A1_stack A1.5 r3 pass 1: expand 2 (one copy per block)                             |
+  | 5 Nov 2026   11:06:59    step      40808     20404    -20404   A1_stack A1.5 r3 pass 1: keep block copies inside their own e(sample)              |
   |---------------------------------------------------------------------------------------------------------------------------------------------------|
-  | 4 Nov 2026   09:00:01     est      20404     20404         0   A1 A1.5 r3 stacked pass 1 | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output   |
+  | 5 Nov 2026   11:06:59     est      20404     20404         0   A1 A1.5 r3 stacked pass 1 | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output   |
   |---------------------------------------------------------------------------------------------------------------------------------------------------|
-  | 4 Nov 2026   09:00:01    step      20404    823446    803042   A1_stack A1.5 r3 pass 1: restore                                                   |
+  | 5 Nov 2026   11:06:59    step      20404    823446    803042   A1_stack A1.5 r3 pass 1: restore                                                   |
   |---------------------------------------------------------------------------------------------------------------------------------------------------|
-  | 4 Nov 2026   09:00:01     est     823446     17938   -805508   A1 A1.5 r3_sep_restricted vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe ou.. |
-  | 4 Nov 2026   09:00:01     est     823446      2466   -820980   A1 A1.5 r3_sep_complement vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe ou.. |
-  | 4 Nov 2026   09:00:02     est     823446     14509   -808937   A1 A1.5 r4 separate restricted pass 1 (immediate record, audit R1-10) | ppmlhdfe.. |
-  | 4 Nov 2026   09:00:02     est     823446      5704   -817742   A1 A1.5 r4 separate complement pass 1 (immediate record, audit R1-10) | ppmlhdfe.. |
+  | 5 Nov 2026   11:07:00     est     823446     17938   -805508   A1 A1.5 r3_sep_restricted vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe ou.. |
+  | 5 Nov 2026   11:07:00     est     823446      2466   -820980   A1 A1.5 r3_sep_complement vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe ou.. |
+  | 5 Nov 2026   11:07:00     est     823446     14509   -808937   A1 A1.5 r4 separate restricted pass 1 (immediate record, audit R1-10) | ppmlhdfe.. |
+  | 5 Nov 2026   11:07:00     est     823446      5704   -817742   A1 A1.5 r4 separate complement pass 1 (immediate record, audit R1-10) | ppmlhdfe.. |
   |---------------------------------------------------------------------------------------------------------------------------------------------------|
-  | 4 Nov 2026   09:00:02    step     823446     20213   -803233   A1_stack A1.5 r4 pass 1: keep rows in either separate e(sample)                    |
-  | 4 Nov 2026   09:00:02    step      20213     40426     20213   A1_stack A1.5 r4 pass 1: expand 2 (one copy per block)                             |
-  | 4 Nov 2026   09:00:02    step      40426     20213    -20213   A1_stack A1.5 r4 pass 1: keep block copies inside their own e(sample)              |
+  | 5 Nov 2026   11:07:01    step     823446     20213   -803233   A1_stack A1.5 r4 pass 1: keep rows in either separate e(sample)                    |
+  | 5 Nov 2026   11:07:01    step      20213     40426     20213   A1_stack A1.5 r4 pass 1: expand 2 (one copy per block)                             |
+  | 5 Nov 2026   11:07:01    step      40426     20213    -20213   A1_stack A1.5 r4 pass 1: keep block copies inside their own e(sample)              |
   |---------------------------------------------------------------------------------------------------------------------------------------------------|
-  | 4 Nov 2026   09:00:03     est      20213     20213         0   A1 A1.5 r4 stacked pass 1 | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output   |
+  | 5 Nov 2026   11:07:01     est      20213     20213         0   A1 A1.5 r4 stacked pass 1 | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output   |
   |---------------------------------------------------------------------------------------------------------------------------------------------------|
-  | 4 Nov 2026   09:00:03    step      20213    823446    803233   A1_stack A1.5 r4 pass 1: restore                                                   |
+  | 5 Nov 2026   11:07:01    step      20213    823446    803233   A1_stack A1.5 r4 pass 1: restore                                                   |
   |---------------------------------------------------------------------------------------------------------------------------------------------------|
-  | 4 Nov 2026   09:00:03     est     823446     14509   -808937   A1 A1.5 r4_sep_restricted vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe ou.. |
-  | 4 Nov 2026   09:00:03     est     823446      5704   -817742   A1 A1.5 r4_sep_complement vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe ou.. |
-  | 4 Nov 2026   09:00:03     est     823446     26339   -797107   A1 A1.5 full tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output           |
-  | 4 Nov 2026   09:00:04     est     823446     13761   -809685   A1 A1.5 r1 separate restricted pass 1 (immediate record, audit R1-10) | ppmlhdfe.. |
-  | 4 Nov 2026   09:00:05     est     823446     11583   -811863   A1 A1.5 r1 separate complement pass 1 (immediate record, audit R1-10) | ppmlhdfe.. |
+  | 5 Nov 2026   11:07:01     est     823446     14509   -808937   A1 A1.5 r4_sep_restricted vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe ou.. |
+  | 5 Nov 2026   11:07:01     est     823446      5704   -817742   A1 A1.5 r4_sep_complement vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe ou.. |
+  | 5 Nov 2026   11:07:02     est     823446     26339   -797107   A1 A1.5 full tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output           |
+  | 5 Nov 2026   11:07:03     est     823446     13761   -809685   A1 A1.5 r1 separate restricted pass 1 (immediate record, audit R1-10) | ppmlhdfe.. |
+  | 5 Nov 2026   11:07:03     est     823446     11583   -811863   A1 A1.5 r1 separate complement pass 1 (immediate record, audit R1-10) | ppmlhdfe.. |
   |---------------------------------------------------------------------------------------------------------------------------------------------------|
-  | 4 Nov 2026   09:00:05    step     823446     25344   -798102   A1_stack A1.5 r1 pass 1: keep rows in either separate e(sample)                    |
-  | 4 Nov 2026   09:00:05    step      25344     50688     25344   A1_stack A1.5 r1 pass 1: expand 2 (one copy per block)                             |
-  | 4 Nov 2026   09:00:05    step      50688     25344    -25344   A1_stack A1.5 r1 pass 1: keep block copies inside their own e(sample)              |
+  | 5 Nov 2026   11:07:03    step     823446     25344   -798102   A1_stack A1.5 r1 pass 1: keep rows in either separate e(sample)                    |
+  | 5 Nov 2026   11:07:03    step      25344     50688     25344   A1_stack A1.5 r1 pass 1: expand 2 (one copy per block)                             |
+  | 5 Nov 2026   11:07:03    step      50688     25344    -25344   A1_stack A1.5 r1 pass 1: keep block copies inside their own e(sample)              |
   |---------------------------------------------------------------------------------------------------------------------------------------------------|
-  | 4 Nov 2026   09:00:08     est      25344     25344         0   A1 A1.5 r1 stacked pass 1 | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output   |
+  | 5 Nov 2026   11:07:06     est      25344     25344         0   A1 A1.5 r1 stacked pass 1 | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output   |
   |---------------------------------------------------------------------------------------------------------------------------------------------------|
-  | 4 Nov 2026   09:00:08    step      25344    823446    798102   A1_stack A1.5 r1 pass 1: restore                                                   |
-  |---------------------------------------------------------------------------------------------------------------------------------------------------|
-  | 4 Nov 2026   09:00:08     est     823446     13761   -809685   A1 A1.5 r1_sep_restricted tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe o.. |
-  | 4 Nov 2026   09:00:08     est     823446     11583   -811863   A1 A1.5 r1_sep_complement tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe o.. |
-  | 4 Nov 2026   09:00:08     est     823446     10775   -812671   A1 A1.5 r2 separate restricted pass 1 (immediate record, audit R1-10) | ppmlhdfe.. |
-  | 4 Nov 2026   09:00:09     est     823446     15030   -808416   A1 A1.5 r2 separate complement pass 1 (immediate record, audit R1-10) | ppmlhdfe.. |
-  |---------------------------------------------------------------------------------------------------------------------------------------------------|
-  | 4 Nov 2026   09:00:09    step     823446     25805   -797641   A1_stack A1.5 r2 pass 1: keep rows in either separate e(sample)                    |
-  | 4 Nov 2026   09:00:09    step      25805     51610     25805   A1_stack A1.5 r2 pass 1: expand 2 (one copy per block)                             |
-  | 4 Nov 2026   09:00:09    step      51610     25805    -25805   A1_stack A1.5 r2 pass 1: keep block copies inside their own e(sample)              |
-  |---------------------------------------------------------------------------------------------------------------------------------------------------|
-  | 4 Nov 2026   09:00:10     est      25805     25805         0   A1 A1.5 r2 stacked pass 1 | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output   |
-  |---------------------------------------------------------------------------------------------------------------------------------------------------|
-  | 4 Nov 2026   09:00:10    step      25805    823446    797641   A1_stack A1.5 r2 pass 1: restore                                                   |
-  |---------------------------------------------------------------------------------------------------------------------------------------------------|
-  | 4 Nov 2026   09:00:10     est     823446     10775   -812671   A1 A1.5 r2_sep_restricted tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe o.. |
-  | 4 Nov 2026   09:00:10     est     823446     15030   -808416   A1 A1.5 r2_sep_complement tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe o.. |
-  | 4 Nov 2026   09:00:10     est     823446     10450   -812996   A1 A1.5 r2all separate restricted pass 1 (immediate record, audit R1-10) | ppmlh.. |
-  | 4 Nov 2026   09:00:11     est     823446     15452   -807994   A1 A1.5 r2all separate complement pass 1 (immediate record, audit R1-10) | ppmlh.. |
-  |---------------------------------------------------------------------------------------------------------------------------------------------------|
-  | 4 Nov 2026   09:00:11    step     823446     25902   -797544   A1_stack A1.5 r2all pass 1: keep rows in either separate e(sample)                 |
-  | 4 Nov 2026   09:00:11    step      25902     51804     25902   A1_stack A1.5 r2all pass 1: expand 2 (one copy per block)                          |
-  | 4 Nov 2026   09:00:11    step      51804     25902    -25902   A1_stack A1.5 r2all pass 1: keep block copies inside their own e(sample)           |
-  |---------------------------------------------------------------------------------------------------------------------------------------------------|
-  | 4 Nov 2026   09:00:12     est      25902     25902         0   A1 A1.5 r2all stacked pass 1 | ppmlhdfe e(N); drop breakdown in the ppmlhdfe out.. |
-  |---------------------------------------------------------------------------------------------------------------------------------------------------|
-  | 4 Nov 2026   09:00:12    step      25902    823446    797544   A1_stack A1.5 r2all pass 1: restore                                                |
-  |---------------------------------------------------------------------------------------------------------------------------------------------------|
-  | 4 Nov 2026   09:00:12     est     823446     10450   -812996   A1 A1.5 r2all_sep_restricted tour | ppmlhdfe e(N); drop breakdown in the ppmlhdf.. |
-  | 4 Nov 2026   09:00:12     est     823446     15452   -807994   A1 A1.5 r2all_sep_complement tour | ppmlhdfe e(N); drop breakdown in the ppmlhdf.. |
-  | 4 Nov 2026   09:00:12     est     823446     18577   -804869   A1 A1.5 r4 separate restricted pass 1 (immediate record, audit R1-10) | ppmlhdfe.. |
-  | 4 Nov 2026   09:00:13     est     823446      6974   -816472   A1 A1.5 r4 separate complement pass 1 (immediate record, audit R1-10) | ppmlhdfe.. |
-  |---------------------------------------------------------------------------------------------------------------------------------------------------|
-  | 4 Nov 2026   09:00:13    step     823446     25551   -797895   A1_stack A1.5 r4 pass 1: keep rows in either separate e(sample)                    |
-  | 4 Nov 2026   09:00:13    step      25551     51102     25551   A1_stack A1.5 r4 pass 1: expand 2 (one copy per block)                             |
-  | 4 Nov 2026   09:00:13    step      51102     25551    -25551   A1_stack A1.5 r4 pass 1: keep block copies inside their own e(sample)              |
-  |---------------------------------------------------------------------------------------------------------------------------------------------------|
-  | 4 Nov 2026   09:00:13     est      25551     25551         0   A1 A1.5 r4 stacked pass 1 | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output   |
-  |---------------------------------------------------------------------------------------------------------------------------------------------------|
-  | 4 Nov 2026   09:00:13    step      25551    823446    797895   A1_stack A1.5 r4 pass 1: restore                                                   |
-  |---------------------------------------------------------------------------------------------------------------------------------------------------|
-  | 4 Nov 2026   09:00:14     est     823446     18577   -804869   A1 A1.5 r4_sep_restricted tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe o.. |
-  | 4 Nov 2026   09:00:14     est     823446      6974   -816472   A1 A1.5 r4_sep_complement tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe o.. |
-  |---------------------------------------------------------------------------------------------------------------------------------------------------|
-  | 4 Nov 2026   09:00:15    step     823446    823446         0   A1.5 merge C09 importer-year list (m:1 keep master match; no row change)           |
-  |---------------------------------------------------------------------------------------------------------------------------------------------------|
-  | 4 Nov 2026   09:00:16     est     823446     20366   -803080   A1 A1.5 x_svksvn vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output        |
-  | 4 Nov 2026   09:00:16     est     823446     20598   -802848   A1 A1.5 x_pry_rep vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output       |
-  | 4 Nov 2026   09:00:17     est     823446     20598   -802848   A1 A1.5 x_c09 vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output           |
-  | 4 Nov 2026   09:00:17     est     823446     20598   -802848   A1 A1.5 x_cz vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output            |
-  | 4 Nov 2026   09:00:18     est     823446     20419   -803027   A1 A1.5 x_rev15 vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output         |
-  | 4 Nov 2026   09:00:19     est     823446     20581   -802865   A1 A1.5 x_rev6 vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output          |
-  | 4 Nov 2026   09:00:19     est     823446     20191   -803255   A1 A1.5 x_clean vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output         |
-  | 4 Nov 2026   09:00:19     est     823446      6302   -817144   A1 A1.5 x_clean_basis vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output   |
-  | 4 Nov 2026   09:00:20     est     823446     26139   -797307   A1 A1.5 x_svksvn tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output       |
-  | 4 Nov 2026   09:00:20     est     823446     25692   -797754   A1 A1.5 x_pry_rep tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output      |
-  | 4 Nov 2026   09:00:21     est     823446     26339   -797107   A1 A1.5 x_c09 tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output          |
-  | 4 Nov 2026   09:00:22     est     823446     26339   -797107   A1 A1.5 x_cz tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output           |
-  | 4 Nov 2026   09:00:22     est     823446     26167   -797279   A1 A1.5 x_rev15 tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output        |
-  | 4 Nov 2026   09:00:23     est     823446     26283   -797163   A1 A1.5 x_rev6 tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output         |
-  | 4 Nov 2026   09:00:24     est     823446     25333   -798113   A1 A1.5 x_clean tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output        |
-  | 4 Nov 2026   09:00:24     est     823446     10023   -813423   A1 A1.5 x_clean_basis tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output  |
-  |---------------------------------------------------------------------------------------------------------------------------------------------------|
-  | 4 Nov 2026   09:00:26   start          .    823446         0   start: <PACKAGE_ROOT>/05_output/10_analysis/co.. |
-  |---------------------------------------------------------------------------------------------------------------------------------------------------|
-  | 4 Nov 2026   09:00:26    step     823446    823446         0   C2_A1_08 merge snapshot master residence/nationality series (assert all match; n.. |
-  | 4 Nov 2026   09:00:27    step     823446    823446         0   C2_A1_08 mirror merge of same-direction residence/nationality series (keep maste.. |
-  |---------------------------------------------------------------------------------------------------------------------------------------------------|
-  | 4 Nov 2026   09:00:27     est     823446        16   -823430   C2_A1_08 vis overlap fixed point iteration 1 residence | ppmlhdfe e(N); drop bre.. |
-  | 4 Nov 2026   09:00:27     est     823446        16   -823430   C2_A1_08 vis overlap fixed point iteration 1 nationality | ppmlhdfe e(N); drop b.. |
-  | 4 Nov 2026   09:00:27     est     823446        16   -823430   C2_A1_08 vis overlap fixed point iteration 2 residence | ppmlhdfe e(N); drop bre.. |
-  | 4 Nov 2026   09:00:28     est     823446        16   -823430   C2_A1_08 vis overlap fixed point iteration 2 nationality | ppmlhdfe e(N); drop b.. |
-  | 4 Nov 2026   09:00:28     est     823446        16   -823430   A1 A1.5 m_overlap_base vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output  |
-  | 4 Nov 2026   09:00:29     est     823446        16   -823430   C2_A1_08 vis identification check res | ppmlhdfe e(N); drop breakdown in the ppm.. |
-  | 4 Nov 2026   09:00:29     est     823446        16   -823430   C2_A1_08 vis identification check nat | ppmlhdfe e(N); drop breakdown in the ppm.. |
-  | 4 Nov 2026   09:00:29     est     823446        16   -823430   A1 A1.5 m_overlap separate residence pass 1 (immediate record, audit R1-10) | pp.. |
-  | 4 Nov 2026   09:00:29     est     823446        16   -823430   A1 A1.5 m_overlap separate nationality pass 1 (immediate record, audit R1-10) | .. |
-  |---------------------------------------------------------------------------------------------------------------------------------------------------|
-  | 4 Nov 2026   09:00:29    step     823446        16   -823430   A1_stack A1.5 m_overlap pass 1: keep rows in either separate e(sample)             |
-  | 4 Nov 2026   09:00:29    step         16        32        16   A1_stack A1.5 m_overlap pass 1: expand 2 (one copy per block)                      |
-  | 4 Nov 2026   09:00:29    step         32        32         0   A1_stack A1.5 m_overlap pass 1: keep block copies inside their own e(sample)       |
-  |---------------------------------------------------------------------------------------------------------------------------------------------------|
-  | 4 Nov 2026   09:00:29     est         32        32         0   A1 A1.5 m_overlap stacked pass 1 | ppmlhdfe e(N); drop breakdown in the ppmlhdfe.. |
-  |---------------------------------------------------------------------------------------------------------------------------------------------------|
-  | 4 Nov 2026   09:00:29    step         32    823446    823414   A1_stack A1.5 m_overlap pass 1: restore                                            |
-  |---------------------------------------------------------------------------------------------------------------------------------------------------|
-  | 4 Nov 2026   09:00:29     est     823446        16   -823430   A1 A1.5 m_overlap_sep_residence vis | ppmlhdfe e(N); drop breakdown in the ppmlh.. |
-  | 4 Nov 2026   09:00:29     est     823446        16   -823430   A1 A1.5 m_overlap_sep_nationality vis | ppmlhdfe e(N); drop breakdown in the ppm.. |
-  | 4 Nov 2026   09:00:29     est     823446        36   -823410   C2_A1_08 tour overlap fixed point iteration 1 residence | ppmlhdfe e(N); drop br.. |
-  | 4 Nov 2026   09:00:30     est     823446        36   -823410   C2_A1_08 tour overlap fixed point iteration 1 nationality | ppmlhdfe e(N); drop .. |
-  | 4 Nov 2026   09:00:30     est     823446        36   -823410   C2_A1_08 tour overlap fixed point iteration 2 residence | ppmlhdfe e(N); drop br.. |
-  | 4 Nov 2026   09:00:30     est     823446        36   -823410   C2_A1_08 tour overlap fixed point iteration 2 nationality | ppmlhdfe e(N); drop .. |
-  | 4 Nov 2026   09:00:31     est     823446        36   -823410   A1 A1.5 m_overlap_base tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output |
-  | 4 Nov 2026   09:00:31     est     823446        36   -823410   C2_A1_08 tour identification check res | ppmlhdfe e(N); drop breakdown in the pp.. |
-  | 4 Nov 2026   09:00:31     est     823446        36   -823410   C2_A1_08 tour identification check nat | ppmlhdfe e(N); drop breakdown in the pp.. |
-  | 4 Nov 2026   09:00:31     est     823446        36   -823410   A1 A1.5 m_overlap_sep_residence tour | ppmlhdfe e(N); drop breakdown in the ppml.. |
-  | 4 Nov 2026   09:00:31     est     823446        36   -823410   A1 A1.5 m_overlap_sep_nationality tour | ppmlhdfe e(N); drop breakdown in the pp.. |
-  | 4 Nov 2026   09:00:32     est     823446     20410   -803036   A1 A1.3 nest_xn_any_base vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe out.. |
-  | 4 Nov 2026   09:00:33     est     823446     10512   -812934   A1 A1.3 nest_xn_any_r1 vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output  |
-  | 4 Nov 2026   09:00:33     est     823446     20560   -802886   A1 A1.3 nest_xn_same_base vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe ou.. |
-  | 4 Nov 2026   09:00:34     est     823446     10630   -812816   A1 A1.3 nest_xn_same_r1 vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output |
-  | 4 Nov 2026   09:00:34     est     823446     26139   -797307   A1 A1.3 nest_xn_any_base tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe ou.. |
-  | 4 Nov 2026   09:00:35     est     823446     13695   -809751   A1 A1.3 nest_xn_any_r1 tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output |
-  | 4 Nov 2026   09:00:36     est     823446     26325   -797121   A1 A1.3 nest_xn_same_base tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe o.. |
-  | 4 Nov 2026   09:00:37     est     823446     13757   -809689   A1 A1.3 nest_xn_same_r1 tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe out.. |
-  |---------------------------------------------------------------------------------------------------------------------------------------------------|
-  | 4 Nov 2026   09:00:38   start          .    823446         0   start: <PACKAGE_ROOT>/05_output/10_analysis/co.. |
-  |---------------------------------------------------------------------------------------------------------------------------------------------------|
-  | 4 Nov 2026   09:00:39    step     823446    823446         0   C2_A1_09 merge snapshot master residence/nationality series (assert all match; n.. |
-  | 4 Nov 2026   09:00:40    step     823446    823446         0   C2_A1_09 mirror merge of same-direction series (keep master match)                 |
-  |---------------------------------------------------------------------------------------------------------------------------------------------------|
-  | 4 Nov 2026   09:00:41     est     823446     20598   -802848   A1 A1.5 m_natfirst_full vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output |
-  | 4 Nov 2026   09:00:41     est     823446     20598   -802848   A1 A1.5 m_natfirst separate baseline pass 1 (immediate record, audit R1-10) | pp.. |
-  | 4 Nov 2026   09:00:42     est     823446     20598   -802848   A1 A1.5 m_natfirst separate natfirst pass 1 (immediate record, audit R1-10) | pp.. |
-  |---------------------------------------------------------------------------------------------------------------------------------------------------|
-  | 4 Nov 2026   09:00:42    step     823446     20598   -802848   A1_stack A1.5 m_natfirst pass 1: keep rows in either separate e(sample)            |
-  | 4 Nov 2026   09:00:42    step      20598     41196     20598   A1_stack A1.5 m_natfirst pass 1: expand 2 (one copy per block)                     |
-  | 4 Nov 2026   09:00:42    step      41196     41196         0   A1_stack A1.5 m_natfirst pass 1: keep block copies inside their own e(sample)      |
-  |---------------------------------------------------------------------------------------------------------------------------------------------------|
-  | 4 Nov 2026   09:00:43     est      41196     41196         0   A1 A1.5 m_natfirst stacked pass 1 | ppmlhdfe e(N); drop breakdown in the ppmlhdf.. |
-  |---------------------------------------------------------------------------------------------------------------------------------------------------|
-  | 4 Nov 2026   09:00:43    step      41196    823446    782250   A1_stack A1.5 m_natfirst pass 1: restore                                           |
-  |---------------------------------------------------------------------------------------------------------------------------------------------------|
-  | 4 Nov 2026   09:00:43     est     823446     20598   -802848   A1 A1.5 m_natfirst_sep_baseline vis | ppmlhdfe e(N); drop breakdown in the ppmlh.. |
-  | 4 Nov 2026   09:00:43     est     823446     20598   -802848   A1 A1.5 m_natfirst_sep_natfirst vis | ppmlhdfe e(N); drop breakdown in the ppmlh.. |
-  | 4 Nov 2026   09:00:43     est     823446      9600   -813846   C2_A1_09 vis same-basis fixed point 1 mob_bilat_vis | ppmlhdfe e(N); drop breakd.. |
-  | 4 Nov 2026   09:00:44     est     823446      9600   -813846   C2_A1_09 vis same-basis fixed point 1 mob_nf_vis | ppmlhdfe e(N); drop breakdown.. |
-  | 4 Nov 2026   09:00:44     est     823446      9600   -813846   C2_A1_09 vis same-basis fixed point 2 mob_bilat_vis | ppmlhdfe e(N); drop breakd.. |
-  | 4 Nov 2026   09:00:45     est     823446      9600   -813846   C2_A1_09 vis same-basis fixed point 2 mob_nf_vis | ppmlhdfe e(N); drop breakdown.. |
-  | 4 Nov 2026   09:00:45     est     823446      9600   -813846   A1 A1.5 m_natfirst_r1 separate baseline pass 1 (immediate record, audit R1-10) |.. |
-  | 4 Nov 2026   09:00:46     est     823446      9600   -813846   A1 A1.5 m_natfirst_r1 separate natfirst pass 1 (immediate record, audit R1-10) |.. |
-  |---------------------------------------------------------------------------------------------------------------------------------------------------|
-  | 4 Nov 2026   09:00:46    step     823446      9600   -813846   A1_stack A1.5 m_natfirst_r1 pass 1: keep rows in either separate e(sample)         |
-  | 4 Nov 2026   09:00:46    step       9600     19200      9600   A1_stack A1.5 m_natfirst_r1 pass 1: expand 2 (one copy per block)                  |
-  | 4 Nov 2026   09:00:46    step      19200     19200         0   A1_stack A1.5 m_natfirst_r1 pass 1: keep block copies inside their own e(sample)   |
-  |---------------------------------------------------------------------------------------------------------------------------------------------------|
-  | 4 Nov 2026   09:00:46     est      19200     19200         0   A1 A1.5 m_natfirst_r1 stacked pass 1 | ppmlhdfe e(N); drop breakdown in the ppml.. |
-  |---------------------------------------------------------------------------------------------------------------------------------------------------|
-  | 4 Nov 2026   09:00:46    step      19200    823446    804246   A1_stack A1.5 m_natfirst_r1 pass 1: restore                                        |
-  |---------------------------------------------------------------------------------------------------------------------------------------------------|
-  | 4 Nov 2026   09:00:46     est     823446      9600   -813846   A1 A1.5 m_natfirst_r1_sep_baseline vis | ppmlhdfe e(N); drop breakdown in the pp.. |
-  | 4 Nov 2026   09:00:47     est     823446      9600   -813846   A1 A1.5 m_natfirst_r1_sep_natfirst vis | ppmlhdfe e(N); drop breakdown in the pp.. |
-  | 4 Nov 2026   09:00:47     est     823446     26339   -797107   A1 A1.5 m_natfirst_full tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe out.. |
-  | 4 Nov 2026   09:00:48     est     823446     26339   -797107   A1 A1.5 m_natfirst separate baseline pass 1 (immediate record, audit R1-10) | pp.. |
-  | 4 Nov 2026   09:00:48     est     823446     26339   -797107   A1 A1.5 m_natfirst separate natfirst pass 1 (immediate record, audit R1-10) | pp.. |
-  |---------------------------------------------------------------------------------------------------------------------------------------------------|
-  | 4 Nov 2026   09:00:48    step     823446     26339   -797107   A1_stack A1.5 m_natfirst pass 1: keep rows in either separate e(sample)            |
-  | 4 Nov 2026   09:00:48    step      26339     52678     26339   A1_stack A1.5 m_natfirst pass 1: expand 2 (one copy per block)                     |
-  | 4 Nov 2026   09:00:48    step      52678     52678         0   A1_stack A1.5 m_natfirst pass 1: keep block copies inside their own e(sample)      |
-  |---------------------------------------------------------------------------------------------------------------------------------------------------|
-  | 4 Nov 2026   09:00:50     est      52678     52678         0   A1 A1.5 m_natfirst stacked pass 1 | ppmlhdfe e(N); drop breakdown in the ppmlhdf.. |
-  |---------------------------------------------------------------------------------------------------------------------------------------------------|
-  | 4 Nov 2026   09:00:50    step      52678    823446    770768   A1_stack A1.5 m_natfirst pass 1: restore                                           |
-  |---------------------------------------------------------------------------------------------------------------------------------------------------|
-  | 4 Nov 2026   09:00:50     est     823446     26339   -797107   A1 A1.5 m_natfirst_sep_baseline tour | ppmlhdfe e(N); drop breakdown in the ppml.. |
-  | 4 Nov 2026   09:00:50     est     823446     26339   -797107   A1 A1.5 m_natfirst_sep_natfirst tour | ppmlhdfe e(N); drop breakdown in the ppml.. |
-  | 4 Nov 2026   09:00:51     est     823446     12639   -810807   C2_A1_09 tour same-basis fixed point 1 mob_bilat_tour | ppmlhdfe e(N); drop brea.. |
-  | 4 Nov 2026   09:00:51     est     823446     12639   -810807   C2_A1_09 tour same-basis fixed point 1 mob_nf_tour | ppmlhdfe e(N); drop breakdo.. |
-  | 4 Nov 2026   09:00:52     est     823446     12639   -810807   C2_A1_09 tour same-basis fixed point 2 mob_bilat_tour | ppmlhdfe e(N); drop brea.. |
-  | 4 Nov 2026   09:00:52     est     823446     12639   -810807   C2_A1_09 tour same-basis fixed point 2 mob_nf_tour | ppmlhdfe e(N); drop breakdo.. |
-  | 4 Nov 2026   09:00:53     est     823446     12639   -810807   A1 A1.5 m_natfirst_r1 separate baseline pass 1 (immediate record, audit R1-10) |.. |
-  | 4 Nov 2026   09:00:53     est     823446     12639   -810807   A1 A1.5 m_natfirst_r1 separate natfirst pass 1 (immediate record, audit R1-10) |.. |
-  |---------------------------------------------------------------------------------------------------------------------------------------------------|
-  | 4 Nov 2026   09:00:53    step     823446     12639   -810807   A1_stack A1.5 m_natfirst_r1 pass 1: keep rows in either separate e(sample)         |
-  | 4 Nov 2026   09:00:53    step      12639     25278     12639   A1_stack A1.5 m_natfirst_r1 pass 1: expand 2 (one copy per block)                  |
-  | 4 Nov 2026   09:00:53    step      25278     25278         0   A1_stack A1.5 m_natfirst_r1 pass 1: keep block copies inside their own e(sample)   |
-  |---------------------------------------------------------------------------------------------------------------------------------------------------|
-  | 4 Nov 2026   09:00:55     est      25278     25278         0   A1 A1.5 m_natfirst_r1 stacked pass 1 | ppmlhdfe e(N); drop breakdown in the ppml.. |
-  |---------------------------------------------------------------------------------------------------------------------------------------------------|
-  | 4 Nov 2026   09:00:55    step      25278    823446    798168   A1_stack A1.5 m_natfirst_r1 pass 1: restore                                        |
-  |---------------------------------------------------------------------------------------------------------------------------------------------------|
-  | 4 Nov 2026   09:00:55     est     823446     12639   -810807   A1 A1.5 m_natfirst_r1_sep_baseline tour | ppmlhdfe e(N); drop breakdown in the p.. |
-  | 4 Nov 2026   09:00:55     est     823446     12639   -810807   A1 A1.5 m_natfirst_r1_sep_natfirst tour | ppmlhdfe e(N); drop breakdown in the p.. |
+  | 5 Nov 2026   11:07:06    step      25344    823446    798102   A1_stack A1.5 r1 pass 1: restore                                                   |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 5 Nov 2026   11:07:06     est     823446     13761   -809685   A1 A1.5 r1_sep_restricted tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe o.. |
+  | 5 Nov 2026   11:07:06     est     823446     11583   -811863   A1 A1.5 r1_sep_complement tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe o.. |
+  | 5 Nov 2026   11:07:07     est     823446     10775   -812671   A1 A1.5 r2 separate restricted pass 1 (immediate record, audit R1-10) | ppmlhdfe.. |
+  | 5 Nov 2026   11:07:07     est     823446     15030   -808416   A1 A1.5 r2 separate complement pass 1 (immediate record, audit R1-10) | ppmlhdfe.. |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 5 Nov 2026   11:07:07    step     823446     25805   -797641   A1_stack A1.5 r2 pass 1: keep rows in either separate e(sample)                    |
+  | 5 Nov 2026   11:07:07    step      25805     51610     25805   A1_stack A1.5 r2 pass 1: expand 2 (one copy per block)                             |
+  | 5 Nov 2026   11:07:07    step      51610     25805    -25805   A1_stack A1.5 r2 pass 1: keep block copies inside their own e(sample)              |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 5 Nov 2026   11:07:08     est      25805     25805         0   A1 A1.5 r2 stacked pass 1 | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output   |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 5 Nov 2026   11:07:08    step      25805    823446    797641   A1_stack A1.5 r2 pass 1: restore                                                   |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 5 Nov 2026   11:07:08     est     823446     10775   -812671   A1 A1.5 r2_sep_restricted tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe o.. |
+  | 5 Nov 2026   11:07:08     est     823446     15030   -808416   A1 A1.5 r2_sep_complement tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe o.. |
+  | 5 Nov 2026   11:07:08     est     823446     10450   -812996   A1 A1.5 r2all separate restricted pass 1 (immediate record, audit R1-10) | ppmlh.. |
+  | 5 Nov 2026   11:07:09     est     823446     15452   -807994   A1 A1.5 r2all separate complement pass 1 (immediate record, audit R1-10) | ppmlh.. |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 5 Nov 2026   11:07:09    step     823446     25902   -797544   A1_stack A1.5 r2all pass 1: keep rows in either separate e(sample)                 |
+  | 5 Nov 2026   11:07:09    step      25902     51804     25902   A1_stack A1.5 r2all pass 1: expand 2 (one copy per block)                          |
+  | 5 Nov 2026   11:07:09    step      51804     25902    -25902   A1_stack A1.5 r2all pass 1: keep block copies inside their own e(sample)           |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 5 Nov 2026   11:07:10     est      25902     25902         0   A1 A1.5 r2all stacked pass 1 | ppmlhdfe e(N); drop breakdown in the ppmlhdfe out.. |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 5 Nov 2026   11:07:10    step      25902    823446    797544   A1_stack A1.5 r2all pass 1: restore                                                |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 5 Nov 2026   11:07:10     est     823446     10450   -812996   A1 A1.5 r2all_sep_restricted tour | ppmlhdfe e(N); drop breakdown in the ppmlhdf.. |
+  | 5 Nov 2026   11:07:10     est     823446     15452   -807994   A1 A1.5 r2all_sep_complement tour | ppmlhdfe e(N); drop breakdown in the ppmlhdf.. |
+  | 5 Nov 2026   11:07:10     est     823446     18577   -804869   A1 A1.5 r4 separate restricted pass 1 (immediate record, audit R1-10) | ppmlhdfe.. |
+  | 5 Nov 2026   11:07:11     est     823446      6974   -816472   A1 A1.5 r4 separate complement pass 1 (immediate record, audit R1-10) | ppmlhdfe.. |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 5 Nov 2026   11:07:11    step     823446     25551   -797895   A1_stack A1.5 r4 pass 1: keep rows in either separate e(sample)                    |
+  | 5 Nov 2026   11:07:11    step      25551     51102     25551   A1_stack A1.5 r4 pass 1: expand 2 (one copy per block)                             |
+  | 5 Nov 2026   11:07:11    step      51102     25551    -25551   A1_stack A1.5 r4 pass 1: keep block copies inside their own e(sample)              |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 5 Nov 2026   11:07:11     est      25551     25551         0   A1 A1.5 r4 stacked pass 1 | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output   |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 5 Nov 2026   11:07:11    step      25551    823446    797895   A1_stack A1.5 r4 pass 1: restore                                                   |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 5 Nov 2026   11:07:12     est     823446     18577   -804869   A1 A1.5 r4_sep_restricted tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe o.. |
+  | 5 Nov 2026   11:07:12     est     823446      6974   -816472   A1 A1.5 r4_sep_complement tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe o.. |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 5 Nov 2026   11:07:13    step     823446    823446         0   A1.5 merge C09 importer-year list (m:1 keep master match; no row change)           |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 5 Nov 2026   11:07:14     est     823446     20366   -803080   A1 A1.5 x_svksvn vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output        |
+  | 5 Nov 2026   11:07:14     est     823446     20598   -802848   A1 A1.5 x_pry_rep vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output       |
+  | 5 Nov 2026   11:07:15     est     823446     20598   -802848   A1 A1.5 x_c09 vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output           |
+  | 5 Nov 2026   11:07:15     est     823446     20598   -802848   A1 A1.5 x_cz vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output            |
+  | 5 Nov 2026   11:07:16     est     823446     20419   -803027   A1 A1.5 x_rev15 vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output         |
+  | 5 Nov 2026   11:07:16     est     823446     20581   -802865   A1 A1.5 x_rev6 vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output          |
+  | 5 Nov 2026   11:07:17     est     823446     20191   -803255   A1 A1.5 x_clean vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output         |
+  | 5 Nov 2026   11:07:17     est     823446      6302   -817144   A1 A1.5 x_clean_basis vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output   |
+  | 5 Nov 2026   11:07:18     est     823446     26139   -797307   A1 A1.5 x_svksvn tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output       |
+  | 5 Nov 2026   11:07:18     est     823446     25692   -797754   A1 A1.5 x_pry_rep tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output      |
+  | 5 Nov 2026   11:07:19     est     823446     26339   -797107   A1 A1.5 x_c09 tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output          |
+  | 5 Nov 2026   11:07:19     est     823446     26339   -797107   A1 A1.5 x_cz tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output           |
+  | 5 Nov 2026   11:07:20     est     823446     26167   -797279   A1 A1.5 x_rev15 tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output        |
+  | 5 Nov 2026   11:07:20     est     823446     26283   -797163   A1 A1.5 x_rev6 tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output         |
+  | 5 Nov 2026   11:07:21     est     823446     25333   -798113   A1 A1.5 x_clean tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output        |
+  | 5 Nov 2026   11:07:21     est     823446     10023   -813423   A1 A1.5 x_clean_basis tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output  |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 5 Nov 2026   11:07:23   start          .    823446         0   start: <PACKAGE_ROOT>/05_output/10_analysis/cor.. |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 5 Nov 2026   11:07:24    step     823446    823446         0   C2_A1_08 merge snapshot master residence/nationality series (assert all match; n.. |
+  | 5 Nov 2026   11:07:24    step     823446    823446         0   C2_A1_08 mirror merge of same-direction residence/nationality series (keep maste.. |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 5 Nov 2026   11:07:24     est     823446        16   -823430   C2_A1_08 vis overlap fixed point iteration 1 residence | ppmlhdfe e(N); drop bre.. |
+  | 5 Nov 2026   11:07:25     est     823446        16   -823430   C2_A1_08 vis overlap fixed point iteration 1 nationality | ppmlhdfe e(N); drop b.. |
+  | 5 Nov 2026   11:07:25     est     823446        16   -823430   C2_A1_08 vis overlap fixed point iteration 2 residence | ppmlhdfe e(N); drop bre.. |
+  | 5 Nov 2026   11:07:25     est     823446        16   -823430   C2_A1_08 vis overlap fixed point iteration 2 nationality | ppmlhdfe e(N); drop b.. |
+  | 5 Nov 2026   11:07:26     est     823446        16   -823430   A1 A1.5 m_overlap_base vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output  |
+  | 5 Nov 2026   11:07:26     est     823446        16   -823430   C2_A1_08 vis identification check res | ppmlhdfe e(N); drop breakdown in the ppm.. |
+  | 5 Nov 2026   11:07:26     est     823446        16   -823430   C2_A1_08 vis identification check nat | ppmlhdfe e(N); drop breakdown in the ppm.. |
+  | 5 Nov 2026   11:07:26     est     823446        16   -823430   A1 A1.5 m_overlap separate residence pass 1 (immediate record, audit R1-10) | pp.. |
+  | 5 Nov 2026   11:07:26     est     823446        16   -823430   A1 A1.5 m_overlap separate nationality pass 1 (immediate record, audit R1-10) | .. |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 5 Nov 2026   11:07:26    step     823446        16   -823430   A1_stack A1.5 m_overlap pass 1: keep rows in either separate e(sample)             |
+  | 5 Nov 2026   11:07:26    step         16        32        16   A1_stack A1.5 m_overlap pass 1: expand 2 (one copy per block)                      |
+  | 5 Nov 2026   11:07:26    step         32        32         0   A1_stack A1.5 m_overlap pass 1: keep block copies inside their own e(sample)       |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 5 Nov 2026   11:07:26     est         32        32         0   A1 A1.5 m_overlap stacked pass 1 | ppmlhdfe e(N); drop breakdown in the ppmlhdfe.. |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 5 Nov 2026   11:07:26    step         32    823446    823414   A1_stack A1.5 m_overlap pass 1: restore                                            |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 5 Nov 2026   11:07:26     est     823446        16   -823430   A1 A1.5 m_overlap_sep_residence vis | ppmlhdfe e(N); drop breakdown in the ppmlh.. |
+  | 5 Nov 2026   11:07:26     est     823446        16   -823430   A1 A1.5 m_overlap_sep_nationality vis | ppmlhdfe e(N); drop breakdown in the ppm.. |
+  | 5 Nov 2026   11:07:27     est     823446        36   -823410   C2_A1_08 tour overlap fixed point iteration 1 residence | ppmlhdfe e(N); drop br.. |
+  | 5 Nov 2026   11:07:27     est     823446        36   -823410   C2_A1_08 tour overlap fixed point iteration 1 nationality | ppmlhdfe e(N); drop .. |
+  | 5 Nov 2026   11:07:27     est     823446        36   -823410   C2_A1_08 tour overlap fixed point iteration 2 residence | ppmlhdfe e(N); drop br.. |
+  | 5 Nov 2026   11:07:27     est     823446        36   -823410   C2_A1_08 tour overlap fixed point iteration 2 nationality | ppmlhdfe e(N); drop .. |
+  | 5 Nov 2026   11:07:28     est     823446        36   -823410   A1 A1.5 m_overlap_base tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output |
+  | 5 Nov 2026   11:07:28     est     823446        36   -823410   C2_A1_08 tour identification check res | ppmlhdfe e(N); drop breakdown in the pp.. |
+  | 5 Nov 2026   11:07:28     est     823446        36   -823410   C2_A1_08 tour identification check nat | ppmlhdfe e(N); drop breakdown in the pp.. |
+  | 5 Nov 2026   11:07:28     est     823446        36   -823410   A1 A1.5 m_overlap_sep_residence tour | ppmlhdfe e(N); drop breakdown in the ppml.. |
+  | 5 Nov 2026   11:07:28     est     823446        36   -823410   A1 A1.5 m_overlap_sep_nationality tour | ppmlhdfe e(N); drop breakdown in the pp.. |
+  | 5 Nov 2026   11:07:29     est     823446     20410   -803036   A1 A1.3 nest_xn_any_base vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe out.. |
+  | 5 Nov 2026   11:07:30     est     823446     10512   -812934   A1 A1.3 nest_xn_any_r1 vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output  |
+  | 5 Nov 2026   11:07:30     est     823446     20560   -802886   A1 A1.3 nest_xn_same_base vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe ou.. |
+  | 5 Nov 2026   11:07:31     est     823446     10630   -812816   A1 A1.3 nest_xn_same_r1 vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output |
+  | 5 Nov 2026   11:07:31     est     823446     26139   -797307   A1 A1.3 nest_xn_any_base tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe ou.. |
+  | 5 Nov 2026   11:07:32     est     823446     13695   -809751   A1 A1.3 nest_xn_any_r1 tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output |
+  | 5 Nov 2026   11:07:33     est     823446     26325   -797121   A1 A1.3 nest_xn_same_base tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe o.. |
+  | 5 Nov 2026   11:07:33     est     823446     13757   -809689   A1 A1.3 nest_xn_same_r1 tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe out.. |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 5 Nov 2026   11:07:35   start          .    823446         0   start: <PACKAGE_ROOT>/05_output/10_analysis/cor.. |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 5 Nov 2026   11:07:36    step     823446    823446         0   C2_A1_09 merge snapshot master residence/nationality series (assert all match; n.. |
+  | 5 Nov 2026   11:07:37    step     823446    823446         0   C2_A1_09 mirror merge of same-direction series (keep master match)                 |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 5 Nov 2026   11:07:37     est     823446     20598   -802848   A1 A1.5 m_natfirst_full vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output |
+  | 5 Nov 2026   11:07:38     est     823446     20598   -802848   A1 A1.5 m_natfirst separate baseline pass 1 (immediate record, audit R1-10) | pp.. |
+  | 5 Nov 2026   11:07:38     est     823446     20598   -802848   A1 A1.5 m_natfirst separate natfirst pass 1 (immediate record, audit R1-10) | pp.. |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 5 Nov 2026   11:07:38    step     823446     20598   -802848   A1_stack A1.5 m_natfirst pass 1: keep rows in either separate e(sample)            |
+  | 5 Nov 2026   11:07:38    step      20598     41196     20598   A1_stack A1.5 m_natfirst pass 1: expand 2 (one copy per block)                     |
+  | 5 Nov 2026   11:07:38    step      41196     41196         0   A1_stack A1.5 m_natfirst pass 1: keep block copies inside their own e(sample)      |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 5 Nov 2026   11:07:39     est      41196     41196         0   A1 A1.5 m_natfirst stacked pass 1 | ppmlhdfe e(N); drop breakdown in the ppmlhdf.. |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 5 Nov 2026   11:07:39    step      41196    823446    782250   A1_stack A1.5 m_natfirst pass 1: restore                                           |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 5 Nov 2026   11:07:39     est     823446     20598   -802848   A1 A1.5 m_natfirst_sep_baseline vis | ppmlhdfe e(N); drop breakdown in the ppmlh.. |
+  | 5 Nov 2026   11:07:40     est     823446     20598   -802848   A1 A1.5 m_natfirst_sep_natfirst vis | ppmlhdfe e(N); drop breakdown in the ppmlh.. |
+  | 5 Nov 2026   11:07:40     est     823446      9600   -813846   C2_A1_09 vis same-basis fixed point 1 mob_bilat_vis | ppmlhdfe e(N); drop breakd.. |
+  | 5 Nov 2026   11:07:40     est     823446      9600   -813846   C2_A1_09 vis same-basis fixed point 1 mob_nf_vis | ppmlhdfe e(N); drop breakdown.. |
+  | 5 Nov 2026   11:07:41     est     823446      9600   -813846   C2_A1_09 vis same-basis fixed point 2 mob_bilat_vis | ppmlhdfe e(N); drop breakd.. |
+  | 5 Nov 2026   11:07:41     est     823446      9600   -813846   C2_A1_09 vis same-basis fixed point 2 mob_nf_vis | ppmlhdfe e(N); drop breakdown.. |
+  | 5 Nov 2026   11:07:42     est     823446      9600   -813846   A1 A1.5 m_natfirst_r1 separate baseline pass 1 (immediate record, audit R1-10) |.. |
+  | 5 Nov 2026   11:07:42     est     823446      9600   -813846   A1 A1.5 m_natfirst_r1 separate natfirst pass 1 (immediate record, audit R1-10) |.. |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 5 Nov 2026   11:07:42    step     823446      9600   -813846   A1_stack A1.5 m_natfirst_r1 pass 1: keep rows in either separate e(sample)         |
+  | 5 Nov 2026   11:07:42    step       9600     19200      9600   A1_stack A1.5 m_natfirst_r1 pass 1: expand 2 (one copy per block)                  |
+  | 5 Nov 2026   11:07:42    step      19200     19200         0   A1_stack A1.5 m_natfirst_r1 pass 1: keep block copies inside their own e(sample)   |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 5 Nov 2026   11:07:43     est      19200     19200         0   A1 A1.5 m_natfirst_r1 stacked pass 1 | ppmlhdfe e(N); drop breakdown in the ppml.. |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 5 Nov 2026   11:07:43    step      19200    823446    804246   A1_stack A1.5 m_natfirst_r1 pass 1: restore                                        |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 5 Nov 2026   11:07:43     est     823446      9600   -813846   A1 A1.5 m_natfirst_r1_sep_baseline vis | ppmlhdfe e(N); drop breakdown in the pp.. |
+  | 5 Nov 2026   11:07:43     est     823446      9600   -813846   A1 A1.5 m_natfirst_r1_sep_natfirst vis | ppmlhdfe e(N); drop breakdown in the pp.. |
+  | 5 Nov 2026   11:07:44     est     823446     26339   -797107   A1 A1.5 m_natfirst_full tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe out.. |
+  | 5 Nov 2026   11:07:44     est     823446     26339   -797107   A1 A1.5 m_natfirst separate baseline pass 1 (immediate record, audit R1-10) | pp.. |
+  | 5 Nov 2026   11:07:45     est     823446     26339   -797107   A1 A1.5 m_natfirst separate natfirst pass 1 (immediate record, audit R1-10) | pp.. |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 5 Nov 2026   11:07:45    step     823446     26339   -797107   A1_stack A1.5 m_natfirst pass 1: keep rows in either separate e(sample)            |
+  | 5 Nov 2026   11:07:45    step      26339     52678     26339   A1_stack A1.5 m_natfirst pass 1: expand 2 (one copy per block)                     |
+  | 5 Nov 2026   11:07:45    step      52678     52678         0   A1_stack A1.5 m_natfirst pass 1: keep block copies inside their own e(sample)      |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 5 Nov 2026   11:07:46     est      52678     52678         0   A1 A1.5 m_natfirst stacked pass 1 | ppmlhdfe e(N); drop breakdown in the ppmlhdf.. |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 5 Nov 2026   11:07:46    step      52678    823446    770768   A1_stack A1.5 m_natfirst pass 1: restore                                           |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 5 Nov 2026   11:07:46     est     823446     26339   -797107   A1 A1.5 m_natfirst_sep_baseline tour | ppmlhdfe e(N); drop breakdown in the ppml.. |
+  | 5 Nov 2026   11:07:46     est     823446     26339   -797107   A1 A1.5 m_natfirst_sep_natfirst tour | ppmlhdfe e(N); drop breakdown in the ppml.. |
+  | 5 Nov 2026   11:07:47     est     823446     12639   -810807   C2_A1_09 tour same-basis fixed point 1 mob_bilat_tour | ppmlhdfe e(N); drop brea.. |
+  | 5 Nov 2026   11:07:48     est     823446     12639   -810807   C2_A1_09 tour same-basis fixed point 1 mob_nf_tour | ppmlhdfe e(N); drop breakdo.. |
+  | 5 Nov 2026   11:07:48     est     823446     12639   -810807   C2_A1_09 tour same-basis fixed point 2 mob_bilat_tour | ppmlhdfe e(N); drop brea.. |
+  | 5 Nov 2026   11:07:49     est     823446     12639   -810807   C2_A1_09 tour same-basis fixed point 2 mob_nf_tour | ppmlhdfe e(N); drop breakdo.. |
+  | 5 Nov 2026   11:07:49     est     823446     12639   -810807   A1 A1.5 m_natfirst_r1 separate baseline pass 1 (immediate record, audit R1-10) |.. |
+  | 5 Nov 2026   11:07:50     est     823446     12639   -810807   A1 A1.5 m_natfirst_r1 separate natfirst pass 1 (immediate record, audit R1-10) |.. |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 5 Nov 2026   11:07:50    step     823446     12639   -810807   A1_stack A1.5 m_natfirst_r1 pass 1: keep rows in either separate e(sample)         |
+  | 5 Nov 2026   11:07:50    step      12639     25278     12639   A1_stack A1.5 m_natfirst_r1 pass 1: expand 2 (one copy per block)                  |
+  | 5 Nov 2026   11:07:50    step      25278     25278         0   A1_stack A1.5 m_natfirst_r1 pass 1: keep block copies inside their own e(sample)   |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 5 Nov 2026   11:07:51     est      25278     25278         0   A1 A1.5 m_natfirst_r1 stacked pass 1 | ppmlhdfe e(N); drop breakdown in the ppml.. |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 5 Nov 2026   11:07:51    step      25278    823446    798168   A1_stack A1.5 m_natfirst_r1 pass 1: restore                                        |
+  |---------------------------------------------------------------------------------------------------------------------------------------------------|
+  | 5 Nov 2026   11:07:51     est     823446     12639   -810807   A1 A1.5 m_natfirst_r1_sep_baseline tour | ppmlhdfe e(N); drop breakdown in the p.. |
+  | 5 Nov 2026   11:07:51     est     823446     12639   -810807   A1 A1.5 m_natfirst_r1_sep_natfirst tour | ppmlhdfe e(N); drop breakdown in the p.. |
   +---------------------------------------------------------------------------------------------------------------------------------------------------+
 
 . display as result "C2_A1_09_COMPLETE vintage=${VINTAGE} " c(current_date) " " c(current_time)
-C2_A1_09_COMPLETE vintage=corrected2x  4 Nov 2026 09:00:55
+C2_A1_09_COMPLETE vintage=corrected2x  5 Nov 2026 11:07:52
 
 . log close
       name:  <unnamed>
        log:  <PACKAGE_ROOT>/05_output/10_analysis/corrected2x_upair/logs/C2_A1_09_natfirst_corrected2x.log
   log type:  text
- closed on:   4 Nov 2026, 09:00:55
+ closed on:   5 Nov 2026, 11:07:52
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

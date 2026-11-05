@@ -2,7 +2,7 @@
       name:  <unnamed>
        log:  <PACKAGE_ROOT>/05_output/03_Mobility/03_logs/sensitivity/02_formal_equality/02_formal_equality_visitors_tourists.log
   log type:  text
- opened on:   4 Nov 2026, 08:31:53
+ opened on:   5 Nov 2026, 10:39:53
 
 . 
 . capture confirm file "${INDATA}"
@@ -421,5 +421,5 @@ EQUALITY_P= 0.366454506
       name:  <unnamed>
        log:  <PACKAGE_ROOT>/05_output/03_Mobility/03_logs/sensitivity/02_formal_equality/02_formal_equality_visitors_tourists.log
   log type:  text
- closed on:   4 Nov 2026, 08:31:53
+ closed on:   5 Nov 2026, 10:39:53
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

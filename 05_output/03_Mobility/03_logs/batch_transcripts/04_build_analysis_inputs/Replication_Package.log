@@ -65,15 +65,15 @@
 . capture log close _all
 
 . log using "${LOGS}/00_build_estimation_inputs.log", replace text
-(file <USER_HOME>/S1 test run
-    r3/Replication_Package/05_output/03_Mobility/03_logs/analysis_inputs/00_b
-    > uild_estimation_inputs.log not found)
+(file
+    <PACKAGE_ROOT>/05_output/03_Mobility/03_
+    > logs/analysis_inputs/00_build_estimation_inputs.log not found)
 -------------------------------------------------------------------------------
       name:  <unnamed>
-       log:  <PACKAGE_ROOT>/05_output/03_Mobi
-> lity/03_logs/analysis_inputs/00_build_estimation_inputs.log
+       log:  <PACKAGE_ROOT>/05_output/03_Mobil
+> ity/03_logs/analysis_inputs/00_build_estimation_inputs.log
   log type:  text
- opened on:   4 Nov 2026, 08:29:30
+ opened on:   5 Nov 2026, 10:37:36
 
 . 
 . capture confirm file "${MASTER}"
@@ -166,11 +166,11 @@
 .     keep year iso3_o iso3_d dist
 
 .     export delimited using "${DIAG}/nonpositive_distance_rows.csv", replace
-(file <USER_HOME>/S1 test run
-    r3/Replication_Package/05_output/03_Mobility/01_diagnostics/analysis_inpu
-    > ts/nonpositive_distance_rows.csv not found)
-file <PACKAGE_ROOT>/05_output/03_Mobility/01_
-> diagnostics/analysis_inputs/nonpositive_distance_rows.csv saved
+(file
+    <PACKAGE_ROOT>/05_output/03_Mobility/01_
+    > diagnostics/analysis_inputs/nonpositive_distance_rows.csv not found)
+file <PACKAGE_ROOT>/05_output/03_Mobility/01_d
+> iagnostics/analysis_inputs/nonpositive_distance_rows.csv saved
 
 . restore
 
@@ -295,9 +295,9 @@ distcap       ttl_ex8523    visitors_t~s  vis_span2020  ln_dist
 
 . 
 . file open va using "${DIAG}/variable_reduction_audit.csv", write replace text
-(file <USER_HOME>/S1 test run
-    r3/Replication_Package/05_output/03_Mobility/01_diagnostics/analysis_inpu
-    > ts/variable_reduction_audit.csv not found)
+(file
+    <PACKAGE_ROOT>/05_output/03_Mobility/01_
+    > diagnostics/analysis_inputs/variable_reduction_audit.csv not found)
 
 . file write va "variable,action_in_minimal_input,reason" _n
 
@@ -475,20 +475,22 @@ file <PACKAGE_ROOT>/04_analysis
 
 .     export delimited using "${DIAG}/estimation_variable_interface.csv", repla
 > ce
-(file <USER_HOME>/S1 test run
-    r3/Replication_Package/05_output/03_Mobility/01_diagnostics/analysis_inpu
-    > ts/estimation_variable_interface.csv not found)
-file <PACKAGE_ROOT>/05_output/03_Mobility/01_
-> diagnostics/analysis_inputs/estimation_variable_interface.csv saved
+(file
+    <PACKAGE_ROOT>/05_output/03_Mobility/01_
+    > diagnostics/analysis_inputs/estimation_variable_interface.csv not
+    found)
+file <PACKAGE_ROOT>/05_output/03_Mobility/01_d
+> iagnostics/analysis_inputs/estimation_variable_interface.csv saved
 
 . restore
 
 . 
 . file open done using "${DIAG}/00_DIRECT_INPUT_BUILD_COMPLETE.txt", write repl
 > ace text
-(file <USER_HOME>/S1 test run
-    r3/Replication_Package/05_output/03_Mobility/01_diagnostics/analysis_inpu
-    > ts/00_DIRECT_INPUT_BUILD_COMPLETE.txt not found)
+(file
+    <PACKAGE_ROOT>/05_output/03_Mobility/01_
+    > diagnostics/analysis_inputs/00_DIRECT_INPUT_BUILD_COMPLETE.txt not
+    found)
 
 . file write done "DIRECT_INPUT_BUILD=PASS" _n
 
@@ -510,19 +512,19 @@ DIRECT_INPUT_BUILD=PASS
 Rows preserved: 823446
 
 . di as result "LB: ${OUTDATA}/mobility_analysis_2007_2021.dta"
-LB: <PACKAGE_ROOT>/04_analysis data/03_Mobili
-> ty/mobility_analysis_2007_2021.dta
+LB: <PACKAGE_ROOT>/04_analysis data/03_Mobilit
+> y/mobility_analysis_2007_2021.dta
 
 . di as result "UB: ${OUTDATA}/mobility_analysis_UB_2007_2021.dta"
-UB: <PACKAGE_ROOT>/04_analysis data/03_Mobili
-> ty/mobility_analysis_UB_2007_2021.dta
+UB: <PACKAGE_ROOT>/04_analysis data/03_Mobilit
+> y/mobility_analysis_UB_2007_2021.dta
 
 . log close
       name:  <unnamed>
-       log:  <PACKAGE_ROOT>/05_output/03_Mobi
-> lity/03_logs/analysis_inputs/00_build_estimation_inputs.log
+       log:  <PACKAGE_ROOT>/05_output/03_Mobil
+> ity/03_logs/analysis_inputs/00_build_estimation_inputs.log
   log type:  text
- closed on:   4 Nov 2026, 08:29:36
+ closed on:   5 Nov 2026, 10:37:43
 -------------------------------------------------------------------------------
 
 . 

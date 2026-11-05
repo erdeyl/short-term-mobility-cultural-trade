@@ -72,7 +72,7 @@
       name:  <unnamed>
        log:  <PACKAGE_ROOT>/05_output/03_Mobility/03_logs/sensitivity/04_mirror_trade/05_run_mirror_sensitivity.log
   log type:  text
- opened on:   4 Nov 2026, 08:32:18
+ opened on:   5 Nov 2026, 10:40:18
 
 . 
 . capture confirm file "${INDATA}"
@@ -757,7 +757,7 @@ TOURIST reporting-side equality p= 0.522569049
       name:  <unnamed>
        log:  <PACKAGE_ROOT>/05_output/03_Mobility/03_logs/sensitivity/04_mirror_trade/05_run_mirror_sensitivity.log
   log type:  text
- closed on:   4 Nov 2026, 08:32:33
+ closed on:   5 Nov 2026, 10:40:32
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 . 

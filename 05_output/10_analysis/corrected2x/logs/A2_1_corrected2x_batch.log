@@ -22,8 +22,8 @@
 > g.
 >  Baseline samples: s_base_vis, s_base_tour (= e(sample) of Table 2 cols 1 and
 >  5).
->  Specification (defaults): ppmlhdfe, absorb(exporter_year importer_year
->  pair_id),
+>  Specification (defaults): ppmlhdfe, absorb(exporter_year importer_year pair_
+> id),
 >  vce(cluster pair_id). Help: ppmlhdfe.sthlp (d(newvar) mandatory before predi
 > ct; predict
 >  mu / eta), reghdfe.sthlp (no indepvars allowed; aweights; residuals(newvar))
@@ -651,13 +651,13 @@ end of do-file
       name:  <unnamed>
        log:  <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/A2_1_corrected2x.log
   log type:  text
- opened on:   4 Nov 2026, 08:37:43
+ opened on:   5 Nov 2026, 10:45:28
 
 . display as result "A2_1_BEGIN vintage=${VINTAGE} " c(current_date) " " c(current_time)
-A2_1_BEGIN vintage=corrected2x  4 Nov 2026 08:37:43
+A2_1_BEGIN vintage=corrected2x  5 Nov 2026 10:45:28
 
 . use "${OUT}/A2_work.dta", clear
-(PREP analysis base, vintage corrected2x, built  4 Nov 2026 08:33:39 by 01_prep.d)
+(PREP analysis base, vintage corrected2x, built  5 Nov 2026 10:41:37 by 01_prep.d)
 
 . nflow start using "${OUT}/A2_nflow.csv", append
 nflow: log <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/A2_nflow.csv, start N =       56,500
@@ -1061,21 +1061,21 @@ A2_1_FWL_J vis rev= 0.239826175596 fwl= 0.239826174578 same= 0.031919717908 fwl=
 (35,902 observations deleted)
 (17,604 observations deleted)
 file <TMP> saved as .dta format
-(PREP analysis base, vintage corrected2x, built  4 Nov 2026 08:33:39 by 01_prep.d)
+(PREP analysis base, vintage corrected2x, built  5 Nov 2026 10:41:37 by 01_prep.d)
 (2,984 observations deleted)
 (file <TMP> not found)
 file <TMP> saved as .dta format
-(PREP analysis base, vintage corrected2x, built  4 Nov 2026 08:33:39 by 01_prep.d)
+(PREP analysis base, vintage corrected2x, built  5 Nov 2026 10:41:37 by 01_prep.d)
 (2,984 observations deleted)
 (label pair_id already defined)
 file <TMP> saved as .dta format
-(PREP analysis base, vintage corrected2x, built  4 Nov 2026 08:33:39 by 01_prep.d)
+(PREP analysis base, vintage corrected2x, built  5 Nov 2026 10:41:37 by 01_prep.d)
 (2,984 observations deleted)
 (label pair_id already defined)
 file <TMP> saved as .dta format
 (file <TMP> not found)
 file <TMP> saved as .dta format
-(PREP analysis base, vintage corrected2x, built  4 Nov 2026 08:33:39 by 01_prep.d)
+(PREP analysis base, vintage corrected2x, built  5 Nov 2026 10:41:37 by 01_prep.d)
 nflow: estimation N =       20,584 (data N       56,500) A2.1c bilateral visitors drop top 1 influential pairs | 
 nflow: estimation N =       20,585 (data N       56,500) A2.1c joint visitors drop top 1 pairs ranked by |IF_rev| | 
 nflow: estimation N =       20,584 (data N       56,500) A2.1c joint visitors drop top 1 pairs ranked by |IF_same| | 
@@ -1150,21 +1150,21 @@ A2_1_FWL_J tour rev= 0.000408635512 fwl= 0.000408635127 same= 0.050451533656 fwl
 (30,161 observations deleted)
 (23,424 observations deleted)
 file <TMP> saved as .dta format
-(PREP analysis base, vintage corrected2x, built  4 Nov 2026 08:33:39 by 01_prep.d)
+(PREP analysis base, vintage corrected2x, built  5 Nov 2026 10:41:37 by 01_prep.d)
 (2,905 observations deleted)
 (file <TMP> not found)
 file <TMP> saved as .dta format
-(PREP analysis base, vintage corrected2x, built  4 Nov 2026 08:33:39 by 01_prep.d)
+(PREP analysis base, vintage corrected2x, built  5 Nov 2026 10:41:37 by 01_prep.d)
 (2,905 observations deleted)
 (label pair_id already defined)
 file <TMP> saved as .dta format
-(PREP analysis base, vintage corrected2x, built  4 Nov 2026 08:33:39 by 01_prep.d)
+(PREP analysis base, vintage corrected2x, built  5 Nov 2026 10:41:37 by 01_prep.d)
 (2,905 observations deleted)
 (label pair_id already defined)
 file <TMP> saved as .dta format
 (label pair_id already defined)
 file <TMP> saved as .dta format
-(PREP analysis base, vintage corrected2x, built  4 Nov 2026 08:33:39 by 01_prep.d)
+(PREP analysis base, vintage corrected2x, built  5 Nov 2026 10:41:37 by 01_prep.d)
 nflow: estimation N =       26,326 (data N       56,500) A2.1c bilateral tourists drop top 1 influential pairs | 
 nflow: estimation N =       26,325 (data N       56,500) A2.1c joint tourists drop top 1 pairs ranked by |IF_rev| | 
 nflow: estimation N =       26,325 (data N       56,500) A2.1c joint tourists drop top 1 pairs ranked by |IF_same| | 
@@ -1220,7 +1220,7 @@ file <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/results/A2_1.csv saved
 file <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/tables/A2_A2.1.csv saved
 
 . use `"`inflall'"', clear
-(PREP analysis base, vintage corrected2x, built  4 Nov 2026 08:33:39 by 01_prep.d)
+(PREP analysis base, vintage corrected2x, built  5 Nov 2026 10:41:37 by 01_prep.d)
 
 . format IF share_abs_IF %24.17g
 
@@ -1229,13 +1229,13 @@ file <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/tables/A2_A2.1.csv saved
 file <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/tables/A2_A2.1c_influence.csv saved
 
 . display as result "A2_1_DONE vintage=${VINTAGE} " c(current_time)
-A2_1_DONE vintage=corrected2x 08:38:22
+A2_1_DONE vintage=corrected2x 10:46:04
 
 . log close
       name:  <unnamed>
        log:  <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/A2_1_corrected2x.log
   log type:  text
- closed on:   4 Nov 2026, 08:38:22
+ closed on:   5 Nov 2026, 10:46:04
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 . 

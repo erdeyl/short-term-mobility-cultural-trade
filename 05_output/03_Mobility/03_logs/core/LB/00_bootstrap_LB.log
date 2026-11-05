@@ -33,7 +33,7 @@
       name:  master
        log:  <PACKAGE_ROOT>/05_output/03_Mobility/03_logs/core/LB/00_core_run.log
   log type:  text
- opened on:   4 Nov 2026, 08:29:49
+ opened on:   5 Nov 2026, 10:37:55
 
 . display as result "CORE_LB_BEGIN=yes"
 CORE_LB_BEGIN=yes
@@ -303,8 +303,8 @@ MODULE_BEGIN=02_prepare_data.do
 .     tempfile opposite_flows
 
 .     save `"`opposite_flows'"', replace
-(file <PACKAGE_ROOT>/00_stata_temp/St38571.000002 not found)
-file <PACKAGE_ROOT>/00_stata_temp/St38571.000002 saved as .dta format
+(file <PACKAGE_ROOT>/00_stata_temp/St93592.000002 not found)
+file <PACKAGE_ROOT>/00_stata_temp/St93592.000002 saved as .dta format
 
 . restore
 
@@ -898,8 +898,8 @@ CATEGORY_SHARE category=v_97_k support=tourist percent=   32.801905
 . tempfile base cat1 cat2 cat3 cat4
 
 . save `"`base'"', replace
-(file <PACKAGE_ROOT>/00_stata_temp/St38571.000001 not found)
-file <PACKAGE_ROOT>/00_stata_temp/St38571.000001 saved as .dta format
+(file <PACKAGE_ROOT>/00_stata_temp/St93592.000001 not found)
+file <PACKAGE_ROOT>/00_stata_temp/St93592.000001 saved as .dta format
 
 . local outcomes "v_3706_k v_49_k v_8523_k v_97_k"
 
@@ -914,17 +914,17 @@ file <PACKAGE_ROOT>/00_stata_temp/St38571.000001 saved as .dta format
   7.     save `"`cat`k''"', replace
   8. }
 (207,857 missing values generated)
-(file <PACKAGE_ROOT>/00_stata_temp/St38571.000002 not found)
-file <PACKAGE_ROOT>/00_stata_temp/St38571.000002 saved as .dta format
+(file <PACKAGE_ROOT>/00_stata_temp/St93592.000002 not found)
+file <PACKAGE_ROOT>/00_stata_temp/St93592.000002 saved as .dta format
 (207,857 missing values generated)
-(file <PACKAGE_ROOT>/00_stata_temp/St38571.000003 not found)
-file <PACKAGE_ROOT>/00_stata_temp/St38571.000003 saved as .dta format
+(file <PACKAGE_ROOT>/00_stata_temp/St93592.000003 not found)
+file <PACKAGE_ROOT>/00_stata_temp/St93592.000003 saved as .dta format
 (207,857 missing values generated)
-(file <PACKAGE_ROOT>/00_stata_temp/St38571.000004 not found)
-file <PACKAGE_ROOT>/00_stata_temp/St38571.000004 saved as .dta format
+(file <PACKAGE_ROOT>/00_stata_temp/St93592.000004 not found)
+file <PACKAGE_ROOT>/00_stata_temp/St93592.000004 saved as .dta format
 (207,857 missing values generated)
-(file <PACKAGE_ROOT>/00_stata_temp/St38571.000005 not found)
-file <PACKAGE_ROOT>/00_stata_temp/St38571.000005 saved as .dta format
+(file <PACKAGE_ROOT>/00_stata_temp/St93592.000005 not found)
+file <PACKAGE_ROOT>/00_stata_temp/St93592.000005 saved as .dta format
 
 . use `"`cat1'"', clear
 
@@ -1159,8 +1159,8 @@ file <PACKAGE_ROOT>/05_output/03_Mobility/01_diagnostics/core/LB/top5-exporters.
 .     keep iso3_o top5_exporter
 
 .     save `"`top5'"', replace
-(file <PACKAGE_ROOT>/00_stata_temp/St38571.000001 not found)
-file <PACKAGE_ROOT>/00_stata_temp/St38571.000001 saved as .dta format
+(file <PACKAGE_ROOT>/00_stata_temp/St93592.000001 not found)
+file <PACKAGE_ROOT>/00_stata_temp/St93592.000001 saved as .dta format
 
 . restore
 
@@ -1563,7 +1563,7 @@ CORE_LB=PASS
       name:  master
        log:  <PACKAGE_ROOT>/05_output/03_Mobility/03_logs/core/LB/00_core_run.log
   log type:  text
- closed on:   4 Nov 2026, 08:30:48
+ closed on:   5 Nov 2026, 10:38:52
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 . exit 0

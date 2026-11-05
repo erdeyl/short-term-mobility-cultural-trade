@@ -13,7 +13,8 @@
 > ***
 >  C2_02_bias.do -- rerun C2: Weidner-Zylkin analytical bias correction (Table 
 > A3, figure row)
->  Usage (cwd = 02_code/10_analysis):  stata-mp -b -q do C2_02_bias.do <vintage>
+>  Usage (cwd = 02_code/10_analysis):  stata-mp -b -q do C2_02_bias.do <vintage
+> >
 >  Runs the ORIGINAL 02_sensitivity/03_ppml_bias_correction.do unmodified from 
 > the vintage's code
 >  tree (${VROOT}/02_code; byte-identical to STUDENT, cmp 2026-11-03) on ${OUT}
@@ -435,7 +436,7 @@ end of do-file
       name:  <unnamed>
        log:  <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/pc/root/05_output/03_Mobility/03_logs/sensitivity/03_ppml_bias_correction/03_ppml_bias_correction.log
   log type:  text
- opened on:   4 Nov 2026, 08:42:15
+ opened on:   5 Nov 2026, 10:49:40
 
 . 
 . * ----------------------------------------------------------------------
@@ -542,7 +543,7 @@ end of do-file
 
 . 
 . use "${INDATA}", clear
-(PREP analysis base, vintage corrected2x, built  4 Nov 2026 08:33:39 by 01_prep.d)
+(PREP analysis base, vintage corrected2x, built  5 Nov 2026 10:41:37 by 01_prep.d)
 
 . isid year iso3_o iso3_d
 
@@ -1054,7 +1055,7 @@ TOURIST original= 0.180429225 corrected= 0.172911546 | SE original= 0.057718531 
       name:  <unnamed>
        log:  <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/pc/root/05_output/03_Mobility/03_logs/sensitivity/03_ppml_bias_correction/03_ppml_bias_correction.log
   log type:  text
- closed on:   4 Nov 2026, 08:42:31
+ closed on:   5 Nov 2026, 10:49:54
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 . 
@@ -1277,7 +1278,7 @@ end of do-file
       name:  <unnamed>
        log:  <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/C2_02_bias_corrected2x.log
   log type:  text
- opened on:   4 Nov 2026, 08:42:31
+ opened on:   5 Nov 2026, 10:49:54
 
 . type "${OUT}/C2_bias_cmp.txt"
 CMP_IDENTICAL
@@ -1351,7 +1352,7 @@ C2_BIAS_DONE vintage=corrected2x
       name:  <unnamed>
        log:  <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/C2_02_bias_corrected2x.log
   log type:  text
- closed on:   4 Nov 2026, 08:42:31
+ closed on:   5 Nov 2026, 10:49:54
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 . 

@@ -107,7 +107,7 @@
       name:  <unnamed>
        log:  <PACKAGE_ROOT>/05_output/03_Mobility/03_logs/sensitivity/04_mirror_trade/reconciled/06_run_reconciled_trade_sensitivity.log
   log type:  text
- opened on:   4 Nov 2026, 08:32:33
+ opened on:   5 Nov 2026, 10:40:32
 
 . 
 . capture confirm file "${INDATA}"
@@ -1054,7 +1054,7 @@ TOURIST p(importer=reconciled)= 0.882251066 p(exporter=reconciled)= 0.200863696 
       name:  <unnamed>
        log:  <PACKAGE_ROOT>/05_output/03_Mobility/03_logs/sensitivity/04_mirror_trade/reconciled/06_run_reconciled_trade_sensitivity.log
   log type:  text
- closed on:   4 Nov 2026, 08:32:50
+ closed on:   5 Nov 2026, 10:40:48
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 . 

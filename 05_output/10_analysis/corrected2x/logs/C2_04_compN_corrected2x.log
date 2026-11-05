@@ -1,17 +1,17 @@
 -------------------------------------------------------------------------------
       name:  <unnamed>
-       log:  <PACKAGE_ROOT>/05_output/10_anal
-> ysis/corrected2x/logs/C2_04_compN_corrected2x.log
+       log:  <PACKAGE_ROOT>/05_output/10_analy
+> sis/corrected2x/logs/C2_04_compN_corrected2x.log
   log type:  text
- opened on:   4 Nov 2026, 08:41:59
+ opened on:   5 Nov 2026, 10:49:25
 
 . use "${OUT}/A2_work.dta", clear
-(PREP analysis base, vintage corrected2x, built  4 Nov 2026 08:33:39 by 01_prep
+(PREP analysis base, vintage corrected2x, built  5 Nov 2026 10:41:37 by 01_prep
 > .d)
 
 . nflow start using "${OUT}/A2_nflow.csv", append
-nflow: log <PACKAGE_ROOT>/05_output/10_analys
-> is/corrected2x/A2_nflow.csv, start N =       56,500
+nflow: log <PACKAGE_ROOT>/05_output/10_analysi
+> s/corrected2x/A2_nflow.csv, start N =       56,500
 
 . local FE "exporter_year importer_year pair_id"
 
@@ -19,9 +19,9 @@ nflow: log <PACKAGE_ROOT>/05_output/10_analys
 
 . postfile `T' str5 mobility str60 step double(rows N N_full singletons separat
 > ed) str160 note using "${OUT}/tables/A2_A2.1e_composition_N.dta", replace
-(file <USER_HOME>/S1 test run
-    r3/Replication_Package/05_output/10_analysis/corrected2x/tables/A2_A2.1e_
-    > composition_N.dta not found)
+(file
+    <PACKAGE_ROOT>/05_output/10_analysis/cor
+    > rected2x/tables/A2_A2.1e_composition_N.dta not found)
 
 . foreach m in vis tour {
   2.     local smp "s_base_`m'"
@@ -97,11 +97,11 @@ C2_04 tour: final N 26335 (expected 26335) after 2 iteration(s)
 . order vintage
 
 . export delimited using "${OUT}/tables/A2_A2.1e_composition_N.csv", replace
-(file <USER_HOME>/S1 test run
-    r3/Replication_Package/05_output/10_analysis/corrected2x/tables/A2_A2.1e_
-    > composition_N.csv not found)
-file <PACKAGE_ROOT>/05_output/10_analysis/cor
-> rected2x/tables/A2_A2.1e_composition_N.csv saved
+(file
+    <PACKAGE_ROOT>/05_output/10_analysis/cor
+    > rected2x/tables/A2_A2.1e_composition_N.csv not found)
+file <PACKAGE_ROOT>/05_output/10_analysis/corr
+> ected2x/tables/A2_A2.1e_composition_N.csv saved
 
 . list, noobs clean
 [output of list removed in the release copy: it can contain UN Tourism values]
@@ -109,8 +109,8 @@ file <PACKAGE_ROOT>/05_output/10_analysis/cor
 
 . log close
       name:  <unnamed>
-       log:  <PACKAGE_ROOT>/05_output/10_anal
-> ysis/corrected2x/logs/C2_04_compN_corrected2x.log
+       log:  <PACKAGE_ROOT>/05_output/10_analy
+> sis/corrected2x/logs/C2_04_compN_corrected2x.log
   log type:  text
- closed on:   4 Nov 2026, 08:42:02
+ closed on:   5 Nov 2026, 10:49:28
 -------------------------------------------------------------------------------

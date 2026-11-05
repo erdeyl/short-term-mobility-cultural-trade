@@ -1,3 +1,3 @@
 date,time,kind,n_before,n_after,change,reason
-4 Nov 2026,08:56:20,start,,823446,0,"start: <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/prepared.dta"
-4 Nov 2026,08:56:20,step,823446,20598,-802848,"C2_A1_10_boot keep baseline e(sample) rows (vis)"
+5 Nov 2026,11:03:19,start,,823446,0,"start: <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/prepared.dta"
+5 Nov 2026,11:03:19,step,823446,20598,-802848,"C2_A1_10_boot keep baseline e(sample) rows (vis)"

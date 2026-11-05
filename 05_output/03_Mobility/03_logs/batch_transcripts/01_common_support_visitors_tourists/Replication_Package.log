@@ -84,7 +84,7 @@
       name:  <unnamed>
        log:  <PACKAGE_ROOT>/05_output/03_Mobility/03_logs/sensitivity/01_common_support/01_common_support_visitors_tourists.log
   log type:  text
- opened on:   4 Nov 2026, 08:31:48
+ opened on:   5 Nov 2026, 10:39:48
 
 . 
 . capture confirm file "${INDATA}"
@@ -486,7 +486,7 @@ Formal equality is intentionally reserved for Step 2.
       name:  <unnamed>
        log:  <PACKAGE_ROOT>/05_output/03_Mobility/03_logs/sensitivity/01_common_support/01_common_support_visitors_tourists.log
   log type:  text
- closed on:   4 Nov 2026, 08:31:52
+ closed on:   5 Nov 2026, 10:39:53
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 . 

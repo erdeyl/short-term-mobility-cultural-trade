@@ -90,7 +90,7 @@ if `rc' == 0 {
 }
 else {
     post A1post ("A1.10.dmdyn2_`variant'.`m'.Effect_1") ("${VINTAGE}") ("A1") ("A1.10") ("dmdyn2_`variant'") ("`smp'") ("`m'") ("Effect_1") ///
-        (.) (.) (.) (.) (.) (.) (.) (.) (.) (.) ("pair_id") ("`=cond(`rc'==301, "FAILED rc=301: bootstrap(100,20261103) stops when a bootstrap sample draws too few of the 3 control (non-switching) observations: the command reports insufficient observations and that no effect can be estimated (replay: authors' working notes); no seed search", "FAILED rc=`rc': did_multiplegt_dyn effects(1) `vopt' (no placebo), fresh Stata process`snote'")'")
+        (.) (.) (.) (.) (.) (.) (.) (.) (.) (.) ("pair_id") ("`=cond(`rc'==301, "FAILED rc=301: bootstrap(100,20261103) stops when a bootstrap sample draws too few of the 3 control (non-switching) observations: the command reports insufficient observations and that no effect can be estimated (replay: working notes of the authors); no seed search", "FAILED rc=`rc': did_multiplegt_dyn effects(1) `vopt' (no placebo), fresh Stata process`snote'")'")
 }
 A1_close
 nflow report

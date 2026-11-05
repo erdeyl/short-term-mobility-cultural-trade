@@ -2,10 +2,10 @@
       name:  <unnamed>
        log:  <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/C2_A1_10_boot_corrected2x_vis_cont1boot.log
   log type:  text
- opened on:   4 Nov 2026, 08:56:20
+ opened on:   5 Nov 2026, 11:03:19
 
 . display as result "C2_A1_10_BOOT_BEGIN vintage=${VINTAGE} m=`m' variant=`variant' " c(current_date) " " c(current_time)
-C2_A1_10_BOOT_BEGIN vintage=corrected2x m=vis variant=cont1boot  4 Nov 2026 08:56:20
+C2_A1_10_BOOT_BEGIN vintage=corrected2x m=vis variant=cont1boot  5 Nov 2026 11:03:19
 
 . which did_multiplegt_dyn
 <USER_HOME>/Library/Application Support/Stata/ado/plus/d/did_multiplegt_dyn.ado
@@ -18,7 +18,7 @@ A1.10_STORAGE c(type)=double tmpdir=<TMP>
 . assert strpos("`c(tmpdir)'", " ") == 0
 
 . use year iso3_o iso3_d v_ttl_k pair_id mob_bilat_`m' s_base_`m' using "${PREPARED}", clear
-(PREP analysis base, vintage corrected2x, built  4 Nov 2026 08:33:39 by 01_prep.d)
+(PREP analysis base, vintage corrected2x, built  5 Nov 2026 10:41:37 by 01_prep.d)
 
 . nflow start using "${OUT}/A1_nflow_boot_`m'_`variant'.csv", replace expected(823446)
 nflow: log <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/A1_nflow_boot_vis_cont1boot.csv, start N =      823,446
@@ -107,7 +107,7 @@ e(b) not found
 . quietly timer list 1
 
 . display as result "C2_A1_10_BOOT_RC `m' `variant' rc=`rc' seconds=" r(t1)
-C2_A1_10_BOOT_RC vis cont1boot rc=301 seconds=33.652
+C2_A1_10_BOOT_RC vis cont1boot rc=301 seconds=36.844
 
 . if `rc' == 0 {
 .     local bb = e(Effect_1)
@@ -123,8 +123,8 @@ C2_A1_10_BOOT_RC vis cont1boot rc=301 seconds=33.652
 . else {
 .     post A1post ("A1.10.dmdyn2_`variant'.`m'.Effect_1") ("${VINTAGE}") ("A1") ("A1.10") ("dmdyn2_`variant'") ("`smp'") ("`m'") ("Effect_1") ///
 >         (.) (.) (.) (.) (.) (.) (.) (.) (.) (.) ("pair_id") ("`=cond(`rc'==301, "FAILED rc=301: bootstrap(100,20261103) stops when a bootstrap sample draws too few of the 3 control (non-switching) o
-> bservations: the command reports insufficient observations and that no effect can be estimated (replay: authors' working notes); no seed search", "FAILED rc=`rc': did_multiplegt_dyn e
-> ffects(1) `vopt' (no placebo), fresh Stata process`snote'")'")
+> bservations: the command reports insufficient observations and that no effect can be estimated (replay: working notes of the authors); no seed search", "FAILED rc=`rc': did_multiplegt_dyn effects(1)
+>  `vopt' (no placebo), fresh Stata process`snote'")'")
 . }
 
 . A1_close
@@ -136,17 +136,17 @@ file <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/results/A1_parts/A1_05b_vi
   +---------------------------------------------------------------------------------------------------------------------------------------------------+
   |       date       time    kind   n_before   n_after    change   reason                                                                             |
   |---------------------------------------------------------------------------------------------------------------------------------------------------|
-  | 4 Nov 2026   08:56:20   start          .    823446         0   start: <PACKAGE_ROOT>/05_output/10_analysis/co.. |
+  | 5 Nov 2026   11:03:19   start          .    823446         0   start: <PACKAGE_ROOT>/05_output/10_analysis/cor.. |
   |---------------------------------------------------------------------------------------------------------------------------------------------------|
-  | 4 Nov 2026   08:56:20    step     823446     20598   -802848   C2_A1_10_boot keep baseline e(sample) rows (vis)                                   |
+  | 5 Nov 2026   11:03:19    step     823446     20598   -802848   C2_A1_10_boot keep baseline e(sample) rows (vis)                                   |
   +---------------------------------------------------------------------------------------------------------------------------------------------------+
 
 . display as result "C2_A1_10_BOOT_COMPLETE vintage=${VINTAGE} m=`m' variant=`variant' " c(current_date) " " c(current_time)
-C2_A1_10_BOOT_COMPLETE vintage=corrected2x m=vis variant=cont1boot  4 Nov 2026 08:56:54
+C2_A1_10_BOOT_COMPLETE vintage=corrected2x m=vis variant=cont1boot  5 Nov 2026 11:03:56
 
 . log close
       name:  <unnamed>
        log:  <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/C2_A1_10_boot_corrected2x_vis_cont1boot.log
   log type:  text
- closed on:   4 Nov 2026, 08:56:54
+ closed on:   5 Nov 2026, 11:03:56
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

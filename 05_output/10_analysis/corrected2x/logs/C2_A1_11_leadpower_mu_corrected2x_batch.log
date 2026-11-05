@@ -18,8 +18,8 @@
 > rs / 18,868 tourists)
 >  instead of the default-separation fits (A1.8.T7_pair: N 13,579 / 19,061) use
 > d by A1_03_time.do:236-280.
->  Usage (cwd = 02_code/10_analysis):  stata-mp -b -q do C2_A1_11_leadpower_mu.do c
-> orrected2x
+>  Usage (cwd = 02_code/10_analysis):  stata-mp -b -q do C2_A1_11_leadpower_mu.
+> do corrected2x
 >  Output: ${OUT}/tables/A1_A1.7_lead_power_mu.csv (new rows, trend = pair_mu; 
 > sibling of A1_A1.7_lead_power.csv,
 >          which is not touched), ${OUT}/tables/A1_A1.7_lead_power_mu_check.csv
@@ -282,14 +282,14 @@ end of do-file
       name:  <unnamed>
        log:  <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/C2_A1_11_leadpower_mu_corrected2x.log
   log type:  text
- opened on:   4 Nov 2026, 08:48:19
+ opened on:   5 Nov 2026, 10:55:04
 
 . display as result "C2_A1_11_BEGIN vintage=${VINTAGE} " c(current_date) " " c(current_time)
-C2_A1_11_BEGIN vintage=corrected2x  4 Nov 2026 08:48:19
+C2_A1_11_BEGIN vintage=corrected2x  5 Nov 2026 10:55:04
 
 . use year v_ttl_k mob_bilat_vis mob_bilat_tour lag_bilat_vis lead_bilat_vis lag_bilat_tour lead_bilat_tour ///
 >     exporter_year importer_year pair_id using "${PREPARED}", clear
-(PREP analysis base, vintage corrected2x, built  4 Nov 2026 08:33:39 by 01_prep.d)
+(PREP analysis base, vintage corrected2x, built  5 Nov 2026 10:41:37 by 01_prep.d)
 
 . nflow start using "${OUT}/C2_A1_11_nflow.csv", replace expected(823446)
 nflow: log <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/C2_A1_11_nflow.csv, start N =      823,446
@@ -898,26 +898,26 @@ file <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/tables/A1_A1.7_lead_power_
   +---------------------------------------------------------------------------------------------------------------------------------------------------+
   |       date       time    kind   n_before   n_after    change   reason                                                                             |
   |---------------------------------------------------------------------------------------------------------------------------------------------------|
-  | 4 Nov 2026   08:48:19   start          .    823446         0   start: <PACKAGE_ROOT>/05_output/10_analysis/co.. |
+  | 5 Nov 2026   10:55:04   start          .    823446         0   start: <PACKAGE_ROOT>/05_output/10_analysis/cor.. |
   |---------------------------------------------------------------------------------------------------------------------------------------------------|
-  | 4 Nov 2026   08:48:21     est     823446     13579   -809867   C2_A1_11 vis dynamic pair-trend fit, default separation (control = A1.8.T7_pair).. |
-  | 4 Nov 2026   08:48:23     est     823446     13578   -809868   C2_A1_11 vis static pair-trend fit on the default dynamic sample (control = A1.7.. |
-  | 4 Nov 2026   08:48:26     est     823446     13565   -809881   C2_A1_11 vis dynamic pair-trend fit, separation(fe simplex ir mu) (= A1.8.T7_pai.. |
-  | 4 Nov 2026   08:48:27     est     823446     13564   -809882   C2_A1_11 vis static pair-trend fit on the mu dynamic sample (reference static_sa.. |
-  | 4 Nov 2026   08:48:40     est     823446     19061   -804385   C2_A1_11 tour dynamic pair-trend fit, default separation (control = A1.8.T7_pair.. |
-  | 4 Nov 2026   08:48:52     est     823446     19061   -804385   C2_A1_11 tour static pair-trend fit on the default dynamic sample (control = A1... |
-  | 4 Nov 2026   08:49:08     est     823446     18868   -804578   C2_A1_11 tour dynamic pair-trend fit, separation(fe simplex ir mu) (= A1.8.T7_pa.. |
-  | 4 Nov 2026   08:49:22     est     823446     18865   -804581   C2_A1_11 tour static pair-trend fit on the mu dynamic sample (reference static_s.. |
+  | 5 Nov 2026   10:55:06     est     823446     13579   -809867   C2_A1_11 vis dynamic pair-trend fit, default separation (control = A1.8.T7_pair).. |
+  | 5 Nov 2026   10:55:07     est     823446     13578   -809868   C2_A1_11 vis static pair-trend fit on the default dynamic sample (control = A1.7.. |
+  | 5 Nov 2026   10:55:10     est     823446     13565   -809881   C2_A1_11 vis dynamic pair-trend fit, separation(fe simplex ir mu) (= A1.8.T7_pai.. |
+  | 5 Nov 2026   10:55:11     est     823446     13564   -809882   C2_A1_11 vis static pair-trend fit on the mu dynamic sample (reference static_sa.. |
+  | 5 Nov 2026   10:55:23     est     823446     19061   -804385   C2_A1_11 tour dynamic pair-trend fit, default separation (control = A1.8.T7_pair.. |
+  | 5 Nov 2026   10:55:33     est     823446     19061   -804385   C2_A1_11 tour static pair-trend fit on the default dynamic sample (control = A1... |
+  | 5 Nov 2026   10:55:47     est     823446     18868   -804578   C2_A1_11 tour dynamic pair-trend fit, separation(fe simplex ir mu) (= A1.8.T7_pa.. |
+  | 5 Nov 2026   10:55:59     est     823446     18865   -804581   C2_A1_11 tour static pair-trend fit on the mu dynamic sample (reference static_s.. |
   +---------------------------------------------------------------------------------------------------------------------------------------------------+
 
 . display as result "C2_A1_11_COMPLETE vintage=${VINTAGE} " c(current_date) " " c(current_time)
-C2_A1_11_COMPLETE vintage=corrected2x  4 Nov 2026 08:49:22
+C2_A1_11_COMPLETE vintage=corrected2x  5 Nov 2026 10:55:59
 
 . log close
       name:  <unnamed>
        log:  <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/C2_A1_11_leadpower_mu_corrected2x.log
   log type:  text
- closed on:   4 Nov 2026, 08:49:22
+ closed on:   5 Nov 2026, 10:55:59
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 . exit, clear

@@ -1,5 +1,5 @@
 date,time,kind,n_before,n_after,change,reason
-4 Nov 2026,08:42:31,est,823446,20598,-802848,C2_02_bias vis ppmlhdfe baseline (original 03_ppml_bias_correction.do) | ppmlhdfe e(N) stored as scalar orig_vis_n
-4 Nov 2026,08:42:31,est,823446,20598,-802848,C2_02_bias vis ppml_fe_bias on the same e(sample) | no e(N) posted by ppml_fe_bias; N = preceding ppmlhdfe e(N)
-4 Nov 2026,08:42:31,est,823446,26339,-797107,C2_02_bias tour ppmlhdfe baseline (original 03_ppml_bias_correction.do) | ppmlhdfe e(N) stored as scalar orig_tour_n
-4 Nov 2026,08:42:31,est,823446,26339,-797107,C2_02_bias tour ppml_fe_bias on the same e(sample) | no e(N) posted by ppml_fe_bias; N = preceding ppmlhdfe e(N)
+5 Nov 2026,10:49:54,est,823446,20598,-802848,C2_02_bias vis ppmlhdfe baseline (original 03_ppml_bias_correction.do) | ppmlhdfe e(N) stored as scalar orig_vis_n
+5 Nov 2026,10:49:54,est,823446,20598,-802848,C2_02_bias vis ppml_fe_bias on the same e(sample) | no e(N) posted by ppml_fe_bias; N = preceding ppmlhdfe e(N)
+5 Nov 2026,10:49:54,est,823446,26339,-797107,C2_02_bias tour ppmlhdfe baseline (original 03_ppml_bias_correction.do) | ppmlhdfe e(N) stored as scalar orig_tour_n
+5 Nov 2026,10:49:54,est,823446,26339,-797107,C2_02_bias tour ppml_fe_bias on the same e(sample) | no e(N) posted by ppml_fe_bias; N = preceding ppmlhdfe e(N)

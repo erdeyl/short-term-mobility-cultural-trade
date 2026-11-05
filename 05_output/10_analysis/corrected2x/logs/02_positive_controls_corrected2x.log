@@ -2,10 +2,10 @@
       name:  pc
        log:  <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/02_positive_controls_corrected2x.log
   log type:  text
- opened on:   4 Nov 2026, 08:33:50
+ opened on:   5 Nov 2026, 10:41:48
 
 . display as result "PC_BEGIN vintage=${VINTAGE} " c(current_date) " " c(current_time)
-PC_BEGIN vintage=corrected2x  4 Nov 2026 08:33:50
+PC_BEGIN vintage=corrected2x  5 Nov 2026 10:41:48
 
 . display as result "ORIG_CORE=${ORIG_CORE}"
 ORIG_CORE=<PACKAGE_ROOT>/02_code/03_Mobility/02_empirical_analysis/01_core
@@ -94,7 +94,7 @@ ORIG_CORE=<PACKAGE_ROOT>/02_code/03_Mobility/02_empirical_analysis/01_core
       name:  pc
        log:  <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/02_positive_controls_corrected2x.log
   log type:  text
- opened on:   4 Nov 2026, 08:33:55
+ opened on:   5 Nov 2026, 10:41:53
 
 . tempname H1
 
@@ -187,13 +187,13 @@ end of do-file
       name:  pc
        log:  <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/02_positive_controls_corrected2x.log
   log type:  text
- closed on:   4 Nov 2026, 08:33:57
+ closed on:   5 Nov 2026, 10:41:54
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
       name:  pc
        log:  <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/02_positive_controls_corrected2x.log
   log type:  text
- opened on:   4 Nov 2026, 08:33:57
+ opened on:   5 Nov 2026, 10:41:54
 
 . tempname H2
 
@@ -312,7 +312,7 @@ end of do-file
 . version 18.0
 
 . use "${CACHE_DIR}/analysis_prepared.dta", clear
-(PREP analysis base, vintage corrected2x, built  4 Nov 2026 08:33:39 by 01_prep.d)
+(PREP analysis base, vintage corrected2x, built  5 Nov 2026 10:41:37 by 01_prep.d)
 
 . local FE "exporter_year importer_year pair_id"
 
@@ -510,7 +510,7 @@ end of do-file
 . version 18.0
 
 . use "${CACHE_DIR}/analysis_prepared.dta", clear
-(PREP analysis base, vintage corrected2x, built  4 Nov 2026 08:33:39 by 01_prep.d)
+(PREP analysis base, vintage corrected2x, built  5 Nov 2026 10:41:37 by 01_prep.d)
 
 . local FE "exporter_year importer_year pair_id"
 
@@ -637,7 +637,7 @@ end of do-file
 . version 18.0
 
 . use "${CACHE_DIR}/analysis_prepared.dta", clear
-(PREP analysis base, vintage corrected2x, built  4 Nov 2026 08:33:39 by 01_prep.d)
+(PREP analysis base, vintage corrected2x, built  5 Nov 2026 10:41:37 by 01_prep.d)
 
 . local FE "exporter_year importer_year pair_id"
 
@@ -740,25 +740,25 @@ file <TMP> saved as .dta format
   6.     keep stacked_trade mob_bilat_vis mob_bilat_tour exporter_year importer_year pair_id category
   7.     save `"`cat`k''"', replace
   8. }
-(PREP analysis base, vintage corrected2x, built  4 Nov 2026 08:33:39 by 01_prep.d)
+(PREP analysis base, vintage corrected2x, built  5 Nov 2026 10:41:37 by 01_prep.d)
 (207,857 missing values generated)
 (file <TMP> not found)
 file <TMP> saved as .dta format
-(PREP analysis base, vintage corrected2x, built  4 Nov 2026 08:33:39 by 01_prep.d)
+(PREP analysis base, vintage corrected2x, built  5 Nov 2026 10:41:37 by 01_prep.d)
 (207,857 missing values generated)
 (file <TMP> not found)
 file <TMP> saved as .dta format
-(PREP analysis base, vintage corrected2x, built  4 Nov 2026 08:33:39 by 01_prep.d)
+(PREP analysis base, vintage corrected2x, built  5 Nov 2026 10:41:37 by 01_prep.d)
 (207,857 missing values generated)
 (file <TMP> not found)
 file <TMP> saved as .dta format
-(PREP analysis base, vintage corrected2x, built  4 Nov 2026 08:33:39 by 01_prep.d)
+(PREP analysis base, vintage corrected2x, built  5 Nov 2026 10:41:37 by 01_prep.d)
 (207,857 missing values generated)
 (file <TMP> not found)
 file <TMP> saved as .dta format
 
 . use `"`cat1'"', clear
-(PREP analysis base, vintage corrected2x, built  4 Nov 2026 08:33:39 by 01_prep.d)
+(PREP analysis base, vintage corrected2x, built  5 Nov 2026 10:41:37 by 01_prep.d)
 
 . append using `"`cat2'"' `"`cat3'"' `"`cat4'"'
 (label exporter_year already defined)
@@ -813,7 +813,7 @@ end of do-file
 . version 18.0
 
 . use "${CACHE_DIR}/analysis_prepared.dta", clear
-(PREP analysis base, vintage corrected2x, built  4 Nov 2026 08:33:39 by 01_prep.d)
+(PREP analysis base, vintage corrected2x, built  5 Nov 2026 10:41:37 by 01_prep.d)
 
 . local FE "exporter_year importer_year pair_id"
 
@@ -1007,7 +1007,7 @@ end of do-file
 . version 18.0
 
 . use "${CACHE_DIR}/analysis_prepared.dta", clear
-(PREP analysis base, vintage corrected2x, built  4 Nov 2026 08:33:39 by 01_prep.d)
+(PREP analysis base, vintage corrected2x, built  5 Nov 2026 10:41:37 by 01_prep.d)
 
 . local FE "exporter_year importer_year pair_id"
 
@@ -1142,7 +1142,7 @@ end of do-file
 . version 18.0
 
 . use "${CACHE_DIR}/analysis_prepared.dta", clear
-(PREP analysis base, vintage corrected2x, built  4 Nov 2026 08:33:39 by 01_prep.d)
+(PREP analysis base, vintage corrected2x, built  5 Nov 2026 10:41:37 by 01_prep.d)
 
 . local FE "exporter_year importer_year pair_id"
 
@@ -1206,7 +1206,7 @@ end of do-file
 . *      e(converged)==1 and record counts (06_table4_categories.do:37,39,61-82;
 . *      07_table5_moderators.do:11-22,61-75). The CS iteration fits are asserted in 01_prep.do.
 . use "${CACHE_DIR}/analysis_prepared.dta", clear
-(PREP analysis base, vintage corrected2x, built  4 Nov 2026 08:33:39 by 01_prep.d)
+(PREP analysis base, vintage corrected2x, built  5 Nov 2026 10:41:37 by 01_prep.d)
 
 . local FE "exporter_year importer_year pair_id"
 
@@ -1271,25 +1271,25 @@ file <TMP> saved as .dta format
   6.     keep stacked_trade mob_bilat_vis mob_bilat_tour exporter_year importer_year pair_id category
   7.     save `"`cat`k''"', replace
   8. }
-(PREP analysis base, vintage corrected2x, built  4 Nov 2026 08:33:39 by 01_prep.d)
+(PREP analysis base, vintage corrected2x, built  5 Nov 2026 10:41:37 by 01_prep.d)
 (207,857 missing values generated)
 (file <TMP> not found)
 file <TMP> saved as .dta format
-(PREP analysis base, vintage corrected2x, built  4 Nov 2026 08:33:39 by 01_prep.d)
+(PREP analysis base, vintage corrected2x, built  5 Nov 2026 10:41:37 by 01_prep.d)
 (207,857 missing values generated)
 (file <TMP> not found)
 file <TMP> saved as .dta format
-(PREP analysis base, vintage corrected2x, built  4 Nov 2026 08:33:39 by 01_prep.d)
+(PREP analysis base, vintage corrected2x, built  5 Nov 2026 10:41:37 by 01_prep.d)
 (207,857 missing values generated)
 (file <TMP> not found)
 file <TMP> saved as .dta format
-(PREP analysis base, vintage corrected2x, built  4 Nov 2026 08:33:39 by 01_prep.d)
+(PREP analysis base, vintage corrected2x, built  5 Nov 2026 10:41:37 by 01_prep.d)
 (207,857 missing values generated)
 (file <TMP> not found)
 file <TMP> saved as .dta format
 
 . use `"`cat1'"', clear
-(PREP analysis base, vintage corrected2x, built  4 Nov 2026 08:33:39 by 01_prep.d)
+(PREP analysis base, vintage corrected2x, built  5 Nov 2026 10:41:37 by 01_prep.d)
 
 . append using `"`cat2'"' `"`cat3'"' `"`cat4'"'
 (label exporter_year already defined)
@@ -1316,7 +1316,7 @@ file <TMP> saved as .dta format
 . 
 . * ---- counts on prepared.dta: support ledger, validation rows, hierarchy count, sample flags
 . use "${PREPARED}", clear
-(PREP analysis base, vintage corrected2x, built  4 Nov 2026 08:33:39 by 01_prep.d)
+(PREP analysis base, vintage corrected2x, built  5 Nov 2026 10:41:37 by 01_prep.d)
 
 . post `H' ("CVS.validation_rows") (_N) ("N")
 
@@ -1348,7 +1348,7 @@ file <TMP> saved as .dta format
 
 . * the flags must also BE the realized samples, not only have the right size
 . use "${PC}/root/03_intermediate/03_Mobility/sensitivity/01_common_support/common_support_vt_exact.dta", clear
-(PREP analysis base, vintage corrected2x, built  4 Nov 2026 08:33:39 by 01_prep.d)
+(PREP analysis base, vintage corrected2x, built  5 Nov 2026 10:41:37 by 01_prep.d)
 
 . keep year iso3_o iso3_d
 
@@ -1361,7 +1361,7 @@ file <TMP> saved as .dta format
 file <TMP> saved as .dta format
 
 . use year iso3_o iso3_d s_cs_exact using "${PREPARED}", clear
-(PREP analysis base, vintage corrected2x, built  4 Nov 2026 08:33:39 by 01_prep.d)
+(PREP analysis base, vintage corrected2x, built  5 Nov 2026 10:41:37 by 01_prep.d)
 
 . merge 1:1 year iso3_o iso3_d using `"`csorig'"', nogen
 
@@ -1457,13 +1457,13 @@ file <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/pc_table_identity.csv save
       name:  pc
        log:  <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/02_positive_controls_corrected2x.log
   log type:  text
- closed on:   4 Nov 2026, 08:35:18
+ closed on:   5 Nov 2026, 10:43:11
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
       name:  pc
        log:  <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/02_positive_controls_corrected2x.log
   log type:  text
- opened on:   4 Nov 2026, 08:35:18
+ opened on:   5 Nov 2026, 10:43:11
 
 . confirm file "${PC}/published_register.csv"
 
@@ -1642,5 +1642,5 @@ POSITIVE_CONTROLS_REFERENCE vintage=corrected2x: 215 of 232 items differ from co
       name:  pc
        log:  <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/02_positive_controls_corrected2x.log
   log type:  text
- closed on:   4 Nov 2026, 08:35:18
+ closed on:   5 Nov 2026, 10:43:11
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

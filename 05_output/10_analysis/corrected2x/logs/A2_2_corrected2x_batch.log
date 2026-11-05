@@ -634,13 +634,13 @@ end of do-file
       name:  <unnamed>
        log:  <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/A2_2_corrected2x.log
   log type:  text
- opened on:   4 Nov 2026, 08:38:22
+ opened on:   5 Nov 2026, 10:46:04
 
 . display as result "A2_2_BEGIN vintage=${VINTAGE} " c(current_date) " " c(current_time)
-A2_2_BEGIN vintage=corrected2x  4 Nov 2026 08:38:22
+A2_2_BEGIN vintage=corrected2x  5 Nov 2026 10:46:04
 
 . use "${OUT}/A2_work.dta", clear
-(PREP analysis base, vintage corrected2x, built  4 Nov 2026 08:33:39 by 01_prep.d)
+(PREP analysis base, vintage corrected2x, built  5 Nov 2026 10:41:37 by 01_prep.d)
 
 . nflow start using "${OUT}/A2_nflow.csv", append
 nflow: log <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/A2_nflow.csv, start N =       56,500
@@ -797,13 +797,13 @@ file <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/results/A2_2.csv saved
 file <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/tables/A2_A2.2.csv saved
 
 . display as result "A2_2_DONE vintage=${VINTAGE} " c(current_time)
-A2_2_DONE vintage=corrected2x 08:38:42
+A2_2_DONE vintage=corrected2x 10:46:22
 
 . log close
       name:  <unnamed>
        log:  <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/A2_2_corrected2x.log
   log type:  text
- closed on:   4 Nov 2026, 08:38:42
+ closed on:   5 Nov 2026, 10:46:22
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 . 

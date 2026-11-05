@@ -252,10 +252,10 @@ end of do-file
       name:  <unnamed>
        log:  <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/TAB_02_corrected2x.log
   log type:  text
- opened on:   4 Nov 2026, 08:42:14
+ opened on:   5 Nov 2026, 10:49:39
 
 . use "${PREPARED}" if has_both_vis == 1 | has_both_tour == 1, clear
-(PREP analysis base, vintage corrected2x, built  4 Nov 2026 08:33:39 by 01_prep.d)
+(PREP analysis base, vintage corrected2x, built  5 Nov 2026 10:41:37 by 01_prep.d)
 
 . nflow start using "${OUT}/TAB_nflow.csv", append
 nflow: log <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/TAB_nflow.csv, start N =       56,500
@@ -287,7 +287,7 @@ TAB_UB tour b=   0.179776038 se=   0.057599196 N=26351 N_full=32471 singletons=6
       name:  <unnamed>
        log:  <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/TAB_02_corrected2x.log
   log type:  text
- closed on:   4 Nov 2026, 08:42:15
+ closed on:   5 Nov 2026, 10:49:40
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 . exit, clear

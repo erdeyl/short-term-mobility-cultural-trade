@@ -1,28 +1,26 @@
 # Validation of the replication package (clean-room run)
 
-The package was copied to a new folder whose path contains spaces (`<clean-room folder with spaces>/Replication_Package`), the raw files were copied into its `01_raw/` (no links; `tools/verify_raw_inputs.py`: 1,100 files, 0 missing, 0 changed), a new Python environment was created from `requirements.txt` (PyPI), and `python run_all.py` ran every stage (check, build, analysis, results). The outputs were then compared with the results reported in the revision (frozen 2026-11-05 01:41:52; SHA-256 manifest of 187 files), cell by cell: non-numeric text identical, integers (N) identical, other numbers within a relative tolerance of 1e-6.
+The package was copied to a new folder whose path contains no spaces (`<clean-room folder>/Replication_Package`), the raw files were copied into its `01_raw/` (no links; `tools/verify_raw_inputs.py`: 1,100 files, 0 missing, 0 changed), a new Python environment was created from `requirements.txt` (PyPI), and `python run_all.py` ran every stage (check, build, analysis, results). The outputs were then compared with the results reported in the revision (frozen 2026-11-05 01:41:52; SHA-256 manifest of 187 files), cell by cell: non-numeric text identical, integers (N) identical, other numbers within a relative tolerance of 1e-6.
 
-The run time below is that of one full run in this clean room; steps changed or added after it were run separately in the same clean room (partial runs, listed after the table and described in the Notes).
+This is one full run of the final code: every step of the four stages ran in this clean room in one call of `run_all.py`, and no step was run separately.
 
 Scope. The default run computes the final data version (`corrected2x`) only. The earlier data versions behind Supplementary Table S11.1 (reconciliation) need `python run_all.py --reconciliation` and, for the submitted version, a second copy of the package built with the correction rules off (`README.md`, Section 3); they were not part of this run, and the entries that read them are listed as not compared below. The data-screen scripts in `02_code/11_data_screens/` are not run by `run_all.py`: they read the UN Tourism bulk files, which are not in `01_raw/RAW_MANIFEST.sha256`, and they produced the flag lists `derived/flags/sweep2_*.csv` (`README.md`, Section 8); these lists were not recomputed here, while the flags the estimates use are written by `C2_A1_07_sweep2.do`, which the run includes.
 
 Machine: Apple M5 Pro, 18 logical CPUs, 48 GB RAM, macOS-27.2-arm64-arm-64bit-Mach-O. Stata: 19.5 MP; Python 3.13.2.
 
-Result: 68 of 68 files match; 0 differ. Figure 1 controls: 56 of 56 checks PASS. Controls of `C2_A1_11_leadpower_mu.do` (`C2_A1_11_check.py`): 296 of 296 PASS.
+Result: 68 of 68 files match; 0 differ (4 of the matching files differ only in the wording of some free-text notes; every number is identical). Figure 1 controls: 56 of 56 checks PASS. Controls of `C2_A1_11_leadpower_mu.do` (`C2_A1_11_check.py`): 296 of 296 PASS.
 
 ## Run time (wall clock)
 
 | stage | seconds | minutes |
 |---|---|---|
-| check | 1 | 0.0 |
-| build | 281 | 4.7 |
-| analysis | 1686 | 28.1 |
-| results | 17 | 0.3 |
-| total | 1985 | 33.1 |
+| check | 2 | 0.0 |
+| build | 272 | 4.5 |
+| analysis | 1624 | 27.1 |
+| results | 18 | 0.3 |
+| total | 1916 | 31.9 |
 
-Later partial runs in the same clean room (all steps in `05_output/_run/run_times.csv`): analysis stage 4 step runs, 175 s, 1 with status FAIL; results stage 12 step runs, 5 s; check stage 2 step runs, 3 s. They do not change the full-run time above.
-
-Per step: `05_output/_run/run_times.csv`, which lists the 59 steps of this run (1 check, 2 build, 44 analysis and 12 results steps), each with status OK; their times add up to the 1985 seconds above.
+Per step: `05_output/_run/run_times.csv`, which lists the 60 steps of this run (1 check, 2 build, 45 analysis and 12 results steps), each with status OK; their times add up to the 1916 seconds above.
 
 ## Comparison
 
@@ -46,16 +44,16 @@ The reference column names the files of the authors' frozen copy of the results 
 | Tables | `tables_revised/final/supplement/TableS_sample_economies_wide.csv` | yes | IDENTICAL (bytes) | 2856 cells, 2856 identical, 0 beyond tolerance |  |
 | Figure data | `figures/Figure_coefplot_data.csv` | yes | IDENTICAL (bytes) | 590 cells, 590 identical, 0 beyond tolerance |  |
 | Figure data | `figures/Figure_cd_slopes_data.csv` | yes | IDENTICAL (bytes) | 14705 cells, 14705 identical, 0 beyond tolerance |  |
-| Estimates (corrected2x) | `analysis/out/corrected2x/results/A1.csv` | yes | IDENTICAL (cells) | 6640 cells, 6640 identical, 0 beyond tolerance |  |
+| Estimates (corrected2x) | `analysis/out/corrected2x/results/A1.csv` | yes | IDENTICAL (cells) except the note text | 6308 cells, 6308 identical, 0 beyond tolerance (column note left out: the text of 7 notes is worded differently; see below) |  |
 | Estimates (corrected2x) | `analysis/out/corrected2x/results/A1_parts/A1_01.csv` | yes | IDENTICAL (bytes) | 340 cells, 340 identical, 0 beyond tolerance |  |
 | Estimates (corrected2x) | `analysis/out/corrected2x/results/A1_parts/A1_02.csv` | yes | IDENTICAL (bytes) | 1620 cells, 1620 identical, 0 beyond tolerance |  |
-| Estimates (corrected2x) | `analysis/out/corrected2x/results/A1_parts/A1_03.csv` | yes | IDENTICAL (bytes) | 1620 cells, 1620 identical, 0 beyond tolerance |  |
+| Estimates (corrected2x) | `analysis/out/corrected2x/results/A1_parts/A1_03.csv` | yes | IDENTICAL (cells) except the note text | 1539 cells, 1539 identical, 0 beyond tolerance (column note left out: the text of 2 notes is worded differently; see below) |  |
 | Estimates (corrected2x) | `analysis/out/corrected2x/results/A1_parts/A1_04.csv` | yes | IDENTICAL (bytes) | 1860 cells, 1860 identical, 0 beyond tolerance |  |
 | Estimates (corrected2x) | `analysis/out/corrected2x/results/A1_parts/A1_05.csv` | yes | IDENTICAL (bytes) | 200 cells, 200 identical, 0 beyond tolerance |  |
 | Estimates (corrected2x) | `analysis/out/corrected2x/results/A1_parts/A1_05b_tour_cont1boot.csv` | yes | IDENTICAL (bytes) | 40 cells, 40 identical, 0 beyond tolerance |  |
 | Estimates (corrected2x) | `analysis/out/corrected2x/results/A1_parts/A1_05b_tour_cont1strictboot.csv` | yes | IDENTICAL (bytes) | 40 cells, 40 identical, 0 beyond tolerance |  |
-| Estimates (corrected2x) | `analysis/out/corrected2x/results/A1_parts/A1_05b_vis_cont1boot.csv` | yes | IDENTICAL (bytes) | 40 cells, 40 identical, 0 beyond tolerance |  |
-| Estimates (corrected2x) | `analysis/out/corrected2x/results/A1_parts/A1_07.csv` | yes | IDENTICAL (bytes) | 140 cells, 140 identical, 0 beyond tolerance |  |
+| Estimates (corrected2x) | `analysis/out/corrected2x/results/A1_parts/A1_05b_vis_cont1boot.csv` | yes | IDENTICAL (cells) except the note text | 38 cells, 38 identical, 0 beyond tolerance (column note left out: the text of 1 notes is worded differently; see below) |  |
+| Estimates (corrected2x) | `analysis/out/corrected2x/results/A1_parts/A1_07.csv` | yes | IDENTICAL (cells) except the note text | 133 cells, 133 identical, 0 beyond tolerance (column note left out: the text of 4 notes is worded differently; see below) |  |
 | Estimates (corrected2x) | `analysis/out/corrected2x/results/A1_parts/A1_08.csv` | yes | IDENTICAL (bytes) | 400 cells, 400 identical, 0 beyond tolerance |  |
 | Estimates (corrected2x) | `analysis/out/corrected2x/results/A1_parts/A1_09.csv` | yes | IDENTICAL (bytes) | 540 cells, 540 identical, 0 beyond tolerance |  |
 | Estimates (corrected2x) | `analysis/out/corrected2x/results/A2.csv` | yes | IDENTICAL (bytes) | 16644 cells, 16644 identical, 0 beyond tolerance |  |
@@ -102,6 +100,21 @@ The reference column names the files of the authors' frozen copy of the results 
 Not produced by the default run (reconciliation switch `--reconciliation`): 23 frozen CSV files of the vintages corrected and corrected2 and of the earlier figure versions.
 
 Figure image files (`.pdf`, `.png`, `.tif`) depend on the matplotlib version and are compared through their data files.
+
+Notes worded differently. In the files below every number and every other cell is identical; only the free-text column `note` differs in the rows listed. The authors' frozen copy names their internal working files or an internal label in these notes; the package code refers to them generically. Wording in the package (number of rows):
+
+- `analysis/out/corrected2x/results/A1.csv`: 2 × "absorb(exporter_year importer_year pair_id pair_id#c.year): alternative form; equivalence check only"
+- `analysis/out/corrected2x/results/A1.csv`: 1 × "FAILED rc=301: bootstrap(100,20261103) stops when a bootstrap sample draws too few of the 3 control (non-switching) observations: the command reports insufficient observations and that no effect can be estimated (replay: working notes of the au"
+- `analysis/out/corrected2x/results/A1.csv`: 1 × "SWEEP2 exclusion (authors' working notes); baseline e(sample) rows excluded 953"
+- `analysis/out/corrected2x/results/A1.csv`: 1 × "SWEEP2 exclusion (authors' working notes); baseline e(sample) rows excluded 6"
+- `analysis/out/corrected2x/results/A1.csv`: 1 × "SWEEP2 exclusion (authors' working notes); baseline e(sample) rows excluded 590"
+- `analysis/out/corrected2x/results/A1.csv`: 1 × "SWEEP2 exclusion (authors' working notes); baseline e(sample) rows excluded 0"
+- `analysis/out/corrected2x/results/A1_parts/A1_03.csv`: 2 × "absorb(exporter_year importer_year pair_id pair_id#c.year): alternative form; equivalence check only"
+- `analysis/out/corrected2x/results/A1_parts/A1_05b_vis_cont1boot.csv`: 1 × "FAILED rc=301: bootstrap(100,20261103) stops when a bootstrap sample draws too few of the 3 control (non-switching) observations: the command reports insufficient observations and that no effect can be estimated (replay: working notes of the au"
+- `analysis/out/corrected2x/results/A1_parts/A1_07.csv`: 1 × "SWEEP2 exclusion (authors' working notes); baseline e(sample) rows excluded 953"
+- `analysis/out/corrected2x/results/A1_parts/A1_07.csv`: 1 × "SWEEP2 exclusion (authors' working notes); baseline e(sample) rows excluded 6"
+- `analysis/out/corrected2x/results/A1_parts/A1_07.csv`: 1 × "SWEEP2 exclusion (authors' working notes); baseline e(sample) rows excluded 590"
+- `analysis/out/corrected2x/results/A1_parts/A1_07.csv`: 1 × "SWEEP2 exclusion (authors' working notes); baseline e(sample) rows excluded 0"
 
 ## Exhibit-level scope (revised numbering)
 
@@ -162,12 +175,13 @@ Not compared, by reason:
 
 ## Notes
 
-- `results/A1.csv`: every cell is identical; the file differs from the reference only in its line ends (CRLF here, LF in the reference), because `run_all.py` writes A1.csv once more after the vintage relabel of its parts (`A1_combine.py` uses the csv module, `C2_post.py` pandas). The reported results of the first code freeze had CRLF line ends for the same file.
+- `results/A1.csv`: every number is identical; besides the note wording listed in the Comparison, the file differs from the reference in its line ends (CRLF here, LF in the reference), because `run_all.py` writes A1.csv once more after the vintage relabel of its parts (`A1_combine.py` uses the csv module, `C2_post.py` pandas). The reported results of the first code freeze had CRLF line ends for the same file.
 - `positive_controls.csv`: the column `source` holds the file path of each reference value and is machine-specific; every other cell is identical.
-- Earlier clean-room runs, in another clean room: on the first code freeze (run 1 stopped in the results stage and, after a fix, matched every frozen file; run 2, full, 1,664 s), on code freeze 2 (full, 1,712 s) and on code freeze 3 (its one added step run separately, 61 s, then the results stage). Each matched every frozen file, `A1.csv` up to its line ends. They are superseded by the run reported above, which is one full run of the final code in a newly created clean room. Two earlier attempts in that clean room were stopped during the analysis stage because results-stage scripts were changed after the copy (display tables of the unordered-pair recomputation, the count differences of the reconciliation table, Figure 2 labels and its added row for trips in millions, the vintage label of the unordered-pair folder); the clean room was then reset (run outputs removed, code tree synchronised with the package, raw files verified again) before the run reported above started.
+- Earlier clean-room runs. In a first clean room: on the first code freeze (run 1 stopped in the results stage and, after a fix, matched every frozen file; run 2, full, 1,664 s), on code freeze 2 (full, 1,712 s) and on code freeze 3 (its one added step run separately, 61 s, then the results stage). In a second clean room, whose path contains spaces: one full run of code freeze 4 (59 steps, 1,985 s; all 67 files then compared matched), after two attempts that were stopped during the analysis stage because results-stage scripts were changed after the copy (display tables of the unordered-pair recomputation, the count differences of the reconciliation table, Figure 2 labels and its added row for trips in millions, the vintage label of the unordered-pair folder; the clean room was reset each time); then, on 2026-11-05, separate runs of the steps changed or added after it (the common-sample check of Supplementary Section S9.3, a new label of one row of Figure 2, and the launcher fix below), whose outputs matched the frozen files. Each of these runs matched every frozen file, `A1.csv` up to its line ends. In a third clean room, whose path contains no spaces, a first full run of the code as released stopped at `C2_A1_10_boot.do` for visitors (see "Release wording fix" below). All these runs are superseded by the run reported above: one full run of the final code in a fourth, newly created clean room.
 - Build stage: the rebuilt exporter-reported mirror reproduces the build's 31-code totals on all 178,908 sparse rows (`05_output/10_analysis/corrected2x/mirror_ex4907_controls.csv`, 7 of 7 PASS), and the original Mobility estimation outputs serve as the reference of `02_positive_controls.do`.
 - Unordered-pair clusters: `05_output/10_analysis/corrected2x_upair/results/` holds the estimates of the eight `UP_*.do` copies. In this run `C2_A1_12_make_upair.py --check` confirmed that the copies equal a regeneration from their sources, and `C2_A1_12_upair_table.py` checked that each of the 596 rows they post exists under both clusterings with the same N and estimate, reproduced the 24 Holm-adjusted p values of `A2_3.do` as a positive control, and wrote 163 paired tests (largest change of a p value between the two clusterings: 0.086).
-- Changes after the full run, run separately in the same clean room on 2026-11-05. (1) A common-sample check of Supplementary Section S9.3 (`C2_A1_11b_common_sample.do`, a new step) and a new label of one row of Figure 2 (`FIG_02_coefplot.py`): the new step ran, then the results stage (`python run_all.py --stages results`); the check's output `tables/A1_A1.7_common_sample_check.csv` and the Figure 2 data match the frozen files (Comparison above). (2) `run_all.py` used to quote an argument for Stata only when it contained a space. On macOS, Stata names its batch log after the last argument when that argument is not quoted, so from a folder without spaces in its path every Stata step of the analysis stage stopped with "no batch log"; the full run above, from a folder with spaces, was not affected. The first partial run of the new step was started from a folder without spaces and stopped in this way (`05_output/_run/run_all.log`, 2026-11-05 01:43–01:44, with the folder path replaced by `<PACKAGE_ROOT>`; `05_output/_run/run_times.csv`, status FAIL); it was then repeated from the folder with spaces. `run_all.py` now quotes every argument. With the corrected file, the check stage and the new step ran from a folder without spaces in its path and again from the folder with spaces: all OK, and the step's output was identical to the frozen file each time. From a folder with spaces, the corrected file passes Stata the same command line as before.
+- Launcher fix. `run_all.py` used to quote an argument for Stata only when it contained a space. On macOS, Stata names its batch log after the last argument when that argument is not quoted, so from a folder without spaces in its path every Stata step of the analysis stage stopped with "no batch log"; the runs in the second clean room, from a folder with spaces, were not affected. The problem was found on 2026-11-05, when a partial run of the new common-sample step was started from a folder without spaces and stopped in this way (recorded with status FAIL in that clean room's `run_all.log` and `run_times.csv`; the step was then repeated from the folder with spaces). `run_all.py` now quotes every argument; from a folder with spaces it passes Stata the same command line as before. The run reported above, from a folder without spaces in its path, used the corrected file.
+- Release wording fix. Before release, references to the authors' working files were removed from the code. In one line this put an apostrophe inside a Stata macro expression (`C2_A1_10_boot.do`, line 93, the note written when the visitor bootstrap stops with rc 301), so in the code as released that step stopped with r(132) ("too few quotes"); the code of the second clean room still had the original wording and was not affected. The first full run of the code as released (third clean room, 2026-11-05) stopped there. The line now reads "working notes of the authors"; the same step then ran without error in that clean room, and the run reported above used the corrected file. The same cleaning reworded a few other notes; they are listed in the Comparison above where they reach a result file. One more file read by the exhibit-level ledger has such a difference: in `analysis/out/corrected2x/tables/A1_A1.2_economy_lists.csv` (Supplementary Table S2.6) the column `name_source` reads "UNSD designation" in 2 rows where the authors' frozen copy names their internal terminology file; every other cell is identical, and the ledger counts the file as identical except free text.
 
 ## Hofstede inputs with and without the build's workbook
 

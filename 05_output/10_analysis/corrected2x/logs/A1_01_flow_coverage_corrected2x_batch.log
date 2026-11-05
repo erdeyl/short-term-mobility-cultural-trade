@@ -13,8 +13,8 @@
 > ***
 >  A1_01_flow_coverage.do  --  A1.1 sample flow, A1.2 coverage (analysis block 
 > A1)
->  Usage (cwd = 02_code/10_analysis):  stata-mp -b -q do A1_01_flow_coverage.do <vi
-> ntage>
+>  Usage (cwd = 02_code/10_analysis):  stata-mp -b -q do A1_01_flow_coverage.do
+>  <vintage>
 >  Input : ${OUT}/prepared.dta (read only). Output: ${OUT}/tables/A1_A1.1_*.csv
 > ,
 >          ${OUT}/tables/A1_A1.2_*.csv, ${OUT}/results/A1_parts/A1_01.csv, logs
@@ -552,10 +552,10 @@ end of do-file
       name:  <unnamed>
        log:  <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/A1_01_flow_coverage_corrected2x.log
   log type:  text
- opened on:   4 Nov 2026, 08:35:19
+ opened on:   5 Nov 2026, 10:43:12
 
 . display as result "A1_01_BEGIN vintage=${VINTAGE} " c(current_date) " " c(current_time)
-A1_01_BEGIN vintage=corrected2x  4 Nov 2026 08:35:19
+A1_01_BEGIN vintage=corrected2x  5 Nov 2026 10:43:12
 
 . 
 . use year iso3_o iso3_d v_ttl_k has_rev_vis has_same_vis has_both_vis has_rev_tour has_same_tour has_both_tour ///
@@ -564,7 +564,7 @@ A1_01_BEGIN vintage=corrected2x  4 Nov 2026 08:35:19
 >     s_base_vis s_base_tour s_dyn_vis s_dyn_tour s_cd_vis s_cd_tour s_cs_candidate s_cs_exact ///
 >     wb_region_o wb_region_d wb_income_cur_o wb_income_cur_d wb_inc_hist_o wb_inc_hist_d ///
 >     using "${PREPARED}", clear
-(PREP analysis base, vintage corrected2x, built  4 Nov 2026 08:33:39 by 01_prep.d)
+(PREP analysis base, vintage corrected2x, built  5 Nov 2026 10:41:37 by 01_prep.d)
 
 . nflow start using "${OUT}/A1_nflow.csv", append expected(823446)
 nflow: log <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/A1_nflow.csv, start N =      823,446
@@ -1664,7 +1664,7 @@ file <TMP> saved as .dta format
 . preserve
 
 .     use `comp', clear
-(PREP analysis base, vintage corrected2x, built  4 Nov 2026 08:33:39 by 01_prep.d)
+(PREP analysis base, vintage corrected2x, built  5 Nov 2026 10:41:37 by 01_prep.d)
 
 .     gen str10 vintage = "${VINTAGE}"
 
@@ -1826,7 +1826,7 @@ file <TMP> saved as .dta format
 . preserve
 
 .     use `econ', clear
-(PREP analysis base, vintage corrected2x, built  4 Nov 2026 08:33:39 by 01_prep.d)
+(PREP analysis base, vintage corrected2x, built  5 Nov 2026 10:41:37 by 01_prep.d)
 
 .     rename iso iso3
 
@@ -1870,30 +1870,30 @@ file <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/results/A1_parts/A1_01.csv
   +---------------------------------------------------------------------------------------------------------------------------------------------------+
   |       date       time    kind   n_before   n_after    change   reason                                                                             |
   |---------------------------------------------------------------------------------------------------------------------------------------------------|
-  | 4 Nov 2026   08:35:19   start          .    823446         0   start: <PACKAGE_ROOT>/05_output/10_analysis/co.. |
+  | 5 Nov 2026   10:43:12   start          .    823446         0   start: <PACKAGE_ROOT>/05_output/10_analysis/cor.. |
   |---------------------------------------------------------------------------------------------------------------------------------------------------|
-  | 4 Nov 2026   08:35:20     est     823446     20598   -802848   A1 A1.1 baseline vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output        |
-  | 4 Nov 2026   08:35:20     est     823446     26339   -797107   A1 A1.1 baseline tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output       |
-  | 4 Nov 2026   08:35:21     est     823446      2457   -820989   A1 A1.1 cs_iter1 vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output        |
-  | 4 Nov 2026   08:35:21     est     823446      2457   -820989   A1 A1.1 cs_iter1 tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output       |
-  | 4 Nov 2026   08:35:21     est     823446      2457   -820989   A1 A1.1 cs_iter2 vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output        |
-  | 4 Nov 2026   08:35:21     est     823446      2457   -820989   A1 A1.1 cs_iter2 tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output       |
-  | 4 Nov 2026   08:35:22     est     823446     13872   -809574   A1 A1.1 dynamic_T3 vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output      |
-  | 4 Nov 2026   08:35:23     est     823446     19061   -804385   A1 A1.1 dynamic_T3 tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output     |
-  | 4 Nov 2026   08:35:23     est     823446     11971   -811475   A1 A1.1 cd_T5 vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output           |
-  | 4 Nov 2026   08:35:24     est     823446     10932   -812514   A1 A1.1 cd_T5 tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output          |
+  | 5 Nov 2026   10:43:13     est     823446     20598   -802848   A1 A1.1 baseline vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output        |
+  | 5 Nov 2026   10:43:13     est     823446     26339   -797107   A1 A1.1 baseline tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output       |
+  | 5 Nov 2026   10:43:14     est     823446      2457   -820989   A1 A1.1 cs_iter1 vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output        |
+  | 5 Nov 2026   10:43:14     est     823446      2457   -820989   A1 A1.1 cs_iter1 tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output       |
+  | 5 Nov 2026   10:43:14     est     823446      2457   -820989   A1 A1.1 cs_iter2 vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output        |
+  | 5 Nov 2026   10:43:14     est     823446      2457   -820989   A1 A1.1 cs_iter2 tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output       |
+  | 5 Nov 2026   10:43:15     est     823446     13872   -809574   A1 A1.1 dynamic_T3 vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output      |
+  | 5 Nov 2026   10:43:15     est     823446     19061   -804385   A1 A1.1 dynamic_T3 tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output     |
+  | 5 Nov 2026   10:43:16     est     823446     11971   -811475   A1 A1.1 cd_T5 vis | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output           |
+  | 5 Nov 2026   10:43:17     est     823446     10932   -812514   A1 A1.1 cd_T5 tour | ppmlhdfe e(N); drop breakdown in the ppmlhdfe output          |
   |---------------------------------------------------------------------------------------------------------------------------------------------------|
-  | 4 Nov 2026   08:35:24    step     823446    615589   -207857   A1.2: keep trade-reporting panel rows (v_ttl_k observed) as the reference universe |
+  | 5 Nov 2026   10:43:17    step     823446    615589   -207857   A1.2: keep trade-reporting panel rows (v_ttl_k observed) as the reference universe |
   +---------------------------------------------------------------------------------------------------------------------------------------------------+
 
 . display as result "A1_01_COMPLETE vintage=${VINTAGE} " c(current_date) " " c(current_time)
-A1_01_COMPLETE vintage=corrected2x  4 Nov 2026 08:35:33
+A1_01_COMPLETE vintage=corrected2x  5 Nov 2026 10:43:26
 
 . log close
       name:  <unnamed>
        log:  <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/A1_01_flow_coverage_corrected2x.log
   log type:  text
- closed on:   4 Nov 2026, 08:35:33
+ closed on:   5 Nov 2026, 10:43:26
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 . exit, clear

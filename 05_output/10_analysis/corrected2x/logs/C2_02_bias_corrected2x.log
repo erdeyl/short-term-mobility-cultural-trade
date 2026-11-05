@@ -2,7 +2,7 @@
       name:  <unnamed>
        log:  <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/C2_02_bias_corrected2x.log
   log type:  text
- opened on:   4 Nov 2026, 08:42:31
+ opened on:   5 Nov 2026, 10:49:54
 
 . type "${OUT}/C2_bias_cmp.txt"
 CMP_IDENTICAL
@@ -76,5 +76,5 @@ C2_BIAS_DONE vintage=corrected2x
       name:  <unnamed>
        log:  <PACKAGE_ROOT>/05_output/10_analysis/corrected2x/logs/C2_02_bias_corrected2x.log
   log type:  text
- closed on:   4 Nov 2026, 08:42:31
+ closed on:   5 Nov 2026, 10:49:54
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

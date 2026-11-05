@@ -24,22 +24,25 @@
 
 . log using "`PROJECT_ROOT'/05_output/03_Mobility/03_logs/check_stata_environme
 > nt.log", replace text
+(file
+    <PACKAGE_ROOT>/05_output/03_Mobility/03_
+    > logs/check_stata_environment.log not found)
 -------------------------------------------------------------------------------
       name:  <unnamed>
-       log:  <PACKAGE_ROOT>/05_output/03_Mobi
-> lity/03_logs/check_stata_environment.log
+       log:  <PACKAGE_ROOT>/05_output/03_Mobil
+> ity/03_logs/check_stata_environment.log
   log type:  text
- opened on:   4 Nov 2026, 08:29:48
+ opened on:   5 Nov 2026, 10:36:48
 
 . local ENV_STATATMP : environment STATATMP
 
 . display as text "Configured STATATMP: `ENV_STATATMP'"
-Configured STATATMP: <PACKAGE_ROOT>/00_stata_
-> temp
+Configured STATATMP: <PACKAGE_ROOT>/00_stata_t
+> emp
 
 . display as text "Actual Stata tmpdir: " c(tmpdir)
-Actual Stata tmpdir: <PACKAGE_ROOT>/00_stata_
-> temp
+Actual Stata tmpdir: <PACKAGE_ROOT>/00_stata_t
+> emp
 
 . 
 . * Test Stata itself after launch, including save/readback and preserve/restor
@@ -54,10 +57,12 @@ Number of observations (_N) was 0, now 1.
 . tempfile stata_write_test
 
 . capture noisily save "`stata_write_test'", replace
-(file <USER_HOME>/S1 test run
-    r3/Replication_Package/00_stata_temp/St38569.000001 not found)
-file <USER_HOME>/S1 test run
-    r3/Replication_Package/00_stata_temp/St38569.000001 saved as .dta format
+(file
+    <PACKAGE_ROOT>/00_stata_temp/St93362.000
+    > 001 not found)
+file
+    <PACKAGE_ROOT>/00_stata_temp/St93362.000
+    > 001 saved as .dta format
 
 . if _rc {
 .     display as error "Stata cannot write its temporary file: `stata_write_tes
@@ -98,17 +103,6 @@ STATA_TEMPFILE_READ_WRITE=PASS
   8.         }
   9.         display as text "COMMAND_AVAILABLE=`command' PATH=`r(fn)'"
  10.     }
-COMMAND_AVAILABLE=ftools PATH=
-COMMAND_AVAILABLE=reghdfe PATH=
-COMMAND_AVAILABLE=ppmlhdfe PATH=
-COMMAND_AVAILABLE=esttab PATH=
-COMMAND_AVAILABLE=eststo PATH=
-COMMAND_AVAILABLE=estadd PATH=
-COMMAND_AVAILABLE=estpost PATH=
-COMMAND_AVAILABLE=hdfe PATH=
-COMMAND_AVAILABLE=gtools PATH=
-COMMAND_AVAILABLE=frmttable PATH=
-COMMAND_AVAILABLE=ppml_fe_bias PATH=
 . 
 .     capture findfile lrowmat_utils.mlib
 .     if _rc {
@@ -125,17 +119,17 @@ STATA_ENVIRONMENT=PASS
 
 . log close
       name:  <unnamed>
-       log:  <PACKAGE_ROOT>/05_output/03_Mobi
-> lity/03_logs/check_stata_environment.log
+       log:  <PACKAGE_ROOT>/05_output/03_Mobil
+> ity/03_logs/check_stata_environment.log
   log type:  text
- closed on:   4 Nov 2026, 08:29:48
+ closed on:   5 Nov 2026, 10:36:48
 -------------------------------------------------------------------------------
 
 . file open checked using "`PROJECT_ROOT'/05_output/03_Mobility/01_diagnostics/
 > STATA_ENVIRONMENT_COMPLETE.txt", write replace
-(file <USER_HOME>/S1 test run
-    r3/Replication_Package/05_output/03_Mobility/01_diagnostics/STATA_ENVIRON
-    > MENT_COMPLETE.txt not found)
+(file
+    <PACKAGE_ROOT>/05_output/03_Mobility/01_
+    > diagnostics/STATA_ENVIRONMENT_COMPLETE.txt not found)
 
 . file write checked "STATA_ENVIRONMENT=PASS" _n
 
