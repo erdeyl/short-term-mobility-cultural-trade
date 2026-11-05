@@ -63,7 +63,7 @@ INCLUDE_OUTPUTS = ["06_results/**/*", "05_output/_run/run_all.log", "05_output/_
                    # unordered-pair recomputation and Narrow-A benchmark (estimates and test tables only)
                    "05_output/10_analysis/corrected2x/results/A2_7c.csv", "05_output/10_analysis/corrected2x/tables/clustering_pvalues*.csv",
                    "05_output/10_analysis/corrected2x/tables/benchmark_basket_family.csv", "05_output/10_analysis/corrected2x/tables/S5_*.csv",
-                   "05_output/10_analysis/corrected2x/tables/sample_overlap.csv", "05_output/10_analysis/corrected2x_upair/results/**/*.csv",
+                   "05_output/10_analysis/corrected2x/tables/A1_A1.7_common_sample_check.csv", "05_output/10_analysis/corrected2x/tables/sample_overlap.csv", "05_output/10_analysis/corrected2x_upair/results/**/*.csv",
                    "05_output/10_analysis/corrected2x_upair/logs/*.log",
                    "05_output/00_common/03_logs/**/*.log", "05_output/03_Mobility/03_logs/**/*.log"]
 TEXT_SUFFIX = {".md", ".txt", ".csv", ".log", ".do", ".ado", ".sthlp", ".py", ".sh", ".json", ".tsv", ".sha256", ".cff", ""}  # "" = LICENSE

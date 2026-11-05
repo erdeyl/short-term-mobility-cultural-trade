@@ -115,7 +115,7 @@ for mob in ("visitors", "tourists"):
     a2(G5, "Narrow-B (Narrow-A plus HS 852329/852380)", "A2.6", "v_unesco_b_on_baseline_sample", "v_unesco_b", mob)
     a2(G5, "Narrow-A (FCS core codes, without heading 8523)", "A2.6", "v_unesco_a_on_baseline_sample", "v_unesco_a", mob)
     a2(G5, "Without heading 8523", "A2.6", "v_nomedia_on_baseline_sample", "v_nomedia", mob)
-    a2(G5, "Fully reported trade only", "A2.4", "S1_T9_fully_reported", "mob_bilat_" + s, mob)
+    a2(G5, "Observed-record detail screen", "A2.4", "S1_T9_fully_reported", "mob_bilat_" + s, mob)
     a2(G5, "Positive trade only", "A2.4", "S1_T1_positive_only", "mob_bilat_" + s, mob)
     # ---------------- Specification
     pc(G6, "RTA/FTA control", mob, "T6.c%d" % (7 + off), "", "Table 6 column %d" % (7 + off))
